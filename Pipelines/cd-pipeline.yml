@@ -90,6 +90,15 @@ stages:
         workingDir: '$(Express_WorkingDir)'
         customCommand: 'run build -- --env NODE_ENV=production'
     - task: CopyFiles@2
+      displayName: 'Copy required files'
+      inputs:
+        SourceFolder: '$(Express_WorkingDir)'
+        Contents: |
+        public/**
+        wkhtmltox_0.12.6-0.20180618.3.dev.e6d6f54.stretch_amd64.deb
+        startServer.sh
+        TargetFolder: '$(Express_WorkingDir)/build'
+    - task: CopyFiles@2
       displayName: 'Stage Express output'
       inputs:
         SourceFolder: '$(Express_WorkingDir)'

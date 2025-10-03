@@ -61,7 +61,7 @@
   },
   "scripts": {
     "git-init": "git config core.hooksPath .githooks",
-    "dev": "npm run git-init && vite",
+    "dev": "vite",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ci": "vitest run --coverage",

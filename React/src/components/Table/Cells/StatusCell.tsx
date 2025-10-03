@@ -1,0 +1,117 @@
+import { Box, Flex, Text } from '@chakra-ui/react';
+
+import { CircleTick, HourGlassIcon, InProgress } from '../../../icons';
+import InReviewIcon from '../../../icons/inReviewIcon';
+
+interface StatusCellProps {
+  status: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+function StatusCell({ status, size = 'md' }: StatusCellProps) {
+  const getStatusConfig = (status: string) => {
+    switch (status) {
+        case 'actionPlan':
+        return {
+            label: 'Action Plan',
+            bg: '#5850EC',
+            color: 'white',
+            icon: <CircleTick data-id="001308" boxSize="14px" />,
+        };
+      case 'inReview':
+        return {
+          label: 'In Review',
+          colorScheme: 'orange',
+          bg: '#F97316',
+          color: 'white',
+          icon: <InReviewIcon data-id="001309" boxSize="14px" />,
+        };
+      case 'completed':
+        return {
+          label: 'Completed',
+          bg: '#00A650',
+          color: 'white',
+          icon: <CircleTick data-id="001310" boxSize="14px" />,
+        };
+      case 'missed':
+        return {
+          label: 'Missed',
+          colorScheme: 'red',
+          bg: 'red.500',
+          color: 'white',
+          icon: null,
+        };
+      case 'upcoming':
+        return {
+          label: 'Upcoming',
+          colorScheme: 'yellow',
+          bg: 'yellow.500',
+          color: 'white',
+          icon: null,
+        };
+      case 'inProgress':
+        return {
+          label: 'In Progress',
+          bg: '#0073E6',
+          color: 'white',
+          icon: <InProgress data-id="001311" boxSize="14px" />,
+        };
+      case 'notStarted':
+        return {
+            label: 'Not started',
+            bg: '#A0AEC0',
+            color: 'white',
+            icon: <HourGlassIcon data-id="001312" boxSize="14px" />,
+        };
+      default:
+        return {
+          label: status,
+          colorScheme: 'white',
+          bg: 'gray.500',
+          color: 'white',
+          icon: null,
+        };
+    }
+  };
+
+  const config = getStatusConfig(status);
+  
+  const sizeProps = {
+    sm: { px: 2, fontSize: '10px', gap: 1, height: '18px' },
+    md: { px: 3, fontSize: '12px', gap: 1, height: '22px' },
+    lg: { px: 4, fontSize: '14px', gap: 2, height: '30px' },
+  };
+
+  return (
+    <Box
+      data-id="001313"
+      alignItems="center"
+      bg={config.bg}
+      borderRadius="full"
+      display="inline-flex"
+      gap={sizeProps[size].gap}
+      height={sizeProps[size].height}
+      justifyContent="center"
+      minW="fit-content"
+      px={sizeProps[size].px}>
+      <Text
+        data-id="001314"
+        color={config.color}
+        fontSize={sizeProps[size].fontSize}
+        fontWeight="bold"
+        letterSpacing="0.36px"
+        lineHeight="normal"
+        textTransform="uppercase"
+        whiteSpace="nowrap">
+        {config.label}
+      </Text>
+      {config.icon && (
+        <Flex data-id="001315" color={config.color}>
+          {config.icon}
+        </Flex>
+      )}
+    </Box>
+  );
+}
+
+export default StatusCell;

@@ -7,6 +7,7 @@ import { auditWalkTypes } from '../../hooks/useFiltersUtils';
 import useNavigate from '../../hooks/useNavigate';
 // import { LocationIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
+import StatusCell from '../Table/Cells/StatusCell';
 import AvatarCell from '../Table/Cells/AvatarCell';
 
 function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
@@ -54,12 +55,8 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
             {audit.location?.name ?? 'Virtual'}
           </Text>
         </Stack>
-        <Flex data-id="000223" w="10%">
-          <Flex align="center" data-id="000224">
-            <Flex color={`auditsList.${audit?.status}`} data-id="000225" fontSize="14px" fontWeight="500" pr={2}>
-              {auditStatuses[audit?.status]}
-            </Flex>
-          </Flex>
+        <Flex data-id="000223" w="15%">
+          <StatusCell data-id="001212" status={audit?.status} />
         </Flex>
 
         {module?.featureFlags?.enableSafetyWalk && (

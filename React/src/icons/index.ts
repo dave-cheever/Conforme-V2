@@ -31,6 +31,7 @@ import CircledCross from './CircledCross';
 import CircledTickBold from './CircledTickBold';
 import CircleEmpty from './CircleEmpty';
 import CircleRemove from './CircleRemove';
+import CircleTick from './CircleTick';
 import CloneIcon from './CloneIcon';
 import Close from './Close';
 import ComingUpIcon from './ComingUpIcon';
@@ -57,6 +58,9 @@ import GroupIcon from './GroupIcon';
 import HealthKitIcon from './HealthKitIcon';
 import HelpSupportIcon from './HelpIcon';
 import Home from './Home';
+import HourGlassIcon from './HourGlassIcon';
+import InProgress from './inProgress';
+import inReviewIcon from './inReviewIcon';
 import Insights from './Insights';
 import InsightsCardDots from './InsightsCardDots';
 import InvestigationIcon from './InvestigationIcon';
@@ -152,6 +156,7 @@ export {
   ChevronRight,
   CircleChecked,
   CircledCross,
+  CircleTick,
   CircledTickBold,
   CircleEmpty,
   CircleRemove,
@@ -161,7 +166,7 @@ export {
   Conforme,
   ConformeSmall,
   Copy,
-  CrossIcon,
+  CrossIcon,  
   DangerIcon,
   Dashboard,
   DetailIcon,
@@ -180,6 +185,9 @@ export {
   GroupIcon,
   HealthKitIcon,
   Home,
+  HourGlassIcon,
+  InProgress,
+  inReviewIcon,
   Insights,
   InsightsCardDots,
   InvestigationIcon,
