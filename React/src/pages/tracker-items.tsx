@@ -8,6 +8,7 @@ import { capitalize, uniqBy } from 'lodash';
 import pluralize from 'pluralize';
 
 import ChangeViewButton from '../components/ChangeViewButton';
+import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
@@ -20,6 +21,7 @@ import useDevice from '../hooks/useDevice';
 import useSort from '../hooks/useSort';
 import { IResponse } from '../interfaces/IResponse';
 import { TViewMode } from '../interfaces/TViewMode';
+import updateLocalStorageFilter from '../utils/filterStorage';
 import { removeEmptyArraysAndObjects } from '../utils/helpers';
 
 const InfiniteScrollComponent = InfiniteScroll as unknown as React.FC<any>;
@@ -110,6 +112,31 @@ function TrackerItems() {
   const [parsedFilters, setParsedFilters] = useState<Record<string, any>>({});
   const [localStorageChecked, setLocalStorageChecked] = useState(false);
   const [hasStoredFilters, setHasStoredFilters] = useState(false);
+  const [assignedToMe, setAssignedToMe] = useState(false);
+
+  const handleAssignedToMeToggle = (isChecked: boolean) => {
+    setAssignedToMe(isChecked);
+
+    if (isChecked && user && module) {
+      // When checked, set the current user as responsible
+      const filterValue = {
+        responsibleIds: [user.userId],
+        accountableIds: [],
+        contributorIds: [],
+        followerIds: [],
+      };
+      updateLocalStorageFilter(module._id, 'usersIds', 'User', filterValue, user._id, setFilters);
+    } else if (!isChecked && user && module) {
+      // When unchecked, clear the responsible filter
+      const filterValue = {
+        responsibleIds: [],
+        accountableIds: [],
+        contributorIds: [],
+        followerIds: [],
+      };
+      updateLocalStorageFilter(module._id, 'usersIds', 'User', filterValue, user._id, setFilters);
+    }
+  };
 
   const { sortOrder, sortType, setSortType, setSortOrder } = useSort([], 'dueDate');
   const sortBy = [
@@ -185,6 +212,10 @@ function TrackerItems() {
           setResponseFiltersValue((curr) => ({ ...curr, ...validFilters }));
           setFilters(Object.fromEntries(Object.entries(validFilters).map(([k, v]) => [k, v.value])));
           setHasStoredFilters(true);
+
+          // Check if assignedToMe filter is active from stored filters
+          const usersFilter = validFilters.usersIds?.value;
+          if (usersFilter?.responsibleIds?.length === 1 && usersFilter.responsibleIds[0] === user?.userId) setAssignedToMe(true);
         }
       } catch (err) {
         console.error('Failed to parse stored filters', err);
@@ -200,12 +231,33 @@ function TrackerItems() {
       (acc, [rawKey, val]) => {
         if (!val?.value) return acc;
         const key = rawKey === 'Status' ? 'status' : rawKey;
-        acc[key] = val.value;
+
+        // Special handling for usersIds filter with nested structure
+        if (key === 'usersIds' && typeof val.value === 'object' && !Array.isArray(val.value)) {
+          // Check if any of the nested arrays have values
+          const hasValues = Object.values(val.value).some((arr: any) => Array.isArray(arr) && arr.length > 0);
+          if (hasValues) acc[key] = val.value;
+        } else acc[key] = val.value;
+
         return acc;
       },
       {} as Record<string, any>,
     );
     setParsedFilters(parsed);
+
+    // Safely check for responsibleIds or userIds in usersIds filter
+    const usersFilter = filtersValues?.usersIds?.value;
+    let assignedToMe = false;
+    if (usersFilter) {
+      if (Array.isArray((usersFilter as any).responsibleIds)) {
+        const ids = (usersFilter as any).responsibleIds;
+        if (ids.length === 1 && ids[0] === user?.userId) assignedToMe = true;
+      } else if (Array.isArray((usersFilter as any).userIds)) {
+        const ids = (usersFilter as any).userIds;
+        if (ids.length === 1 && ids[0] === user?.userId) assignedToMe = true;
+      }
+    }
+    setAssignedToMe(assignedToMe);
   }, [filtersValues]);
 
   // Load function
@@ -249,6 +301,20 @@ function TrackerItems() {
     setResponsesStatusesCounts(counts);
   }, [totalCompliantResponses?.responses?.total, totalComingUpResponses?.responses?.total, totalNonCompliantResponses?.responses?.total]);
 
+  // Sync assignedToMe state with current filter state
+  useEffect(() => {
+    const currentUsersFilter = filtersValues.usersIds?.value;
+    let ids: string[] | undefined;
+
+    if (currentUsersFilter && 'responsibleIds' in currentUsersFilter && Array.isArray(currentUsersFilter.responsibleIds))
+      ids = currentUsersFilter.responsibleIds;
+    else if (currentUsersFilter && 'userIds' in currentUsersFilter && Array.isArray(currentUsersFilter.userIds))
+      ids = currentUsersFilter.userIds;
+
+    if (Array.isArray(ids) && ids.length === 1 && ids[0] === user?.userId) setAssignedToMe(true);
+    else setAssignedToMe(false);
+  }, [filtersValues.usersIds, user?.userId]);
+
   return (
     <>
       <Header
@@ -257,6 +323,7 @@ function TrackerItems() {
         mobileBreadcrumbs={[pluralize(t('tracker item'))]}
         pageLabel={capitalize(t('tracker item'))}
       >
+        <AssignedToMeFilter data-id="001205" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
         {device !== 'mobile' && (
           <>
             <ChangeViewButton data-id="000289" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
@@ -299,9 +366,8 @@ function TrackerItems() {
                   templateColumns={['1fr', 'repeat(auto-fit, minmax(240px, 1fr))', 'repeat(auto-fit, minmax(240px, 1fr))']}
                 >
                   {(() => {
-                    if (responses.length) 
-                      return responses.map((r) => <TrackerItemSquare data-id="000296" key={r._id} response={r} />);
-                    
+                    if (responses.length) return responses.map((r) => <TrackerItemSquare data-id="000296" key={r._id} response={r} />);
+
                     if (!loading) {
                       return (
                         <Flex data-id="000297" fontSize="18px" fontStyle="italic" h="full" w="full">
