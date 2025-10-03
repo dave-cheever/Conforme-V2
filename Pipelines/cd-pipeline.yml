@@ -110,7 +110,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: 'Archive Express build'
       inputs:
-        rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/express/stage'
+        rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/express/stage/build'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/express/express-app.zip'
