@@ -1,10 +1,10 @@
-import { Avatar, Box, Flex, Skeleton, Text, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, Text, } from '@chakra-ui/react';
 import { format, isBefore } from 'date-fns';
 import { capitalize } from 'lodash';
 
 import { LocationIcon } from '../../icons';
 import { IAction } from '../../interfaces/IAction';
-import sanitizeDisplayName from '../../utils/sanitizeDisplayName';
+import AvatarCell from '../Table/Cells/AvatarCell';
 
 function ActionsListItem({ action, editAction, index }: { action: IAction; editAction: (action: IAction) => void; index: number }) {
   const isOverdue = action.dueDate && action.status === 'open' && isBefore(new Date(action.dueDate), new Date());
@@ -91,72 +91,15 @@ function ActionsListItem({ action, editAction, index }: { action: IAction; editA
         </Flex>
         <Box data-id="000376" w="18%">
           <Skeleton data-id="000377" isLoaded={!!action} rounded="full">
-            {action.assignee ? (
-              <Tooltip data-id="030925-2ad029" label={action.assignee?.displayName}>
-                <Flex alignItems="center" data-id="001080">
-                  <Avatar
-                    data-id="030925-325f0a"
-                    name={sanitizeDisplayName(action?.assignee?.displayName)}
-                    size="xs"
-                    src={action.assignee?.imgUrl}
-                  />
-                  <Text
-                    color="auditsList.fontColor"
-                    data-id="030925-2282143"
-                    fontSize="14px"
-                    fontWeight="500"
-                    lineHeight="17px"
-                    opacity="1"
-                    overflow="hidden"
-                    pl={2}
-                    textOverflow="ellipsis"
-                    w="full"
-                    whiteSpace="nowrap"
-                  >
-                    {action?.assignee?.displayName}
-                  </Text>
-                </Flex>
-              </Tooltip>
-            ) : (
-              <Flex data-id="000380" fontSize="14px" fontStyle="italic" fontWeight="500">
-                Unassigned
-              </Flex>
-            )}
+            <AvatarCell data-id="001207" users={action.assignee ? [action.assignee] : []} />
           </Skeleton>
         </Box>
         <Box data-id="000381" w="10%">
           <Skeleton data-id="000382" isLoaded={!!action} rounded="full">
-            {action.creator ? (
-              <Tooltip data-id="030925-e23b81" label={action.creator?.displayName}>
-                <Flex alignItems="center" data-id="001081">
-                  <Avatar
-                    data-id="030925-445435"
-                    name={sanitizeDisplayName(action?.creator?.displayName)}
-                    size="xs"
-                    src={action.creator?.imgUrl}
-                  />
-                  <Text
-                    color="auditsList.fontColor"
-                    data-id="030925-2192143"
-                    fontSize="14px"
-                    fontWeight="500"
-                    lineHeight="17px"
-                    opacity="1"
-                    overflow="hidden"
-                    pl={2}
-                    textOverflow="ellipsis"
-                    w="full"
-                    whiteSpace="nowrap"
-                  >
-                    {action?.creator?.displayName}
-                  </Text>
-                </Flex>
-              </Tooltip>
-            ) : (
-              <Flex data-id="000385" fontSize="14px" fontStyle="italic" fontWeight="500">
-                -
-              </Flex>
-            )}
+            <AvatarCell
+              data-id="001208"
+              noDataText="-"
+              users={action.creator ? [action.creator] : []} />
           </Skeleton>
         </Box>
         <Box data-id="000386" w="14%">

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Avatar, Flex, Spacer, Text, Tooltip } from '@chakra-ui/react';
+import { Flex, Spacer, Text, Tooltip } from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
@@ -8,6 +8,7 @@ import useDevice from '../hooks/useDevice';
 import useNavigate from '../hooks/useNavigate';
 import { ArrowCount } from '../icons';
 import { ILocation } from '../interfaces/ILocation';
+import AvatarCell from './Table/Cells/AvatarCell';
 
 function LocationListItem({ location, openLocationModal, index }: { location: ILocation; openLocationModal: any; index: number }) {
   const device = useDevice();
@@ -45,21 +46,7 @@ function LocationListItem({ location, openLocationModal, index }: { location: IL
               {location.notes || '-'}
             </Text>
           </Flex>
-          <Flex data-id="000331" w="full">
-            <Avatar
-              bg="userMenu.avatar.bg"
-              color="userMenu.avatar.color"
-              data-id="000332"
-              h="24px"
-              mr="10px"
-              name={location?.owner?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
-              rounded="full"
-              size="sm"
-              src={location?.owner?.imgUrl}
-              w="24px"
-            />
-            {location?.owner?.displayName}
-          </Flex>
+          <AvatarCell data-id="001204" users={location.owner ? [location.owner] : []} />
         </>
       )}
       <Spacer data-id="000333" display={['block', 'none']} />

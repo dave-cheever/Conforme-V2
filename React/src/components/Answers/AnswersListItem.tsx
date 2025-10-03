@@ -1,10 +1,11 @@
-import { Avatar, Box, Flex, IconButton, Skeleton, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Skeleton, Tooltip, useDisclosure } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { capitalize } from 'lodash';
 
 import { Trashcan } from '../../icons';
 import { IAnswer } from '../../interfaces/IAnswer';
 import Can from '../can';
+import AvatarCell from '../Table/Cells/AvatarCell';
 import AnswerDeleteModal from './AnswerDeleteModal';
 
 function AnswersListItem({
@@ -167,30 +168,7 @@ function AnswersListItem({
           <Tooltip data-id="000091" label={answer.addedBy?.displayName}>
             <Box data-id="000092" w="22%">
               <Skeleton data-id="000093" isLoaded={!!answer} pr={1} rounded="full">
-                {answer.addedBy ? (
-                  <Flex align="center" data-id="000094" direction="row">
-                    <Avatar data-id="000095" name={answer?.addedBy?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={answer.addedBy?.imgUrl} />
-                    <Text
-                      color="auditsList.fontColor"
-                      data-id="000096"
-                      fontSize="14px"
-                      fontWeight="500"
-                      lineHeight="17px"
-                      opacity="1"
-                      overflow="hidden"
-                      pl={3}
-                      textOverflow="ellipsis"
-                      w="full"
-                      whiteSpace="nowrap"
-                    >
-                      {answer.addedBy?.displayName}
-                    </Text>
-                  </Flex>
-                ) : (
-                  <Flex data-id="000097" fontSize="14px" fontStyle="italic" fontWeight="500">
-                    Unassigned
-                  </Flex>
-                )}
+                <AvatarCell data-id="001205" users={answer.addedBy ? [answer.addedBy] : []} />
               </Skeleton>
             </Box>
           </Tooltip>

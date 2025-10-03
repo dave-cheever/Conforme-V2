@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-import { Avatar, Box, Flex, Select, Text, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Select, Text, Tooltip } from '@chakra-ui/react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { t } from 'i18next';
 import { upperFirst } from 'lodash';
@@ -13,6 +13,7 @@ import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElem
 import { isPermitted } from '../../components/can';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import AvatarCell from '../../components/Table/Cells/AvatarCell';
 import UserAuditsCount from '../../components/UserAuditsCount';
 import UserResponseCount from '../../components/UserResponseCount';
 import { useAppContext } from '../../contexts/AppProvider';
@@ -393,23 +394,7 @@ function Users() {
         w="full"
       >
         <Flex data-id="000636" w={['60%', '16%']}>
-          <Avatar
-            borderColor="brand.active"
-            data-id="000637"
-            mr={3}
-            name={
-              (user.firstName && user.lastName
-                ? `${user.firstName} ${user.lastName}`
-                : user.displayName
-              )?.replace(/\s*\(.*?\)\s*/g, '')
-            }
-            rounded="full"
-            size="sm"
-            src={user.imgUrl}
-          />
-          <Text data-id="000638" lineHeight="32px" noOfLines={1} pr={3} textOverflow="ellipsis">
-            {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : `${user.displayName}`}
-          </Text>
+        <AvatarCell data-id="001217" users={user ? [user] : []} />
         </Flex>
         {device !== 'mobile' && (
           <>

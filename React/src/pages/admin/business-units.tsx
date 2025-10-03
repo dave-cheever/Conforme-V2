@@ -15,6 +15,7 @@ import PeoplePicker from '../../components/Forms/PeoplePicker';
 import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import AvatarCell from '../../components/Table/Cells/AvatarCell';
 import { useAdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
@@ -276,7 +277,7 @@ function BusinessUnits() {
         </Flex>
         {device !== 'mobile' && (
           <Box data-id="000396" w={['30%', '30%']}>
-            {businessUnit?.owner?.displayName}
+            <AvatarCell data-id="001209" users={businessUnit.owner ? [businessUnit.owner] : []} />
           </Box>
         )}
         {module?.type === 'tracker' && (

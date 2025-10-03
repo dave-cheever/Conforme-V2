@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, Skeleton, Stack, Text } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, Stack, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import { useAppContext } from '../../contexts/AppProvider';
@@ -7,6 +7,7 @@ import { auditWalkTypes } from '../../hooks/useFiltersUtils';
 import useNavigate from '../../hooks/useNavigate';
 // import { LocationIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
+import AvatarCell from '../Table/Cells/AvatarCell';
 
 function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
   const { navigateTo } = useNavigate();
@@ -85,30 +86,10 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
         )}
         <Box data-id="000228" pr={2} w="20%">
           <Skeleton data-id="000229" isLoaded={!!audit} rounded="full">
-            {audit.auditor ? (
-              <Flex align="center" data-id="000230" direction="row">
-                <Avatar data-id="000231" name={audit.auditor?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} size="xs" src={audit.auditor?.imgUrl} />
-                <Text
-                  color="auditsList.fontColor"
-                  data-id="000232"
-                  fontSize="14px"
-                  fontWeight="500"
-                  lineHeight="17px"
-                  opacity="1"
-                  overflow="hidden"
-                  pl={3}
-                  textOverflow="ellipsis"
-                  w="full"
-                  whiteSpace="nowrap"
-                >
-                  {audit.auditor?.displayName}
-                </Text>
-              </Flex>
-            ) : (
-              <Flex data-id="000233" fontSize="14px" fontWeight="500">
-                Unassigned
-              </Flex>
-            )}
+            <AvatarCell
+              data-id="001206"
+              users={audit.auditor ? [audit.auditor ] : []}
+              userType="auditors" />
           </Skeleton>
         </Box>
         <Flex data-id="000234" flexDir="column" w="15%">
