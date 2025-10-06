@@ -19,11 +19,12 @@ import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import useSort from '../hooks/useSort';
-import { IResponse } from '../interfaces/IResponse';
 import { TViewMode } from '../interfaces/TViewMode';
 import updateLocalStorageFilter from '../utils/filterStorage';
 import { removeEmptyArraysAndObjects } from '../utils/helpers';
-
+import { PanelView, trackerPanelConfig } from '../components/PanelView';
+import useNavigate from '../hooks/useNavigate';
+import { IResponse } from '../interfaces/IResponse';
 const InfiniteScrollComponent = InfiniteScroll as unknown as React.FC<any>;
 
 const GET_RESPONSES_TOTALS = gql`
@@ -96,7 +97,6 @@ const GET_RESPONSES = gql`
 function TrackerItems() {
   const { module, user } = useAppContext();
   const device = useDevice();
-
   const {
     filtersValues,
     setUsedFilters,
@@ -139,6 +139,7 @@ function TrackerItems() {
   };
 
   const { sortOrder, sortType, setSortType, setSortOrder } = useSort([], 'dueDate');
+  const { navigateTo } = useNavigate();
   const sortBy = [
     { label: 'Item name', key: 'trackerItem.name' },
     { label: 'Due for renewal', key: 'dueDate' },
@@ -326,7 +327,7 @@ function TrackerItems() {
         <AssignedToMeFilter data-id="001205" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
         {device !== 'mobile' && (
           <>
-            <ChangeViewButton data-id="000289" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
+            <ChangeViewButton data-id="000289" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group', 'panel']} />
             <Divider borderColor="gray.300" data-id="000290" height="30px" mt={1} mx={4} orientation="vertical" />
             <SortButton
               data-id="000291"
@@ -394,9 +395,26 @@ function TrackerItems() {
                 total={total}
               />
             )}
-            {viewMode === 'group' && (
+            {viewMode === 'group' ? (
               <TrackerItemsGroup data-id="000300" loading={loading} loadResponses={loadResponses} responses={responses} total={total} />
-            )}
+            ) :
+            viewMode === 'panel' && (
+              <PanelView
+              data-id='000207'
+              items={responses}
+              config={{
+                ...trackerPanelConfig,
+                actions: {
+                  ...trackerPanelConfig.actions,
+                  primary: {
+                    ...trackerPanelConfig.actions.primary!,
+                    onClick: (response: IResponse) => navigateTo(`/responses/${response._id}`)
+                  }
+                }
+              }}
+            />
+            )
+            }
           </>
         )}
       </Flex>

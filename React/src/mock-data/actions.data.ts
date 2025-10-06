@@ -1,0 +1,50 @@
+export const actionsData = [
+  {
+    module_type: "Incident",
+    module_internal_id: "INC-02102025-0629-001",
+    module_internal_type: "Environmental - Hazard",
+    hospital_name: "Riverside General Hospital",
+    action_id: "ACT-20251002-001",
+    action_title: "Double‑Check Protocol Refresher",
+    status: "In Progress",
+    description: "Develop and deliver a mandatory refresher session for all nursing staff on the double‑check protocol for high‑risk medications, including role‑play scenarios and assessments.",
+    action_type: "Training",
+    action_assigned_to: "Ricky Johnson",
+    action_creation_date_timestamp: new Date("2025-10-02T14:35:00Z"),
+    action_end_date_timestamp: new Date("2025-10-10T14:35:00Z"),
+    action_SLA: 30,
+    action_severity: "high"
+  },
+  {
+    module_type: "Incident",
+    module_internal_id: "INC-02102025-0629-002",
+    module_internal_type: "Environmental - Hazard",
+    hospital_name: "Fernhill Clinic",
+    action_id: "ACT-20251002-002",
+    action_title: "E‑MAR Guide Enhancement",
+    status: "In Progress",
+    description: "Revise the E‑MAR user guide to emphasize the transcription step; add annotated screenshots, step‑by‑step checklists, and distribute both digital and printed copies to every nursing station.",
+    action_type: "Documentation",
+    action_assigned_to: "Roy Timberman",
+    action_creation_date_timestamp: new Date("2025-10-02T14:35:00Z"),
+    action_end_date_timestamp: new Date("2025-10-10T14:35:00Z"),
+    action_SLA: 5,
+    action_severity: "medium"
+  },
+  {
+    module_type: "Record",
+    module_internal_id: "COM-2025-001",
+    module_internal_type: "Safeguarding & Dignity",
+    hospital_name: "Fernhill Clinic",
+    action_id: "ACT-20251002-003",
+    action_title: "Develop eMAR Interface Training Module",
+    status: "In Progress",
+    description: "Design and implement a comprehensive training program for all clinical staff that covers the use of the updated eMAR interface. The module should include an online self-paced segment with interactive simulations, a knowledge-check quiz, and an in-person hands-on session led by the Nurse Educator. Key topics include locating patient profiles, entering dosages correctly, performing the double-check, and documenting exceptions. Training completion must be tracked, with automatic reminders sent to staff who are overdue.",
+    action_type: "Process Change",
+    action_assigned_to: "Janny Johnson",
+    action_creation_date_timestamp: new Date("2025-10-02T14:35:00Z"),
+    action_end_date_timestamp: new Date("2025-10-10T14:35:00Z"),
+    action_SLA: 50,
+    action_severity: "low"
+  }
+];

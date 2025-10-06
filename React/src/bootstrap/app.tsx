@@ -11,9 +11,9 @@ import useAuth from '../hooks/useAuth';
 import useInit from '../hooks/useInit';
 import useNavigate from '../hooks/useNavigate';
 import useRoutes from '../hooks/useRoutes';
-import { runtimeEnv } from '../utils/runtime-env';
 import './styles.css';
 import getTheme from './theme';
+import { runtimeEnv } from '../utils/runtime-env';
 
 function App() {
   const { user, organizationConfig, module } = useAppContext();
@@ -28,7 +28,7 @@ function App() {
   const domainParts = clientDomain.split('.');
   const topLevelDomain = domainParts.length >= 2 ? domainParts.slice(-2).join('.') : clientDomain;
   document.cookie = `clientUrl=${clientUrl}; path=/; SameSite=None; Secure; Domain=.${topLevelDomain}`;
-
+ 
   useEffect(() => {
     const isFromLogin = location.pathname === '/login';
     if (user && isFromLogin && Array.isArray(user.defaultPage) && user.defaultPage.length > 0) {

@@ -2,13 +2,11 @@ import { Box, Flex, Skeleton, Stack, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 
 import { useAppContext } from '../../contexts/AppProvider';
-import { auditStatuses } from '../../hooks/useAuditUtils';
 import { auditWalkTypes } from '../../hooks/useFiltersUtils';
 import useNavigate from '../../hooks/useNavigate';
-// import { LocationIcon } from '../../icons';
 import { IAudit } from '../../interfaces/IAudit';
-import StatusCell from '../Table/Cells/StatusCell';
 import AvatarCell from '../Table/Cells/AvatarCell';
+import StatusCell from '../Table/Cells/StatusCell';
 
 function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
   const { navigateTo } = useNavigate();

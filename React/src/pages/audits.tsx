@@ -22,10 +22,12 @@ import { useAppContext } from '../contexts/AppProvider';
 import AuditModalProvider, { useAuditModalContext } from '../contexts/AuditModalProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
+import useNavigate from '../hooks/useNavigate';
 import useSort from '../hooks/useSort';
 import { ExportIcon } from '../icons';
 import { IAudit } from '../interfaces/IAudit';
 import { TViewMode } from '../interfaces/TViewMode';
+import { PanelView, auditPanelConfig } from '../components/PanelView';
 import updateLocalStorageFilter from '../utils/filterStorage';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
@@ -108,6 +110,7 @@ function Audits() {
     usedFilters,
   } = useFiltersContext();
   const device = useDevice();
+  const { navigateTo } = useNavigate();
   const { user, module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { audit, reset, trigger } = useAuditModalContext();
@@ -149,6 +152,8 @@ function Audits() {
     filters.push('status', 'locationsIds', 'businessUnitsIds', 'usersIds', 'createdDate', 'dueDate', 'showArchived');
     return filters;
   }, [module]);
+
+  console.log('Audits: ', data);
 
   useEffect(() => {
     if (!user || usedFilters.length === 0) return;
@@ -239,11 +244,11 @@ function Audits() {
 
     // Safely check for auditorsIds array and userId match
     const auditorsIds = (filtersValues?.usersIds?.value as any)?.auditorsIds;
-    if (Array.isArray(auditorsIds) && auditorsIds.length === 1 && auditorsIds[0] === user?.userId) 
+    if (Array.isArray(auditorsIds) && auditorsIds.length === 1 && auditorsIds[0] === user?.userId)
       setAssignedToMe(true);
-     else 
+    else
       setAssignedToMe(false);
-    
+
   }, [filtersValues, user?.userId]);
 
   useEffect(() => {
@@ -331,6 +336,36 @@ function Audits() {
     return renderEmptyState('000202');
   };
 
+  const renderPanelView = () => {
+    return (
+      sortedAudits?.length > 0 ?
+        <PanelView
+          data-id='000207'
+          items={sortedAudits}
+          config={{
+            ...auditPanelConfig,
+            actions: {
+              ...auditPanelConfig.actions,
+              primary: {
+                ...auditPanelConfig.actions.primary!,
+                onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`)
+              }
+            }
+          }}
+        />
+        :
+
+        <Flex
+          data-id="000202"
+          alignItems="center"
+          fontSize="18px"
+          fontStyle="italic"
+          h="200px"
+          justifyContent="center"
+          w="full">No audits found. Try adjusting the filters.</Flex>
+    )
+  };
+
   // Helper function to render group view
   const renderGroupView = () => {
     if (sortedAudits.length > 0) return <AuditsGroup audits={sortedAudits} data-id="000203" />;
@@ -345,6 +380,8 @@ function Audits() {
     if (viewMode === 'grid') return renderGridView();
 
     if (viewMode === 'list') return renderListView();
+
+    if (viewMode === 'panel') return renderPanelView();
 
     return renderGroupView();
   };
@@ -364,7 +401,7 @@ function Audits() {
       </Modal>
       <Header breadcrumbs={[pluralize(t('audit'))]} data-id="000189" mobileBreadcrumbs={[pluralize(t('audit'))]}>
         <AssignedToMeFilter data-id="001204" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
-        <ChangeViewButton data-id="000190" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group']} />
+        <ChangeViewButton data-id="000190" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group', 'panel']} />
 
         {device !== 'mobile' && (
           <CSVLinkComponent data={csvData} data-id="000191" filename="audits.csv" headers={csvHeaders} target="_blank">

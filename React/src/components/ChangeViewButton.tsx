@@ -6,6 +6,7 @@ import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
 import { GridIcon, GroupIcon, ListIcon } from '../icons';
 import { TViewMode } from '../interfaces/TViewMode';
+import PanelIcon from '../icons/PanelIcon';
 
 function ChangeViewButton({
   viewMode,
@@ -41,6 +42,7 @@ function ChangeViewButton({
       grid: GridIcon,
       list: ListIcon,
       group: GroupIcon,
+      panel: PanelIcon
     }),
     [],
   );

@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 // ---------- Global knobs the mocks read ----------
@@ -183,7 +184,11 @@ vi.mock('../../utils/filterStorage', () => ({
 import AuditsWithContext from '../../pages/audits';
 /* eslint-enable import/first */
 
-const renderPage = () => render(<AuditsWithContext data-id="001365" />);
+const renderPage = () => render(
+  <BrowserRouter data-id="001515">
+    <AuditsWithContext data-id="001365" />
+  </BrowserRouter>
+);
 
 // ---------- Reset shared state ----------
 beforeEach(() => {

@@ -124,6 +124,12 @@ import UploadedCross from './UploadedCross';
 import UploadedTick from './UploadedTick';
 import UploadIcon from './UploadIcon';
 import WarningIcon from './WarningIcon';
+export { default as ActionTypeIcon } from './ActionTypeIcon';
+export { default as AuditCompleteIcon } from './AuditCompleteIcon';
+export { default as AuditUpcomingIcon } from './AuditUpcomingIcon';
+export { default as IncidentIcon } from './IncidentIcon';
+export { default as RecordIcon } from './RecordIcon';
+export { default as AuditMissedIcon } from './AuditMissedIcon';
 
 export {
   Accidents,

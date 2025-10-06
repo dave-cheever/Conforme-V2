@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { BrowserRouter } from 'react-router-dom';
 import { describe, expect, test, vi, beforeEach } from 'vitest';
 
 // ---- MUTABLE fixtures the hook-mocks will read
@@ -139,7 +140,11 @@ vi.mock('../../utils/filterStorage', () => ({
 // ---- Unit under test
 import TrackerItems from '../../pages/tracker-items';
 
-const renderPage = () => render(<TrackerItems data-id="001348" />);
+const renderPage = () => render(
+  <BrowserRouter data-id="001516">
+    <TrackerItems data-id="001348" />
+  </BrowserRouter>
+);
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -192,18 +197,19 @@ describe('TrackerItems assignedToMe & usersIds logic', () => {
     expect(screen.getByTestId('assigned-state').textContent).toBe('false');
 
     // Last call should be the "clear" payload
-    const last = updateLocalStorageFilterSpy.mock.calls.at(-1)!;
-    expect(last[0]).toBe(TEST_MODULE._id);
-    expect(last[1]).toBe('usersIds');
-    expect(last[2]).toBe('User');
-    expect(last[3]).toEqual({
+    const last = updateLocalStorageFilterSpy.mock.calls.at(-1);
+    expect(last).toBeDefined();
+    expect(last![0]).toBe(TEST_MODULE._id);
+    expect(last![1]).toBe('usersIds');
+    expect(last![2]).toBe('User');
+    expect(last![3]).toEqual({
       responsibleIds: [],
       accountableIds: [],
       contributorIds: [],
       followerIds: [],
     });
-    expect(last[4]).toBe(TEST_USER._id);
-    expect(last[5]).toBe(mockSetFilters);
+    expect(last![4]).toBe(TEST_USER._id);
+    expect(last![5]).toBe(mockSetFilters);
   });
 
   test('effect parses filtersValues and sets assignedToMe=true when usersIds.responsibleIds has current user', () => {
