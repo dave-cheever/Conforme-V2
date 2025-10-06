@@ -1,16 +1,13 @@
 import { createIcon } from '@chakra-ui/icons';
 
 const ArrowDownIcon = createIcon({
-  displayName: 'Arrow down',
-  viewBox: '0 0 14 8',
+  displayName: 'ArrowDownIcon',
+  viewBox: '0 0 14 11',
   path: (
     <path
-      d="M13.2227 1.27777L7.29357 7.20686C7.25509 7.24539 7.2094 7.27596 7.1591 7.29681C7.1088 7.31767 7.05489 7.3284 7.00043 7.3284C6.94598 7.3284 6.89207 7.31767 6.84177 7.29681C6.79147 7.27596 6.74577 7.24539 6.7073 7.20686L0.778212 1.27777"
-      data-id="000057"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round" />
+      data-id="001204"
+      d="M2.9987 10.8337L5.66536 8.16699H3.66536V0.166992H2.33203V8.16699H0.332031L2.9987 10.8337ZM6.33203 2.83366H12.332V4.16699H6.33203V2.83366ZM6.33203 5.50033H10.9987V6.83366H6.33203V5.50033ZM6.33203 0.166992H13.6654V1.50033H6.33203V0.166992ZM6.33203 8.16699H9.66537V9.50033H6.33203V8.16699Z"
+      fill="currentColor" />
   ),
 });
 

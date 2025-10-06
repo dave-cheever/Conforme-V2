@@ -1,5 +1,6 @@
-import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
 import { Flex, Text, Tooltip } from '@chakra-ui/react';
+
+import { ArrowDownIcon, ArrowUpIcon } from '../../icons';
 
 function AdminTableHeaderElement({
   hideSortIcon,
@@ -21,38 +22,30 @@ function AdminTableHeaderElement({
   tooltip?: string;
 }) {
   return (
-    <Flex
-      alignItems="center"
-      cursor="pointer"
-      data-id="000338"
-      ml={ml || '0'}
-      onClick={onClick}
-      w={w}>
-      <Tooltip
-        data-id="000339"
-        hasArrow
-        isDisabled={tooltip === ''}
-        label={tooltip}>
-        <Text color="adminTableHeaderElement.fontColor" data-id="000340" fontSize={['12px', '12.4px']} fontWeight="600">{label}</Text>
-        </Tooltip>
+    <Flex alignItems="center" data-id="000338" ml={ml || '0'} w={w}>
+      <Tooltip data-id="000339" hasArrow isDisabled={tooltip === ''} label={tooltip}>
+        <Text color="adminTableHeaderElement.fontColor" data-id="000340" fontSize={['12px', '12.4px']} fontWeight="600">
+          {label}
+        </Text>
+      </Tooltip>
       {!hideSortIcon && (
-        <>
+        <Flex data-id="001206" cursor="pointer" onClick={onClick}>
           {sortOrder === 'desc' ? (
             <ArrowDownIcon
               color={showSortingIcon ? 'adminTableHeaderElement.colorEnabled' : 'adminTableHeaderElement.colorDisabled'}
               data-id="000341"
               ml="3px"
-              // Fade if undefined
-              opacity={sortOrder ? 1 : 0.3} />
+              opacity={sortOrder ? 1 : 0.3}
+            />
           ) : (
             <ArrowUpIcon
               color={showSortingIcon ? 'adminTableHeaderElement.colorEnabled' : 'adminTableHeaderElement.colorDisabled'}
               data-id="000342"
               ml="3px"
-              // Fade if undefined
-              opacity={sortOrder ? 1 : 0.3} />
+              opacity={sortOrder ? 1 : 0.3}
+            />
           )}
-        </>
+        </Flex>
       )}
     </Flex>
   );

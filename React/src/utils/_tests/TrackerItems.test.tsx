@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi, beforeEach } from 'vitest';
@@ -80,14 +79,17 @@ vi.mock('../../components/Filters/AssignedToMeFilter', () => ({
   __esModule: true,
   default: ({ isChecked, onToggle }: { isChecked: boolean; onToggle: (v: boolean) => void }) => (
     <div data-id="001335">
-      <span data-id="001336" data-testid="assigned-state">{String(isChecked)}</span>
+      <span data-id="001336" data-testid="assigned-state">
+        {String(isChecked)}
+      </span>
       <button
         data-id="001337"
         data-testid="toggle-on"
         onClick={() => {
           assignedToToggleSpy('on');
           onToggle(true);
-        }}>
+        }}
+      >
         on
       </button>
       <button
@@ -96,7 +98,8 @@ vi.mock('../../components/Filters/AssignedToMeFilter', () => ({
         onClick={() => {
           assignedToToggleSpy('off');
           onToggle(false);
-        }}>
+        }}
+      >
         off
       </button>
     </div>
@@ -118,7 +121,13 @@ vi.mock('../../components/TrackerItem/TrackerItemsList', () => ({ default: () =>
 vi.mock('../../components/TrackerItem/TrackerItemSquare', () => ({ default: () => <div data-id="001344" data-testid="square" /> }));
 vi.mock('../../components/TrackerItem/TrackerItemsGroup', () => ({ default: () => <div data-id="001345" data-testid="group" /> }));
 vi.mock('../../components/Loader', () => ({ default: () => <div data-id="001346" data-testid="loader" /> }));
-vi.mock('react-infinite-scroller', () => ({ default: ({ children }: any) => <div data-id="001347" data-testid="infinite">{children}</div> }));
+vi.mock('react-infinite-scroller', () => ({
+  default: ({ children }: any) => (
+    <div data-id="001347" data-testid="infinite">
+      {children}
+    </div>
+  ),
+}));
 
 // Critically: spy on updateLocalStorageFilter so we can assert args
 const updateLocalStorageFilterSpy = vi.fn();
