@@ -6,8 +6,10 @@ import Admin from './Admin';
 import AreaInfoIcon from './AreaInfoIcon';
 import ArrowCount from './ArrowCount';
 import ArrowDownIcon from './ArrowDownIcon';
+export { default as ArrowDownSmall } from './ArrowDownSmall';
 import ArrowRight from './ArrowRight';
 import ArrowUpIcon from './ArrowUpIcon';
+export { default as ArrowUpSmall } from './ArrowUpSmall';
 import Assets from './Assets';
 import AssetsIcon from './AssetsIcon';
 import Asterisk from './Asterisk';
@@ -52,6 +54,8 @@ import ExportIcon from './ExportIcon';
 import Eye from './Eye';
 import FileRightIcon from './FileRightIcon';
 import Filter from './Filter';
+export { default as FilterPresetsIcon } from './FilterPresetIcon';
+export { default as FilterWhite } from './FilterWhite';
 import FollowIcon from './FollowIcon';
 import GridIcon from './GridIcon';
 import GroupIcon from './GroupIcon';
@@ -173,7 +177,7 @@ export {
   Conforme,
   ConformeSmall,
   Copy,
-  CrossIcon,  
+  CrossIcon,
   DangerIcon,
   Dashboard,
   DetailIcon,

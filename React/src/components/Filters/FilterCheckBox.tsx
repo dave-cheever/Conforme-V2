@@ -1,37 +1,31 @@
 import { Checkbox, Text } from '@chakra-ui/react';
 
-import { TickIcon } from '../../icons';
-
 function FilterCheckBox({ value, label }) {
   return (
     <Checkbox
-      colorScheme="purpleHeart"
       css={{
         '.chakra-checkbox__control': {
           borderRadius: '50%',
-          width: '20px',
-          height: '20px',
-          background: 'white',
-          borderWidth: '1px',
-          borderColor: '#81819750',
-          paddingTop: '5px',
+          width: '16px',
+          height: '16px',
+          borderWidth: '2px',
+          borderColor: '#A0AEC0', // default gray border
+          background: 'transparent',
+          boxShadow: 'none',
+          transition: 'all 0.2s ease',
+          position: 'relative',
           '&[data-checked]': {
-            background: '#462AC4',
-            borderColor: '#462AC4',
-            '&[data-hover]': {
-              background: '#462AC4',
-              borderColor: '#462AC4',
-            },
+            borderColor: '#005C96',
+            borderWidth: '5px',
+            background: 'transparent',
           },
         },
       }}
       data-id="000143"
-      icon={<TickIcon data-id="000144" stroke="white" />}
-      value={value}>
-      <Text
-        color="filterPanel.checkboxLabelColor"
-        data-id="000145"
-        fontSize="14px">
+      icon={<span data-id="001525" />}
+      value={value}
+    >
+      <Text color="#2D3748" data-id="000145" fontSize="16px" fontWeight="medium" marginLeft="3px">
         {label}
       </Text>
     </Checkbox>
