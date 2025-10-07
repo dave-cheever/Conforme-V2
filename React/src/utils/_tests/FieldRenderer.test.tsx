@@ -12,44 +12,45 @@ import { describe, expect, test, vi } from 'vitest';
 // In a real scenario, you'd want to extract FieldRenderer as a separate component and export it
 
 // Mock icons
-const MockIcon = () => <div data-id="001422" data-testid="mock-icon">Icon</div>;
+// function MockIcon() {
+//   return <div data-id="001422" data-testid="mock-icon">Icon</div>
+// }
 
 describe('FieldRenderer', () => {
-  const TestWrapper = ({ children }: { children: React.ReactNode }) => (
-    <ChakraProvider data-id="001423">{children}</ChakraProvider>
-  );
+  function TestWrapper({ children }: { children: React.ReactNode }) {
+    return <ChakraProvider data-id="001423">{children}</ChakraProvider>;
+  }
 
   describe('Text Field Rendering', () => {
     test('renders text field with value', () => {
       render(
         <TestWrapper data-id="001424">
           <div data-id="001425">Expected text field content here</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('Expected text field content here')).toBeInTheDocument();
     });
 
     test('renders text field with fallback when value is missing', () => {
-            
       render(
         <TestWrapper data-id="001426">
           <div data-id="001427">Expected fallback behavior here</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('Expected fallback behavior here')).toBeInTheDocument();
     });
 
     test('renders text field with icon', () => {
-      
-      
       render(
         <TestWrapper data-id="001428">
-          <div data-id="001429" data-testid="mock-icon">Expected icon to render</div>
-        </TestWrapper>
+          <div data-id="001429" data-testid="mock-icon">
+            Expected icon to render
+          </div>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByTestId('mock-icon')).toBeInTheDocument();
     });
   });
@@ -59,35 +60,30 @@ describe('FieldRenderer', () => {
       render(
         <TestWrapper data-id="001430">
           <div data-id="001431">Expected date formatting: 25 Dec 2024</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('Expected date formatting: 25 Dec 2024')).toBeInTheDocument();
     });
 
     test('renders date field with fallback for invalid date', () => {
-
-          
       render(
         <TestWrapper data-id="001432">
           <div data-id="001433">Expected fallback: Invalid Date</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       // This would test the fallback behavior in actual implementation
       expect(screen.getByText('Expected fallback: Invalid Date')).toBeInTheDocument();
     });
 
     test('renders date field with default format when no format specified', () => {
-      
-      
-      
       render(
         <TestWrapper data-id="001434">
           <div data-id="001435">Expected default date format</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       // This would test default formatting in actual implementation
       expect(screen.getByText('Expected default date format')).toBeInTheDocument();
     });
@@ -97,10 +93,12 @@ describe('FieldRenderer', () => {
     test('renders badge with status configuration', () => {
       render(
         <TestWrapper data-id="001436">
-          <div data-id="001437" data-testid="status-badge">Active</div>
-        </TestWrapper>
+          <div data-id="001437" data-testid="status-badge">
+            Active
+          </div>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('Active')).toBeInTheDocument();
     });
 
@@ -108,9 +106,9 @@ describe('FieldRenderer', () => {
       render(
         <TestWrapper data-id="001438">
           <div data-id="001439">High Priority</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('High Priority')).toBeInTheDocument();
     });
 
@@ -118,9 +116,9 @@ describe('FieldRenderer', () => {
       render(
         <TestWrapper data-id="001440">
           <div data-id="001441">Unknown Status</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('Unknown Status')).toBeInTheDocument();
     });
   });
@@ -130,9 +128,9 @@ describe('FieldRenderer', () => {
       render(
         <TestWrapper data-id="001442">
           <div data-id="001443">John Doe</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('John Doe')).toBeInTheDocument();
     });
 
@@ -140,9 +138,9 @@ describe('FieldRenderer', () => {
       render(
         <TestWrapper data-id="001444">
           <div data-id="001445">Unassigned</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('Unassigned')).toBeInTheDocument();
     });
   });
@@ -150,7 +148,7 @@ describe('FieldRenderer', () => {
   describe('Custom Field Rendering', () => {
     test('executes custom render function', () => {
       const customRender = vi.fn((value: any) => `Custom: ${value}`);
-      
+
       // This would test the actual custom render call
       const result = customRender('test value');
       expect(customRender).toHaveBeenCalledWith('test value');
@@ -161,9 +159,9 @@ describe('FieldRenderer', () => {
       render(
         <TestWrapper data-id="001446">
           <div data-id="001447">Expected default fallback behavior</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('Expected default fallback behavior')).toBeInTheDocument();
     });
   });
@@ -173,9 +171,9 @@ describe('FieldRenderer', () => {
       render(
         <TestWrapper data-id="001448">
           <div data-id="001449">Expected nested value behavior</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('Expected nested value behavior')).toBeInTheDocument();
     });
 
@@ -183,9 +181,9 @@ describe('FieldRenderer', () => {
       render(
         <TestWrapper data-id="001450">
           <div data-id="001451">Expected fallback for missing nested data</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('Expected fallback for missing nested data')).toBeInTheDocument();
     });
   });
@@ -194,10 +192,12 @@ describe('FieldRenderer', () => {
     test('applies custom fontSize', () => {
       render(
         <TestWrapper data-id="001452">
-          <div data-id="001453" style={{ fontSize: '16px' }}>Expected font size behavior</div>
-        </TestWrapper>
+          <div data-id="001453" style={{ fontSize: '16px' }}>
+            Expected font size behavior
+          </div>
+        </TestWrapper>,
       );
-      
+
       const element = screen.getByText('Expected font size behavior');
       expect(element).toHaveStyle('font-size: 16px');
     });
@@ -205,10 +205,12 @@ describe('FieldRenderer', () => {
     test('applies custom textColor', () => {
       render(
         <TestWrapper data-id="001454">
-          <div data-id="001455" style={{ color: '#FF0000' }}>Expected color behavior</div>
-        </TestWrapper>
+          <div data-id="001455" style={{ color: '#FF0000' }}>
+            Expected color behavior
+          </div>
+        </TestWrapper>,
       );
-      
+
       const element = screen.getByText('Expected color behavior');
       expect(element).toHaveStyle('color: #FF0000');
     });
@@ -216,10 +218,12 @@ describe('FieldRenderer', () => {
     test('applies custom fontWeight', () => {
       render(
         <TestWrapper data-id="001456">
-          <div data-id="001457" style={{ fontWeight: 600 }}>Expected font weight behavior</div>
-        </TestWrapper>
+          <div data-id="001457" style={{ fontWeight: 600 }}>
+            Expected font weight behavior
+          </div>
+        </TestWrapper>,
       );
-      
+
       const element = screen.getByText('Expected font weight behavior');
       expect(element).toHaveStyle('font-weight: 600');
     });
@@ -230,9 +234,9 @@ describe('FieldRenderer', () => {
       render(
         <TestWrapper data-id="001458">
           <div data-id="001459">Expected null handling behavior</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('Expected null handling behavior')).toBeInTheDocument();
     });
 
@@ -240,9 +244,9 @@ describe('FieldRenderer', () => {
       render(
         <TestWrapper data-id="001460">
           <div data-id="001461">Expected invalid config handling</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('Expected invalid config handling')).toBeInTheDocument();
     });
 
@@ -250,9 +254,9 @@ describe('FieldRenderer', () => {
       render(
         <TestWrapper data-id="001462">
           <div data-id="001463">Expected malformed badge handling</div>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('Expected malformed badge handling')).toBeInTheDocument();
     });
   });
@@ -262,19 +266,21 @@ describe('FieldRenderer', () => {
       render(
         <TestWrapper data-id="001464">
           <span data-id="001465">John Doe</span>
-        </TestWrapper>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByText('John Doe')).toBeVisible();
     });
 
     test('renders badges with proper contrast', () => {
       render(
         <TestWrapper data-id="001466">
-          <div data-id="001467" data-testid="accessible-badge">Active</div>
-        </TestWrapper>
+          <div data-id="001467" data-testid="accessible-badge">
+            Active
+          </div>
+        </TestWrapper>,
       );
-      
+
       expect(screen.getByTestId('accessible-badge')).toBeVisible();
     });
   });

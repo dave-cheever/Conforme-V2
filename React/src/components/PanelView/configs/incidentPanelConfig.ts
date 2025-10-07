@@ -5,7 +5,7 @@ import AuditDetailIcon from '../../../icons/AuditDetailIcon';
 import IncidentIcon from '../../../icons/IncidentIcon';
 import { PanelConfig } from '../../../interfaces/IPanelConfig';
 
-export const incidentPanelConfig: PanelConfig = {
+const incidentPanelConfig: PanelConfig = {
   header: {
     show: true,
     fields: [
@@ -13,19 +13,21 @@ export const incidentPanelConfig: PanelConfig = {
         key: 'hospital_name',
         type: 'custom',
         fallback: 'Unknown Hospital',
-        render: (value: string) => React.createElement('span', {
-            style: { 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '6px',
-              fontSize: '12px',
-              color: 'white',
-              fontWeight: '600',
+        render: (value: string) =>
+          React.createElement(
+            'span',
+            {
+              style: {
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontSize: '12px',
+                color: 'white',
+                fontWeight: '600',
+              },
             },
-          }, [
-            React.createElement(Building),
-            value || 'Unknown Hospital',
-          ]),
+            [React.createElement(Building), value || 'Unknown Hospital'],
+          ),
       },
       {
         key: 'ward_location',
@@ -38,19 +40,19 @@ export const incidentPanelConfig: PanelConfig = {
         badgeConfig: {
           variant: 'solid',
           statusConfig: {
-            'high': {
+            high: {
               bg: '#EF4444',
               color: 'white',
               text: 'High',
               icon: WarningIcon,
             },
-            'medium': {
+            medium: {
               bg: '#F59E0B',
               color: 'white',
               text: 'Medium',
               icon: ComingUpIcon,
             },
-            'low': {
+            low: {
               bg: '#10B981',
               color: 'white',
               text: 'Low',
@@ -63,13 +65,13 @@ export const incidentPanelConfig: PanelConfig = {
     ],
   },
   title: {
-    primary: { 
-      key: 'title', 
+    primary: {
+      key: 'title',
       type: 'text',
       fallback: 'No Title',
     },
-    secondary: { 
-      key: 'id', 
+    secondary: {
+      key: 'id',
       type: 'text',
       fallback: 'No ID',
     },
@@ -86,19 +88,19 @@ export const incidentPanelConfig: PanelConfig = {
           icon: DetailIcon,
           text: 'In Review',
         },
-        'Investigation': {
+        Investigation: {
           bg: '#F59E0B',
           color: 'white',
           icon: WarningIcon,
           text: 'Investigation',
         },
-        'Escalated': {
+        Escalated: {
           bg: '#EF4444',
           color: 'white',
           icon: WarningIcon,
           text: 'Escalated',
         },
-        'Closed': {
+        Closed: {
           bg: '#10B981',
           color: 'white',
           icon: CheckIcon,
@@ -110,55 +112,55 @@ export const incidentPanelConfig: PanelConfig = {
   },
   details: [
     {
-      key: 'description', 
-      type: 'text', 
+      key: 'description',
+      type: 'text',
       icon: DetailIcon,
       fallback: 'No Description',
     },
-    { 
-      key: 'owner', 
-      type: 'user', 
+    {
+      key: 'owner',
+      type: 'user',
       icon: DetailIcon,
       fallback: 'Unassigned',
     },
-    { 
-      key: 'people_assigned', 
-      type: 'user', 
+    {
+      key: 'people_assigned',
+      type: 'user',
       icon: DetailIcon,
       fallback: 'No one assigned',
     },
-    { 
-      key: 'timestamp', 
-      type: 'date', 
+    {
+      key: 'timestamp',
+      type: 'date',
       dateFormat: 'd MMM yyyy, h:mm a',
       icon: CalendarIcon,
       fallback: 'No Date',
     },
-    { 
-      key: 'criticality_level', 
+    {
+      key: 'criticality_level',
       type: 'badge',
       badgeConfig: {
         variant: 'solid',
         statusConfig: {
-          'Critical': {
+          Critical: {
             bg: '#DC2626',
             color: 'white',
             text: 'Critical',
             icon: WarningIcon,
           },
-          'high': {
+          high: {
             bg: '#EF4444',
             color: 'white',
             text: 'High',
             icon: WarningIcon,
           },
-          'medium': {
+          medium: {
             bg: '#F59E0B',
             color: 'white',
             text: 'Medium',
             icon: ComingUpIcon,
           },
-          'low': {
+          low: {
             bg: '#10B981',
             color: 'white',
             text: 'Low',
@@ -175,42 +177,52 @@ export const incidentPanelConfig: PanelConfig = {
     label: 'Linked Action',
     render: (value: any) => {
       if (!value) return null;
-      return React.createElement('div', {
-        style: {
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          padding: '8px 12px',
-          backgroundColor: '#F7FAFC',
-          borderRadius: '6px',
-          border: '1px solid #E2E8F0',
-        },
-      }, [
-        React.createElement(IncidentIcon),
-        React.createElement('span', {
+      return React.createElement(
+        'div',
+        {
           style: {
-            fontSize: '14px',
-            fontWeight: '500',
-            color: '#3182CE',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 12px',
+            backgroundColor: '#F7FAFC',
+            borderRadius: '6px',
+            border: '1px solid #E2E8F0',
           },
-        }, `Linked Action: ${value}`),
-      ]);
+        },
+        [
+          React.createElement(IncidentIcon),
+          React.createElement(
+            'span',
+            {
+              style: {
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#3182CE',
+              },
+            },
+            `Linked Action: ${value}`,
+          ),
+        ],
+      );
     },
   },
   actions: {
     primary: {
       label: 'View Incident',
       icon: AuditDetailIcon,
-      onClick: (incident: any) => {
+      onClick: () => {
         // This will be set by the parent component
         // Navigate handled by parent component
       },
     },
     secondary: {
       label: 'Edit Incident',
-      onClick: (incident: any) => {
+      onClick: () => {
         // Edit handled by parent component
       },
     },
   },
 };
+
+export default incidentPanelConfig;

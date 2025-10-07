@@ -3,17 +3,16 @@ import { describe, expect, test } from 'vitest';
 // Mock the lodash get function behavior
 const mockGet = (obj: any, path: string, defaultValue: any = null): any => {
   if (!obj) return defaultValue;
-  
+
   const keys = path.split('.');
   let current = obj;
-  
+
   for (const key of keys) {
-    if (current === null || current === undefined || !(key in current)) {
-      return defaultValue;
-    }
+    if (current === null || current === undefined || !(key in current)) return defaultValue;
+
     current = current[key];
   }
-  
+
   return current;
 };
 
@@ -25,19 +24,19 @@ const testObject = {
       email: 'john@example.com',
       settings: {
         theme: 'dark',
-        notifications: true
-      }
+        notifications: true,
+      },
     },
-    role: 'admin'
+    role: 'admin',
   },
   status: 'active',
   metadata: null,
   nested: {
     deep: {
       value: 'test',
-      array: [1, 2, 3]
-    }
-  }
+      array: [1, 2, 3],
+    },
+  },
 };
 
 describe('PanelView Utilities', () => {
@@ -45,7 +44,7 @@ describe('PanelView Utilities', () => {
     test('gets simple properties', () => {
       const result1 = mockGet(testObject, 'status');
       const result2 = mockGet(testObject, 'user.role');
-      
+
       expect(result1).toBe('active');
       expect(result2).toBe('admin');
     });
@@ -54,7 +53,7 @@ describe('PanelView Utilities', () => {
       const result1 = mockGet(testObject, 'user.profile.name');
       const result2 = mockGet(testObject, 'user.profile.settings.theme');
       const result3 = mockGet(testObject, 'nested.deep.value');
-      
+
       expect(result1).toBe('John Doe');
       expect(result2).toBe('dark');
       expect(result3).toBe('test');
@@ -64,7 +63,7 @@ describe('PanelView Utilities', () => {
       const result1 = mockGet(testObject, 'missing', 'default');
       const result2 = mockGet(testObject, 'user.missing', 'default');
       const result3 = mockGet(testObject, 'user.profile.missing', 'default');
-      
+
       expect(result1).toBe('default');
       expect(result2).toBe('default');
       expect(result3).toBe('default');
@@ -74,7 +73,7 @@ describe('PanelView Utilities', () => {
       const result1 = mockGet(null, 'any.path', 'default');
       const result2 = mockGet(undefined, 'any.path', 'default');
       const result3 = mockGet(testObject, 'metadata.property', 'default');
-      
+
       expect(result1).toBe('default');
       expect(result2).toBe('default');
       expect(result3).toBe('default');
@@ -98,21 +97,19 @@ describe('PanelView Utilities', () => {
       try {
         const dateObj = new Date(date);
         if (Number.isNaN(dateObj.getTime())) return '';
-        
+
         // Simple mock formatting based on formatString
         if (formatString === 'd MMM yyyy') {
           const day = dateObj.getDate();
-          const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
           const month = monthNames[dateObj.getMonth()];
           const year = dateObj.getFullYear();
           return `${day} ${month} ${year}`;
         }
-        
+
         if (formatString === 'd MMM yyyy, h:mm a') {
           const day = dateObj.getDate();
-          const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
           const month = monthNames[dateObj.getMonth()];
           const year = dateObj.getFullYear();
           const hours = dateObj.getHours();
@@ -121,7 +118,7 @@ describe('PanelView Utilities', () => {
           const displayHours = hours % 12 || 12;
           return `${day} ${month} ${year}, ${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
         }
-        
+
         return dateObj.toLocaleDateString();
       } catch {
         return '';
@@ -132,7 +129,7 @@ describe('PanelView Utilities', () => {
       const date1 = '2024-12-25T00:00:00Z';
       const date2 = '2024-01-15T14:30:00Z';
       const date3 = '2023-06-10T09:15:30Z';
-      
+
       expect(mockFormatDate(date1, 'd MMM yyyy')).toBe('25 Dec 2024');
       expect(mockFormatDate(date2, 'd MMM yyyy')).toBe('15 Jan 2024');
       expect(mockFormatDate(date3, 'd MMM yyyy')).toBe('10 Jun 2023');
@@ -140,7 +137,7 @@ describe('PanelView Utilities', () => {
 
     test('formats dates with time', () => {
       const date = '2024-12-25T14:30:00Z';
-      
+
       const result = mockFormatDate(date, 'd MMM yyyy, h:mm a');
       expect(result).toContain('25 Dec 2024');
       expect(result).toContain('PM');
@@ -173,19 +170,13 @@ describe('PanelView Utilities', () => {
     const validFieldTypes = ['text', 'badge', 'date', 'user', 'custom'];
 
     test('validates field type strings', () => {
-      for (const type of validFieldTypes) {
-        expect(validFieldTypes.includes(type)).toBe(true);
-      }
+      for (const type of validFieldTypes) expect(validFieldTypes.includes(type)).toBe(true);
     });
 
     test('rejects invalid field types', () => {
       const invalidTypes = ['invalid', 'button', 'input', '', null, undefined];
-      
-      for (const type of invalidTypes) {
-        if (typeof type === 'string') {
-          expect(validFieldTypes.includes(type)).toBe(false);
-        }
-      }
+
+      for (const type of invalidTypes) if (typeof type === 'string') expect(validFieldTypes.includes(type)).toBe(false);
     });
   });
 
@@ -194,13 +185,13 @@ describe('PanelView Utilities', () => {
       const validConfig = {
         title: {
           primary: { key: 'name', type: 'text' },
-          secondary: { key: 'id', type: 'text' }
+          secondary: { key: 'id', type: 'text' },
         },
         status: { key: 'status', type: 'badge' },
         details: [],
         actions: {
-          primary: { label: 'Test', apiKey: () => {} }
-        }
+          primary: { label: 'Test', apiKey: () => {} },
+        },
       };
 
       // Check that all required properties exist
@@ -217,33 +208,33 @@ describe('PanelView Utilities', () => {
       const validBadgeConfig = {
         variant: 'solid',
         statusConfig: {
-          'active': {
+          active: {
             bg: '#10B981',
             color: 'white',
-            text: 'Active'
-          }
-        }
+            text: 'Active',
+          },
+        },
       };
 
       expect(validBadgeConfig.variant).toBeDefined();
       expect(validBadgeConfig.statusConfig).toBeDefined();
-      expect(validBadgeConfig.statusConfig['active']).toBeDefined();
-      expect(validBadgeConfig.statusConfig['active'].bg).toBeDefined();
-      expect(validBadgeConfig.statusConfig['active'].color).toBeDefined();
-      expect(validBadgeConfig.statusConfig['active'].text).toBeDefined();
+      expect(validBadgeConfig.statusConfig.active).toBeDefined();
+      expect(validBadgeConfig.statusConfig.active.bg).toBeDefined();
+      expect(validBadgeConfig.statusConfig.active.color).toBeDefined();
+      expect(validBadgeConfig.statusConfig.active.text).toBeDefined();
     });
   });
 
   describe('Data Transformation', () => {
     test('transforms badge values correctly', () => {
       const statusMap = {
-        'completed': 'Completed',
+        completed: 'Completed',
         'in-progress': 'In Progress',
-        'pending': 'Pending'
+        pending: 'Pending',
       };
 
       const testValues = ['completed', 'in-progress', 'pending', 'unknown'];
-      
+
       for (const value of testValues) {
         const mapped = statusMap[value as keyof typeof statusMap];
         if (mapped) {
@@ -257,7 +248,7 @@ describe('PanelView Utilities', () => {
       const auditData = {
         auditType: { name: 'Safety Audit' },
         auditor: { displayName: 'John Doe', imgUrl: 'avatar.jpg' },
-        organization: { name: 'Test Org', id: 'org1' }
+        organization: { name: 'Test Org', id: 'org1' },
       };
 
       // Test nested property access
@@ -268,7 +259,7 @@ describe('PanelView Utilities', () => {
 
     test('handles missing data gracefully', () => {
       const partialData = {
-        name: 'Partial Data'
+        name: 'Partial Data',
         // Missing other expected properties
       };
 
@@ -283,19 +274,19 @@ describe('PanelView Utilities', () => {
       const largeArray = Array.from({ length: 1000 }, (_, i) => ({
         id: `item-${i}`,
         name: `Item ${i}`,
-        status: i % 2 === 0 ? 'active' : 'inactive'
+        status: i % 2 === 0 ? 'active' : 'inactive',
       }));
 
       const startTime = performance.now();
-      
+
       // Simulate processing large array
       for (const item of largeArray) {
         mockGet(item, 'name');
         mockGet(item, 'status');
       }
-      
+
       const endTime = performance.now();
-      
+
       // Ensure processing completes in reasonable time (less than 100ms)
       expect(endTime - startTime).toBeLessThan(100);
     });
@@ -303,12 +294,13 @@ describe('PanelView Utilities', () => {
     test('handles deep object nesting efficiently', () => {
       // Create a deeply nested object
       let deepObject: any = { value: 'Found it!' };
-      for (let i = 0; i < 14; i++) {
-        deepObject = { nested: deepObject };
-      }
+      for (let i = 0; i < 14; i += 1) deepObject = { nested: deepObject };
 
-      const result = mockGet(deepObject, 'nested.nested.nested.nested.nested.nested.nested.nested.nested.nested.nested.nested.nested.nested.value');
-      
+      const result = mockGet(
+        deepObject,
+        'nested.nested.nested.nested.nested.nested.nested.nested.nested.nested.nested.nested.nested.nested.value',
+      );
+
       // Should handle deep nesting without issues
       expect(result).toBe('Found it!');
     });

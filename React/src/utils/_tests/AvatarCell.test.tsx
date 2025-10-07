@@ -2,8 +2,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 
-import AvatarCell from './AvatarCell';
-import { IUser } from '../../../interfaces/IUser';
+import AvatarCell from '../../components/Table/Cells/AvatarCell';
+import { IUser } from '../../interfaces/IUser';
 
 // Mock the theme
 const mockTheme = {
@@ -16,7 +16,11 @@ const mockTheme = {
 
 // Mock ChakraProvider wrapper
 function TestWrapper({ children }: { readonly children: React.ReactNode }) {
-  return <ChakraProvider data-id="001214" theme={mockTheme}>{children}</ChakraProvider>;
+  return (
+    <ChakraProvider data-id="001214" theme={mockTheme}>
+      {children}
+    </ChakraProvider>
+  );
 }
 
 // Mock user data
@@ -43,7 +47,7 @@ const renderWithWrapper = (users?: Partial<IUser>[], userType = 'assigned') =>
   render(
     <TestWrapper data-id="001215">
       <AvatarCell data-id="001216" users={users} userType={userType} />
-    </TestWrapper>
+    </TestWrapper>,
   );
 
 describe('AvatarCell', () => {
@@ -54,7 +58,7 @@ describe('AvatarCell', () => {
     });
 
     test('renders "Unassigned" when users is undefined', () => {
-      renderWithWrapper(undefined); // eslint-disable-next-line sonar/no-undefined-argument
+      renderWithWrapper();
       expect(screen.getByText('Unassigned')).toBeInTheDocument();
     });
 
@@ -67,24 +71,22 @@ describe('AvatarCell', () => {
   describe('Single user scenarios', () => {
     test('renders single user with avatar and display name', () => {
       renderWithWrapper([mockUsers[0]]);
-      
+
       // Check avatar is rendered
       const avatar = screen.getByRole('img');
       expect(avatar).toBeInTheDocument();
-      
+
       // Check display name is shown
       expect(screen.getByText('John Doe (Manager)')).toBeInTheDocument();
-      
+
       // Should not show count text for single user
       expect(screen.queryByText('1 assigned')).not.toBeInTheDocument();
     });
 
-
-
     test('renders single user without image URL', () => {
       const userWithoutImage = createMockUser('user1', 'John Doe');
       renderWithWrapper([userWithoutImage]);
-      
+
       const avatar = screen.getByRole('img');
       expect(avatar).toBeInTheDocument();
       expect(screen.getByText('John Doe')).toBeInTheDocument();
@@ -93,7 +95,7 @@ describe('AvatarCell', () => {
     test('handles user with empty display name', () => {
       const userWithEmptyName = { ...mockUsers[0], displayName: '' };
       renderWithWrapper([userWithEmptyName]);
-      
+
       const avatar = screen.getByRole('img');
       expect(avatar).toBeInTheDocument();
     });
@@ -102,21 +104,21 @@ describe('AvatarCell', () => {
   describe('Multiple users scenarios', () => {
     test('renders multiple users with count text', () => {
       renderWithWrapper(mockUsers.slice(0, 2), 'auditors');
-      
+
       // Check both avatars are rendered
       const avatars = screen.getAllByRole('img');
       expect(avatars).toHaveLength(2);
-      
+
       // Check count text is shown
       expect(screen.getByText('2 auditors')).toBeInTheDocument();
-      
+
       // Should not show individual display name for multiple users
       expect(screen.queryByText('John Doe (Manager)')).not.toBeInTheDocument();
     });
 
     test('renders exactly 3 users without overflow', () => {
       renderWithWrapper(mockUsers.slice(0, 3), 'reviewers');
-      
+
       const avatars = screen.getAllByRole('img');
       expect(avatars).toHaveLength(3);
       expect(screen.getByText('3 reviewers')).toBeInTheDocument();
@@ -124,11 +126,11 @@ describe('AvatarCell', () => {
 
     test('renders maximum 3 avatars when more than 3 users provided', () => {
       renderWithWrapper(mockUsers, 'participants');
-      
+
       // Should only render 3 avatars (maxVisible = 3)
       const avatars = screen.getAllByRole('img');
       expect(avatars).toHaveLength(3);
-      
+
       // Should show total count including hidden users
       expect(screen.getByText('5 participants')).toBeInTheDocument();
     });
@@ -139,16 +141,15 @@ describe('AvatarCell', () => {
     });
   });
 
-
   describe('User type variations', () => {
     test('displays correct text with custom userType', () => {
       const customTypes = ['managers', 'developers', 'testers', 'analysts'];
-      
+
       for (const type of customTypes) {
         const { unmount } = renderWithWrapper(mockUsers.slice(0, 2), type);
         expect(screen.getByText(`2 ${type}`)).toBeInTheDocument();
         unmount();
-      };
+      }
     });
   });
 
@@ -156,7 +157,7 @@ describe('AvatarCell', () => {
     test('handles users with undefined displayName', () => {
       const userWithUndefinedName = { ...mockUsers[0], displayName: undefined as any };
       renderWithWrapper([userWithUndefinedName]);
-      
+
       const avatar = screen.getByRole('img');
       expect(avatar).toBeInTheDocument();
     });
@@ -164,20 +165,16 @@ describe('AvatarCell', () => {
     test('handles users with null displayName', () => {
       const userWithNullName = { ...mockUsers[0], displayName: null as any };
       renderWithWrapper([userWithNullName]);
-      
+
       const avatar = screen.getByRole('img');
       expect(avatar).toBeInTheDocument();
     });
 
     test('handles mixed valid and invalid user data', () => {
-      const mixedUsers = [
-        mockUsers[0],
-        { ...mockUsers[1], displayName: undefined as any },
-        mockUsers[2],
-      ];
-      
+      const mixedUsers = [mockUsers[0], { ...mockUsers[1], displayName: undefined as any }, mockUsers[2]];
+
       renderWithWrapper(mixedUsers, 'mixed');
-      
+
       const avatars = screen.getAllByRole('img');
       expect(avatars).toHaveLength(3);
       expect(screen.getByText('3 mixed')).toBeInTheDocument();
@@ -185,15 +182,13 @@ describe('AvatarCell', () => {
 
     test('handles users array with some undefined elements', () => {
       const usersWithUndefined = [mockUsers[0], undefined as any, mockUsers[1]];
-      
+
       renderWithWrapper(usersWithUndefined, 'filtered');
-      
+
       // Should still render the valid users
       const avatars = screen.getAllByRole('img');
       expect(avatars).toHaveLength(2); // Only valid users rendered
       expect(screen.getByText('2 filtered')).toBeInTheDocument(); // But count includes all
     });
   });
-
 });
-

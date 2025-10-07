@@ -1,7 +1,11 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
-import { describe, expect, test, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
+// ---- Unit under test
+import TrackerItems from '../../pages/tracker-items';
 
 // ---- MUTABLE fixtures the hook-mocks will read
 let MOCK_FILTERS_VALUES: any = {};
@@ -90,6 +94,7 @@ vi.mock('../../components/Filters/AssignedToMeFilter', () => ({
           assignedToToggleSpy('on');
           onToggle(true);
         }}
+        type="button"
       >
         on
       </button>
@@ -100,6 +105,7 @@ vi.mock('../../components/Filters/AssignedToMeFilter', () => ({
           assignedToToggleSpy('off');
           onToggle(false);
         }}
+        type="button"
       >
         off
       </button>
@@ -137,14 +143,12 @@ vi.mock('../../utils/filterStorage', () => ({
   default: (...args: any[]) => updateLocalStorageFilterSpy(...args),
 }));
 
-// ---- Unit under test
-import TrackerItems from '../../pages/tracker-items';
-
-const renderPage = () => render(
-  <BrowserRouter data-id="001516">
-    <TrackerItems data-id="001348" />
-  </BrowserRouter>
-);
+const renderPage = () =>
+  render(
+    <BrowserRouter data-id="001517">
+      <TrackerItems data-id="001348" />
+    </BrowserRouter>,
+  );
 
 beforeEach(() => {
   vi.clearAllMocks();

@@ -1,4 +1,4 @@
-import { Box, Flex, Skeleton, Text, } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, Text } from '@chakra-ui/react';
 import { format, isBefore } from 'date-fns';
 import { capitalize } from 'lodash';
 

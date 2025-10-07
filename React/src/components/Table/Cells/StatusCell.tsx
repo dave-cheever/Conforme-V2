@@ -16,7 +16,7 @@ function StatusCell({ status, size = 'md' }: StatusCellProps) {
             label: 'Action Plan',
             bg: '#5850EC',
             color: 'white',
-            icon: <CircleTick data-id="001308" boxSize="14px" />,
+            icon: <CircleTick boxSize="14px" data-id="001308" />,
         };
       case 'inReview':
         return {
@@ -24,14 +24,14 @@ function StatusCell({ status, size = 'md' }: StatusCellProps) {
           colorScheme: 'orange',
           bg: '#F97316',
           color: 'white',
-          icon: <InReviewIcon data-id="001309" boxSize="14px" />,
+          icon: <InReviewIcon boxSize="14px" data-id="001309" />,
         };
       case 'completed':
         return {
           label: 'Completed',
           bg: '#00A650',
           color: 'white',
-          icon: <CircleTick data-id="001310" boxSize="14px" />,
+          icon: <CircleTick boxSize="14px" data-id="001310" />,
         };
       case 'missed':
         return {
@@ -54,14 +54,14 @@ function StatusCell({ status, size = 'md' }: StatusCellProps) {
           label: 'In Progress',
           bg: '#0073E6',
           color: 'white',
-          icon: <InProgress data-id="001311" boxSize="14px" />,
+          icon: <InProgress boxSize="14px" data-id="001311" />,
         };
       case 'notStarted':
         return {
             label: 'Not started',
             bg: '#A0AEC0',
             color: 'white',
-            icon: <HourGlassIcon data-id="001312" boxSize="14px" />,
+            icon: <HourGlassIcon boxSize="14px" data-id="001312" />,
         };
       default:
         return {
@@ -84,10 +84,10 @@ function StatusCell({ status, size = 'md' }: StatusCellProps) {
 
   return (
     <Box
-      data-id="001313"
       alignItems="center"
       bg={config.bg}
       borderRadius="full"
+      data-id="001313"
       display="inline-flex"
       gap={sizeProps[size].gap}
       height={sizeProps[size].height}
@@ -95,8 +95,8 @@ function StatusCell({ status, size = 'md' }: StatusCellProps) {
       minW="fit-content"
       px={sizeProps[size].px}>
       <Text
-        data-id="001314"
         color={config.color}
+        data-id="001314"
         fontSize={sizeProps[size].fontSize}
         fontWeight="bold"
         letterSpacing="0.36px"
@@ -106,7 +106,7 @@ function StatusCell({ status, size = 'md' }: StatusCellProps) {
         {config.label}
       </Text>
       {config.icon && (
-        <Flex data-id="001315" color={config.color}>
+        <Flex color={config.color} data-id="001315">
           {config.icon}
         </Flex>
       )}

@@ -2,15 +2,15 @@ import { CheckIcon, ComingUpIcon, WarningIcon } from '../../../icons';
 import AuditDetailIcon from '../../../icons/AuditDetailIcon';
 import { PanelConfig } from '../../../interfaces/IPanelConfig';
 
-export const trackerPanelConfig: PanelConfig = {
+const trackerPanelConfig: PanelConfig = {
   title: {
-    primary: { 
-      key: 'trackerItem.name', 
+    primary: {
+      key: 'trackerItem.name',
       type: 'text',
       fallback: 'No Name',
     },
-    secondary: { 
-      key: 'trackerItem.category.name', 
+    secondary: {
+      key: 'trackerItem.category.name',
       type: 'text',
       fallback: 'No Category',
     },
@@ -21,19 +21,19 @@ export const trackerPanelConfig: PanelConfig = {
     badgeConfig: {
       variant: 'solid',
       statusConfig: {
-        'compliant': {
+        compliant: {
           bg: '#10B981',
           color: 'white',
           icon: CheckIcon,
           text: 'Compliant',
         },
-        'nonCompliant': {
+        nonCompliant: {
           bg: '#EF4444',
           color: 'white',
           icon: WarningIcon,
           text: 'Non-Compliant',
         },
-        'comingUp': {
+        comingUp: {
           bg: '#F59E0B',
           color: 'white',
           icon: ComingUpIcon,
@@ -44,21 +44,21 @@ export const trackerPanelConfig: PanelConfig = {
     fallback: 'Unknown',
   },
   details: [
-    { 
-      key: 'businessUnit.name', 
-      type: 'text', 
+    {
+      key: 'businessUnit.name',
+      type: 'text',
       label: 'Business Unit',
       fallback: 'No Business Unit',
     },
-    { 
-      key: 'dueDate', 
-      type: 'date', 
+    {
+      key: 'dueDate',
+      type: 'date',
       dateFormat: 'd MMM yyyy',
       fallback: 'No Due Date',
     },
-    { 
-      key: 'responsible.displayName', 
-      type: 'user', 
+    {
+      key: 'responsible.displayName',
+      type: 'user',
       label: 'Responsible',
       fallback: 'Unassigned',
     },
@@ -67,16 +67,18 @@ export const trackerPanelConfig: PanelConfig = {
     primary: {
       label: 'View Response',
       icon: AuditDetailIcon,
-      onClick: (response: any) => {
+      onClick: () => {
         // This will be set by the parent component
         // Navigate handled by parent component
       },
     },
     secondary: {
       label: 'Edit Response',
-      onClick: (response: any) => {
+      onClick: () => {
         // Edit handled by parent component
       },
     },
   },
 };
+
+export default trackerPanelConfig;

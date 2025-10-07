@@ -8,7 +8,7 @@ import { IAudit } from '../../interfaces/IAudit';
 import AvatarCell from '../Table/Cells/AvatarCell';
 import StatusCell from '../Table/Cells/StatusCell';
 
-function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
+function AuditListItem({ audit, index }: { readonly audit: IAudit; readonly index: number }) {
   const { navigateTo } = useNavigate();
   const { module } = useAppContext();
   return (
@@ -81,10 +81,7 @@ function AuditListItem({ audit, index }: { audit: IAudit, index: number }) {
         )}
         <Box data-id="000228" pr={2} w="20%">
           <Skeleton data-id="000229" isLoaded={!!audit} rounded="full">
-            <AvatarCell
-              data-id="001206"
-              users={audit.auditor ? [audit.auditor ] : []}
-              userType="auditors" />
+            <AvatarCell data-id="001206" users={audit.auditor ? [audit.auditor] : []} userType="auditors" />
           </Skeleton>
         </Box>
         <Flex data-id="000234" flexDir="column" w="15%">

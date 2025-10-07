@@ -12,8 +12,8 @@ import useInit from '../hooks/useInit';
 import useNavigate from '../hooks/useNavigate';
 import useRoutes from '../hooks/useRoutes';
 import './styles.css';
-import getTheme from './theme';
 import { runtimeEnv } from '../utils/runtime-env';
+import getTheme from './theme';
 
 function App() {
   const { user, organizationConfig, module } = useAppContext();

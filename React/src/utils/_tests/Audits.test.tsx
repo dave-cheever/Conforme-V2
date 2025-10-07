@@ -1,6 +1,7 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 // ---------- Global knobs the mocks read ----------
@@ -24,12 +25,12 @@ const TEST_USER = { _id: 'u1-db', userId: 'u1-app', displayName: 'User One' };
 const TEST_MODULE = { _id: 'm1', featureFlags: { enableSafetyWalk: true } };
 
 // 1) i18next: ensure t() always returns a string so pluralize(...) is safe
-vi.mock('react-i18next', async () => {
+vi.mock('react-i18next', async () => 
   // some projects import useTranslation from react-i18next too
-  return {
+   ({
     useTranslation: () => ({ t: (k: string) => k || 'audit' }),
-  };
-});
+  }),
+);
 vi.mock('i18next', () => ({
   t: (k: string) => k || 'audit',
 }));
@@ -127,22 +128,22 @@ vi.mock('../../components/Filters/AssignedToMeFilter', () => ({
       <span data-id="001359" data-testid="assigned-state">{String(isChecked)}</span>
       <button
         data-id="001360"
-        type="button"
         data-testid="toggle-on"
         onClick={() => {
           assignedToToggleSpy('on');
           onToggle(true);
-        }}>
+        }}
+        type="button">
         on
       </button>
       <button
         data-id="001361"
-        type="button"
         data-testid="toggle-off"
         onClick={() => {
           assignedToToggleSpy('off');
           onToggle(false);
-        }}>
+        }}
+        type="button">
         off
       </button>
     </div>
@@ -156,16 +157,16 @@ vi.mock('../../components/ChangeViewButton', () => ({
     <div data-id="001362" data-testid="change-view">
       <button
         data-id="001363"
-        type="button"
         data-testid="to-group"
-        onClick={() => setViewMode('group')}>
+        onClick={() => setViewMode('group')}
+        type="button">
         group
       </button>
       <button
         data-id="001364"
-        type="button"
         data-testid="to-list"
-        onClick={() => setViewMode('list')}>
+        onClick={() => setViewMode('list')}
+        type="button">
         list
       </button>
     </div>
@@ -187,7 +188,7 @@ import AuditsWithContext from '../../pages/audits';
 const renderPage = () => render(
   <BrowserRouter data-id="001515">
     <AuditsWithContext data-id="001365" />
-  </BrowserRouter>
+  </BrowserRouter>,
 );
 
 // ---------- Reset shared state ----------

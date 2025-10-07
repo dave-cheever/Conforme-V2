@@ -29,8 +29,8 @@ function FieldRenderer({ config, item, fontSize, textColor, fontWeight, dataId }
         case 'text': {
             return (
                 <Text
-                    data-id="001402"
                     color={textColor || "#4A5568"}
+                    data-id="001402"
                     fontSize={fontSize || "14px"}
                     fontWeight={fontWeight || "normal"}>
                     {value || config.fallback || '-'}
@@ -120,18 +120,18 @@ function PanelView({
                     {config.header?.show && (
                         <Box bg="#2D3748" borderTopRadius="14px" color="white" data-id={`header-${index + 2}`} height={'42px'} pb={'6px'} position={'relative'} pt={'4px'} px={'14px'}>
                             <Box
-                                data-id="001404"
                                 alignItems="center"
+                                data-id="001404"
                                 display="flex"
                                 flexWrap="wrap"
                                 gap={3}>
                                 {config.header?.fields.map((field, fieldIndex) => (
                                     <React.Fragment key={field.key || `header-field-${fieldIndex}`}>
-                                        <Box data-id="001405" alignItems="center" display="flex" gap={1}>
+                                        <Box alignItems="center" data-id="001405" display="flex" gap={1}>
                                             {field.icon && <field.icon />}
                                             <FieldRenderer
-                                                data-id="001406"
                                                 config={field}
+                                                data-id="001406"
                                                 dataId={`header-field-${index + 2}-${fieldIndex}`}
                                                 fontSize="12px"
                                                 fontWeight={600}
@@ -139,7 +139,7 @@ function PanelView({
                                                 textColor="white" />
                                         </Box>
                                         {fieldIndex < (config.header?.fields.length || 0) - 1 && (
-                                            <Text data-id="001407" color="#4A5568" fontSize="16px">•</Text>
+                                            <Text color="#4A5568" data-id="001407" fontSize="16px">•</Text>
                                         )}
                                     </React.Fragment>
                                 ))}
@@ -166,8 +166,8 @@ function PanelView({
                             <Flex data-id="001408" justify="space-between" w="full">
                                 <Box data-id="001409">
                                     <FieldRenderer
-                                        data-id="001410"
                                         config={config.title.primary}
+                                        data-id="001410"
                                         dataId={`title-primary-${index + 2}`}
                                         fontSize="14px"
                                         fontWeight={500}
@@ -193,11 +193,11 @@ function PanelView({
                             </Flex>
 
                             {/* Status section */}
-                            <Flex data-id="001411" alignItems="center" columnGap="10px" mb="8px">
+                            <Flex alignItems="center" columnGap="10px" data-id="001411" mb="8px">
                                 {config.title.secondary && (
                                     <FieldRenderer
-                                        data-id="001412"
                                         config={config.title.secondary}
+                                        data-id="001412"
                                         dataId={`title-secondary-${index + 2}`}
                                         fontSize="18px"
                                         fontWeight={600}
@@ -205,10 +205,10 @@ function PanelView({
                                         textColor="#1A202C" />
                                 )}
 
-                                <Box data-id="001413" alignItems="center" display="flex" mb={0}>
+                                <Box alignItems="center" data-id="001413" display="flex" mb={0}>
                                     <FieldRenderer
-                                        data-id="001414"
                                         config={config.status}
+                                        data-id="001414"
                                         dataId={`status-${index + 2}`}
                                         item={item} />
                                 </Box>
@@ -220,18 +220,18 @@ function PanelView({
                         {/* Details section */}
                         <Box data-id={`panel-details-${index + 2}`} px={4} py={2}>
                             <Box
-                                data-id="001416"
                                 alignItems="center"
+                                data-id="001416"
                                 display="flex"
                                 flexWrap="wrap"
                                 gap={2}>
                                 {config.details.map((detail, detailIndex) => (
                                     <React.Fragment key={detail.key || `detail-${detailIndex}`}>
-                                        <Box data-id="001417" alignItems="center" display="flex" gap={1}>
+                                        <Box alignItems="center" data-id="001417" display="flex" gap={1}>
                                             {detail.icon && <detail.icon />}
                                             <FieldRenderer
-                                                data-id="001418"
                                                 config={detail}
+                                                data-id="001418"
                                                 dataId={`detail-${index + 2}-${detailIndex}`}
                                                 fontSize="12px"
                                                 fontWeight={600}
@@ -239,7 +239,7 @@ function PanelView({
                                                 textColor="#4A5568" />
                                         </Box>
                                         {detailIndex < config.details.length - 1 && (
-                                            <Text data-id="001419" color="#CBD5E0" fontSize="14px" mx={1}>•</Text>
+                                            <Text color="#CBD5E0" data-id="001419" fontSize="14px" mx={1}>•</Text>
                                         )}
                                     </React.Fragment>
                                 ))}
@@ -266,10 +266,10 @@ function PanelView({
                                         {config.linkedItem.label}
                                     </Text>
                                     <Box
-                                        data-id="001421"
                                         background={'#F7FAFC'}
                                         border="1px solid #E2E8F0"
                                         borderRadius={'6px'}
+                                        data-id="001421"
                                         px={'12px'}
                                         py={'8px'}>
                                         {config.linkedItem.render ?

@@ -67,7 +67,7 @@ describe('ArrowUpIcon', () => {
   test('accepts custom props', () => {
     render(
       <TestWrapper data-id="001222">
-        <ArrowUpIcon data-id="001223" boxSize="24px" color="red" data-testid="custom-arrow-up" />
+        <ArrowUpIcon boxSize="24px" color="red" data-id="001223" data-testid="custom-arrow-up" />
       </TestWrapper>,
     );
 
@@ -78,7 +78,7 @@ describe('ArrowUpIcon', () => {
   test('accepts color prop', () => {
     render(
       <TestWrapper data-id="001224">
-        <ArrowUpIcon data-id="001225" color="blue" />
+        <ArrowUpIcon color="blue" data-id="001225" />
       </TestWrapper>,
     );
 
@@ -89,7 +89,7 @@ describe('ArrowUpIcon', () => {
   test('accepts size props', () => {
     render(
       <TestWrapper data-id="001226">
-        <ArrowUpIcon data-id="001227" boxSize="32px" />
+        <ArrowUpIcon boxSize="32px" data-id="001227" />
       </TestWrapper>,
     );
 
@@ -100,7 +100,7 @@ describe('ArrowUpIcon', () => {
   test('accepts className prop', () => {
     render(
       <TestWrapper data-id="001228">
-        <ArrowUpIcon data-id="001229" className="custom-class" />
+        <ArrowUpIcon className="custom-class" data-id="001229" />
       </TestWrapper>,
     );
 
@@ -134,7 +134,7 @@ describe('ArrowUpIcon', () => {
   test('accepts aria attributes', () => {
     render(
       <TestWrapper data-id="001233">
-        <ArrowUpIcon data-id="001234" aria-label="Sort ascending" />
+        <ArrowUpIcon aria-label="Sort ascending" data-id="001234" />
       </TestWrapper>,
     );
 
@@ -173,7 +173,7 @@ describe('ArrowUpIcon', () => {
   test('maintains aspect ratio', () => {
     render(
       <TestWrapper data-id="001242">
-        <ArrowUpIcon data-id="001243" boxSize="28px" />
+        <ArrowUpIcon boxSize="28px" data-id="001243" />
       </TestWrapper>,
     );
 

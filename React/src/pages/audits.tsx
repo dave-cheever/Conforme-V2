@@ -16,6 +16,7 @@ import ChangeViewButton from '../components/ChangeViewButton';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
+import { auditPanelConfig, PanelView } from '../components/PanelView';
 import SortButton from '../components/SortButton';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
@@ -27,7 +28,6 @@ import useSort from '../hooks/useSort';
 import { ExportIcon } from '../icons';
 import { IAudit } from '../interfaces/IAudit';
 import { TViewMode } from '../interfaces/TViewMode';
-import { PanelView, auditPanelConfig } from '../components/PanelView';
 import updateLocalStorageFilter from '../utils/filterStorage';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
@@ -336,35 +336,33 @@ function Audits() {
     return renderEmptyState('000202');
   };
 
-  const renderPanelView = () => {
-    return (
+  const renderPanelView = () => (
       sortedAudits?.length > 0 ?
         <PanelView
-          data-id='000207'
-          items={sortedAudits}
           config={{
             ...auditPanelConfig,
             actions: {
               ...auditPanelConfig.actions,
               primary: {
                 ...auditPanelConfig.actions.primary!,
-                onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`)
-              }
-            }
+                onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`),
+              },
+            },
           }}
+          data-id='000207'
+          items={sortedAudits}
         />
         :
 
         <Flex
-          data-id="000202"
           alignItems="center"
+          data-id="000202"
           fontSize="18px"
           fontStyle="italic"
           h="200px"
           justifyContent="center"
           w="full">No audits found. Try adjusting the filters.</Flex>
-    )
-  };
+    );
 
   // Helper function to render group view
   const renderGroupView = () => {

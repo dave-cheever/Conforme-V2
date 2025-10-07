@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
 
-import { actionPanelConfig } from '../../components/PanelView/configs/actionPanelConfig';
-import { auditPanelConfig } from '../../components/PanelView/configs/auditPanelConfig';
-import { incidentPanelConfig } from '../../components/PanelView/configs/incidentPanelConfig';
-import { trackerPanelConfig } from '../../components/PanelView/configs/trackerPanelConfig';
+import actionPanelConfig from '../../components/PanelView/configs/actionPanelConfig';
+import auditPanelConfig from '../../components/PanelView/configs/auditPanelConfig';
+import incidentPanelConfig from '../../components/PanelView/configs/incidentPanelConfig';
+import trackerPanelConfig from '../../components/PanelView/configs/trackerPanelConfig';
 import { PanelConfig } from '../../interfaces/IPanelConfig';
 
 describe('Panel Configurations', () => {
@@ -43,13 +43,13 @@ describe('Panel Configurations', () => {
       expect(Array.isArray(auditPanelConfig.details)).toBe(true);
       expect(auditPanelConfig.details.length).toBeGreaterThan(0);
 
-      const detailFields = auditPanelConfig.details.map(detail => detail.key);
+      const detailFields = auditPanelConfig.details.map((detail) => detail.key);
       expect(detailFields).toContain('dueDate');
       expect(detailFields).toContain('auditor');
     });
 
     test('has auditor field with custom render function', () => {
-      const auditorField = auditPanelConfig.details.find(detail => detail.key === 'auditor');
+      const auditorField = auditPanelConfig.details.find((detail) => detail.key === 'auditor');
       expect(auditorField).toBeDefined();
       expect(auditorField?.type).toBe('custom');
       expect(auditorField?.render).toBeDefined();
@@ -63,7 +63,7 @@ describe('Panel Configurations', () => {
     });
 
     test('auditor render function handles null and undefined', () => {
-      const auditorField = auditPanelConfig.details.find(detail => detail.key === 'auditor');
+      const auditorField = auditPanelConfig.details.find((detail) => detail.key === 'auditor');
       const renderFunction = auditorField?.render;
 
       expect(renderFunction?.(null, {})).toBe('Unassigned');
@@ -71,12 +71,12 @@ describe('Panel Configurations', () => {
     });
 
     test('auditor render function renders correctly with valid data', () => {
-      const auditorField = auditPanelConfig.details.find(detail => detail.key === 'auditor');
+      const auditorField = auditPanelConfig.details.find((detail) => detail.key === 'auditor');
       const renderFunction = auditorField?.render;
 
       const mockAuditor = {
         displayName: 'John Doe',
-        imgUrl: 'https://example.com/avatar.jpg'
+        imgUrl: 'https://example.com/avatar.jpg',
       };
 
       const result = renderFunction?.(mockAuditor, {});
@@ -104,7 +104,7 @@ describe('Panel Configurations', () => {
       expect(Array.isArray(actionPanelConfig.header?.fields)).toBe(true);
       expect(actionPanelConfig.header?.fields?.length).toBeGreaterThan(0);
 
-      const headerFieldKeys = actionPanelConfig.header?.fields?.map(field => field.key);
+      const headerFieldKeys = actionPanelConfig.header?.fields?.map((field) => field.key);
       expect(headerFieldKeys).toContain('module_type');
       expect(headerFieldKeys).toContain('module_internal_id');
     });
@@ -121,12 +121,12 @@ describe('Panel Configurations', () => {
 
       const statusConfig = actionPanelConfig.status.badgeConfig?.statusConfig;
       expect(statusConfig?.['In Progress']).toBeDefined();
-      expect(statusConfig?.['Completed']).toBeDefined();
-      expect(statusConfig?.['Pending']).toBeDefined();
+      expect(statusConfig?.Completed).toBeDefined();
+      expect(statusConfig?.Pending).toBeDefined();
     });
 
     test('has comprehensive details configuration', () => {
-      const detailFields = actionPanelConfig.details.map(detail => detail.key);
+      const detailFields = actionPanelConfig.details.map((detail) => detail.key);
       expect(detailFields).toContain('action_type');
       expect(detailFields).toContain('action_assigned_to');
       expect(detailFields).toContain('action_end_date_timestamp');
@@ -155,7 +155,7 @@ describe('Panel Configurations', () => {
       expect(incidentPanelConfig.header?.show).toBe(true);
       expect(Array.isArray(incidentPanelConfig.header?.fields)).toBe(true);
 
-      const headerFieldKeys = incidentPanelConfig.header?.fields?.map(field => field.key);
+      const headerFieldKeys = incidentPanelConfig.header?.fields?.map((field) => field.key);
       expect(headerFieldKeys).toContain('hospital_name');
       expect(headerFieldKeys).toContain('ward_location');
       expect(headerFieldKeys).toContain('severity');
@@ -169,13 +169,13 @@ describe('Panel Configurations', () => {
     test('has valid status configuration for incident statuses', () => {
       const statusConfig = incidentPanelConfig.status.badgeConfig?.statusConfig;
       expect(statusConfig?.['IN REVIEW']).toBeDefined();
-      expect(statusConfig?.['Investigation']).toBeDefined();
-      expect(statusConfig?.['Escalated']).toBeDefined();
-      expect(statusConfig?.['Closed']).toBeDefined();
+      expect(statusConfig?.Investigation).toBeDefined();
+      expect(statusConfig?.Escalated).toBeDefined();
+      expect(statusConfig?.Closed).toBeDefined();
     });
 
     test('has comprehensive details configuration', () => {
-      const detailFields = incidentPanelConfig.details.map(detail => detail.key);
+      const detailFields = incidentPanelConfig.details.map((detail) => detail.key);
       expect(detailFields).toContain('description');
       expect(detailFields).toContain('owner');
       expect(detailFields).toContain('people_assigned');
@@ -199,14 +199,12 @@ describe('Panel Configurations', () => {
     test('linked item render function renders correctly with valid data', () => {
       const renderFunction = incidentPanelConfig.linkedItem?.render;
       const mockItem = { id: 'INC-001', title: 'Test Incident' };
-      
+
       const result = renderFunction?.('ACT-001', mockItem);
       expect(result).toBeDefined();
       // Check that result is a React element
       expect(typeof result).toBe('object');
-      if (result && typeof result === 'object' && 'props' in result) {
-        expect(result.props.style).toBeDefined();
-      }
+      if (result && typeof result === 'object' && 'props' in result) expect(result.props.style).toBeDefined();
     });
 
     test('has valid actions configuration', () => {
@@ -252,7 +250,7 @@ describe('Panel Configurations', () => {
       { name: 'auditPanelConfig', config: auditPanelConfig },
       { name: 'actionPanelConfig', config: actionPanelConfig },
       { name: 'incidentPanelConfig', config: incidentPanelConfig },
-      { name: 'trackerPanelConfig', config: trackerPanelConfig }
+      { name: 'trackerPanelConfig', config: trackerPanelConfig },
     ];
 
     for (const { name, config } of configs) {
@@ -285,34 +283,26 @@ describe('Panel Configurations', () => {
 
       test(`${name} has valid field types`, () => {
         const validTypes = ['text', 'badge', 'date', 'user', 'custom'];
-        
+
         // Check title
         expect(validTypes).toContain(config.title.primary.type);
-        if (config.title.secondary) {
-          expect(validTypes).toContain(config.title.secondary.type);
-        }
+        if (config.title.secondary) expect(validTypes).toContain(config.title.secondary.type);
 
         // Check status
         expect(validTypes).toContain(config.status.type);
 
         // Check details
-        for (const detail of config.details) {
-          expect(validTypes).toContain(detail.type);
-        }
+        for (const detail of config.details) expect(validTypes).toContain(detail.type);
 
         // Check header fields if exists
-        if (config.header) {
-          for (const field of config.header.fields) {
-            expect(validTypes).toContain(field.type);
-          }
-        }
+        if (config.header) for (const field of config.header.fields) expect(validTypes).toContain(field.type);
       });
 
       test(`${name} has consistent badge configurations`, () => {
         const fieldsWithBadges = [
           config.status,
-          ...config.details.filter(detail => detail.type === 'badge'),
-          ...(config.header?.fields.filter(field => field.type === 'badge') || [])
+          ...config.details.filter((detail) => detail.type === 'badge'),
+          ...(config.header?.fields.filter((field) => field.type === 'badge') || []),
         ];
 
         const validateStatusConfig = (statusConfig: any) => {
@@ -331,23 +321,14 @@ describe('Panel Configurations', () => {
           }
         };
 
-        for (const field of fieldsWithBadges) {
-          if (field.type === 'badge') {
-            validateBadgeField(field);
-          }
-        }
+        for (const field of fieldsWithBadges) if (field.type === 'badge') validateBadgeField(field);
       });
     }
   });
 
   describe('Type Safety', () => {
     test('all configs conform to PanelConfig interface', () => {
-      const configs: PanelConfig[] = [
-        auditPanelConfig,
-        actionPanelConfig,
-        incidentPanelConfig,
-        trackerPanelConfig
-      ];
+      const configs: PanelConfig[] = [auditPanelConfig, actionPanelConfig, incidentPanelConfig, trackerPanelConfig];
 
       for (const config of configs) {
         // This test will fail at compile time if configs don't match the interface

@@ -29,7 +29,7 @@ function AdminTableHeaderElement({
         </Text>
       </Tooltip>
       {!hideSortIcon && (
-        <Flex data-id="001206" cursor="pointer" onClick={onClick}>
+        <Flex cursor="pointer" data-id="001206" onClick={onClick}>
           {sortOrder === 'desc' ? (
             <ArrowDownIcon
               color={showSortingIcon ? 'adminTableHeaderElement.colorEnabled' : 'adminTableHeaderElement.colorDisabled'}

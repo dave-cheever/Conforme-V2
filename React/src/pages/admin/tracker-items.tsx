@@ -12,6 +12,7 @@ import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElem
 import CloneTrackerItemModal from '../../components/AdminTrackerItemModal/CloneTrackerItemModal';
 import DeleteTrackerItemModal from '../../components/AdminTrackerItemModal/DeleteTrackerItemModal';
 import TrackerItemModal from '../../components/AdminTrackerItemModal/TrackerItemModal';
+import EllipsisMenu from '../../components/EllipsisMenu';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import { useAdminContext } from '../../contexts/AdminProvider';
@@ -392,26 +393,26 @@ function TrackerItemsAdmin() {
                   <Text data-id="000542" w="calc(100% / 4)">
                     {trackerItem.regulatoryBody?.name || '-'}
                   </Text>
-                  <Flex data-id="000543" gap={4} justify="flex-end" w="calc(100% / 4)">
-                    <Copy
-                      _hover={{ stroke: '#FFFFFF' }}
-                      cursor="pointer"
-                      data-id="000544"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openModal('clone', trackerItem);
-                      }}
-                      stroke="#282F36"
-                    />
-                    <Trashcan
-                      _hover={{ stroke: '#FFFFFF' }}
-                      cursor="pointer"
-                      data-id="000545"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openModal('delete', trackerItem);
-                      }}
-                      stroke="#282F36"
+                  <Flex data-id="000543" justify="flex-end" w="calc(100% / 4)">
+                    <EllipsisMenu
+                      data-id="000600"
+                      options={[
+                        {
+                          label: 'Copy',
+                          icon: <Copy boxSize="16px" data-id="001447" stroke="#344054" />,
+                          onClick: () => {
+                            openModal('clone', trackerItem);
+                          },
+                        },
+                        {
+                          label: 'Delete',
+                          icon: <Trashcan boxSize="16px" data-id="001448" stroke="#344054" />,
+                          onClick: () => {
+                            openModal('delete', trackerItem);
+                          },
+                          color: 'red.500',
+                        },
+                      ]}
                     />
                   </Flex>
                 </Flex>

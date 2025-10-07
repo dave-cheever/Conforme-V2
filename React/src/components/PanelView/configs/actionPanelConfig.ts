@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { CalendarIcon, CheckIcon, ComingUpIcon, DetailIcon, ActionTypeIcon, QuestionIcon, WarningIcon } from '../../../icons';
+import { ActionTypeIcon, CalendarIcon, CheckIcon, ComingUpIcon, DetailIcon, QuestionIcon, WarningIcon } from '../../../icons';
 import AuditDetailIcon from '../../../icons/AuditDetailIcon';
 import IncidentIcon from '../../../icons/IncidentIcon';
 import RecordIcon from '../../../icons/RecordIcon';
 import { PanelConfig } from '../../../interfaces/IPanelConfig';
 
-export const actionPanelConfig: PanelConfig = {
+const actionPanelConfig: PanelConfig = {
   header: {
     show: true,
     fields: [
@@ -16,26 +16,27 @@ export const actionPanelConfig: PanelConfig = {
         fallback: 'Unknown Type',
         render: (value: string) => {
           const iconMap = {
-            'Incident': IncidentIcon,
-            'Record': RecordIcon,
-            'default': DetailIcon,
+            Incident: IncidentIcon,
+            Record: RecordIcon,
+            default: DetailIcon,
           };
-          
+
           const Icon = iconMap[value as keyof typeof iconMap] || iconMap.default;
-          
-          return React.createElement('span', {
-            style: { 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '6px',
-              fontSize: '12px',
-              color: 'white',
-              fontWeight: '600',
+
+          return React.createElement(
+            'span',
+            {
+              style: {
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontSize: '12px',
+                color: 'white',
+                fontWeight: '600',
+              },
             },
-          }, [
-            React.createElement(Icon),
-            value || 'Unknown Type',
-          ]);
+            [React.createElement(Icon), value || 'Unknown Type'],
+          );
         },
       },
       {
@@ -56,13 +57,13 @@ export const actionPanelConfig: PanelConfig = {
     ],
   },
   title: {
-    primary: { 
-      key: 'action_title', 
+    primary: {
+      key: 'action_title',
       type: 'text',
       fallback: 'No Title',
     },
-    secondary: { 
-      key: 'action_type', 
+    secondary: {
+      key: 'action_type',
       type: 'text',
       fallback: 'No Type',
     },
@@ -79,13 +80,13 @@ export const actionPanelConfig: PanelConfig = {
           icon: ComingUpIcon,
           text: 'In Progress',
         },
-        'Completed': {
+        Completed: {
           bg: '#10B981',
           color: 'white',
           icon: CheckIcon,
           text: 'Completed',
         },
-        'Pending': {
+        Pending: {
           bg: '#F59E0B',
           color: 'white',
           icon: WarningIcon,
@@ -97,49 +98,49 @@ export const actionPanelConfig: PanelConfig = {
   },
   details: [
     {
-      key: 'action_type', 
-      type: 'text', 
+      key: 'action_type',
+      type: 'text',
       icon: ActionTypeIcon,
       fallback: 'No Type',
     },
-    { 
-      key: 'action_assigned_to', 
-      type: 'user', 
+    {
+      key: 'action_assigned_to',
+      type: 'user',
       icon: DetailIcon,
       fallback: 'Unassigned',
     },
-    { 
-      key: 'action_end_date_timestamp', 
-      type: 'date', 
+    {
+      key: 'action_end_date_timestamp',
+      type: 'date',
       dateFormat: 'd MMM yyyy',
       icon: CalendarIcon,
       fallback: 'No Due Date',
     },
-    { 
-      key: 'action_SLA', 
-      type: 'text', 
+    {
+      key: 'action_SLA',
+      type: 'text',
       icon: QuestionIcon,
       fallback: 'No SLA',
     },
-    { 
-      key: 'action_severity', 
+    {
+      key: 'action_severity',
       type: 'badge',
       badgeConfig: {
         variant: 'solid',
         statusConfig: {
-          'high': {
+          high: {
             bg: '#EF4444',
             color: 'white',
             text: 'High',
             icon: WarningIcon,
           },
-          'medium': {
+          medium: {
             bg: '#F59E0B',
             color: 'white',
             text: 'Medium',
             icon: ComingUpIcon,
           },
-          'low': {
+          low: {
             bg: '#10B981',
             color: 'white',
             text: 'Low',
@@ -154,16 +155,18 @@ export const actionPanelConfig: PanelConfig = {
     primary: {
       label: 'View Action',
       icon: AuditDetailIcon,
-      onClick: (action: any) => {
+      onClick: () => {
         // This will be set by the parent component
         // handled by parent component
       },
     },
     secondary: {
       label: 'Edit Action',
-      onClick: (action: any) => {
+      onClick: () => {
         // Edit handled by parent component
       },
     },
   },
 };
+
+export default actionPanelConfig;

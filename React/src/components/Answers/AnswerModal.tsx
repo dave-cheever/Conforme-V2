@@ -171,21 +171,8 @@ function AnswerModal({
   };
 
   return (
-    <ModalContent
-        bg="actionModal.bg"
-        data-id="000765"
-        h="100%"
-        m="0"
-        overflow="hidden"
-        p={[4, 6]}
-        rounded="0">
-      <ModalHeader
-        alignItems="center"
-        data-id="000766"
-        fontSize="xxl"
-        fontWeight="bold"
-        justifyContent="space-between"
-        p="0">
+    <ModalContent bg="actionModal.bg" data-id="000765" h="100%" m="0" overflow="hidden" p={[4, 6]} rounded="0">
+      <ModalHeader alignItems="center" data-id="000766" fontSize="xxl" fontWeight="bold" justifyContent="space-between" p="0">
         <Flex data-id="000767" justifyContent="space-between">
           <Flex alignItems="center" data-id="000768" fontSize={['14px', '24px']}>
             <Avatar
@@ -194,8 +181,11 @@ function AnswerModal({
               name={answer?.addedBy?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
               rounded="full"
               size="xs"
-              src={answer?.addedBy?.imgUrl} />
-            <Text data-id="000770" noOfLines={1}>{question?.question}</Text>
+              src={answer?.addedBy?.imgUrl}
+            />
+            <Text data-id="000770" noOfLines={1}>
+              {question?.question}
+            </Text>
           </Flex>
           <Flex alignItems="center" data-id="000771">
             <ShareButton
@@ -205,27 +195,15 @@ function AnswerModal({
                 setShareItemUrl(`answers?id=${answer?._id}`);
                 setShareItemName(question?.question);
                 handleShareOpen();
-              }} />
-            <Close
-              cursor="pointer"
-              data-id="000773"
-              h="15px"
-              onClick={closeModal}
-              stroke="answerModal.closeIcon"
-              w="15px" />
+              }}
+            />
+            <Close cursor="pointer" data-id="000773" h="15px" onClick={closeModal} stroke="answerModal.closeIcon" w="15px" />
           </Flex>
         </Flex>
       </ModalHeader>
       <ModalBody data-id="000774" overflowY="auto" p="1rem 0 0 0">
         <Stack data-id="000775" justify="space-between" spacing={2}>
-          <Stack
-            data-id="000776"
-            flexGrow={1}
-            justify="space-between"
-            overflowY="auto"
-            px={2}
-            py={0}
-            spacing={6}>
+          <Stack data-id="000776" flexGrow={1} justify="space-between" overflowY="auto" px={2} py={0} spacing={6}>
             <Stack data-id="000777" spacing={4}>
               <Text data-id="000778" fontSize="smm" fontWeight="semibold">
                 Related {t('audit')}
@@ -239,7 +217,8 @@ function AnswerModal({
                 px={6}
                 py={4}
                 rounded="10px"
-                spacing={2}>
+                spacing={2}
+              >
                 <Stack data-id="000780" overflow="hidden" spacing={1}>
                   <Stack
                     _hover={{
@@ -250,12 +229,9 @@ function AnswerModal({
                     data-id="000781"
                     direction="row"
                     onClick={() => openInNewTab(`/audits/${answer?.audit?._id}`)}
-                    spacing={2}>
-                    <Text
-                      color="answerModal.question.color"
-                      data-id="000782"
-                      fontSize="smm"
-                      noOfLines={1}>
+                    spacing={2}
+                  >
+                    <Text color="answerModal.question.color" data-id="000782" fontSize="smm" noOfLines={1}>
                       {`${answer?.audit?.auditor?.displayName} - ${answer?.audit?.reference}`}
                     </Text>
                     <OpenExternalIcon data-id="000783" fill="transparent" stroke="black" />
@@ -263,11 +239,7 @@ function AnswerModal({
                   <Text color="answerModal.auditType" data-id="000784" fontSize="ssm">
                     {answer?.audit?.auditType?.name}
                   </Text>
-                  <Text
-                    color={`answerModal.status.${answer?.audit?.status}`}
-                    data-id="000785"
-                    fontSize="smm"
-                    fontWeight="semibold">
+                  <Text color={`answerModal.status.${answer?.audit?.status}`} data-id="000785" fontSize="smm" fontWeight="semibold">
                     {`${capitalize(answer?.audit?.status)}`}
                   </Text>
                 </Stack>
@@ -278,10 +250,7 @@ function AnswerModal({
                   ))}
                   {(answer?.attachments || []).length > 2 &&
                     ((answer?.attachments || []).length === 3 ? (
-                      <DocumentThumbnail
-                        data-id="000788"
-                        document={answer!.attachments![2]}
-                        key={answer!.attachments![2].id} />
+                      <DocumentThumbnail data-id="000788" document={answer!.attachments![2]} key={answer!.attachments![2].id} />
                     ) : (
                       <Flex
                         align="center"
@@ -291,7 +260,8 @@ function AnswerModal({
                         h="55px"
                         justify="center"
                         rounded="3px"
-                        w="55px">
+                        w="55px"
+                      >
                         +{(answer?.attachments || []).length - 2}
                       </Flex>
                     ))}
@@ -302,50 +272,36 @@ function AnswerModal({
               <Text data-id="000791" fontSize="smm" fontWeight="semibold">
                 {capitalize(t('question'))} details
               </Text>
-              <Grid
-                columnGap={4}
-                data-id="000792"
-                rowGap={4}
-                templateColumns="repeat(2, 1fr)">
+              <Grid columnGap={4} data-id="000792" rowGap={4} templateColumns="repeat(2, 1fr)">
                 <GridItem data-id="000793">
-                  <Text
-                    color="auditActionForm.labelFont.normal"
-                    data-id="000794"
-                    fontSize="11px"
-                    fontWeight="bold">
+                  <Text color="auditActionForm.labelFont.normal" data-id="000794" fontSize="11px" fontWeight="bold">
                     Type
                   </Text>
-                  <Text data-id="000795" fontSize="13px">{answer?.question?.questionsCategory?.name}</Text>
+                  <Text data-id="000795" fontSize="13px">
+                    {answer?.question?.questionsCategory?.name}
+                  </Text>
                 </GridItem>
                 {answer?.question?.category && (
                   <GridItem data-id="000796">
-                    <Text
-                      color="auditActionForm.labelFont.normal"
-                      data-id="000797"
-                      fontSize="11px"
-                      fontWeight="bold">
+                    <Text color="auditActionForm.labelFont.normal" data-id="000797" fontSize="11px" fontWeight="bold">
                       Category
                     </Text>
-                    <Text data-id="000798" fontSize="13px">{answer?.question?.category?.name}</Text>
+                    <Text data-id="000798" fontSize="13px">
+                      {answer?.question?.category?.name}
+                    </Text>
                   </GridItem>
                 )}
                 <GridItem data-id="000799">
-                  <Text
-                    color="auditActionForm.labelFont.normal"
-                    data-id="000800"
-                    fontSize="11px"
-                    fontWeight="bold">
+                  <Text color="auditActionForm.labelFont.normal" data-id="000800" fontSize="11px" fontWeight="bold">
                     Date added
                   </Text>
-                  <Text data-id="000801" fontSize="13px">{format(new Date(answer?.metatags?.addedAt!), 'd MMM yyyy')}</Text>
+                  <Text data-id="000801" fontSize="13px">
+                    {format(new Date(answer?.metatags?.addedAt!), 'd MMM yyyy')}
+                  </Text>
                 </GridItem>
                 {answer?.creator && (
                   <GridItem data-id="000802">
-                    <Text
-                      color="auditActionForm.labelFont.normal"
-                      data-id="000803"
-                      fontSize="11px"
-                      fontWeight="bold">
+                    <Text color="auditActionForm.labelFont.normal" data-id="000803" fontSize="11px" fontWeight="bold">
                       Created by
                     </Text>
                     <Flex align="center" data-id="000804" direction="row" mt={1}>
@@ -353,7 +309,8 @@ function AnswerModal({
                         data-id="000805"
                         name={answer?.creator?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
                         size="xs"
-                        src={answer?.creator?.imgUrl} />
+                        src={answer?.creator?.imgUrl}
+                      />
                       <Text
                         data-id="000806"
                         fontSize="13px"
@@ -363,28 +320,23 @@ function AnswerModal({
                         pl={3}
                         textOverflow="ellipsis"
                         w="full"
-                        whiteSpace="nowrap">
+                        whiteSpace="nowrap"
+                      >
                         {answer?.creator?.displayName}
                       </Text>
                     </Flex>
                   </GridItem>
                 )}
                 <GridItem data-id="000807">
-                  <Text
-                    color="auditActionForm.labelFont.normal"
-                    data-id="000808"
-                    fontSize="11px"
-                    fontWeight="bold">
+                  <Text color="auditActionForm.labelFont.normal" data-id="000808" fontSize="11px" fontWeight="bold">
                     Unique ID
                   </Text>
-                  <Text data-id="000809" fontSize="13px">{answer?._id}</Text>
+                  <Text data-id="000809" fontSize="13px">
+                    {answer?._id}
+                  </Text>
                 </GridItem>
               </Grid>
-              <Grid
-                columnGap={4}
-                data-id="000810"
-                rowGap={2}
-                templateColumns="repeat(1, 1fr)">
+              <Grid columnGap={4} data-id="000810" rowGap={2} templateColumns="repeat(1, 1fr)">
                 {questionsCategory?.withAnswers ? (
                   <>
                     <GridItem data-id="000811">
@@ -398,7 +350,8 @@ function AnswerModal({
                           required
                           validations={{
                             notEmpty: true,
-                          }} />
+                          }}
+                        />
                       ) : (
                         <Text data-id="000813">{question?.question}</Text>
                       )}
@@ -413,7 +366,8 @@ function AnswerModal({
                         required
                         validations={{
                           notEmpty: true,
-                        }} />
+                        }}
+                      />
                     </GridItem>
                   </>
                 ) : (
@@ -426,7 +380,8 @@ function AnswerModal({
                     required
                     validations={{
                       notEmpty: true,
-                    }} />
+                    }}
+                  />
                 )}
                 {questionsCategory?.useStatus && (
                   <GridItem data-id="000817">
@@ -441,7 +396,8 @@ function AnswerModal({
                         { label: 'Closed', value: 'closed' },
                       ]}
                       stroke="dropdown.icon"
-                      variant="secondaryVariant" />
+                      variant="secondaryVariant"
+                    />
                   </GridItem>
                 )}
                 <GridItem data-id="000819">
@@ -455,7 +411,8 @@ function AnswerModal({
                           falseLabel={name}
                           key={name}
                           name={`options[${setting}]`}
-                          trueLabel={name} />
+                          trueLabel={name}
+                        />
                       ))}
                     </Stack>
                   )}
@@ -470,7 +427,8 @@ function AnswerModal({
                     <DocumentUpload
                       callback={async (uploaded) => appendAttachment(uploaded)}
                       data-id="000824"
-                      elementId={answer?._id || `temp-${question?._id}`} />
+                      elementId={answer?._id || `temp-${question?._id}`}
+                    />
                   </>
                 )}
                 {values.attachments?.map((attachment, i) => (
@@ -480,10 +438,15 @@ function AnswerModal({
                       data-id="000826"
                       document={attachment}
                       downloadable
-                      removable={!!isFormEnabled} />
+                      removable={!!isFormEnabled}
+                    />
                   </Flex>
                 ))}
-                {values.attachments?.length === 0 && !isUserPermittedToModify && <Text data-id="000827" fontSize="sm">No uploaded attachments</Text>}
+                {values.attachments?.length === 0 && !isUserPermittedToModify && (
+                  <Text data-id="000827" fontSize="sm">
+                    No uploaded attachments
+                  </Text>
+                )}
               </Stack>
 
               {Array.isArray(answer?.actions) && answer!.actions!.length > 0 && (
@@ -492,12 +455,7 @@ function AnswerModal({
                     Actions
                   </Text>
                   {answer?.actions?.map((action, index) => (
-                    <ActionListItem
-                      action={action}
-                      data-id="000830"
-                      disabled
-                      index={index}
-                      key={action._id} />
+                    <ActionListItem action={action} data-id="000830" disabled index={index} key={action._id} />
                   ))}
                 </Stack>
               )}
@@ -506,32 +464,29 @@ function AnswerModal({
         </Stack>
       </ModalBody>
       <ModalFooter data-id="000831" p={1}>
-        <Flex
-          data-id="000832"
-          flexBasis="calc(40px + 1rem)"
-          flexShrink={0}
-          justify="space-between"
-          w="full">
+        <Flex data-id="000832" flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" w="full">
           <Can
             action="answers.delete"
-            data-id="000833"
             data={{ answer, audit: answer?.audit }}
+            data-id="000833"
             // eslint-disable-next-line react/no-unstable-nested-components
             yes={() => (
               <Button
-                data-id="000834"
                 bg="answerModal.buttons.secondary.bg"
                 color="answerModal.buttons.secondary.color"
+                data-id="000834"
                 fontSize="smm"
                 fontWeight="700"
                 h="40px"
                 ml={3}
                 onClick={handleDeleteQuestionModalOpen}
                 rounded="10px"
-                w="fit-content">
+                w="fit-content"
+              >
                 Delete
               </Button>
-            )} />
+            )}
+          />
           <Spacer data-id="000835" />
           {(isFormEnabled || canChangeStatus) && (
             <Button
@@ -544,13 +499,10 @@ function AnswerModal({
               h="40px"
               ml={3}
               onClick={handlePrimaryButtonClick}
-              rightIcon={<Icon
-                as={TickIcon}
-                data-id="000837"
-                size={24}
-                stroke="answerModal.buttons.primary.icon" />}
+              rightIcon={<Icon as={TickIcon} data-id="000837" size={24} stroke="answerModal.buttons.primary.icon" />}
               rounded="10px"
-              w="fit-content">
+              w="fit-content"
+            >
               Update
             </Button>
           )}

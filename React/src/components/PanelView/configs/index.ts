@@ -1,4 +1,4 @@
-export { actionPanelConfig } from './actionPanelConfig';
-export { auditPanelConfig } from './auditPanelConfig';
-export { incidentPanelConfig } from './incidentPanelConfig';
-export { trackerPanelConfig } from './trackerPanelConfig';
+export { default as actionPanelConfig } from './actionPanelConfig';
+export { default as auditPanelConfig } from './auditPanelConfig';
+export { default as incidentPanelConfig } from './incidentPanelConfig';
+export { default as trackerPanelConfig } from './trackerPanelConfig';

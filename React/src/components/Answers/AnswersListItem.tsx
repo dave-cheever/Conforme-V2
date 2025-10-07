@@ -122,8 +122,8 @@ function AnswersListItem({
             data-id="000086"
             label={
               answer?.audit?.auditType?.businessUnitScope === 'audit'
-                ? answer?.audit?.businessUnit?.name ?? '-'
-                : answer?.businessUnit?.name ?? '-'
+                ? (answer?.audit?.businessUnit?.name ?? '-')
+                : (answer?.businessUnit?.name ?? '-')
             }
           >
             <Flex data-id="000087" flexDir="column" w="12%">
@@ -142,8 +142,8 @@ function AnswersListItem({
                 textOverflow="ellipsis"
               >
                 {answer?.audit?.auditType?.businessUnitScope === 'audit'
-                  ? answer?.audit?.businessUnit?.name ?? '-'
-                  : answer?.businessUnit?.name ?? '-'}
+                  ? (answer?.audit?.businessUnit?.name ?? '-')
+                  : (answer?.businessUnit?.name ?? '-')}
               </Flex>
             </Flex>
           </Tooltip>
@@ -188,15 +188,15 @@ function AnswersListItem({
           <Flex data-id="000102" justify="flex-end" pr={1} w="6%">
             <Can
               action="answers.delete"
-              data-id="000103"
               data={{ answer, audit }}
+              data-id="000103"
               // eslint-disable-next-line react/no-unstable-nested-components
               yes={() => (
                 <IconButton
-                  data-id="000104"
                   _hover={{ opacity: 0.7 }}
                   aria-label="Delete"
                   bg="none"
+                  data-id="000104"
                   icon={<Trashcan data-id="000105" stroke="auditsList.iconColor" />}
                   minWidth="none"
                   onClick={() => onOpen()}

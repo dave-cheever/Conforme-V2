@@ -11,6 +11,7 @@ import ChangeViewButton from '../components/ChangeViewButton';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
+import { PanelView, trackerPanelConfig } from '../components/PanelView';
 import SortButton from '../components/SortButton';
 import TrackerItemsGroup from '../components/TrackerItem/TrackerItemsGroup';
 import TrackerItemsList from '../components/TrackerItem/TrackerItemsList';
@@ -18,13 +19,13 @@ import TrackerItemSquare from '../components/TrackerItem/TrackerItemSquare';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
+import useNavigate from '../hooks/useNavigate';
 import useSort from '../hooks/useSort';
+import { IResponse } from '../interfaces/IResponse';
 import { TViewMode } from '../interfaces/TViewMode';
 import updateLocalStorageFilter from '../utils/filterStorage';
 import { removeEmptyArraysAndObjects } from '../utils/helpers';
-import { PanelView, trackerPanelConfig } from '../components/PanelView';
-import useNavigate from '../hooks/useNavigate';
-import { IResponse } from '../interfaces/IResponse';
+
 const InfiniteScrollComponent = InfiniteScroll as unknown as React.FC<any>;
 
 const GET_RESPONSES_TOTALS = gql`
@@ -400,18 +401,18 @@ function TrackerItems() {
             ) :
             viewMode === 'panel' && (
               <PanelView
-              data-id='000207'
-              items={responses}
               config={{
                 ...trackerPanelConfig,
                 actions: {
                   ...trackerPanelConfig.actions,
                   primary: {
                     ...trackerPanelConfig.actions.primary!,
-                    onClick: (response: IResponse) => navigateTo(`/responses/${response._id}`)
-                  }
-                }
+                    onClick: (response: IResponse) => navigateTo(`/responses/${response._id}`),
+                  },
+                },
               }}
+              data-id='000207'
+              items={responses}
             />
             )
             }
