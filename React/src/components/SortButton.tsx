@@ -27,33 +27,22 @@ function SortButton({
               _hover={{}}
               as={Button}
               bg="sortButton.menuButtonBg"
-              border={"1px solid #CBD5E0"}
+              border={'1px solid #CBD5E0'}
               data-id="000476"
               fontSize="14px"
               fontWeight="700"
               h="40px"
-              leftIcon={<UpAndDownIcon
-                color="sortButton.rightIcon"
-                data-id="000477"
-                h="12px"
-                mt="3px"
-                transform="rotate(90deg)"
-                w="12px" />}
+              leftIcon={<UpAndDownIcon color="sortButton.rightIcon" data-id="000477" h="12px" mt="3px" w="12px" />}
               ml={['15px', '0']}
-              rounded="10px">
+              rounded="10px"
+            >
               <Flex align="center" data-id="000478" mr="1">
                 <Text data-id="000479" fontSize="14px" fontWeight="semi_medium">
                   Sort by
                 </Text>
               </Flex>
             </MenuButton>
-            <MenuList
-              border="none"
-              boxShadow="simple"
-              data-id="000480"
-              rounded="lg"
-              w="100px"
-              zIndex={2}>
+            <MenuList border="none" boxShadow="simple" data-id="000480" rounded="lg" w="100px" zIndex={2}>
               {sortBy.map((sortItem) => (
                 <Flex data-id="000481" key={sortItem.key} px={3} py={2}>
                   <Box data-id="000482">
@@ -75,14 +64,16 @@ function SortButton({
                         onClose();
                       }}
                       rounded="5px"
-                      w="30px">
+                      w="30px"
+                    >
                       <ChevronRight
                         color={sortType === sortItem.key && sortOrder === 'asc' ? 'sortButton.icon.active' : 'sortButton.icon.default'}
                         cursor="pointer"
                         data-id="000487"
                         h="12px"
                         transform="rotate(-90deg)"
-                        w="12px" />
+                        w="12px"
+                      />
                     </Flex>
                     <Spacer data-id="000488" />
                     <Flex
@@ -97,14 +88,16 @@ function SortButton({
                         onClose();
                       }}
                       rounded="5px"
-                      w="30px">
+                      w="30px"
+                    >
                       <ChevronRight
                         color={sortType === sortItem.key && sortOrder === 'desc' ? 'sortButton.icon.active' : 'sortButton.icon.default'}
                         cursor="pointer"
                         data-id="000490"
                         h="12px"
                         transform="rotate(90deg)"
-                        w="12px" />
+                        w="12px"
+                      />
                     </Flex>
                   </HStack>
                 </Flex>

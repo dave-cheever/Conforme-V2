@@ -4,7 +4,7 @@ import { IconButton, Stack, Tooltip } from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
-import { ListIcon } from '../icons';
+import { GridIcon, GroupIcon, ListIcon } from '../icons';
 import PanelIcon from '../icons/PanelIcon';
 import { TViewMode } from '../interfaces/TViewMode';
 
@@ -26,10 +26,9 @@ function ChangeViewButton({
       setViewMode('panel');
       return;
     }
-    
+
     const savedView = localStorage.getItem('viewMode') as TViewMode;
-    if (savedView && ['list', 'panel'].includes(savedView) && views.includes(savedView))
-      setViewMode(savedView);
+    if (savedView && ['list', 'panel'].includes(savedView) && views.includes(savedView)) setViewMode(savedView);
     else if (user?.role === 'admin') setViewMode('panel');
     else setViewMode(viewMode);
   }, [user, device]);
@@ -49,8 +48,10 @@ function ChangeViewButton({
 
   const viewIcon = useMemo(
     () => ({
+      grid: GridIcon,
+      group: GroupIcon,
       list: ListIcon,
-      panel: PanelIcon
+      panel: PanelIcon,
     }),
     [],
   );
@@ -58,33 +59,25 @@ function ChangeViewButton({
   if (device === 'mobile') return null;
 
   return (
-    <Stack
-      align="center"
-      data-id="000213"
-      direction="row"
-      ml={['15px', '0']}
-      spacing={2}>
+    <Stack align="center" data-id="000213" direction="row" ml={['15px', '0']} spacing={2}>
       {views.map((mode) => {
         const Icon = viewIcon[mode];
         return (
-          <Tooltip
-            data-id="000214"
-            key={mode}
-            label={`Switch to ${mode} view`}
-            placement="top">
+          <Tooltip data-id="000214" key={mode} label={`Switch to ${mode} view`} placement="top">
             <IconButton
               _hover={{ bg: 'gray.100' }}
               aria-label={mode}
-              bg={viewMode === mode ? '#F3F0FE' : 'trackerItems.header.menuButtonBg'}
-              border={viewMode === mode ?"1px solid #462AC4 ":"1px solid #CBD5E0 "}
-              borderRadius={"md"}
-              color={viewMode === mode ? '#462AC4' : 'gray.500'}
+              bg={viewMode === mode ? '#0068A314' : 'trackerItems.header.menuButtonBg'}
+              border={viewMode === mode ? '1px solid #0068A3 ' : '1px solid #CBD5E0 '}
+              borderRadius={'md'}
+              color={viewMode === mode ? '#0068A3' : 'gray.500'}
               data-id="000215"
               icon={<Icon boxSize="18px" data-id="000216" stroke="currentColor" />}
               onClick={() => changeViewMode(mode)}
               rounded="md"
               size="md"
-              variant="ghost" />
+              variant="ghost"
+            />
           </Tooltip>
         );
       })}

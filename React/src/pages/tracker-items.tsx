@@ -10,7 +10,6 @@ import pluralize from 'pluralize';
 import ChangeViewButton from '../components/ChangeViewButton';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
 import Header from '../components/Header';
-import Loader from '../components/Loader';
 import { PanelView, trackerPanelConfig } from '../components/PanelView';
 import SortButton from '../components/SortButton';
 import TrackerItemsList from '../components/TrackerItem/TrackerItemsList';
@@ -323,21 +322,23 @@ function TrackerItems() {
         mobileBreadcrumbs={[pluralize(t('tracker item'))]}
         pageLabel={capitalize(t('tracker item'))}
       >
-        <AssignedToMeFilter data-id="001205" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
-        {device !== 'mobile' && (
-          <>
-            <ChangeViewButton data-id="000289" setViewMode={setViewMode} viewMode={viewMode} views={['list', 'panel']} />
-            <Divider borderColor="gray.300" data-id="000290" height="30px" mt={1} mx={4} orientation="vertical" />
-            <SortButton
-              data-id="000291"
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortBy={sortBy}
-              sortOrder={sortOrder}
-              sortType={sortType}
-            />
-          </>
-        )}
+        <Flex data-id="001521" direction="row" justifyContent="space-between" pl="6" w="full">
+          <AssignedToMeFilter data-id="001205" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
+          {device !== 'mobile' && (
+            <Flex data-id="001522" direction="row">
+              <ChangeViewButton data-id="000289" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group', 'panel']} />
+              <Divider borderColor="gray.300" data-id="000290" height="30px" mt={1} mx={4} orientation="vertical" />
+              <SortButton
+                data-id="000291"
+                setSortOrder={setSortOrder}
+                setSortType={setSortType}
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                sortType={sortType}
+              />
+            </Flex>
+          )}
+        </Flex>
       </Header>
       <Flex data-id="000292" direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4}>
         {error ? (
@@ -362,21 +363,20 @@ function TrackerItems() {
             )}
             {viewMode === 'panel' && (
               <PanelView
-              config={{
-                ...trackerPanelConfig,
-                actions: {
-                  ...trackerPanelConfig.actions,
-                  primary: {
-                    ...trackerPanelConfig.actions.primary!,
-                    onClick: (response: IResponse) => navigateTo(`/responses/${response._id}`),
+                config={{
+                  ...trackerPanelConfig,
+                  actions: {
+                    ...trackerPanelConfig.actions,
+                    primary: {
+                      ...trackerPanelConfig.actions.primary!,
+                      onClick: (response: IResponse) => navigateTo(`/responses/${response._id}`),
+                    },
                   },
-                },
-              }}
-              data-id='000207'
-              items={responses}
-            />
-            )
-            }
+                }}
+                data-id="000207"
+                items={responses}
+              />
+            )}
           </>
         )}
       </Flex>
@@ -391,8 +391,8 @@ export const trackerItemStyles = {
     header: {
       menuButtonBg: 'white',
       rightIcon: '#9A9EA1',
-      menuItemFocus: '#462AC4',
-      menuItemFontSelected: '#462AC4',
+      menuItemFocus: '#0068A314',
+      menuItemFontSelected: '#0068A3',
       menuItemFont: '#9A9EA1',
     },
   },

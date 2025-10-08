@@ -242,11 +242,8 @@ function Audits() {
 
     // Safely check for auditorsIds array and userId match
     const auditorsIds = (filtersValues?.usersIds?.value as any)?.auditorsIds;
-    if (Array.isArray(auditorsIds) && auditorsIds.length === 1 && auditorsIds[0] === user?.userId)
-      setAssignedToMe(true);
-    else
-      setAssignedToMe(false);
-
+    if (Array.isArray(auditorsIds) && auditorsIds.length === 1 && auditorsIds[0] === user?.userId) setAssignedToMe(true);
+    else setAssignedToMe(false);
   }, [filtersValues, user?.userId]);
 
   useEffect(() => {
@@ -297,7 +294,6 @@ function Audits() {
     </Flex>
   );
 
-
   // Helper function to render list view
   const renderListView = () => {
     if (sortedAudits.length > 0) {
@@ -315,34 +311,28 @@ function Audits() {
     return renderEmptyState('000202');
   };
 
-  const renderPanelView = () => (
-      sortedAudits?.length > 0 ?
-        <PanelView
-          config={{
-            ...auditPanelConfig,
-            actions: {
-              ...auditPanelConfig.actions,
-              primary: {
-                ...auditPanelConfig.actions.primary!,
-                onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`),
-              },
+  const renderPanelView = () => {
+    return sortedAudits?.length > 0 ? (
+      <PanelView
+        data-id="000207"
+        items={sortedAudits}
+        config={{
+          ...auditPanelConfig,
+          actions: {
+            ...auditPanelConfig.actions,
+            primary: {
+              ...auditPanelConfig.actions.primary!,
+              onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`),
             },
-          }}
-          data-id='000207'
-          items={sortedAudits}
-        />
-        :
-
-        <Flex
-          alignItems="center"
-          data-id="000202"
-          fontSize="18px"
-          fontStyle="italic"
-          h="200px"
-          justifyContent="center"
-          w="full">No audits found. Try adjusting the filters.</Flex>
+          },
+        }}
+      />
+    ) : (
+      <Flex data-id="000202" alignItems="center" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
+        No audits found. Try adjusting the filters.
+      </Flex>
     );
-
+  };
 
   // Helper function to render main content
   const renderMainContent = () => {
@@ -370,39 +360,44 @@ function Audits() {
         <AuditModal data-id="000188" refetch={refetch} />
       </Modal>
       <Header breadcrumbs={[pluralize(t('audit'))]} data-id="000189" mobileBreadcrumbs={[pluralize(t('audit'))]}>
-        <AssignedToMeFilter data-id="001204" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
-        <ChangeViewButton data-id="000190" setViewMode={setViewMode} viewMode={viewMode} views={['list', 'panel']} />
+        <Flex data-id="001519" direction="row" justifyContent="space-between" pl="6" w="full">
+          <AssignedToMeFilter data-id="001204" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
 
-        {device !== 'mobile' && (
-          <CSVLinkComponent data={csvData} data-id="000191" filename="audits.csv" headers={csvHeaders} target="_blank">
-            <Button
-              _hover={{
-                bg: 'reasponseHeader.buttonLightBgHover',
-                color: 'reasponseHeader.buttonLightColorHover',
-                cursor: 'pointer',
-                '&:hover svg path': { stroke: 'white' },
-              }}
-              bg="white"
-              borderRadius="10px"
-              data-id="000192"
-              display="none"
-              ml="15px"
-              rightIcon={<ExportIcon data-id="000193" height="15px" width="15px" />}
-            >
-              <Text data-id="000194" fontSize="smm" fontWeight="bold">
-                Export
-              </Text>
-            </Button>
-          </CSVLinkComponent>
-        )}
-        <SortButton
-          data-id="000195"
-          setSortOrder={setSortOrder}
-          setSortType={setSortType}
-          sortBy={sortBy}
-          sortOrder={sortOrder}
-          sortType={sortType}
-        />
+          <Flex data-id="001520" direction="row">
+            <ChangeViewButton data-id="000190" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group', 'panel']} />
+
+            {device !== 'mobile' && (
+              <CSVLinkComponent data={csvData} data-id="000191" filename="audits.csv" headers={csvHeaders} target="_blank">
+                <Button
+                  _hover={{
+                    bg: 'reasponseHeader.buttonLightBgHover',
+                    color: 'reasponseHeader.buttonLightColorHover',
+                    cursor: 'pointer',
+                    '&:hover svg path': { stroke: 'white' },
+                  }}
+                  bg="white"
+                  borderRadius="10px"
+                  data-id="000192"
+                  display="none"
+                  ml="15px"
+                  rightIcon={<ExportIcon data-id="000193" height="15px" width="15px" />}
+                >
+                  <Text data-id="000194" fontSize="smm" fontWeight="bold">
+                    Export
+                  </Text>
+                </Button>
+              </CSVLinkComponent>
+            )}
+            <SortButton
+              data-id="000195"
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+              sortType={sortType}
+            />
+          </Flex>
+        </Flex>
       </Header>
       <Flex data-id="000196" h={['calc(100vh - 80px)', 'full']} overflow="auto" pb={[4, 0]}>
         {renderMainContent()}
