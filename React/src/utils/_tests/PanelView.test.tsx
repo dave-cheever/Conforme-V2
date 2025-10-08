@@ -7,6 +7,11 @@ import { CheckIcon, WarningIcon } from '../../icons';
 import AuditDetailIcon from '../../icons/AuditDetailIcon';
 import { PanelConfig } from '../../interfaces/IPanelConfig';
 
+// Mock the useDevice hook
+vi.mock('../../hooks/useDevice', () => ({
+  default: () => 'desktop',
+}));
+
 // Mock data for testing
 const mockAuditData = [
   {

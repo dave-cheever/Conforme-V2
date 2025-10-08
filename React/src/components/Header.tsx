@@ -67,12 +67,12 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
   );
 
   return (
-    <Flex align="center" background="#ffffff" data-id="000275" h={['60px', '70px']} pb="10px" position="relative" zIndex="2">
-      <Flex data-id="000276" justify="space-between" w="full">
-        <Flex data-id="000277" display="flex" flexShrink={0} ml="5">
+    <Flex align="center" background="#ffffff" data-id="000275" h={['20vh', '20vh', '70px']} pb="10px" position="relative" zIndex="2">
+      <Flex data-id="000276"  display={'flex'} rowGap={['10px', '20px', '0']} padding={['14px', '14px', '0']} flexDirection={['column', 'column', 'row']} justify="space-between" w="full">
+        <Flex data-id="000277" display="flex" flexShrink={0} ml={[0, 0, "5"]}>
           {breadCrumbs.map(renderBreadcrumb)}
         </Flex>
-        <Flex data-id="000278" justify="flex-end" mr="15px" w="full">
+        <Flex data-id="000278" justify={['space-between', "space-between", "flex-end"]} mr={[0, 0, "15px"]} w="full">
           {children}
         </Flex>
         {usedFilters && isAuditPage && usedFilters.length > 0 && <FilterButton data-id="000279" />}
@@ -87,7 +87,7 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
                   <Divider
                     borderColor="gray.300"
                     data-id="000281"
-                    display={['none', 'block']}
+                    display={['none', 'none', 'block']}
                     height="30px"
                     ml={0}
                     mr={5}
@@ -109,15 +109,15 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
                   fontWeight={'500'}
                   h={['42px', '40px']}
                   leftIcon={<AddIcon data-id="000283" h={['10px', '17px']} stroke="navigationTop.addIcon" w={['10px', '17px']} />}
-                  ml={['0', '4']}
-                  mr={['6rem', '0']}
+                  ml={['0', '0', '4']}
+                  mr={['6rem', '0', '0']}
                   onClick={() => {
                     const targetUrl = item?.url === '/dashboards' ? '/admin/tracker-items' : item?.url;
                     navigateTo(targetUrl || '');
                     setAdminModalState('add');
                   }}
                   position={['fixed', 'relative']}
-                  right={['0', usedFilters.length > 0 ? '15' : '25']}
+                  right={['0', '0', usedFilters.length > 0 ? '15' : '25']}
                   rounded={['10px', '8px']}
                   w={['auto']}
                   zIndex={5}

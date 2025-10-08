@@ -4,7 +4,7 @@ import { IconButton, Stack, Tooltip } from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
-import { GridIcon, GroupIcon, ListIcon } from '../icons';
+import { ListIcon } from '../icons';
 import PanelIcon from '../icons/PanelIcon';
 import { TViewMode } from '../interfaces/TViewMode';
 
@@ -21,15 +21,25 @@ function ChangeViewButton({
   const device = useDevice();
 
   useEffect(() => {
+    // On mobile, always use panel view
+    if (device === 'mobile') {
+      setViewMode('panel');
+      return;
+    }
+    
     const savedView = localStorage.getItem('viewMode') as TViewMode;
-    if (savedView && ['grid', 'list', 'group'].includes(savedView) && views.includes(savedView))
+    if (savedView && ['list', 'panel'].includes(savedView) && views.includes(savedView))
       setViewMode(savedView);
-    else if (user?.role === 'admin') setViewMode('list');
+    else if (user?.role === 'admin') setViewMode('panel');
     else setViewMode(viewMode);
-  }, [user]);
+  }, [user, device]);
 
   useEffect(() => {
-    if (device === 'mobile') setViewMode('grid');
+    if (device === 'mobile') {
+      setViewMode('panel');
+      // Clear any saved view mode on mobile to ensure panel is always used
+      localStorage.removeItem('viewMode');
+    }
   }, [device]);
 
   const changeViewMode = useCallback((_viewMode: TViewMode) => {
@@ -39,10 +49,8 @@ function ChangeViewButton({
 
   const viewIcon = useMemo(
     () => ({
-      grid: GridIcon,
       list: ListIcon,
-      group: GroupIcon,
-      panel: PanelIcon,
+      panel: PanelIcon
     }),
     [],
   );

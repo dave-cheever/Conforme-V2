@@ -11,7 +11,7 @@ function AssignedToMeFilter({ isChecked, onToggle }: AssignedToMeFilterProps) {
   };
 
   return (
-    <HStack align="center" data-id="000155" ml="2px" mt={2} paddingEnd={4} spacing={2}>
+    <HStack align="center" data-id="000155" ml={[0, "2px"]} mt={[0,2]} paddingEnd={4} spacing={2}>
       <Checkbox
         _checked={{
           bg: '#0068A3',
@@ -25,7 +25,7 @@ function AssignedToMeFilter({ isChecked, onToggle }: AssignedToMeFilterProps) {
         onChange={handleChange}
         size="md"
       />
-      <Text color="#2D3748" cursor="pointer" data-id="000156" fontSize="14px" fontWeight="medium" onClick={() => onToggle(!isChecked)}>
+      <Text color="#2D3748" cursor="pointer" data-id="000156" fontSize={["12px", "14px"]} fontWeight="medium" onClick={() => onToggle(!isChecked)}>
         Show only assigned to me
       </Text>
     </HStack>

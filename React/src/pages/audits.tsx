@@ -3,14 +3,12 @@ import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
+import { Button, Flex, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
 
-import AuditsGroup from '../components/Audit/AuditsGroup';
 import AuditsList from '../components/Audit/AuditsList';
-import AuditSquare from '../components/Audit/AuditSquare';
 import AuditModal from '../components/AuditModal/AuditModal';
 import ChangeViewButton from '../components/ChangeViewButton';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
@@ -133,7 +131,7 @@ function Audits() {
     { label: 'Auditor', key: 'auditor.displayName' },
     { label: 'Date submitted', key: 'completedDate' },
   ];
-  const [viewMode, setViewMode] = useState<TViewMode>('grid');
+  const [viewMode, setViewMode] = useState<TViewMode>('panel');
 
   const handleAssignedToMeToggle = (isChecked: boolean) => {
     setAssignedToMe(isChecked);
@@ -299,25 +297,6 @@ function Audits() {
     </Flex>
   );
 
-  // Helper function to render grid view
-  const renderGridView = () => (
-    <Grid
-      data-id="000198"
-      display={['grid', 'grid', 'flex']}
-      flexWrap="wrap"
-      gap={[4, 4, 6]}
-      h="fit-content"
-      pb={[14, 8]}
-      pt="3"
-      px={[4, 8]}
-      templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
-      w="full"
-    >
-      {sortedAudits.length > 0
-        ? sortedAudits.map((audit) => <AuditSquare audit={audit} data-id="000199" key={audit._id} />)
-        : renderEmptyState('000200')}
-    </Grid>
-  );
 
   // Helper function to render list view
   const renderListView = () => {
@@ -364,24 +343,17 @@ function Audits() {
           w="full">No audits found. Try adjusting the filters.</Flex>
     );
 
-  // Helper function to render group view
-  const renderGroupView = () => {
-    if (sortedAudits.length > 0) return <AuditsGroup audits={sortedAudits} data-id="000203" />;
-
-    return renderEmptyState('000204');
-  };
 
   // Helper function to render main content
   const renderMainContent = () => {
     if (loading) return <Loader center data-id="000197" />;
 
-    if (viewMode === 'grid') return renderGridView();
-
     if (viewMode === 'list') return renderListView();
 
     if (viewMode === 'panel') return renderPanelView();
 
-    return renderGroupView();
+    // Default to panel view
+    return renderPanelView();
   };
 
   return (
@@ -399,7 +371,7 @@ function Audits() {
       </Modal>
       <Header breadcrumbs={[pluralize(t('audit'))]} data-id="000189" mobileBreadcrumbs={[pluralize(t('audit'))]}>
         <AssignedToMeFilter data-id="001204" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
-        <ChangeViewButton data-id="000190" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group', 'panel']} />
+        <ChangeViewButton data-id="000190" setViewMode={setViewMode} viewMode={viewMode} views={['list', 'panel']} />
 
         {device !== 'mobile' && (
           <CSVLinkComponent data={csvData} data-id="000191" filename="audits.csv" headers={csvHeaders} target="_blank">

@@ -3,14 +3,14 @@ import { createIcon } from '@chakra-ui/icons';
 const EllipsisIcon = createIcon({
   path: (
     <>
-      <circle cx="4" cy="12" data-id="001369" fill="currentColor" r="2" />
-      <circle cx="12" cy="12" data-id="001370" fill="currentColor" r="2" />
-      <circle cx="20" cy="12" data-id="001371" fill="currentColor" r="2" />
+      <circle data-id="000111" cx="4" cy="12" r="2" fill="currentColor" />
+      <circle data-id="000112" cx="12" cy="12" r="2" fill="currentColor" />
+      <circle data-id="000113" cx="20" cy="12" r="2" fill="currentColor" />
     </>
   ),
   viewBox: '0 0 24 24',
   defaultProps: {
-    boxSize: '16px',
+    boxSize: '18px',
   },
 });
 

@@ -1,9 +1,11 @@
 import React from 'react';
 
-import { Badge, Box, Button, Divider, Flex, Text } from '@chakra-ui/react';
+import { Badge, Box, Button, Divider, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { get } from 'lodash';
 
+import useDevice from '../../hooks/useDevice';
+import { EllipsisIcon } from '../../icons';
 import { PanelFieldConfig, PanelViewProps } from '../../interfaces/IPanelConfig';
 
 // Utility function to get nested object values
@@ -20,7 +22,7 @@ const formatDate = (date: any, formatString: string = 'd MMM yyyy'): string => {
 };
 
 // Component to render individual field values
-function FieldRenderer({ config, item, fontSize, textColor, fontWeight, dataId }: { readonly config: PanelFieldConfig; readonly item: any; readonly fontSize?: string; readonly textColor?: string, readonly fontWeight?: number, readonly dataId?: string }) {
+function FieldRenderer({ config, item, fontSize, textColor, fontWeight, dataId, noOfLines, overflow, textOverflow, whiteSpace }: { readonly config: PanelFieldConfig; readonly item: any; readonly fontSize?: string | string[]; readonly textColor?: string, readonly fontWeight?: number, readonly dataId?: string, readonly noOfLines?: number | number[], readonly overflow?: string | string[], readonly textOverflow?: string | string[], readonly whiteSpace?: string | string[] }) {
     const value = getNestedValue(item, config.key);
 
     if (config.render) return <>{config.render(value, item)}</>;
@@ -29,10 +31,14 @@ function FieldRenderer({ config, item, fontSize, textColor, fontWeight, dataId }
         case 'text': {
             return (
                 <Text
+                    data-id={dataId || "001402"}
                     color={textColor || "#4A5568"}
-                    data-id="001402"
                     fontSize={fontSize || "14px"}
-                    fontWeight={fontWeight || "normal"}>
+                    fontWeight={fontWeight || "normal"}
+                    noOfLines={noOfLines}
+                    overflow={overflow}
+                    textOverflow={textOverflow}
+                    whiteSpace={whiteSpace}>
                     {value || config.fallback || '-'}
                 </Text>
             );
@@ -54,7 +60,7 @@ function FieldRenderer({ config, item, fontSize, textColor, fontWeight, dataId }
                     colorScheme={colorScheme}
                     data-id={dataId}
                     display="flex"
-                    fontSize="12px"
+                    fontSize={['10px', '12px']}
                     gap={1}
                     padding={'5px 12px'}
                     rounded={'50px'}
@@ -100,6 +106,9 @@ function PanelView({
     config,
     containerProps = { bg: '#F7FAFC', p: '14px', gap: '24px' },
 }: Readonly<PanelViewProps>) {
+    const device = useDevice();
+    const isMobile = device === 'mobile';
+
     return (
         <Box
             as="main"
@@ -163,49 +172,95 @@ function PanelView({
 
                         {/* Header with title and primary action */}
                         <Box borderTopLeftRadius={'12px'} borderTopRightRadius={'12px'} data-id={`panel-header-${index + 2}`} p={4}>
-                            <Flex data-id="001408" justify="space-between" w="full">
+                            <Flex
+                                data-id="001408"
+                                justify="space-between"
+                                w="full"
+                                mb={['10px', '0px', '0px']}
+                            >
                                 <Box data-id="001409">
                                     <FieldRenderer
                                         config={config.title.primary}
                                         data-id="001410"
                                         dataId={`title-primary-${index + 2}`}
-                                        fontSize="14px"
+                                        fontSize={["14px", "16px"]}
                                         fontWeight={500}
                                         item={item}
                                         textColor="#4A5568" />
                                 </Box>
                                 {config.actions.primary && (
-                                    <Button
-                                        background="white"
-                                        borderColor="#CBD5E0"
-                                        borderWidth="1px"
-                                        data-id={`action-button-${index + 2}`}
-                                        fontSize="12px"
-                                        fontWeight="normal"
-                                        height="28px"
-                                        leftIcon={config.actions.primary.icon ? <config.actions.primary.icon /> : undefined}
-                                        onClick={() => config.actions.primary?.onClick(item)}
-                                        padding="0px 8px"
-                                    >
-                                        {config.actions.primary.label}
-                                    </Button>
+                                    isMobile ? (
+                                        /* Mobile Dropdown */
+                                        (<Menu data-id="001517">
+                                            <MenuButton
+                                                as={IconButton}
+                                                aria-label="Actions"
+                                                background="white"
+                                                borderColor="#CBD5E0"
+                                                borderWidth="1px"
+                                                data-id={`action-dropdown-${index + 2}`}
+                                                height="28px"
+                                                icon={<EllipsisIcon data-id="001518" />}
+                                                variant="outline"
+                                            />
+                                            <MenuList data-id="001519">
+                                                <MenuItem
+                                                    data-id={`action-menu-item-${index + 2}`}
+                                                    icon={config.actions.primary.icon ? <config.actions.primary.icon /> : undefined}
+                                                    onClick={() => config.actions.primary?.onClick(item)}
+                                                >
+                                                    {config.actions.primary.label}
+                                                </MenuItem>
+                                                {config.actions.secondary && (
+                                                    <MenuItem
+                                                        data-id={`secondary-action-menu-item-${index + 2}`}
+                                                        onClick={() => config.actions.secondary?.onClick(item)}
+                                                    >
+                                                        {config.actions.secondary.label}
+                                                    </MenuItem>
+                                                )}
+                                            </MenuList>
+                                        </Menu>)
+                                    ) : (
+                                        /* Desktop Button */
+                                        (<Button
+                                            background="white"
+                                            borderColor="#CBD5E0"
+                                            borderWidth="1px"
+                                            data-id={`action-button-${index + 2}`}
+                                            fontSize="12px"
+                                            fontWeight="normal"
+                                            height="28px"
+                                            leftIcon={config.actions.primary.icon ? <config.actions.primary.icon /> : undefined}
+                                            onClick={() => config.actions.primary?.onClick(item)}
+                                            padding="0px 8px"
+                                        >
+                                            {config.actions.primary.label}
+                                        </Button>)
+                                    )
                                 )}
                             </Flex>
 
                             {/* Status section */}
-                            <Flex alignItems="center" columnGap="10px" data-id="001411" mb="8px">
+                            <Flex data-id="001411" alignItems="center" justifyContent={['space-between', 'flex-start', 'flex-start']} columnGap="10px" mb="8px">
                                 {config.title.secondary && (
-                                    <FieldRenderer
-                                        config={config.title.secondary}
-                                        data-id="001412"
-                                        dataId={`title-secondary-${index + 2}`}
-                                        fontSize="18px"
-                                        fontWeight={600}
-                                        item={item}
-                                        textColor="#1A202C" />
+                                    <Box data-id="001520" minW="0" maxW={['200px', 'none', 'none']}>
+                                        <FieldRenderer
+                                            data-id="001412"
+                                            config={config.title.secondary}
+                                            dataId={`title-secondary-${index + 2}`}
+                                            fontSize={["16px", "18px"]}
+                                            fontWeight={600}
+                                            item={item}
+                                            textColor="#1A202C"
+                                            noOfLines={[1, 0, 0]}
+                                            overflow={['hidden', 'undefined', 'undefined']}
+                                            textOverflow={['ellipsis', 'undefined', 'undefined']}
+                                            whiteSpace={['nowrap', 'undefined', 'undefined']} />
+                                    </Box>
                                 )}
 
-                                <Box alignItems="center" data-id="001413" display="flex" mb={0}>
+                                <Box data-id="001413" alignItems="center" display="flex" mb={0} flexShrink={0}>
                                     <FieldRenderer
                                         config={config.status}
                                         data-id="001414"
@@ -266,12 +321,12 @@ function PanelView({
                                         {config.linkedItem.label}
                                     </Text>
                                     <Box
+                                        data-id="001521"
                                         background={'#F7FAFC'}
                                         border="1px solid #E2E8F0"
-                                        borderRadius={'6px'}
-                                        data-id="001421"
-                                        px={'12px'}
-                                        py={'8px'}>
+                                        borderRadius={{ base: "4px", md: "6px" }}
+                                        px={{ base: "10px", md: "12px" }}
+                                        py={{ base: "6px", md: "8px" }}>
                                         {config.linkedItem.render ?
                                             config.linkedItem.render(getNestedValue(item, config.linkedItem.fieldKey), item) :
                                             <Text color="#3182CE" data-id={`linked-value-${index + 2}`} fontSize="14px" fontWeight="500">

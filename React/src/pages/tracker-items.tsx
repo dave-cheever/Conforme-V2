@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
-import { Divider, Flex, Grid } from '@chakra-ui/react';
+import { Divider, Flex } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize, uniqBy } from 'lodash';
 import pluralize from 'pluralize';
@@ -13,9 +13,7 @@ import Header from '../components/Header';
 import Loader from '../components/Loader';
 import { PanelView, trackerPanelConfig } from '../components/PanelView';
 import SortButton from '../components/SortButton';
-import TrackerItemsGroup from '../components/TrackerItem/TrackerItemsGroup';
 import TrackerItemsList from '../components/TrackerItem/TrackerItemsList';
-import TrackerItemSquare from '../components/TrackerItem/TrackerItemSquare';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
@@ -149,7 +147,7 @@ function TrackerItems() {
     { label: 'Responsible', key: 'responsible.displayName' },
     { label: capitalize(t('business unit')), key: 'businessUnit.name' },
   ];
-  const [viewMode, setViewMode] = useState<TViewMode>('grid');
+  const [viewMode, setViewMode] = useState<TViewMode>('panel');
   const [total, setTotal] = useState(1);
 
   const { data: totalCompliantResponses } = useQuery(GET_RESPONSES_TOTALS, {
@@ -328,7 +326,7 @@ function TrackerItems() {
         <AssignedToMeFilter data-id="001205" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
         {device !== 'mobile' && (
           <>
-            <ChangeViewButton data-id="000289" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group', 'panel']} />
+            <ChangeViewButton data-id="000289" setViewMode={setViewMode} viewMode={viewMode} views={['list', 'panel']} />
             <Divider borderColor="gray.300" data-id="000290" height="30px" mt={1} mx={4} orientation="vertical" />
             <SortButton
               data-id="000291"
@@ -349,40 +347,6 @@ function TrackerItems() {
         ) : (
           <>
             {' '}
-            {viewMode === 'grid' && (
-              <InfiniteScrollComponent
-                data-id="000294"
-                hasMore={!loading && responses.length < total}
-                initialLoad={false}
-                loadMore={loadResponses}
-                useWindow={false}
-              >
-                <Grid
-                  bg="#fff"
-                  data-id="000295"
-                  gap={6}
-                  justifyItems="center"
-                  pb={[0, 8]}
-                  pt={3}
-                  px={[4, 8]}
-                  templateColumns={['1fr', 'repeat(auto-fit, minmax(240px, 1fr))', 'repeat(auto-fit, minmax(240px, 1fr))']}
-                >
-                  {(() => {
-                    if (responses.length) return responses.map((r) => <TrackerItemSquare data-id="000296" key={r._id} response={r} />);
-
-                    if (!loading) {
-                      return (
-                        <Flex data-id="000297" fontSize="18px" fontStyle="italic" h="full" w="full">
-                          No {pluralize(t('tracker item'))} found
-                        </Flex>
-                      );
-                    }
-                    return null;
-                  })()}
-                </Grid>
-                {loading && <Loader center data-id="000298" h="60px" />}
-              </InfiniteScrollComponent>
-            )}
             {viewMode === 'list' && (
               <TrackerItemsList
                 data-id="000299"
@@ -396,10 +360,7 @@ function TrackerItems() {
                 total={total}
               />
             )}
-            {viewMode === 'group' ? (
-              <TrackerItemsGroup data-id="000300" loading={loading} loadResponses={loadResponses} responses={responses} total={total} />
-            ) :
-            viewMode === 'panel' && (
+            {viewMode === 'panel' && (
               <PanelView
               config={{
                 ...trackerPanelConfig,

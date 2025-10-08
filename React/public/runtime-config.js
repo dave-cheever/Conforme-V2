@@ -6,4 +6,13 @@ window.__ENV = Object.assign({}, window.__ENV, {
   VITE_MARKER_IO_PROJECT_ID: undefined,
 });
 
+// For local development, we need to set the API URL to the local server
+// Simply uncomment the following and comment the above
+
+// window.__ENV = Object.assign({}, window.__ENV, {
+//   VITE_API_URL: 'http://localhost:9000',
+//   VITE_CLIENT_URL: 'http://localhost:3303',
+//   VITE_MARKER_IO_PROJECT_ID: undefined,
+// });
+
 

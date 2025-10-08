@@ -100,7 +100,7 @@ vi.mock('@apollo/client', async () => {
 
 // 6) Light stubs for heavy children
 vi.mock('../../components/Audit/AuditModal', () => ({ default: () => <div data-id="001349" data-testid="audit-modal" /> }));
-vi.mock('../../components/Audit/AuditsGroup', () => ({ default: () => <div data-id="001350" data-testid="audits-group" /> }));
+// Removed AuditsGroup mock as group view was removed
 vi.mock('../../components/Audit/AuditsList', () => ({ default: () => <div data-id="001351" data-testid="audits-list" /> }));
 vi.mock('../../components/Audit/AuditSquare', () => ({ default: () => <div data-id="001352" data-testid="audit-square" /> }));
 vi.mock('../../components/Loader', () => ({ default: () => <div data-id="001353" data-testid="loader" /> }));
@@ -157,10 +157,10 @@ vi.mock('../../components/ChangeViewButton', () => ({
     <div data-id="001362" data-testid="change-view">
       <button
         data-id="001363"
-        data-testid="to-group"
-        onClick={() => setViewMode('group')}
-        type="button">
-        group
+        type="button"
+        data-testid="to-panel"
+        onClick={() => setViewMode('panel')}>
+        panel
       </button>
       <button
         data-id="001364"
@@ -275,22 +275,22 @@ describe('Audits – assignedToMe, filters, and new render helpers', () => {
     expect(screen.getByTestId('loader')).toBeInTheDocument();
   });
 
-  test('renderGroupView: empty state when sortedAudits is empty', async () => {
+  test('renderPanelView: empty state when sortedAudits is empty', async () => {
     const user = userEvent.setup();
     MOCK_SORTED_AUDITS = []; // nothing to show
     renderPage();
 
-    await user.click(screen.getByTestId('to-group'));
+    await user.click(screen.getByTestId('to-panel'));
     // empty state text rendered by renderEmptyState('000204')
     expect(screen.getByText(/No audits found\. Try adjusting the filters\./i)).toBeInTheDocument();
   });
 
-  test('renderGroupView: shows AuditsGroup when sortedAudits has items', async () => {
+  test('renderPanelView: shows PanelView when sortedAudits has items', async () => {
     const user = userEvent.setup();
     MOCK_SORTED_AUDITS = [{ _id: 'a1', auditor: { displayName: 'X' } }];
     renderPage();
 
-    await user.click(screen.getByTestId('to-group'));
-    expect(screen.getByTestId('audits-group')).toBeInTheDocument();
+    await user.click(screen.getByTestId('to-panel'));
+    expect(screen.getByRole('main')).toBeInTheDocument();
   });
 });

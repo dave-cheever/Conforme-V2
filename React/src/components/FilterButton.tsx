@@ -20,7 +20,7 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
       h="40px"
       justify="space-between"
       minW="120px"
-      mr={!insightsFilter ? [6, 6, 4] : undefined}
+      mr={insightsFilter ? undefined : [0, 0, 4]}
       onClick={() => setShowFiltersPanel(!showFiltersPanel)}
       px={4}
     >
