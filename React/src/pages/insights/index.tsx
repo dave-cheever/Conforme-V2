@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
 import FilterButton from '../../components/FilterButton';
+import FilterPills from '../../components/FilterPills';
 import QuickFilters from '../../components/Filters/QuickFilters';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
@@ -16,7 +17,7 @@ import ActionsInsights from './actions';
 import AnswersInsights from './answers';
 import AuditsInsights from './audits';
 
-const GET_QUESTIONS_CATEGORIES = gql`
+export const GET_QUESTIONS_CATEGORIES = gql`
   query ($questionsCategoryQuery: QuestionsCategoryQuery) {
     questionsCategories(questionsCategoryQuery: $questionsCategoryQuery) {
       _id
@@ -47,10 +48,7 @@ function Insights() {
       ...(data?.questionsCategories ?? []).map((questionsCategory) => ({
         _id: questionsCategory?._id,
         name: questionsCategory?.name,
-        component: <AnswersInsights
-          answerType={questionsCategory?.name}
-          data-id="000705"
-          questionsCategoriesId={questionsCategory?._id} />,
+        component: <AnswersInsights answerType={questionsCategory?.name} data-id="000705" questionsCategoriesId={questionsCategory?._id} />,
         usedFilters: ['questionsCategoriesIds', 'businessUnitsIds', 'usersIds', 'locationsIds', 'status', 'createdDate'],
       })),
       {
@@ -64,6 +62,16 @@ function Insights() {
   );
   const [selectedPanel, setSelectedPanel] = useState(0);
 
+  // Create pills for FilterPills component
+  const insightPills = useMemo(
+    () =>
+      panels.map((panel) => ({
+        _id: panel._id,
+        name: panel.name,
+      })),
+    [panels],
+  );
+
   useEffect(() => {
     setUsedFilters(panels[selectedPanel]?.usedFilters ?? []);
 
@@ -74,92 +82,65 @@ function Insights() {
   }, [selectedPanel]);
 
   return (
-    <Flex
-        data-id="000707"
-        direction="column"
-        h="full"
-        isolation="isolate"
-        overflowY="hidden"
-        zIndex="1">
-      <Header
-        breadcrumbs={['Insights']}
-        data-id="000708"
-        mobileBreadcrumbs={['Insights']}>
+    <Flex data-id="000707" direction="column" h="full" isolation="isolate" overflowY="hidden" zIndex="1">
+      <Header breadcrumbs={['Insights']} data-id="000708" mobileBreadcrumbs={['Insights']}>
         {device === 'mobile' && <FilterButton data-id="000709" insightsFilter />}
-
       </Header>
       {device !== 'mobile' && (
-        <Flex
-          data-id="000710"
-          h="max-content"
-          pl={['4', '8', '8']}
-          position="relative"
-          zIndex="2">
-          <QuickFilters
-            data-id="000711"
-            w={['full', 'calc(100% - 64px)', 'calc(100% - 64px)']} />
+        <Flex data-id="000710" h="max-content" pl={['4', '8', '8']} position="relative" zIndex="2">
+          <QuickFilters data-id="000711" w={['full', 'calc(100% - 64px)', 'calc(100% - 64px)']} />
         </Flex>
       )}
-      {error ? (
-        <Text data-id="000712">{error.message}</Text>
-      ) : loading ? (
-        <Loader center data-id="000713" />
-      ) : (
-        <Flex
-          data-id="000714"
-          direction="column"
-          overflowY="scroll"
-          pt="3"
-          px={[4, 8]}>
-          <Tabs
-            data-id="000715"
-            defaultIndex={selectedPanel}
-            isLazy
-            onChange={(index) => setSelectedPanel(index)}
-            variant="unstyled"
-            w="full">
-            <TabList
-              data-id="000716"
-              overflowX="auto"
-              sx={{
-                '::-webkit-scrollbar': {
-                  display: 'none',
+      {(() => {
+        if (error) 
+          return <Text data-id="000712">{error.message}</Text>;
+        
+        if (loading) 
+          return <Loader center data-id="000713" />;
+        
+        return (
+          <Flex data-id="000714" direction="column" overflowY="scroll" pt="3" px={[4, 8]}>
+            <FilterPills
+              data-id="000715"
+              onPillChange={setSelectedPanel}
+              panelMarginLeft={['0', '0']}
+              panelPadding={['0', '0']}
+              pills={insightPills}
+              selectedIndex={selectedPanel}
+              tabListProps={{
+                overflowX: 'auto',
+                sx: {
+                  '::-webkit-scrollbar': {
+                    display: 'none',
+                  },
                 },
+                whiteSpace: 'nowrap',
               }}
-              whiteSpace="nowrap"
+              tabPanelProps={{
+                w: 'full',
+                p: 0,
+                px: 0,
+                ml: 0,
+              }}
+              tabPanelsProps={{
+                w: 'full',
+              }}
+              tabProps={{
+                minW: 'fit-content',
+                px: 4,
+              }}
+              tabsProps={{
+                w: 'full',
+              }}
             >
-              {panels?.map((panel) => (
-                <Tab
-                  _hover={{
-                    opacity: 0.8,
-                  }}
-                  _selected={{
-                    bg: 'insights.tabBg',
-                    color: 'insights.tabColor',
-                  }}
-                  borderRadius="10px"
-                  data-id="000717"
-                  fontSize="14px"
-                  fontWeight="600"
-                  key={panel._id}
-                  minW="fit-content"
-                  mr={[1, 2]}
-                  px={4} // ensures decent padding for mobile
-                >
-                  {panel.name}
-                </Tab>
-              ))}
-            </TabList>
-            <TabPanels data-id="000718">
-              {panels?.map((panel) => (
-                <TabPanel data-id="000719" key={panel._id} px={0}>
-                  {panel.component}
-                </TabPanel>
-              ))}
-            </TabPanels>
-          </Tabs>
-        </Flex>
-      )}
+              {(pill, index) => {
+                const panel = panels[index];
+                return panel?.component;
+              }}
+            </FilterPills>
+          </Flex>
+        );
+      })()}
     </Flex>
   );
 }
@@ -175,8 +156,6 @@ export const insightsStyles = {
       menuItemFontSelected: '#462AC4',
       menuItemFont: '#9A9EA1',
     },
-    tabBg: '#462AC4',
-    tabColor: '#FFFFFF',
     secondaryText: '#787486',
   },
 };

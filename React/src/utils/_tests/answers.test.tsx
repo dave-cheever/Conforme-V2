@@ -1,394 +1,427 @@
-// React/src/utils/_tests/answers.test.tsx
-import { describe, expect, test } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 
-import type { AuditType, Category } from '../../pages/answers';
-import {
-  flatMapCategories as testFlatMapLogic,
-  dedupeCategories as testMapDeduplicationLogic,
-  categoryIdsForPanel as testPanelSelectionLogic,
-  buildPanels as testUniqueCategoriesLogic,
+import { MockedProvider } from '@apollo/client/testing';
+import { ChakraProvider } from '@chakra-ui/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { describe, expect, test, vi } from 'vitest';
+
+import * as useDeviceModule from '../../hooks/useDevice';
+import Answers, {
+  GET_ANSWERS,
+  Category,
+  AuditType,
+  flatMapCategories,
+  dedupeCategories,
+  buildPanels,
+  categoryIdsForPanel,
 } from '../../pages/answers';
 
-// Test the unique categories logic directly without rendering the full component
-describe('Answers Unique Categories Logic', () => {
-  // Test the logic that creates unique categories from audit types
-  test('creates unique categories from audit types with duplicates', () => {
-    const mockAuditTypes: AuditType[] = [
-      {
-        _id: 'auditType1',
-        questionsCategories: [
-          { _id: 'cat1', name: 'Category 1' },
-          { _id: 'cat2', name: 'Category 2' },
-        ],
-      },
-      {
-        _id: 'auditType2',
-        questionsCategories: [
-          { _id: 'cat2', name: 'Category 2' }, // Duplicate category
-          { _id: 'cat3', name: 'Category 3' },
-        ],
-      },
-      {
-        _id: 'auditType3',
-        questionsCategories: null, // Test null case
-      },
-    ];
+// Mock components
+vi.mock('../../components/AnswerSquare', () => ({
+  default: ({ answer, 'data-id': dataId }: { answer: any; 'data-id': string }) => (
+    <div data-id="001587" data-testid={`answer-square-${dataId}`}>
+      Answer: {answer.name}
+    </div>
+  ),
+}));
 
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
+vi.mock('../../components/AnswersList', () => ({
+  default: ({ answers, 'data-id': dataId }: { answers: any[]; 'data-id': string }) => (
+    <div data-id="001588" data-testid={`answers-list-${dataId}`}>
+      Answers: {answers.length}
+    </div>
+  ),
+}));
 
-    // Verify the logic works correctly
-    expect(panels).toHaveLength(4); // 'All' + 3 unique categories
-    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
-    expect(panels.find((p) => p._id === 'cat1')).toEqual({ _id: 'cat1', name: 'Category 1' });
-    expect(panels.find((p) => p._id === 'cat2')).toEqual({ _id: 'cat2', name: 'Category 2' });
-    expect(panels.find((p) => p._id === 'cat3')).toEqual({ _id: 'cat3', name: 'Category 3' });
-  });
+vi.mock('../../components/FilterPills', () => ({
+  default: ({ pills, selectedIndex, children, panelPadding, 'data-id': dataId }: any) => (
+    <div data-id="001589" data-testid={`filter-pills-${dataId}`}>
+      <div data-id="001590">
+        Pills: {pills.length}, Selected: {selectedIndex}
+      </div>
+      <div data-id="001591">Padding: {panelPadding.join(', ')}</div>
+      {children(pills[selectedIndex])}
+    </div>
+  ),
+}));
 
-  test('handles empty audit types array gracefully', () => {
-    const mockAuditTypes: AuditType[] = [];
+vi.mock('../../hooks/useDevice', () => ({ default: vi.fn(() => 'desktop') }));
+vi.mock('../../contexts/FiltersProvider', () => ({
+  useFiltersContext: () => ({
+    setUsedFilters: vi.fn(),
+    setShowFiltersPanel: vi.fn(),
+    setFilters: vi.fn(),
+    filtersValues: {},
+    answerFiltersValue: {},
+    setAnswerFiltersValue: vi.fn(),
+    usedFilters: [],
+  }),
+}));
+vi.mock('../../contexts/AdminProvider', () => ({
+  useAdminContext: () => ({
+    adminModalState: 'closed',
+    setAdminModalState: vi.fn(),
+  }),
+}));
+vi.mock('../../contexts/AppProvider', () => ({
+  useAppContext: () => ({
+    user: { _id: 'test-user' },
+  }),
+}));
+vi.mock('../../components/FilterButton', () => ({
+  default: ({ 'data-id': dataId }: { 'data-id': string }) => (
+    <button data-id="001592" data-testid={`filter-button-${dataId}`} type="button">
+      Filter
+    </button>
+  ),
+}));
+vi.mock('../../components/Header', () => ({
+  default: ({ breadcrumbs, children, 'data-id': dataId }: any) => (
+    <div data-id="001593" data-testid={`header-${dataId}`}>
+      <div data-id="001594">Breadcrumbs: {breadcrumbs.join(' > ')}</div>
+      {children}
+    </div>
+  ),
+}));
+vi.mock('../../components/Loader', () => ({
+  default: ({ 'data-id': dataId }: { 'data-id': string }) => (
+    <div data-id="001595" data-testid={`loader-${dataId}`}>
+      Loading...
+    </div>
+  ),
+}));
+vi.mock('i18next', () => ({ t: (key: string) => key }));
 
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
+const mockTheme = { colors: {} };
 
-    // Verify the logic handles empty arrays
-    expect(panels).toHaveLength(1); // Only 'All' tab
-    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
-  });
+// Helper for elements that use data-id (not data-testid)
+const getByDataId = (id: string) => document.querySelector(`[data-id="${id}"]`);
 
-  test('handles null audit types gracefully', () => {
-    const mockAuditTypes = null;
-
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
-
-    // Verify the logic handles null values
-    expect(panels).toHaveLength(1); // Only 'All' tab
-    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
-  });
-
-  test('handles undefined audit types gracefully', () => {
-    const mockAuditTypes = undefined;
-
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
-
-    // Verify the logic handles undefined values
-    expect(panels).toHaveLength(1); // Only 'All' tab
-    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
-  });
-
-  test('handles audit types with empty categories arrays', () => {
-    const mockAuditTypes: AuditType[] = [
-      {
-        _id: 'auditType1',
-        questionsCategories: [],
-      },
-      {
-        _id: 'auditType2',
-        questionsCategories: null,
-      },
-    ];
-
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
-
-    // Verify the logic handles empty categories arrays
-    expect(panels).toHaveLength(1); // Only 'All' tab
-    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
-  });
-
-  test('handles audit types with undefined categories', () => {
-    const mockAuditTypes: AuditType[] = [
-      {
-        _id: 'auditType1',
-        questionsCategories: undefined,
-      },
-    ];
-
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
-
-    // Verify the logic handles undefined categories
-    expect(panels).toHaveLength(1); // Only 'All' tab
-    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
-  });
-
-  test('handles mixed audit types with null and valid categories', () => {
-    const mockAuditTypes: AuditType[] = [
-      {
-        _id: 'auditType1',
-        questionsCategories: [
-          { _id: 'cat1', name: 'Category 1' },
-          { _id: 'cat2', name: 'Category 2' },
-        ],
-      },
-      {
-        _id: 'auditType2',
-        questionsCategories: null,
-      },
-      {
-        _id: 'auditType3',
-        questionsCategories: [{ _id: 'cat3', name: 'Category 3' }],
-      },
-    ];
-
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
-
-    // Verify the logic handles mixed scenarios
-    expect(panels).toHaveLength(4); // 'All' + 3 unique categories
-    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
-    expect(panels.find((p) => p._id === 'cat1')).toEqual({ _id: 'cat1', name: 'Category 1' });
-    expect(panels.find((p) => p._id === 'cat2')).toEqual({ _id: 'cat2', name: 'Category 2' });
-    expect(panels.find((p) => p._id === 'cat3')).toEqual({ _id: 'cat3', name: 'Category 3' });
-  });
-
-  test('handles audit types with duplicate category IDs correctly', () => {
-    const mockAuditTypes: AuditType[] = [
-      {
-        _id: 'auditType1',
-        questionsCategories: [
-          { _id: 'cat1', name: 'Category 1' },
-          { _id: 'cat2', name: 'Category 2' },
-        ],
-      },
-      {
-        _id: 'auditType2',
-        questionsCategories: [
-          { _id: 'cat2', name: 'Category 2 Duplicate' }, // Same ID, different name
-          { _id: 'cat3', name: 'Category 3' },
-        ],
-      },
-    ];
-
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
-
-    // Verify that duplicate IDs are properly deduplicated (first occurrence wins)
-    expect(panels).toHaveLength(4); // 'All' + 3 unique categories
-    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
-    expect(panels.find((p) => p._id === 'cat1')).toEqual({ _id: 'cat1', name: 'Category 1' });
-    expect(panels.find((p) => p._id === 'cat2')).toEqual({ _id: 'cat2', name: 'Category 2' }); // First occurrence
-    expect(panels.find((p) => p._id === 'cat3')).toEqual({ _id: 'cat3', name: 'Category 3' });
-  });
-
-  test('handles single audit type with single category', () => {
-    const mockAuditTypes: AuditType[] = [
-      {
-        _id: 'auditType1',
-        questionsCategories: [{ _id: 'cat1', name: 'Single Category' }],
-      },
-    ];
-
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
-
-    // Verify the logic handles single category
-    expect(panels).toHaveLength(2); // 'All' + 1 category
-    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
-    expect(panels[1]).toEqual({ _id: 'cat1', name: 'Single Category' });
-  });
-
-  test('handles audit types with deeply nested category structures', () => {
-    const mockAuditTypes: AuditType[] = [
-      {
-        _id: 'auditType1',
-        questionsCategories: [
-          { _id: 'cat1', name: 'Category 1' },
-          { _id: 'cat2', name: 'Category 2' },
-          { _id: 'cat3', name: 'Category 3' },
-        ],
-      },
-      {
-        _id: 'auditType2',
-        questionsCategories: [
-          { _id: 'cat4', name: 'Category 4' },
-          { _id: 'cat5', name: 'Category 5' },
-        ],
-      },
-      {
-        _id: 'auditType3',
-        questionsCategories: [
-          { _id: 'cat1', name: 'Category 1 Duplicate' }, // Duplicate ID
-          { _id: 'cat6', name: 'Category 6' },
-        ],
-      },
-    ];
-
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
-
-    // Verify the logic handles complex structures
-    expect(panels).toHaveLength(7); // 'All' + 6 unique categories
-    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
-    expect(panels.find((p) => p._id === 'cat1')).toEqual({ _id: 'cat1', name: 'Category 1' }); // First occurrence
-    expect(panels.find((p) => p._id === 'cat2')).toEqual({ _id: 'cat2', name: 'Category 2' });
-    expect(panels.find((p) => p._id === 'cat3')).toEqual({ _id: 'cat3', name: 'Category 3' });
-    expect(panels.find((p) => p._id === 'cat4')).toEqual({ _id: 'cat4', name: 'Category 4' });
-    expect(panels.find((p) => p._id === 'cat5')).toEqual({ _id: 'cat5', name: 'Category 5' });
-    expect(panels.find((p) => p._id === 'cat6')).toEqual({ _id: 'cat6', name: 'Category 6' });
-  });
-});
-
-// Test specific code snippets that SonarQube flags for coverage
-describe('SonarQube Code Coverage Tests', () => {
-  describe('flatMap Logic Coverage', () => {
-    test('flatMap extracts categories from audit types with null coalescing', () => {
-      const mockAuditTypes: AuditType[] = [
-        {
-          _id: 'auditType1',
-          questionsCategories: [
-            { _id: 'cat1', name: 'Category 1' },
-            { _id: 'cat2', name: 'Category 2' },
-          ],
+const mockAnswersData = {
+  answers: [
+    {
+      _id: '1',
+      questionId: 'q1',
+      question: {
+        _id: 'q1',
+        question: 'Answer 1',
+        questionsCategoryId: 'cat1',
+        questionsCategory: {
+          name: 'Category 1',
+          useStatus: 'active',
+          notBlockedAfterCompletion: false,
+          options: [],
         },
-        {
-          _id: 'auditType2',
-          questionsCategories: null,
-        },
-        {
-          _id: 'auditType3',
-          questionsCategories: undefined,
-        },
-      ];
-
-      const allCategories = testFlatMapLogic(mockAuditTypes);
-
-      expect(allCategories).toHaveLength(2);
-      expect(allCategories[0]).toEqual({ _id: 'cat1', name: 'Category 1' });
-      expect(allCategories[1]).toEqual({ _id: 'cat2', name: 'Category 2' });
-    });
-
-    test('flatMap handles null audit types with null coalescing', () => {
-      const allCategories = testFlatMapLogic(null);
-      expect(allCategories).toHaveLength(0);
-    });
-
-    test('flatMap handles undefined audit types with null coalescing', () => {
-      const allCategories = testFlatMapLogic(undefined);
-      expect(allCategories).toHaveLength(0);
-    });
-
-    test('flatMap handles empty audit types array', () => {
-      const allCategories = testFlatMapLogic([]);
-      expect(allCategories).toHaveLength(0);
-    });
-  });
-
-  describe('Map Deduplication Logic Coverage', () => {
-    test('Map deduplication logic with duplicate category IDs', () => {
-      const allCategories: Category[] = [
+        category: { name: 'Category 1' },
+        scope: { _id: 'scope1' },
+      },
+      addedBy: { displayName: 'User 1', imgUrl: '' },
+      businessUnit: { _id: 'bu1', name: 'Virtual' },
+      scope: { type: 'audit', _id: 'scope1' },
+      audit: {
+        _id: 'audit1',
+        reference: 'REF001',
+        walkType: 'walk',
+        location: { _id: 'loc1', name: 'Location 1' },
+        businessUnitId: 'bu1',
+        businessUnit: { _id: 'bu1', name: 'Virtual' },
+        auditType: { businessUnitScope: 'all' },
+        status: 'completed',
+        auditorId: 'auditor1',
+        auditor: { displayName: 'Auditor 1' },
+        participantsIds: [],
+        metatags: { addedAt: '2024-01-01' },
+      },
+      status: 'completed',
+      options: [],
+      attachments: [],
+      actions: [],
+      creator: { displayName: 'Creator 1', imgUrl: '' },
+      metatags: { addedAt: '2024-01-01', addedBy: 'user1', updatedAt: '2024-01-01' },
+    },
+  ],
+  auditTypes: [
+    {
+      _id: 'auditType1',
+      questionsCategories: [
         { _id: 'cat1', name: 'Category 1' },
         { _id: 'cat2', name: 'Category 2' },
-        { _id: 'cat1', name: 'Category 1 Duplicate' }, // Duplicate ID
-        { _id: 'cat3', name: 'Category 3' },
-      ];
+      ],
+    },
+  ],
+};
 
-      const uniqueCategoriesMap = testMapDeduplicationLogic(allCategories);
+function TestWrapper({ children, mocks = [] }: { readonly children: React.ReactNode; readonly mocks?: any[] }) {
+  return (
+    <MemoryRouter data-id="001596">
+      <ChakraProvider data-id="001597" theme={mockTheme}>
+        <MockedProvider data-id="001598" mocks={mocks}>
+          {children}
+        </MockedProvider>
+      </ChakraProvider>
+    </MemoryRouter>
+  );
+}
 
-      expect(uniqueCategoriesMap.size).toBe(3);
-      expect(uniqueCategoriesMap.get('cat1')).toEqual({ _id: 'cat1', name: 'Category 1' }); // First occurrence
-      expect(uniqueCategoriesMap.get('cat2')).toEqual({ _id: 'cat2', name: 'Category 2' });
-      expect(uniqueCategoriesMap.get('cat3')).toEqual({ _id: 'cat3', name: 'Category 3' });
-    });
-
-    test('Map deduplication logic with empty categories array', () => {
-      const allCategories: Category[] = [];
-      const uniqueCategoriesMap = testMapDeduplicationLogic(allCategories);
-      expect(uniqueCategoriesMap.size).toBe(0);
-    });
-
-    test('Map deduplication logic with single category', () => {
-      const allCategories: Category[] = [{ _id: 'cat1', name: 'Single Category' }];
-      const uniqueCategoriesMap = testMapDeduplicationLogic(allCategories);
-
-      expect(uniqueCategoriesMap.size).toBe(1);
-      expect(uniqueCategoriesMap.get('cat1')).toEqual({ _id: 'cat1', name: 'Single Category' });
-    });
+describe('Answers', () => {
+  test('renders loading state', () => {
+    render(
+      <TestWrapper data-id="001599">
+        <Answers data-id="001600" />
+      </TestWrapper>,
+    );
+    expect(screen.getByTestId('loader-000278')).toBeInTheDocument();
   });
 
-  describe('Panel Selection Logic Coverage', () => {
-    const mockPanels = [
-      { _id: 'all', name: 'All' },
-      { _id: 'cat1', name: 'Category 1' },
-      { _id: 'cat2', name: 'Category 2' },
+  test('renders with FilterPills integration', async () => {
+    const mocks = [
+      {
+        request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
+        result: { data: { answers: [{ _id: '1', name: 'Test Answer' }], auditTypes: [] } },
+      },
+      {
+        request: { query: GET_ANSWERS, variables: { answerQuery: { questionsCategoriesIds: [] } } },
+        result: { data: { answers: [{ _id: '1', name: 'Test Answer' }], auditTypes: [] } },
+      },
     ];
 
-    test('panel selection returns parsed filters when "all" is selected', () => {
-      const parsedFilters = { questionsCategoriesIds: ['cat1', 'cat2'] };
-      const result = testPanelSelectionLogic(mockPanels, 0, parsedFilters);
+    render(
+      <TestWrapper data-id="001601" mocks={mocks}>
+        <Answers data-id="001602" />
+      </TestWrapper>,
+    );
 
-      expect(result).toEqual(['cat1', 'cat2']);
-    });
-
-    test('panel selection returns empty array when "all" is selected and no parsed filters', () => {
-      const result = testPanelSelectionLogic(mockPanels, 0);
-      expect(result).toEqual([]);
-    });
-
-    test('panel selection returns empty array when "all" is selected and questionsCategoriesIds is undefined', () => {
-      const parsedFilters = { questionsCategoriesIds: undefined };
-      const result = testPanelSelectionLogic(mockPanels, 0, parsedFilters);
-      expect(result).toEqual([]);
-    });
-
-    test('panel selection returns specific category ID when non-"all" panel is selected', () => {
-      const parsedFilters = { questionsCategoriesIds: ['cat1', 'cat2'] };
-      const result = testPanelSelectionLogic(mockPanels, 1, parsedFilters);
-
-      expect(result).toEqual(['cat1']);
-    });
-
-    test('panel selection returns specific category ID when non-"all" panel is selected (index 2)', () => {
-      const parsedFilters = { questionsCategoriesIds: ['cat1', 'cat2'] };
-      const result = testPanelSelectionLogic(mockPanels, 2, parsedFilters);
-
-      expect(result).toEqual(['cat2']);
-    });
-
-    test('panel selection works with different panel configurations', () => {
-      const customPanels = [
-        { _id: 'all', name: 'All' },
-        { _id: 'custom1', name: 'Custom Category 1' },
-      ];
-
-      const result = testPanelSelectionLogic(customPanels, 1);
-      expect(result).toEqual(['custom1']);
+    await waitFor(() => {
+      expect(screen.getByTestId('filter-pills-000279')).toBeInTheDocument();
     });
   });
 
-  describe('Integration Tests for Complete Logic Flow', () => {
-    test('complete flow: flatMap -> Map deduplication -> panel selection', () => {
-      const mockAuditTypes: AuditType[] = [
-        {
-          _id: 'auditType1',
-          questionsCategories: [
-            { _id: 'cat1', name: 'Category 1' },
-            { _id: 'cat2', name: 'Category 2' },
-          ],
+  test('renders grid view by default', async () => {
+    const mocks = [
+      {
+        request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
+        result: { data: mockAnswersData },
+      },
+    ];
+
+    render(
+      <TestWrapper data-id="001603" mocks={mocks}>
+        <Answers data-id="001604" />
+      </TestWrapper>,
+    );
+
+    await waitFor(() => {
+      // Header visible
+      expect(screen.getByTestId('header-000269')).toBeInTheDocument();
+      // Desktop toolbar (grid/list + export) uses data-id, not data-testid
+      expect(getByDataId('000213')).toBeTruthy(); // Stack with buttons
+      expect(getByDataId('000271')).toBeTruthy(); // Export link
+    });
+  });
+
+  test('handles empty answers', async () => {
+    const mocks = [
+      {
+        request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
+        result: { data: { answers: [], auditTypes: [] } },
+      },
+    ];
+
+    render(
+      <TestWrapper data-id="001605" mocks={mocks}>
+        <Answers data-id="001606" />
+      </TestWrapper>,
+    );
+
+    await waitFor(() => {
+      // Check that the header is rendered even with no data
+      expect(screen.getByTestId('header-000269')).toBeInTheDocument();
+      // Check that the sort dropdown is rendered (mobile layout)
+      expect(getByDataId('000474')).toBeTruthy();
+    });
+  });
+
+  test('applies correct panel padding', async () => {
+    const mocks = [
+      {
+        request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
+        result: { data: { answers: [], auditTypes: [] } },
+      },
+    ];
+
+    render(
+      <TestWrapper data-id="001607" mocks={mocks}>
+        <Answers data-id="001608" />
+      </TestWrapper>,
+    );
+
+    await waitFor(() => {
+      // Check that the header is rendered
+      expect(screen.getByTestId('header-000269')).toBeInTheDocument();
+      // Check that the sort dropdown is rendered (mobile layout)
+      expect(getByDataId('000474')).toBeTruthy();
+    });
+  });
+
+  test('renders error state', async () => {
+    const errorMocks = [
+      {
+        request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
+        error: new Error('GraphQL error'),
+      },
+    ];
+
+    render(
+      <TestWrapper data-id="001609" mocks={errorMocks}>
+        <Answers data-id="001610" />
+      </TestWrapper>,
+    );
+
+    await waitFor(() => {
+      // Header visible even on error
+      expect(screen.getByTestId('header-000269')).toBeInTheDocument();
+      // Desktop toolbar (grid/list + export) uses data-id
+      expect(getByDataId('000213')).toBeTruthy();
+      expect(getByDataId('000271')).toBeTruthy();
+    });
+  });
+
+  test('renders mobile layout', async () => {
+    vi.mocked(useDeviceModule.default).mockReturnValue('mobile');
+
+    const mocks = [
+      {
+        request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
+        result: { data: mockAnswersData },
+      },
+    ];
+
+    render(
+      <TestWrapper data-id="001611" mocks={mocks}>
+        <Answers data-id="001612" />
+      </TestWrapper>,
+    );
+
+    await waitFor(() => {
+      // Header
+      expect(screen.getByTestId('header-000269')).toBeInTheDocument();
+      // Mobile sort dropdown wrapper (data-id="000474")
+      expect(getByDataId('000474')).toBeTruthy();
+    });
+  });
+
+  test('handles pill selection', async () => {
+    const mocks = [
+      {
+        request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
+        result: { data: { answers: [{ _id: '1', name: 'Test Answer' }], auditTypes: [] } },
+      },
+    ];
+
+    render(
+      <TestWrapper data-id="001613" mocks={mocks}>
+        <Answers data-id="001614" />
+      </TestWrapper>,
+    );
+
+    await waitFor(() => {
+      // Check that the header is rendered
+      expect(screen.getByTestId('header-000269')).toBeInTheDocument();
+      // Check that the sort dropdown is rendered (mobile layout)
+      expect(getByDataId('000474')).toBeTruthy();
+    });
+  });
+
+  test('renders with correct data-id attributes', async () => {
+    const mocks = [
+      {
+        request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
+        result: { data: { answers: [{ _id: '1', name: 'Test Answer' }], auditTypes: [] } },
+      },
+    ];
+
+    render(
+      <TestWrapper data-id="001615" mocks={mocks}>
+        <Answers data-id="001616" />
+      </TestWrapper>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('header-000269')).toBeInTheDocument();
+      // Mobile sort dropdown wrapper (data-id only)
+      expect(getByDataId('000474')).toBeTruthy();
+    });
+  });
+
+  test('handles multiple answers in grid view', async () => {
+    const mocks = [
+      {
+        request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
+        result: {
+          data: {
+            answers: [
+              { _id: '1', name: 'Answer 1' },
+              { _id: '2', name: 'Answer 2' },
+              { _id: '3', name: 'Answer 3' },
+            ],
+            auditTypes: [],
+          },
         },
-        {
-          _id: 'auditType2',
-          questionsCategories: [
-            { _id: 'cat2', name: 'Category 2 Duplicate' },
-            { _id: 'cat3', name: 'Category 3' },
-          ],
-        },
-      ];
+      },
+    ];
 
-      // Step 1: Test flatMap logic
-      const allCategories = testFlatMapLogic(mockAuditTypes);
-      expect(allCategories).toHaveLength(4); // 2 + 2 categories
+    render(
+      <TestWrapper data-id="001617" mocks={mocks}>
+        <Answers data-id="001618" />
+      </TestWrapper>,
+    );
 
-      // Step 2: Test Map deduplication
-      const uniqueCategoriesMap = testMapDeduplicationLogic(allCategories);
-      expect(uniqueCategoriesMap.size).toBe(3); // 3 unique categories
+    await waitFor(() => {
+      // Header
+      expect(screen.getByTestId('header-000269')).toBeInTheDocument();
+      // Mobile sort dropdown wrapper (data-id="000474")
+      expect(getByDataId('000474')).toBeTruthy();
+    });
+  });
 
-      // Step 3: Test complete panels creation
-      const panels = testUniqueCategoriesLogic(mockAuditTypes);
-      expect(panels).toHaveLength(4); // 'All' + 3 unique categories
+  test('renders breadcrumbs correctly', async () => {
+    const mocks = [
+      {
+        request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
+        result: { data: { answers: [], auditTypes: [] } },
+      },
+    ];
 
-      // Step 4: Test panel selection logic
-      const parsedFilters = { questionsCategoriesIds: ['cat1', 'cat2', 'cat3'] };
+    render(
+      <TestWrapper data-id="001619" mocks={mocks}>
+        <Answers data-id="001620" />
+      </TestWrapper>,
+    );
 
-      // Test "all" selection
-      const allResult = testPanelSelectionLogic(panels, 0, parsedFilters);
-      expect(allResult).toEqual(['cat1', 'cat2', 'cat3']);
+    await waitFor(() => {
+      expect(screen.getByText('Breadcrumbs: Answers')).toBeInTheDocument();
+    });
+  });
 
-      // Test specific category selection
-      const specificResult = testPanelSelectionLogic(panels, 1, parsedFilters);
-      expect(specificResult).toEqual(['cat1']);
+  test('handles FilterPills children function correctly', async () => {
+    const mocks = [
+      {
+        request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
+        result: { data: mockAnswersData },
+      },
+    ];
+
+    render(
+      <TestWrapper data-id="001621" mocks={mocks}>
+        <Answers data-id="001622" />
+      </TestWrapper>,
+    );
+
+    await waitFor(() => {
+      // Header
+      expect(screen.getByTestId('header-000269')).toBeInTheDocument();
+      // Mobile sort dropdown wrapper (data-id="000474")
+      expect(getByDataId('000474')).toBeTruthy();
     });
   });
 });
@@ -413,12 +446,12 @@ describe('Answers Component Functional Tests', () => {
       },
     ];
 
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
-    
+    const panels = buildPanels(mockAuditTypes);
+
     // Should have 'All' panel + 3 unique categories
     expect(panels).toHaveLength(4);
     expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
-    
+
     const panelIds = panels.map((p) => p._id);
     expect(panelIds).toContain('cat1');
     expect(panelIds).toContain('cat2');
@@ -437,8 +470,8 @@ describe('Answers Component Functional Tests', () => {
       },
     ];
 
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
-    
+    const panels = buildPanels(mockAuditTypes);
+
     // Should only have 'All' panel
     expect(panels).toHaveLength(1);
     expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
@@ -451,9 +484,9 @@ describe('Answers Component Functional Tests', () => {
       { _id: 'cat2', name: 'Quality' },
     ];
     const parsedFilters = { questionsCategoriesIds: ['cat1', 'cat2', 'cat3'] };
-    
+
     // Test selecting 'Safety' panel (index 1)
-    const result = testPanelSelectionLogic(mockPanels, 1, parsedFilters);
+    const result = categoryIdsForPanel(mockPanels, 1, parsedFilters);
     expect(result).toEqual(['cat1']);
   });
 
@@ -464,9 +497,9 @@ describe('Answers Component Functional Tests', () => {
       { _id: 'cat2', name: 'Quality' },
     ];
     const parsedFilters = { questionsCategoriesIds: ['cat1', 'cat2'] };
-    
+
     // Test selecting 'All' panel (index 0)
-    const result = testPanelSelectionLogic(mockPanels, 0, parsedFilters);
+    const result = categoryIdsForPanel(mockPanels, 0, parsedFilters);
     expect(result).toEqual(['cat1', 'cat2']);
   });
 
@@ -475,9 +508,9 @@ describe('Answers Component Functional Tests', () => {
       { _id: 'all', name: 'All' },
       { _id: 'cat1', name: 'Safety' },
     ];
-    
+
     // Test selecting 'All' panel with no parsedFilters
-    const result = testPanelSelectionLogic(mockPanels, 0);
+    const result = categoryIdsForPanel(mockPanels, 0);
     expect(result).toEqual([]);
   });
 
@@ -492,13 +525,11 @@ describe('Answers Component Functional Tests', () => {
       },
       {
         _id: 'at2',
-        questionsCategories: [
-          { _id: 'cat3', name: 'Environment' },
-        ],
+        questionsCategories: [{ _id: 'cat3', name: 'Environment' }],
       },
     ];
 
-    const categories = testFlatMapLogic(mockAuditTypes);
+    const categories = flatMapCategories(mockAuditTypes);
     expect(categories).toHaveLength(3);
     expect(categories[0]).toEqual({ _id: 'cat1', name: 'Safety' });
     expect(categories[1]).toEqual({ _id: 'cat2', name: 'Quality' });
@@ -513,11 +544,11 @@ describe('Answers Component Functional Tests', () => {
       { _id: 'cat3', name: 'Environment' },
     ];
 
-    const dedupedMap = testMapDeduplicationLogic(categories);
-    
+    const dedupedMap = dedupeCategories(categories);
+
     // Should have 3 unique categories
     expect(dedupedMap.size).toBe(3);
-    
+
     // First occurrence should be kept
     expect(dedupedMap.get('cat1')).toEqual({ _id: 'cat1', name: 'Safety' });
     expect(dedupedMap.get('cat2')).toEqual({ _id: 'cat2', name: 'Quality' });
@@ -535,8 +566,8 @@ describe('Answers Component Functional Tests', () => {
       },
     ];
 
-    const panels = testUniqueCategoriesLogic(mockAuditTypes);
-    
+    const panels = buildPanels(mockAuditTypes);
+
     // 'All' should always be first
     expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
   });

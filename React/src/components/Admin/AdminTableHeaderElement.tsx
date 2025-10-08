@@ -22,14 +22,14 @@ function AdminTableHeaderElement({
   tooltip?: string;
 }) {
   return (
-    <Flex alignItems="center" data-id="000338" ml={ml || '0'} w={w}>
+    <Flex alignItems="center" cursor="pointer" data-id="000338" ml={ml || '0'} onClick={onClick} w={w}>
       <Tooltip data-id="000339" hasArrow isDisabled={tooltip === ''} label={tooltip}>
         <Text color="adminTableHeaderElement.fontColor" data-id="000340" fontSize={['12px', '12.4px']} fontWeight="600">
           {label}
         </Text>
       </Tooltip>
       {!hideSortIcon && (
-        <Flex cursor="pointer" data-id="001206" onClick={onClick}>
+        <Flex data-id="001206">
           {sortOrder === 'desc' ? (
             <ArrowDownIcon
               color={showSortingIcon ? 'adminTableHeaderElement.colorEnabled' : 'adminTableHeaderElement.colorDisabled'}

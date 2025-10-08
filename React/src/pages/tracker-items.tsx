@@ -23,8 +23,6 @@ import { TViewMode } from '../interfaces/TViewMode';
 import updateLocalStorageFilter from '../utils/filterStorage';
 import { removeEmptyArraysAndObjects } from '../utils/helpers';
 
-const InfiniteScrollComponent = InfiniteScroll as unknown as React.FC<any>;
-
 const GET_RESPONSES_TOTALS = gql`
   query ResponsesTotals($responsesQuery: Any) {
     responses(responsesQuery: $responsesQuery) {

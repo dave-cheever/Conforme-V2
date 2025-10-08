@@ -16,9 +16,27 @@ function InsightsChart({ option }: { option: EChartsOption }) {
     function resizeChart() {
       chart?.resize();
     }
+
+    // Use requestAnimationFrame to ensure container has final dimensions
+    const rafId = requestAnimationFrame(() => {
+      chart?.resize();
+    });
+
+    // Use ResizeObserver for better responsiveness
+    let resizeObserver: ResizeObserver | undefined;
+    if (chartRef.current) {
+      resizeObserver = new ResizeObserver(() => {
+        chart?.resize();
+      });
+      resizeObserver.observe(chartRef.current);
+    }
+
     window.addEventListener('resize', resizeChart);
 
     return () => {
+      cancelAnimationFrame(rafId);
+      if (resizeObserver) resizeObserver.disconnect();
+
       chart?.dispose();
       window.removeEventListener('resize', resizeChart);
     };

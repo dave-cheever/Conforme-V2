@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { gql, LazyQueryExecFunction, useQuery } from '@apollo/client';
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
@@ -10,6 +10,7 @@ import useDevice from '../../hooks/useDevice';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
 import { ILocation } from '../../interfaces/ILocation';
 import { IUser } from '../../interfaces/IUser';
+import FilterPills from '../FilterPills';
 import InsightsDetailedTable from './InsightsDetailedTable';
 
 const GET_TOTALS = gql`
@@ -61,7 +62,8 @@ function InsightsDetailedStats({
             insightsModel="users"
             insightsType={insightsType}
             loadMoreUsers={loadMoreUsers}
-            totals={totals?.totals?.users || 0} />
+            totals={totals?.totals?.users || 0}
+          />
         ),
       },
       {
@@ -74,7 +76,8 @@ function InsightsDetailedStats({
             insightsModel="locations"
             insightsType={insightsType}
             loadMoreLocations={loadMoreLocations}
-            totals={totals?.totals?.locations || 0} />
+            totals={totals?.totals?.locations || 0}
+          />
         ),
       },
       {
@@ -87,7 +90,8 @@ function InsightsDetailedStats({
             insightsModel="businessUnits"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreBusinessUnits}
-            totals={totals?.totals?.businessUnits || 0} />
+            totals={totals?.totals?.businessUnits || 0}
+          />
         ),
       },
     ],
@@ -102,7 +106,8 @@ function InsightsDetailedStats({
             insightsModel="users"
             insightsType={insightsType}
             loadMoreUsers={loadMoreUsers}
-            totals={totals?.totals?.users || 0} />
+            totals={totals?.totals?.users || 0}
+          />
         ),
       },
       {
@@ -115,7 +120,8 @@ function InsightsDetailedStats({
             insightsModel="locations"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreLocations}
-            totals={totals?.totals?.locations || 0} />
+            totals={totals?.totals?.locations || 0}
+          />
         ),
       },
       {
@@ -128,7 +134,8 @@ function InsightsDetailedStats({
             insightsModel="businessUnits"
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreLocations}
-            totals={totals?.totals?.businessUnits || 0} />
+            totals={totals?.totals?.businessUnits || 0}
+          />
         ),
       },
     ],
@@ -144,7 +151,8 @@ function InsightsDetailedStats({
             insightsType={insightsType}
             loadMoreUsers={loadMoreUsers}
             questionsCategoriesId={questionsCategoriesId}
-            totals={totals?.totals?.users || 0} />
+            totals={totals?.totals?.users || 0}
+          />
         ),
       },
       {
@@ -158,7 +166,8 @@ function InsightsDetailedStats({
             insightsType={insightsType}
             loadMoreLocations={loadMoreBusinessUnits}
             questionsCategoriesId={questionsCategoriesId}
-            totals={totals?.totals?.locations || 0} />
+            totals={totals?.totals?.locations || 0}
+          />
         ),
       },
       {
@@ -172,51 +181,38 @@ function InsightsDetailedStats({
             insightsType={insightsType}
             loadMoreBusinessUnits={loadMoreLocations}
             questionsCategoriesId={questionsCategoriesId}
-            totals={totals?.totals?.businessUnits || 0} />
+            totals={totals?.totals?.businessUnits || 0}
+          />
         ),
       },
     ],
   };
 
+  // Create pills for FilterPills component
+  const detailedStatsPills = tabs[insightsType].map((tab) => ({
+    _id: tab.id,
+    name: tab.label,
+  }));
+
   return (
-    <Box
-        bg="auditsInsights.list.bg"
-        borderRadius="20px"
-        data-id="000515"
-        p={7}
-        pb={0}
-        w="full">
-      <Tabs
+    <Box bg="auditsInsights.list.bg" borderRadius="20px" data-id="000515" p={7} pb={0} w="full">
+      <FilterPills
         data-id="000516"
-        defaultIndex={selectedTab}
-        onChange={(index) => setSelectedTab(index)}
-        variant="unstyled"
-        w="full">
-        <TabList data-id="000517">
-          {tabs[insightsType].map((tab) => (
-            <Tab
-              _selected={{
-                bg: 'insights.tabBg',
-                color: 'insights.tabColor',
-              }}
-              borderRadius="10px"
-              data-id="000518"
-              fontSize="smm"
-              fontWeight="bold"
-              key={tab.id}
-              mr={[1, 2]}>
-              {tab.label}
-            </Tab>
-          ))}
-        </TabList>
-        <TabPanels data-id="000519">
-          {tabs[insightsType]?.map((tab) => (
-            <TabPanel data-id="000520" key={tab.id} px={0}>
-              {tab.component}
-            </TabPanel>
-          ))}
-        </TabPanels>
-      </Tabs>
+        onPillChange={setSelectedTab}
+        panelMarginLeft={['0', '0']}
+        panelPadding={['0', '0']}
+        pills={detailedStatsPills}
+        selectedIndex={selectedTab}
+        tabProps={{
+          fontSize: 'smm',
+          fontWeight: 'bold',
+        }}
+      >
+        {(pill, index) => {
+          const tab = tabs[insightsType][index];
+          return tab?.component;
+        }}
+      </FilterPills>
     </Box>
   );
 }

@@ -3,7 +3,7 @@ import { CSVLink } from 'react-csv';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, HStack, Modal, ModalOverlay, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format, isBefore } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
@@ -12,6 +12,7 @@ import { actionStatuses } from '../bootstrap/config';
 import ActionModal from '../components/Actions/ActionModal';
 import ActionSquare from '../components/Actions/ActionSquare';
 import ChangeViewButton from '../components/ChangeViewButton';
+import FilterPills from '../components/FilterPills';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
@@ -165,7 +166,8 @@ function Actions() {
           fontWeight="500"
           lineHeight="18px"
           noOfLines={1}
-          textOverflow="ellipsis">
+          textOverflow="ellipsis"
+        >
           {action.title}
         </Flex>
       ),
@@ -183,7 +185,8 @@ function Actions() {
           fontWeight="500"
           lineHeight="18px"
           noOfLines={1}
-          textOverflow="ellipsis">
+          textOverflow="ellipsis"
+        >
           {capitalize(action.priority)}
         </Flex>
       ),
@@ -194,16 +197,13 @@ function Actions() {
       width: '10%',
       dataId: '000409',
       render: (action: IAction) => (
-        <Flex
-          data-id="001861"
-          color="auditsList.fontColor"
-          fontSize="14px"
-          fontWeight="500"
-          opacity="1">
+        <Flex data-id="001861" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1">
           {action?.dueDate ? (
             format(new Date(action?.dueDate), 'd MMM yyyy')
           ) : (
-            <Flex data-id="001862" fontStyle="italic">No date</Flex>
+            <Flex data-id="001862" fontStyle="italic">
+              No date
+            </Flex>
           )}
         </Flex>
       ),
@@ -214,16 +214,13 @@ function Actions() {
       width: '10%',
       dataId: '000410',
       render: (action: IAction) => (
-        <Flex
-          data-id="001863"
-          color="auditsList.fontColor"
-          fontSize="14px"
-          fontWeight="500"
-          opacity="1">
+        <Flex data-id="001863" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1">
           {action?.completedDate ? (
             format(new Date(action?.completedDate), 'd MMM yyyy')
           ) : (
-            <Flex data-id="001864" fontStyle="italic">No date</Flex>
+            <Flex data-id="001864" fontStyle="italic">
+              No date
+            </Flex>
           )}
         </Flex>
       ),
@@ -236,11 +233,7 @@ function Actions() {
       render: (action: IAction) => {
         const overdue = action.dueDate && action.status === 'open' && isBefore(new Date(action.dueDate), new Date());
         return (
-          <Flex
-            data-id="001865"
-            color={`auditsList.${overdue ? 'missed' : action.status}`}
-            fontSize="14px"
-            fontWeight="500">
+          <Flex data-id="001865" color={`auditsList.${overdue ? 'missed' : action.status}`} fontSize="14px" fontWeight="500">
             {overdue ? 'Overdue' : capitalize(action.status)}
           </Flex>
         );
@@ -258,10 +251,7 @@ function Actions() {
       sortKey: 'creator.displayName',
       width: '10%',
       dataId: '000413',
-      render: (action: IAction) => <AvatarCell
-        data-id="001867"
-        noDataText="-"
-        users={action.creator ? [action.creator] : []} />,
+      render: (action: IAction) => <AvatarCell data-id="001867" noDataText="-" users={action.creator ? [action.creator] : []} />,
     },
     {
       label: capitalize(t('location')),
@@ -269,13 +259,7 @@ function Actions() {
       width: '14%',
       dataId: '000414',
       render: (action: IAction) => (
-        <Text
-          data-id="001868"
-          color="auditsList.fontColor"
-          fontSize="14px"
-          fontWeight="500"
-          noOfLines={1}
-          textOverflow="ellipsis">
+        <Text data-id="001868" color="auditsList.fontColor" fontSize="14px" fontWeight="500" noOfLines={1} textOverflow="ellipsis">
           {action.answer?.audit?.location?.name ?? 'Virtual'}
         </Text>
       ),
@@ -286,13 +270,7 @@ function Actions() {
       width: '10%',
       dataId: '000415',
       render: (action: IAction) => (
-        <Text
-          data-id="001869"
-          color="auditsList.fontColor"
-          fontSize="14px"
-          fontWeight="500"
-          noOfLines={1}
-          textOverflow="ellipsis">
+        <Text data-id="001869" color="auditsList.fontColor" fontSize="14px" fontWeight="500" noOfLines={1} textOverflow="ellipsis">
           {action?.answer?.audit?.auditType?.businessUnitScope === 'audit'
             ? (action?.answer?.audit?.businessUnit?.name ?? '-')
             : (action?.answer?.businessUnit?.name ?? '-')}
@@ -301,6 +279,16 @@ function Actions() {
     },
   ];
   const allowedFilters = useMemo(() => ['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate'], []);
+
+  // Create pills for FilterPills component
+  const statusPills = useMemo(
+    () =>
+      Object.keys(actionStatuses).map((status) => ({
+        _id: status,
+        name: capitalize(status),
+      })),
+    [],
+  );
 
   useEffect(() => {
     setUsedFilters(allowedFilters);
@@ -364,6 +352,12 @@ function Actions() {
   const setQuickFilter = (filterName: string, filterValue) => {
     cleanFilters();
     setFilters({ [filterName]: filterValue });
+  };
+
+  const handlePillChange = (index: number) => {
+    const status = Object.keys(actionStatuses)[index];
+    setQuickFilter('status', [status]);
+    setActiveTab(index);
   };
 
   useEffect(() => {
@@ -440,30 +434,15 @@ function Actions() {
         isOpen={adminModalState !== 'closed'}
         onClose={closeModal}
         size={device === 'desktop' || device === 'tablet' ? 'md' : 'full'}
-        variant="adminModal">
+        variant="adminModal"
+      >
         <ModalOverlay data-id="000247" />
-        <ActionModal
-          action={selectedAction}
-          closeModal={closeModal}
-          data-id="000248"
-          refetch={refetch} />
+        <ActionModal action={selectedAction} closeModal={closeModal} data-id="000248" refetch={refetch} />
       </Modal>
-      <Header
-        breadcrumbs={['Actions']}
-        data-id="000249"
-        mobileBreadcrumbs={['Actions']}>
-        <ChangeViewButton
-          data-id="000250"
-          setViewMode={setViewMode}
-          viewMode={viewMode}
-          views={['grid', 'list']} />
+      <Header breadcrumbs={['Actions']} data-id="000249" mobileBreadcrumbs={['Actions']}>
+        <ChangeViewButton data-id="000250" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
         {device !== 'mobile' && (
-          <CSVLinkComponent
-            data={csvData}
-            data-id="000251"
-            filename="actions.csv"
-            headers={csvHeaders}
-            target="_blank">
+          <CSVLinkComponent data={csvData} data-id="000251" filename="actions.csv" headers={csvHeaders} target="_blank">
             <Button
               _hover={{
                 bg: 'reasponseHeader.buttonLightBgHover',
@@ -476,7 +455,8 @@ function Actions() {
               data-id="000252"
               display="none"
               ml="15px"
-              rightIcon={<ExportIcon data-id="000253" height="15px" width="15px" />}>
+              rightIcon={<ExportIcon data-id="000253" height="15px" width="15px" />}
+            >
               <Text data-id="000254" fontSize="smm" fontWeight="bold">
                 Export
               </Text>
@@ -489,91 +469,71 @@ function Actions() {
           setSortType={setSortType}
           sortBy={sortBy}
           sortOrder={sortOrder}
-          sortType={sortType} />
+          sortType={sortType}
+        />
       </Header>
-      <HStack data-id="000256" px={[4, 8]} spacing={2}>
-        {Object.keys(actionStatuses).map((status, index) => (
-          <Button
-            _active={{
-              bg: 'actions.quickFilter.active.bg',
-              color: 'actions.quickFilter.active.color',
-            }}
-            _hover={{
-              opacity: 0.8,
-            }}
-            bg="actions.quickFilter.default.bg"
-            borderRadius="10px"
-            color="actions.quickFilter.default.color"
-            data-id="000257"
-            fontSize="14px"
-            fontWeight="500"
-            h="32px"
-            isActive={index === activeTab}
-            key={status}
-            onClick={() => {
-              setQuickFilter('status', [status]);
-              setActiveTab(index);
-            }}>
-            {capitalize(status)}
-          </Button>
-        ))}
-      </HStack>
-      <Flex
-        data-id="000258"
-        h={['calc(100vh - 80px)', 'full']}
-        overflow="auto"
-        pb={[4, 0]}>
-        {error ? (
-          <Text data-id="000259">{error.message}</Text>
-        ) : loading ? (
-          <Loader center data-id="000260" />
-        ) : (
-          <>
-            {viewMode === 'grid' && (
-              <Grid
-                data-id="000261"
-                display={['grid', 'grid', 'flex']}
-                flexWrap="wrap"
-                gap={[4, 4, 6]}
-                h="fit-content"
-                pb={[14, 8]}
-                pt="3"
-                px={[4, 8]}
-                templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
-                w="full">
-                {sortedActions.length > 0 ? (
-                  sortedActions?.map((action) => <ActionSquare
-                    action={action}
-                    data-id="000262"
-                    editAction={handleOpenModal}
-                    key={action._id} />)
-                ) : (
-                  <Flex
-                    data-id="000263"
-                    fontSize="18px"
-                    fontStyle="italic"
-                    h="full"
-                    w="full">
-                    No actions found
-                  </Flex>
-                )}
-              </Grid>
-            )}
-            {viewMode === 'list' && (
-              <ListView
-                columns={columns}
-                data={sortedActions}
-                data-id="000265"
-                dataType="actions"
-                onRowClick={handleOpenModal}
-                setSortOrder={setSortOrder}
-                setSortType={setSortType}
-                sortOrder={sortOrder}
-                sortType={sortType}
-              />
-            )}
-          </>
-        )}
+      <FilterPills
+        data-id="000256"
+        onPillChange={handlePillChange}
+        panelMarginLeft={['0', '0']}
+        panelPadding={['0', '0']}
+        pills={statusPills}
+        selectedIndex={activeTab}
+        tabListProps={{ px: [4, 8] }}
+        tabMargin={['0', '0']}
+      >
+        {() => null}
+      </FilterPills>
+      <Flex data-id="000258" h={['calc(100vh - 80px)', 'full']} overflow="auto" pb={[4, 0]}>
+        {(() => {
+          if (error) return <Text data-id="000259">{error.message}</Text>;
+
+          if (loading) return <Loader center data-id="000260" />;
+
+          return (
+            <>
+              {viewMode === 'grid' && (
+                <Grid
+                  data-id="000261"
+                  display={['grid', 'grid', 'flex']}
+                  flexWrap="wrap"
+                  gap={[4, 4, 6]}
+                  h="fit-content"
+                  pb={[14, 8]}
+                  pt="3"
+                  px={[4, 8]}
+                  templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
+                  w="full"
+                >
+                  {sortedActions.length > 0 ? (
+                    sortedActions?.map((action) => (
+                      <ActionSquare action={action} data-id="000262" editAction={handleOpenModal} key={action._id} />
+                    ))
+                  ) : (
+                    <Flex data-id="000263" fontSize="18px" fontStyle="italic" h="full" w="full">
+                      No actions found
+                    </Flex>
+                  )}
+                </Grid>
+              )}
+              {viewMode === 'list' && (
+                <Box data-id="000264" p="6" w="full">
+                  <ListView
+                    columns={columns}
+                    data={sortedActions}
+                    data-id="000265"
+                    dataType="actions"
+                    onRowClick={handleOpenModal}
+                    setSortOrder={setSortOrder}
+                    setSortType={setSortType}
+                    sortOrder={sortOrder}
+                    sortType={sortType}
+                  />
+                </Box>
+              )}
+            </>
+          );
+        })()}
       </Flex>
     </>
   );
@@ -589,16 +549,6 @@ export const actionsStyles = {
       menuItemFocus: '#462AC4',
       menuItemFontSelected: '#462AC4',
       menuItemFont: '#9A9EA1',
-    },
-    quickFilter: {
-      default: {
-        bg: 'transparent',
-        color: '#1E1836',
-      },
-      active: {
-        bg: '#462AC4',
-        color: '#FFFFFF',
-      },
     },
   },
 };

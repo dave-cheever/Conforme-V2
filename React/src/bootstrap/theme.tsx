@@ -42,6 +42,7 @@ import { chatMentionStyles } from '../components/ChatMention';
 import { chatConfirmDeleteModalStyles } from '../components/ConfirmDeleteModal';
 import { customRadioButtonStyles } from '../components/CustomRadioButton';
 import { documentUploadedStyles } from '../components/Documents/DocumentUploaded';
+import { filterPillsStyles } from '../components/FilterPills';
 import { filtersPanelStyles } from '../components/Filters/FiltersPanel';
 import { filtersPanelItemStyles } from '../components/Filters/FiltersPanelItem';
 import { quickFiltersItemStyles } from '../components/Filters/QuickFiltersItem';
@@ -227,6 +228,7 @@ const getTheme = (organizationTheme?: any) => {
         ...emailTemplateStyles,
         ...emailTemplatesStyles,
         ...evidenceStyles,
+        ...filterPillsStyles,
         ...filtersPanelItemStyles,
         ...filtersPanelStyles,
         ...headerStyles,

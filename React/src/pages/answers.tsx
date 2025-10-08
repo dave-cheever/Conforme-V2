@@ -3,8 +3,7 @@ import { CSVLink } from 'react-csv';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, Modal, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
-import { format } from 'date-fns';
+import { Button, Flex, Grid, Modal, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
@@ -13,6 +12,7 @@ import AnswerDeleteModal from '../components/Answers/AnswerDeleteModal';
 import AnswerModal from '../components/Answers/AnswerModal';
 import AnswerSquare from '../components/Answers/AnswerSquare';
 import ChangeViewButton from '../components/ChangeViewButton';
+import FilterPills from '../components/FilterPills';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
@@ -26,6 +26,7 @@ import useSort from '../hooks/useSort';
 import { ExportIcon } from '../icons';
 import { IAnswer } from '../interfaces/IAnswer';
 import { TViewMode } from '../interfaces/TViewMode';
+import { format } from 'date-fns';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -41,15 +42,13 @@ export interface AuditType {
 }
 
 // Extracted functions for testing
-export const flatMapCategories = (auditTypes: AuditType[] | null | undefined): Category[] => (auditTypes ?? []).flatMap((auditType) => auditType.questionsCategories ?? []);
+export const flatMapCategories = (auditTypes: AuditType[] | null | undefined): Category[] =>
+  (auditTypes ?? []).flatMap((auditType) => auditType.questionsCategories ?? []);
 
 export const dedupeCategories = (categories: Category[]): Map<string, Category> => {
   const uniqueCategoriesMap = new Map<string, Category>();
-  for (const category of categories) {
-    if (!uniqueCategoriesMap.has(category._id)) 
-      uniqueCategoriesMap.set(category._id, category);
-    
-  }
+  for (const category of categories) if (!uniqueCategoriesMap.has(category._id)) uniqueCategoriesMap.set(category._id, category);
+
   return uniqueCategoriesMap;
 };
 
@@ -64,13 +63,12 @@ export const categoryIdsForPanel = (
   selectedPanelIndex: number,
   parsedFilters?: { questionsCategoriesIds?: string[] },
 ) => {
-  if (panels[selectedPanelIndex]._id === 'all') 
-    return parsedFilters?.questionsCategoriesIds ?? [];
-  
+  if (panels[selectedPanelIndex]._id === 'all') return parsedFilters?.questionsCategoriesIds ?? [];
+
   return [panels[selectedPanelIndex]._id];
 };
 
-const GET_ANSWERS = gql`
+export const GET_ANSWERS = gql`
   query ($answerQuery: AnswerQuery) {
     answers(answerQuery: $answerQuery) {
       _id
@@ -223,7 +221,8 @@ function Answers() {
             fontWeight="500"
             lineHeight="18px"
             noOfLines={1}
-            textOverflow="ellipsis">
+            textOverflow="ellipsis"
+          >
             {answer?.question?.questionsCategory?.name}
           </Flex>
         </Tooltip>
@@ -244,7 +243,8 @@ function Answers() {
             fontWeight="500"
             lineHeight="18px"
             noOfLines={1}
-            textOverflow="ellipsis">
+            textOverflow="ellipsis"
+          >
             {answer?.question?.question ?? 'No description'}
           </Flex>
         </Tooltip>
@@ -264,7 +264,8 @@ function Answers() {
           fontWeight="500"
           lineHeight="18px"
           noOfLines={1}
-          textOverflow="ellipsis">
+          textOverflow="ellipsis"
+        >
           {answer?.question?.questionsCategory?.useStatus ? capitalize(answer?.status) : '-'}
         </Flex>
       ),
@@ -284,7 +285,8 @@ function Answers() {
             fontWeight="500"
             lineHeight="18px"
             noOfLines={1}
-            textOverflow="ellipsis">
+            textOverflow="ellipsis"
+          >
             {answer?.audit?.location?.name ?? '-'}
           </Flex>
         </Tooltip>
@@ -300,9 +302,10 @@ function Answers() {
           data-id="001851"
           label={
             answer?.audit?.auditType?.businessUnitScope === 'audit'
-              ? answer?.audit?.businessUnit?.name ?? '-'
-              : answer?.businessUnit?.name ?? '-'
-          }>
+              ? (answer?.audit?.businessUnit?.name ?? '-')
+              : (answer?.businessUnit?.name ?? '-')
+          }
+        >
           <Flex
             data-id="001852"
             align="flex-start"
@@ -311,10 +314,11 @@ function Answers() {
             fontWeight="500"
             lineHeight="18px"
             noOfLines={1}
-            textOverflow="ellipsis">
+            textOverflow="ellipsis"
+          >
             {answer?.audit?.auditType?.businessUnitScope === 'audit'
-              ? answer?.audit?.businessUnit?.name ?? '-'
-              : answer?.businessUnit?.name ?? '-'}
+              ? (answer?.audit?.businessUnit?.name ?? '-')
+              : (answer?.businessUnit?.name ?? '-')}
           </Flex>
         </Tooltip>
       ),
@@ -333,7 +337,8 @@ function Answers() {
           fontWeight="500"
           lineHeight="18px"
           noOfLines={1}
-          textOverflow="ellipsis">
+          textOverflow="ellipsis"
+        >
           {answer?.actions?.length}
         </Flex>
       ),
@@ -355,16 +360,8 @@ function Answers() {
       width: '10%',
       dataId: '000027',
       render: (answer: IAnswer) => (
-        <Tooltip
-          data-id="001856"
-          label={answer?.metatags?.addedAt && format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')}>
-          <Flex
-            data-id="001857"
-            color="auditsList.fontColor"
-            fontSize="14px"
-            fontWeight="500"
-            opacity="1"
-            pr={1}>
+        <Tooltip data-id="001856" label={answer?.metatags?.addedAt && format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')}>
+          <Flex data-id="001857" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1" pr={1}>
             {answer?.metatags?.addedAt ? (
               format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')
             ) : (
@@ -557,75 +554,57 @@ function Answers() {
         ) : loading ? (
           <Loader data-id="000278" center={true} />
         ) : (
-            <Tabs data-id="000279" defaultIndex={selectedPanel} onChange={(index) => setSelectedPanel(index)} variant="unstyled" w="full" overflow="hidden" display="flex" flexDir="column" h="full" minH={0}>
-              <TabList data-id="000280" px={[4, 8]} flexWrap={['wrap', 'initial']} flexShrink={0} pb={2}>
-                {panels?.map((panel) => (
-                  <Tab
-                    data-id="000281"
-                    key={panel._id}
-                    _selected={{
-                      bg: 'answers.tabBg',
-                      color: 'answers.tabColor',
-                    }}
-                    borderRadius="10px"
-                    fontSize="14px"
-                    fontWeight="600"
-                    _hover={{
-                      opacity: 0.8,
-                    }}
-                    mr={[1, 2]}
-                    ml={[1, 0]}
-                    my={[1, 0]}
-                    w={['calc(50% - .5rem)', 'auto', 'auto']}
-                  >
-                    {panel.name}
-                  </Tab>
-                ))}
-              </TabList>
-              <TabPanels data-id="000282" overflow="hidden" h="full" flex={1} minH={0}>
-                {panels?.map((panel) => (
-                  <TabPanel data-id="000283" key={panel._id} py={[4, viewMode === 'list' ? 0 : 2]} px={0} h="full" overflow="hidden">
-                    {viewMode === 'grid' && (
-                      <Grid
-                        data-id="000284"
-                        display={['grid', 'grid', 'flex']}
-                        flexWrap="wrap"
-                        gap={[4, 4, 6]}
-                        h="fit-content"
-                        pb={[14, 8]}
-                        pt="3"
-                        px={[0, 4]}
-                        templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
-                        w="full"
-                      >
-                        {sortedAnswers.length > 0 ? (
-                          sortedAnswers.map((answer) => (
-                            <AnswerSquare data-id="000285" answer={answer} editAnswer={handleOpenModal} key={answer._id} />
-                          ))
-                        ) : (
-                          <Flex data-id="000286" fontSize="18px" fontStyle="italic" h="full" w="full">
-                            No {t('question')}s found
-                          </Flex>
-                        )}
-                      </Grid>
-                    )}
-                    {viewMode === 'list' && (
-                        <ListView
-                          data-id="000287"
-                          data={sortedAnswers}
-                          columns={columns}
-                          dataType="answers"
-                          sortOrder={sortOrder}
-                          sortType={sortType}
-                          setSortOrder={setSortOrder}
-                          setSortType={setSortType}
-                          onRowClick={handleOpenModal}
-                        />
-                    )}
-                  </TabPanel>
-                ))}
-              </TabPanels>
-            </Tabs>
+          <>
+            <FilterPills
+              data-id="000279"
+              pills={panels}
+              selectedIndex={selectedPanel}
+              onPillChange={setSelectedPanel}
+              panelPadding={['4', viewMode === 'list' ? '6' : '2']}
+            >
+              {(panel) => (
+                <>
+                  {viewMode === 'grid' && (
+                    <Grid
+                      data-id="000284"
+                      display={['grid', 'grid', 'flex']}
+                      flexWrap="wrap"
+                      gap={[4, 4, 6]}
+                      h="fit-content"
+                      pb={[14, 8]}
+                      pt="3"
+                      px={[0, 4]}
+                      templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
+                      w="full"
+                    >
+                      {sortedAnswers.length > 0 ? (
+                        sortedAnswers.map((answer) => (
+                          <AnswerSquare data-id="000285" answer={answer} editAnswer={handleOpenModal} key={answer._id} />
+                        ))
+                      ) : (
+                        <Flex data-id="000286" fontSize="18px" fontStyle="italic" h="full" w="full">
+                          No {t('question')}s found
+                        </Flex>
+                      )}
+                    </Grid>
+                  )}
+                  {viewMode === 'list' && (
+                    <ListView
+                      data-id="000287"
+                      data={sortedAnswers}
+                      columns={columns}
+                      dataType="answers"
+                      sortOrder={sortOrder}
+                      sortType={sortType}
+                      setSortOrder={setSortOrder}
+                      setSortType={setSortType}
+                      onRowClick={handleOpenModal}
+                    />
+                  )}
+                </>
+              )}
+            </FilterPills>
+          </>
         )}
         {/* eslint-enable */}
       </Flex>
@@ -644,7 +623,5 @@ export const answersStyles = {
       menuItemFontSelected: '#462AC4',
       menuItemFont: '#9A9EA1',
     },
-    tabBg: '#462AC4',
-    tabColor: '#FFFFFF',
   },
 };
