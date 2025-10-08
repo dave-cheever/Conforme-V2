@@ -2,24 +2,26 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Box, Flex, Spacer, useToast } from '@chakra-ui/react';
+import { Box, Flex, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
-import AdminTableHeader from '../../components/Admin/AdminTableHeader';
-import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
 import PeoplePicker from '../../components/Forms/PeoplePicker';
 import TextInput from '../../components/Forms/TextInput';
 import TextInputMultiline from '../../components/Forms/TextInputMultiline';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
-import LocationListItem from '../../components/LocationListItem';
+import AvatarCell from '../../components/Table/Cells/AvatarCell';
+import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import { useAdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
+import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
+import useNavigate from '../../hooks/useNavigate';
+import { ArrowCount } from '../../icons';
 import { ILocation } from '../../interfaces/ILocation';
 
 const GET_LOCATIONS = gql`
@@ -69,6 +71,8 @@ const defaultValues: Partial<ILocation> = {
 function Locations() {
   const toast = useToast();
   const { module } = useAppContext();
+  const { navigateTo } = useNavigate();
+  const { setResponseFiltersValue, setAuditFiltersValue } = useFiltersContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { data, loading, refetch } = useQuery(GET_LOCATIONS, { variables: { moduleId: module?._id }, skip: !module?._id });
   const [createFunction] = useMutation(CREATE_LOCATION);
@@ -233,6 +237,85 @@ function Locations() {
     }
   };
 
+  const columns: ColumnConfig[] = [
+    {
+      label: `${capitalize(t('location'))} name`,
+      sortKey: 'name',
+      width: '40%',
+      dataId: '000436',
+      render: (location: ILocation) => (
+        <Flex
+          data-id="001942"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500"
+          lineHeight="18px"
+          noOfLines={1}
+          textOverflow="ellipsis">
+          {location.name}
+        </Flex>
+      ),
+    },
+    {
+      label: 'Notes',
+      sortKey: 'notes',
+      width: '30%',
+      dataId: '000437',
+      disabled: device === 'mobile' || device === 'tablet',
+      render: (location: ILocation) => (
+        <Flex
+          data-id="001943"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500"
+          lineHeight="18px"
+          noOfLines={1}
+          textOverflow="ellipsis">
+          {location.notes || '-'}
+        </Flex>
+      ),
+    },
+    {
+      label: 'Owner',
+      sortKey: 'owner',
+      width: '20%',
+      dataId: '000438',
+      disabled: device === 'mobile' || device === 'tablet',
+      render: (location: ILocation) => <AvatarCell data-id="001944" users={location.owner ? [location.owner] : []} />,
+    },
+    {
+      label: module?.type === 'tracker' ? 'Responses count' : `${capitalize(pluralize(t('audit')))} count`,
+      sortKey: module?.type === 'tracker' ? 'trackerItemsResponsesCount' : 'totalAuditsCount',
+      width: '10%',
+      dataId: '000441',
+      tooltip: module?.type === 'tracker' ? 'Only published items' : undefined,
+      render: (location: ILocation) => (
+        <Flex
+          data-id="001945"
+          alignItems="center"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500">
+          {module?.type === 'tracker' ? location.trackerItemsResponsesCount || 0 : location.totalAuditsCount || 0}
+          <ArrowCount
+            cursor="pointer"
+            data-id="000336"
+            h="10px"
+            ml="13px"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (module?.type === 'tracker') setResponseFiltersValue({ locationsIds: { value: [location._id] } });
+              else setAuditFiltersValue({ locationsIds: { value: [location._id] } });
+              navigateTo('/');
+            }}
+            stroke="locations.tooltipStroke"
+            w="10px"
+          />
+        </Flex>
+      ),
+    },
+  ];
+
   return (
     <>
       <AdminModal
@@ -275,105 +358,28 @@ function Locations() {
       <Header breadcrumbs={['Admin', pluralize(capitalize(t('location')))]} data-id="000431" pageLabel={capitalize(t('location'))} />
       <Box
         bg="auditsList.bg"
-        borderRadius="10px"
         data-id="000432"
-        h="calc(100vh - 160px)"
-        p={['0', '0 25px 30px 30px']}
+        h="full"
+        overflow="hidden"
       >
         <Flex data-id="000433" h="full" px={['25px', 0]}>
-          <Box
-            border="1px solid"
-            borderColor="auditsList.headerBorderColor"
-            data-id="000434"
-            h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-            overflow="hidden"
-            w={['full', 'full', 'calc(100%)']}
-          >
-            <AdminTableHeader data-id="000435">
-              <AdminTableHeaderElement
-                data-id="000436"
-                label={`${capitalize(t('location'))} name`}
-                onClick={() => {
-                  setSortType('name');
-                  setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
-                }}
-                showSortingIcon={sortType === 'name'}
-                sortOrder={sortType === 'name' ? sortOrder : undefined}
-                w={['max-content', '50%']}
-              />
-              {device !== 'mobile' && device !== 'tablet' && (
-                <>
-                  <AdminTableHeaderElement
-                    data-id="000437"
-                    label="Notes"
-                    onClick={() => {
-                      setSortType('notes');
-                      setSortOrder(sortOrder === 'asc' && sortType === 'notes' ? 'desc' : 'asc');
-                    }}
-                    showSortingIcon={sortType === 'notes'}
-                    sortOrder={sortType === 'notes' ? sortOrder : undefined}
-                    w={['100%', '50%']}
-                  />
-                  <AdminTableHeaderElement
-                    data-id="000438"
-                    label="Owner"
-                    onClick={() => {
-                      setSortType('owner');
-                      setSortOrder(sortOrder === 'asc' && sortType === 'owner' ? 'desc' : 'asc');
-                    }}
-                    showSortingIcon={sortType === 'owner'}
-                    sortOrder={sortType === 'owner' ? sortOrder : undefined}
-                    w={['100%', '50%']}
-                  />
-                </>
-              )}
-              <Spacer data-id="000439" display={['block', 'none']} />
-              {module?.type === 'tracker' ? (
-                <AdminTableHeaderElement
-                  data-id="000440"
-                  label="Responses count"
-                  onClick={() => {
-                    setSortType('trackerItemsResponsesCount');
-                    setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
-                  }}
-                  showSortingIcon={sortType === 'trackerItemsResponsesCount'}
-                  sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
-                  tooltip="Only published items"
-                  w={['max-content', '50%']}
-                />
-              ) : (
-                <AdminTableHeaderElement
-                  data-id="000441"
-                  label={`${capitalize(pluralize(t('audit')))} count`}
-                  onClick={() => {
-                    setSortType('totalAuditsCount');
-                    setSortOrder(sortOrder === 'asc' && sortType === 'totalAuditsCount' ? 'desc' : 'asc');
-                  }}
-                  showSortingIcon={sortType === 'totalAuditsCount'}
-                  sortOrder={sortType === 'totalAuditsCount' ? sortOrder : undefined}
-                  w={['max-content', '50%']}
-                />
-              )}
-            </AdminTableHeader>
-
-            {loading ? (
-              <Box bg="white" borderBottomRadius="10px" data-id="000442" h="full" w="full">
-                <Loader center data-id="000443" />
-              </Box>
-            ) : (
-              <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="000444" h="full" overflow="auto">
-                {locations?.length > 0 ? (
-                  locations?.map((location, i) => (
-                    <LocationListItem data-id="000445" index={i} key={i} location={location} openLocationModal={openLocationModal} />
-                  ))
-                ) : (
-                  <Flex data-id="000446" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-                    No {pluralize(t('location'))} found
-                  </Flex>
-                )}
-              </Box>
-            )}
-          </Box>
+          {loading ? (
+            <Box bg="white" borderBottomRadius="10px" data-id="000442" h="full" w="full">
+              <Loader center data-id="000443" />
+            </Box>
+          ) : (
+            <ListView
+              columns={columns}
+              data={locations}
+              data-id="000444"
+              dataType="locations"
+              onRowClick={(row: ILocation) => openLocationModal('edit', row)}
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortOrder={sortOrder}
+              sortType={sortType}
+            />
+          )}
         </Flex>
       </Box>
     </>

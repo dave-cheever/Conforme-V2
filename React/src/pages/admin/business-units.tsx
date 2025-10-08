@@ -2,20 +2,19 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Box, Flex, Stack, Text, Tooltip, useToast } from '@chakra-ui/react';
+import { Box, Flex, Stack, Tooltip, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
-import AdminTableHeader from '../../components/Admin/AdminTableHeader';
-import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
 import PeoplePicker from '../../components/Forms/PeoplePicker';
 import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import AvatarCell from '../../components/Table/Cells/AvatarCell';
+import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import { useAdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
@@ -242,104 +241,130 @@ function BusinessUnits() {
     }
   };
 
-  const renderBusinessUnitRow = (businessUnit: IBusinessUnit, i: number) => {
-    const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
-    return (
-      <Flex
-        _hover={{ bg: '#F5F7FA' }}
-        alignItems="center"
-        bg={rowBg}
-        borderBottomColor="auditsList.headerBorderColor"
-        borderBottomWidth="1px"
-        color="auditsList.fontColor"
-        cursor="pointer"
-        data-id="000393"
-        flexShrink={0}
-        fontSize="14px"
-        fontWeight="500"
-        h="50px"
-        key={businessUnit._id}
-        onClick={() => openBusinessUnitModal('edit', businessUnit)}
-        px={2}
-        py={4}
-        w="full"
-      >
+  const columns: ColumnConfig[] = [
+    {
+      label: `${capitalize(t('business unit'))} name`,
+      sortKey: 'name',
+      width: '40%',
+      dataId: '000418',
+      render: (businessUnit: IBusinessUnit) => (
         <Flex
-          cursor="pointer"
-          data-id="000394"
-          flexDir="column"
-          pl={1}
-          w={['70%', '30%']}
-        >
-          <Text data-id="000395" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-            {businessUnit.name}
-          </Text>
+          data-id="001904"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500"
+          lineHeight="18px"
+          noOfLines={1}
+          textOverflow="ellipsis">
+          {businessUnit.name}
         </Flex>
-        {device !== 'mobile' && (
-          <Box data-id="000396" w={['30%', '30%']}>
-            <AvatarCell data-id="001209" users={businessUnit.owner ? [businessUnit.owner] : []} />
-          </Box>
-        )}
-        {module?.type === 'tracker' && (
-          <Flex align="center" data-id="000397" w={['15%', '20%']}>
-            <Text data-id="000398">{businessUnit.trackerItemsResponsesCount || 0}</Text>
-            <Tooltip data-id="000399" fontSize="md" label="Show Items">
-              <ArrowCount
-                cursor="pointer"
-                data-id="000400"
-                h="10px"
-                ml="13px"
-                onClick={() => {
-                  setResponseFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
-                  navigateTo('/');
-                }}
-                stroke="#282F36"
-                w="10px"
-              />
-            </Tooltip>
-          </Flex>
-        )}
-        {module?.type === 'audits' && (
-          <>
-            <Flex align="center" data-id="000401" w={['40%', '20%']}>
-              <Text data-id="000402">{businessUnit.totalAnswersCount || 0}</Text>
-              <Tooltip data-id="000403" fontSize="md" label="Show Items">
-                <ArrowCount
-                  cursor="pointer"
-                  data-id="000404"
-                  h="10px"
-                  ml="13px"
-                  onClick={() => {
-                    setAnswerFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
-                    navigateTo('/answers');
-                  }}
-                  stroke="#282F36"
-                  w="10px"
-                />
-              </Tooltip>
-            </Flex>
-            <Flex align="center" data-id="000405" w={['22%', '20%']}>
-              <Text data-id="000406">{businessUnit.totalAuditsCount || 0}</Text>
-              <Tooltip data-id="000407" fontSize="md" label="Show Items">
-                <ArrowCount
-                  cursor="pointer"
-                  data-id="000408"
-                  h="10px"
-                  ml="13px"
-                  onClick={() => {
-                    setAuditFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
-                    navigateTo('/dashboard');
-                  }}
-                  stroke="#282F36"
-                  w="10px"
-                />
-              </Tooltip>
-            </Flex>
-          </>
-        )}
-      </Flex>
-    );
-  };
+      ),
+    },
+    {
+      label: 'Owner',
+      sortKey: 'owner',
+      width: '30%',
+      dataId: '000419',
+      disabled: device === 'mobile' || device === 'tablet',
+      render: (businessUnit: IBusinessUnit) => <AvatarCell data-id="001905" users={businessUnit.owner ? [businessUnit.owner] : []} />,
+    },
+    ...(module?.type === 'tracker'
+      ? [
+          {
+            label: 'Responses count',
+            sortKey: 'trackerItemsResponsesCount',
+            width: '30%',
+            dataId: '000420',
+            tooltip: 'Only published items',
+            render: (businessUnit: IBusinessUnit) => (
+              <Flex
+                data-id="001906"
+                alignItems="center"
+                color="auditsList.fontColor"
+                fontSize="14px"
+                fontWeight="500">
+                {businessUnit.trackerItemsResponsesCount || 0}
+                <Tooltip data-id="001907" fontSize="md" label="Show Items">
+                  <ArrowCount
+                    data-id="001908"
+                    cursor="pointer"
+                    h="10px"
+                    ml="13px"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setResponseFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
+                      navigateTo('/');
+                    }}
+                    stroke="#282F36"
+                    w="10px" />
+                </Tooltip>
+              </Flex>
+            ),
+          },
+        ]
+      : [
+          {
+            label: `${capitalize(pluralize(t('question')))} count`,
+            sortKey: 'totalAnswersCount',
+            width: '15%',
+            dataId: '000421',
+            render: (businessUnit: IBusinessUnit) => (
+              <Flex
+                data-id="001909"
+                alignItems="center"
+                color="auditsList.fontColor"
+                fontSize="14px"
+                fontWeight="500">
+                {businessUnit.totalAnswersCount || 0}
+                <Tooltip data-id="001910" fontSize="md" label="Show Items">
+                  <ArrowCount
+                    data-id="001911"
+                    cursor="pointer"
+                    h="10px"
+                    ml="13px"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setAnswerFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
+                      navigateTo('/answers');
+                    }}
+                    stroke="#282F36"
+                    w="10px" />
+                </Tooltip>
+              </Flex>
+            ),
+          },
+          {
+            label: `${capitalize(pluralize(t('audit')))} count`,
+            sortKey: 'totalAuditsCount',
+            width: '15%',
+            dataId: '000422',
+            render: (businessUnit: IBusinessUnit) => (
+              <Flex
+                data-id="001912"
+                alignItems="center"
+                color="auditsList.fontColor"
+                fontSize="14px"
+                fontWeight="500">
+                {businessUnit.totalAuditsCount || 0}
+                <Tooltip data-id="001913" fontSize="md" label="Show Items">
+                  <ArrowCount
+                    data-id="001914"
+                    cursor="pointer"
+                    h="10px"
+                    ml="13px"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setAuditFiltersValue({ businessUnitsIds: { value: [businessUnit._id] } });
+                      navigateTo('/dashboard');
+                    }}
+                    stroke="#282F36"
+                    w="10px" />
+                </Tooltip>
+              </Flex>
+            ),
+          },
+        ]),
+  ];
 
   return (
     <>
@@ -376,97 +401,28 @@ function BusinessUnits() {
       />
       <Box
         bg="auditsList.bg"
-        borderRadius="10px"
         data-id="000414"
-        h="calc(100vh - 160px)"
-        p={['0', '0 25px 30px 30px']}
+        h="full"
+        overflow="hidden"
       >
         <Flex data-id="000415" h="full" px={['25px', 0]}>
-          <Box
-            border="1px solid"
-            borderColor="auditsList.headerBorderColor"
-            data-id="000416"
-            h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-            overflow="hidden"
-            w={['full', 'full', 'calc(100%)']}
-          >
-          <AdminTableHeader data-id="000417">
-            <AdminTableHeaderElement
-              data-id="000418"
-              label={`${capitalize(t('business unit'))} name`}
-              onClick={() => {
-                setSortType('name');
-                setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
-              }}
-              showSortingIcon={sortType === 'name'}
-              sortOrder={sortType === 'name' ? sortOrder : undefined}
-              w={['70%', '30%']}
-            />
-            {device !== 'mobile' && (
-              <AdminTableHeaderElement
-                data-id="000419"
-                label="Owner"
-                onClick={() => {
-                  setSortType('owner');
-                  setSortOrder(sortOrder === 'asc' && sortType === 'owner' ? 'desc' : 'asc');
-                }}
-                showSortingIcon={sortType === 'owner'}
-                sortOrder={sortType === 'owner' ? sortOrder : undefined}
-                w={['30%', '30%']}
-              />
-            )}
-            {module?.type === 'tracker' ? (
-              <AdminTableHeaderElement
-                data-id="000420"
-                label="Responses count"
-                onClick={() => {
-                  setSortType('trackerItemsResponsesCount');
-                  setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
-                }}
-                showSortingIcon={sortType === 'trackerItemsResponsesCount'}
-                sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
-                tooltip="Only published items"
-                w={['15%', '20%']}
-              />
-            ) : (
-              <>
-                <AdminTableHeaderElement
-                  data-id="000421"
-                  label={`${capitalize(pluralize(t('question')))} count`}
-                  onClick={() => {
-                    setSortType('totalAnswersCount');
-                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                  }}
-                  showSortingIcon={sortType === 'totalAnswersCount'}
-                  sortOrder={sortType === 'totalAnswersCount' && sortType === 'totalAnswersCount' ? sortOrder : undefined}
-                  w={['40%', '20%']}
-                />
-                <AdminTableHeaderElement
-                  data-id="000422"
-                  label={`${capitalize(pluralize(t('audit')))} count`}
-                  onClick={() => {
-                    setSortType('totalAuditsCount');
-                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                  }}
-                  showSortingIcon={sortType === 'totalAuditsCount'}
-                  sortOrder={sortType === 'totalAuditsCount' && sortType === 'totalAuditsCount' ? sortOrder : undefined}
-                  w={['20%', '20%']}
-                />
-              </>
-            )}
-          </AdminTableHeader>
-          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="000423" h="full" overflow="auto" w="full">
-            {loading ? (
+          {loading ? (
+            <Box bg="white" borderBottomRadius="10px" data-id="000423" h="full" w="full">
               <Loader center data-id="000424" />
-            ) : businessUnits?.length > 0 ? (
-              businessUnits?.map(renderBusinessUnitRow)
-            ) : (
-              <Flex data-id="000425" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-                No {pluralize(t('business unit'))} found
-              </Flex>
-            )}
             </Box>
-          </Box>
+          ) : (
+            <ListView
+              columns={columns}
+              data={businessUnits}
+              data-id="000444"
+              dataType="business units"
+              onRowClick={(row: IBusinessUnit) => openBusinessUnitModal('edit', row)}
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortOrder={sortOrder}
+              sortType={sortType}
+            />
+          )}
         </Flex>
       </Box>
     </>

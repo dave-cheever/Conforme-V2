@@ -6,8 +6,6 @@ import { actionModalStyles } from '../components/Actions/ActionModal';
 import { actionsListStyles } from '../components/Actions/ActionsList';
 import { actionSquareStyles } from '../components/Actions/ActionSquare';
 import { adminModalStyles } from '../components/Admin/AdminModal';
-import { adminTableHeaderStyles } from '../components/Admin/AdminTableHeader';
-import { adminTableHeaderElementStyles } from '../components/Admin/AdminTableHeaderElement';
 import { additionalDetailsStyles } from '../components/AdminTrackerItemModal/AdditionalDetails';
 import { addTrackerItemAttributeStyles } from '../components/AdminTrackerItemModal/AddTrackerItemAttribute';
 import { businessUnitsModalStyles } from '../components/AdminTrackerItemModal/BusinessUnits';
@@ -22,7 +20,6 @@ import { summaryItemModalStyles } from '../components/AdminTrackerItemModal/Summ
 import { trackerItemModalStyles } from '../components/AdminTrackerItemModal/TrackerItemModal';
 import { alertDialogStyles } from '../components/AlertDialog';
 import { answerModalStyles } from '../components/Answers/AnswerModal';
-import { answersListStyles } from '../components/Answers/AnswersList';
 import { answerSquareStyles } from '../components/Answers/AnswerSquare';
 import { auditActionFormStyles } from '../components/Audit/AuditActionForm';
 import { auditAnswerStyles } from '../components/Audit/AuditAnswer';
@@ -32,7 +29,6 @@ import { auditLeftNavigationStyles } from '../components/Audit/AuditLeftNavigati
 import { auditLeftTabItemStyles } from '../components/Audit/AuditLeftTabItem';
 import { auditNewQuestionModalStyles } from '../components/Audit/AuditNewQuestionModal';
 import { auditsGroupStyles } from '../components/Audit/AuditsGroup';
-import { auditsListStyles } from '../components/Audit/AuditsList';
 import { auditSquareStyles } from '../components/Audit/AuditSquare';
 import { auditLogStyles } from '../components/AuditLog/AuditLog';
 import { auditLogDayStyles } from '../components/AuditLog/AuditLogDay';
@@ -105,6 +101,7 @@ import { settingsTabItemStyles } from '../components/Settings/TabItem';
 import { shareModalStyles } from '../components/ShareModal';
 import { sortButtonStyles } from '../components/SortButton';
 import { statusSelectorStyles } from '../components/StatusSelector';
+import { listViewStyles } from '../components/Table/ListView';
 import { trackerGroupItemsStyles } from '../components/TrackerItem/TrackerItemsGroup';
 import { trackerListItemsStyles } from '../components/TrackerItem/TrackerItemsList';
 import { trackerItemsSquareStyles } from '../components/TrackerItem/TrackerItemSquare';
@@ -186,8 +183,6 @@ const getTheme = (organizationTheme?: any) => {
         ...additionalDetailsStyles,
         ...addTrackerItemAttributeStyles,
         ...adminModalStyles,
-        ...adminTableHeaderElementStyles,
-        ...adminTableHeaderStyles,
         ...alertDialogStyles,
         ...auditActionFormStyles,
         ...auditAnswerStyles,
@@ -206,7 +201,6 @@ const getTheme = (organizationTheme?: any) => {
         ...auditSquareStyles,
         ...auditTypesAdminStyles,
         ...auditsGroupStyles,
-        ...auditsListStyles,
         ...participantAvatarStyles,
         ...barChartStyles,
         ...businessUnitsModalStyles,
@@ -241,6 +235,7 @@ const getTheme = (organizationTheme?: any) => {
         ...insightsCardStyles,
         ...insightsDetailedTableStyles,
         ...insightsStyles,
+        ...listViewStyles,
         ...loginPageStyles,
         ...locationsStyles,
         ...locationsFormModalStyles,
@@ -305,7 +300,6 @@ const getTheme = (organizationTheme?: any) => {
         ...userMenuStyles,
         ...userSelectorStyles,
         ...answersStyles,
-        ...answersListStyles,
         ...answerSquareStyles,
         ...answerModalStyles,
         ...actionsInsightsStyles,

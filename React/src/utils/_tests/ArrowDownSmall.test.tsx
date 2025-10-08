@@ -66,9 +66,9 @@ describe('ArrowDownSmall', () => {
     render(
       <TestWrapper data-id="001535">
         <ArrowDownSmall
-          data-id="001536"
           boxSize="24px"
           color="red"
+          data-id="001536"
           data-testid="custom-arrow-down" />
       </TestWrapper>,
     );
@@ -80,7 +80,7 @@ describe('ArrowDownSmall', () => {
   test('accepts color prop', () => {
     render(
       <TestWrapper data-id="001537">
-        <ArrowDownSmall data-id="001538" color="blue" />
+        <ArrowDownSmall color="blue" data-id="001538" />
       </TestWrapper>,
     );
 
@@ -91,7 +91,7 @@ describe('ArrowDownSmall', () => {
   test('accepts size props', () => {
     render(
       <TestWrapper data-id="001539">
-        <ArrowDownSmall data-id="001540" boxSize="32px" />
+        <ArrowDownSmall boxSize="32px" data-id="001540" />
       </TestWrapper>,
     );
 
@@ -102,7 +102,7 @@ describe('ArrowDownSmall', () => {
   test('accepts className prop', () => {
     render(
       <TestWrapper data-id="001541">
-        <ArrowDownSmall data-id="001542" className="custom-class" />
+        <ArrowDownSmall className="custom-class" data-id="001542" />
       </TestWrapper>,
     );
 
@@ -136,7 +136,7 @@ describe('ArrowDownSmall', () => {
   test('accepts aria attributes', () => {
     render(
       <TestWrapper data-id="001547">
-        <ArrowDownSmall data-id="001548" aria-label="Expand section" />
+        <ArrowDownSmall aria-label="Expand section" data-id="001548" />
       </TestWrapper>,
     );
 
@@ -175,7 +175,7 @@ describe('ArrowDownSmall', () => {
   test('maintains aspect ratio', () => {
     render(
       <TestWrapper data-id="001556">
-        <ArrowDownSmall data-id="001557" boxSize="28px" />
+        <ArrowDownSmall boxSize="28px" data-id="001557" />
       </TestWrapper>,
     );
 

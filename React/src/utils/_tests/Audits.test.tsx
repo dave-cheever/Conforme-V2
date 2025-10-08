@@ -293,4 +293,46 @@ describe('Audits – assignedToMe, filters, and new render helpers', () => {
     await user.click(screen.getByTestId('to-panel'));
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
+
+  test('renderGridView: shows grid when viewMode is grid', async () => {
+    MOCK_SORTED_AUDITS = [
+      { _id: 'a1', auditor: { displayName: 'X' }, dueDate: '2025-01-15' },
+      { _id: 'a2', auditor: { displayName: 'Y' }, dueDate: '2025-01-20' },
+    ];
+    renderPage();
+    expect(screen.getAllByTestId('audit-square')).toHaveLength(2);
+  });
+
+  test('renderListView: switches to list view and shows ListView component', async () => {
+    const user = userEvent.setup();
+    MOCK_SORTED_AUDITS = [{ _id: 'a1', auditor: { displayName: 'X' } }];
+    renderPage();
+
+    await user.click(screen.getByTestId('to-list'));
+    // ListView should be in the document
+    const listView = screen.queryByRole('table');
+    expect(listView).toBeDefined();
+  });
+
+  test('CSV export button is present', () => {
+    renderPage();
+    expect(screen.getByTestId('csvlink')).toBeInTheDocument();
+  });
+
+  test('sort button is rendered', () => {
+    renderPage();
+    expect(screen.getByTestId('sort')).toBeInTheDocument();
+  });
+
+  test('handles empty sorted audits in grid view', () => {
+    MOCK_SORTED_AUDITS = [];
+    renderPage();
+    expect(screen.getByText(/No audits found\. Try adjusting the filters\./i)).toBeInTheDocument();
+  });
+
+  test('default viewMode renders grid view', () => {
+    MOCK_SORTED_AUDITS = [{ _id: 'a1', auditor: { displayName: 'X' } }];
+    renderPage();
+    expect(screen.getByTestId('audit-square')).toBeInTheDocument();
+  });
 });

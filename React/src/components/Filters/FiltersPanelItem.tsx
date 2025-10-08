@@ -85,7 +85,7 @@ function FiltersPanelItem({ name, filter }: { name: string; filter: IFilter }) {
       w="full"
     >
       <Flex align="center" cursor="pointer" data-id="000099" justify="space-between" mb={isOpen ? '4' : '0'} w="full">
-        <Flex data-id="001524" align="center" w="full">
+        <Flex align="center" data-id="001524" w="full">
           {filtersLength > 0 && (
             <Box
               bg="filtersPanelItem.countBg"

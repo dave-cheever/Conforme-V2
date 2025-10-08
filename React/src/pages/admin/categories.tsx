@@ -2,17 +2,15 @@ import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Box, Flex, Stack, useToast } from '@chakra-ui/react';
+import { Box, Flex, useToast } from '@chakra-ui/react';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
-import AdminTableHeader from '../../components/Admin/AdminTableHeader';
-import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
-import AdminTableRow from '../../components/Admin/AdminTableRow';
 import BarChart from '../../components/BarChart';
 import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import { AdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
@@ -215,6 +213,47 @@ function Categories() {
     }
   };
 
+  const columns: ColumnConfig[] = [
+    {
+      label: 'Category',
+      sortKey: 'name',
+      width: module?.type === 'tracker' ? '70%' : '100%',
+      dataId: '000346',
+      render: (category: IBaseWithName) => (
+        <Flex
+          data-id="001927"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500"
+          lineHeight="18px"
+          noOfLines={1}
+          textOverflow="ellipsis">
+          {category.name}
+        </Flex>
+      ),
+    },
+    ...(module?.type === 'tracker'
+      ? [
+          {
+            label: 'Responses count',
+            sortKey: 'trackerItemsResponsesCount',
+            width: '30%',
+            dataId: '000347',
+            tooltip: 'Only published items',
+            render: (category: IBaseWithName & { trackerItemsResponsesCount: number }) => (
+              <Flex
+                data-id="001928"
+                color="auditsList.fontColor"
+                fontSize="14px"
+                fontWeight="500">
+                {category.trackerItemsResponsesCount || 0}
+              </Flex>
+            ),
+          },
+        ]
+      : []),
+  ];
+
   return (
     <>
       <AdminModal
@@ -244,73 +283,25 @@ function Categories() {
       <Header
         breadcrumbs={['Admin', 'Categories']}
         data-id="000341" mobileBreadcrumbs={['Categories']} pageLabel="Category" />
-      <Box data-id="000342" h="calc(100vh - 160px)" overflow="auto" p={['0', '0 25px 30px 30px']}>
+      <Box bg="auditsList.bg" data-id="000342" h="full" overflow="hidden">
         <Flex data-id="000343" h="full" px={['25px', 0]}>
-          <Box     
-            border="1px solid #CBD5E0"
-            data-id="000344"
-            overflow="hidden"
-            w={['full', 'full', module?.type === 'tracker' ? 'calc(100% - 250px)' : 'full']}
-            h="fit-content"
-            // h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-            mr={[0, 0, module?.type === 'tracker' ? '50px' : 0]}
-          >
-            <AdminTableHeader data-id="000345">
-              <AdminTableHeaderElement
-                data-id="000346"
-                label="Category"
-                onClick={() => {
-                  setSortType('name');
-                  setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
-                }}
-                showSortingIcon={sortType === 'name'}
-                sortOrder={sortType === 'name' ? sortOrder : undefined}
-                w={['70%', '50%']}
-              />
-              {module?.type === 'tracker' && (
-                <AdminTableHeaderElement
-                  data-id="000347"
-                  label="Responses count"
-                  onClick={() => {
-                    setSortType('trackerItemsResponsesCount');
-                    setSortOrder(sortOrder === 'asc' && sortType === 'trackerItemsResponsesCount' ? 'desc' : 'asc');
-                  }}
-                  showSortingIcon={sortType === 'trackerItemsResponsesCount'}
-                  sortOrder={sortType === 'trackerItemsResponsesCount' ? sortOrder : undefined}
-                  tooltip="Only published items"
-                  w={['20%', '50%']}
-                />
-              )}
-            </AdminTableHeader>
-            <Stack
-              bg="white"
-              borderBottomRadius="20px"
-              data-id="000348"
-              h={loading ? 'full' : 'fit-content'}
-              minH="full"
-              pb="3"
-              spacing="1px"
-            >
-              {loading ? (
-                <Loader center data-id="000349" />
-              ) : categories?.length > 0 ? (
-                categories?.map((category, index) => (
-                  <AdminTableRow
-                    data-id="000350"
-                    edit={() => openCategoryModal('edit', category)}
-                    element={category}
-                    index={index}
-                    key={category._id}
-                    responseToEdit="categoriesIds"
-                  />
-                ))
-              ) : (
-                <Flex data-id="000351" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-                  No categories found
-                </Flex>
-              )}
-            </Stack>
-          </Box>
+          {loading ? (
+            <Box bg="white" borderBottomRadius="10px" data-id="000349" h="full" w="full">
+              <Loader center data-id="000350" />
+            </Box>
+          ) : (
+            <ListView
+              columns={columns}
+              data={categories}
+              data-id="000344"
+              dataType="categories"
+              onRowClick={(row: IBaseWithName) => openCategoryModal('edit', row)}
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortOrder={sortOrder}
+              sortType={sortType}
+            />
+          )}
           {device === 'desktop' && module?.type === 'tracker' && (
             <Flex alignItems="center" data-id="000352" flexDirection="column" w={['100%', '220px']}>
               <Box data-id="000353" w="100%">

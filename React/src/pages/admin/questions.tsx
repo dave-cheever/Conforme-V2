@@ -2,20 +2,19 @@ import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Box, Flex, Stack, Text, useToast } from '@chakra-ui/react';
+import { Box, Flex, Stack, useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize } from 'lodash';
 import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
-import AdminTableHeader from '../../components/Admin/AdminTableHeader';
-import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
 import Dropdown from '../../components/Forms/Dropdown';
 import TextInput from '../../components/Forms/TextInput';
 import TextInputMultiline from '../../components/Forms/TextInputMultiline';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import { AdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
 import { IQuestion } from '../../interfaces/IQuestion';
@@ -305,43 +304,26 @@ function Questions() {
     }
   };
 
-  const renderQuestionRow = (question: IQuestion<TQuestionValue>, i: number) => {
-    const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
-    return (
-      <Flex
-        _hover={{ bg: '#F5F7FA' }}
-        alignItems="center"
-        bg={rowBg}
-        borderBottomColor="auditsList.headerBorderColor"
-        borderBottomWidth="1px"
-        color="auditsList.fontColor"
-        cursor="pointer"
-        data-id="000482"
-        flexShrink={0}
-        fontSize="14px"
-        fontWeight="500"
-        h="50px"
-        key={question._id}
-        px={2}
-        py={4}
-        w="full"
-      >
+  const columns: ColumnConfig[] = [
+    {
+      label: 'Question',
+      sortKey: 'question',
+      width: '100%',
+      dataId: '000497',
+      render: (q: IQuestion<TQuestionValue>) => (
         <Flex
-          cursor="pointer"
-          data-id="000483"
-          flexDir="column"
-          mr={4}
-          onClick={() => openQuestionModal('edit', question)}
-          pl={1}
-          w="full"
-        >
-          <Text data-id="000484" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-            {question.question}
-          </Text>
+          data-id="001946"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500"
+          lineHeight="18px"
+          noOfLines={1}
+          textOverflow="ellipsis">
+          {q.question}
         </Flex>
-      </Flex>
-    );
-  };
+      ),
+    },
+  ];
 
   return (
     <>
@@ -392,50 +374,27 @@ function Questions() {
         mobileBreadcrumbs={['Questions']}
         pageLabel={capitalize(t('question'))}
       />
-      <Flex
-        bg="auditsList.bg"
-        borderRadius="10px"
-        data-id="000493"
-        h="calc(100vh - 160px)"
-        overflow="auto"
-       p={[0, '0 25px 30px 30px']}
-      >
-       <Flex data-id="000494" h="full" px={['25px', 0]} w="full">
-          <Box
-          border="1px solid"
-          borderColor="auditsList.headerBorderColor"
-          data-id="000495"
-          h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-          overflow="hidden"
-          w="full"
-        >
-          <AdminTableHeader data-id="000496">
-            <AdminTableHeaderElement
-              data-id="000497"
-              label="Question"
-              onClick={() => {
-                setSortType('question');
-                setSortOrder(sortOrder === 'asc' && sortType === 'question' ? 'desc' : 'asc');
-              }}
-              showSortingIcon={sortType === 'question'}
-              sortOrder={sortType === 'question' ? sortOrder : undefined}
-              w="full"
+      <Box bg="auditsList.bg" data-id="000493" h="full" overflow="hidden">
+        <Flex data-id="000494" h="full" px={['25px', 0]}>
+          {loading ? (
+            <Box bg="white" borderBottomRadius="10px" data-id="000499" h="full" w="full">
+              <Loader data-id="001947" center />
+            </Box>
+          ) : (
+            <ListView
+              columns={columns}
+              data={questions}
+              data-id="000444"
+              dataType="questions"
+              onRowClick={(row: IQuestion<TQuestionValue>) => openQuestionModal('edit', row)}
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortOrder={sortOrder}
+              sortType={sortType}
             />
-          </AdminTableHeader>
-          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="000498" h="full" overflow="auto" w="full">
-            {loading ? (
-              <Loader center data-id="000499" />
-            ) : questions?.length > 0 ? (
-              questions?.map(renderQuestionRow)
-            ) : (
-              <Flex data-id="000500" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-                No questions found
-              </Flex>
-            )}
-          </Box>
-          </Box>
-          </Flex>
-      </Flex>
+          )}
+        </Flex>
+      </Box>
     </>
   );
 }

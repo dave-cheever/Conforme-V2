@@ -5,8 +5,8 @@ function InsightsDetailedTableHeader({ children }) {
     <Grid
       bg="white"
       borderBottom="1px solid"
-      borderColor="adminTableHeader.border"
-      color="adminTableHeader.font"
+      borderColor="row.borderColor"
+      color="header.fontColor"
       data-id="000521"
       fontSize="11px"
       fontWeight="semi_medium"

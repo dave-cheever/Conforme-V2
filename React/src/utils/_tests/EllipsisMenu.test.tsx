@@ -129,7 +129,7 @@ describe('EllipsisMenu', () => {
       renderWithWrapper({ size: 'md' });
 
       const button = screen.getByRole('button');
-      expect(button).toHaveStyle({ width: '40px', height: '40px' });
+      expect(button).toHaveStyle({ width: '34px', height: '34px' });
 
       const icon = screen.getByTestId('ellipsis-icon');
       expect(icon).toHaveAttribute('boxSize', '16px');

@@ -392,3 +392,152 @@ describe('SonarQube Code Coverage Tests', () => {
     });
   });
 });
+
+// Add functional tests for the Answers component
+describe('Answers Component Functional Tests', () => {
+  test('buildPanels creates correct panel structure', () => {
+    const mockAuditTypes: AuditType[] = [
+      {
+        _id: 'at1',
+        questionsCategories: [
+          { _id: 'cat1', name: 'Safety' },
+          { _id: 'cat2', name: 'Quality' },
+        ],
+      },
+      {
+        _id: 'at2',
+        questionsCategories: [
+          { _id: 'cat2', name: 'Quality' },
+          { _id: 'cat3', name: 'Environment' },
+        ],
+      },
+    ];
+
+    const panels = testUniqueCategoriesLogic(mockAuditTypes);
+    
+    // Should have 'All' panel + 3 unique categories
+    expect(panels).toHaveLength(4);
+    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
+    
+    const panelIds = panels.map((p) => p._id);
+    expect(panelIds).toContain('cat1');
+    expect(panelIds).toContain('cat2');
+    expect(panelIds).toContain('cat3');
+  });
+
+  test('buildPanels handles when all audit types have null categories', () => {
+    const mockAuditTypes: AuditType[] = [
+      {
+        _id: 'at1',
+        questionsCategories: null,
+      },
+      {
+        _id: 'at2',
+        questionsCategories: null,
+      },
+    ];
+
+    const panels = testUniqueCategoriesLogic(mockAuditTypes);
+    
+    // Should only have 'All' panel
+    expect(panels).toHaveLength(1);
+    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
+  });
+
+  test('categoryIdsForPanel returns correct category IDs for non-All panel', () => {
+    const mockPanels = [
+      { _id: 'all', name: 'All' },
+      { _id: 'cat1', name: 'Safety' },
+      { _id: 'cat2', name: 'Quality' },
+    ];
+    const parsedFilters = { questionsCategoriesIds: ['cat1', 'cat2', 'cat3'] };
+    
+    // Test selecting 'Safety' panel (index 1)
+    const result = testPanelSelectionLogic(mockPanels, 1, parsedFilters);
+    expect(result).toEqual(['cat1']);
+  });
+
+  test('categoryIdsForPanel returns all category IDs for All panel', () => {
+    const mockPanels = [
+      { _id: 'all', name: 'All' },
+      { _id: 'cat1', name: 'Safety' },
+      { _id: 'cat2', name: 'Quality' },
+    ];
+    const parsedFilters = { questionsCategoriesIds: ['cat1', 'cat2'] };
+    
+    // Test selecting 'All' panel (index 0)
+    const result = testPanelSelectionLogic(mockPanels, 0, parsedFilters);
+    expect(result).toEqual(['cat1', 'cat2']);
+  });
+
+  test('categoryIdsForPanel handles missing parsedFilters gracefully', () => {
+    const mockPanels = [
+      { _id: 'all', name: 'All' },
+      { _id: 'cat1', name: 'Safety' },
+    ];
+    
+    // Test selecting 'All' panel with no parsedFilters
+    const result = testPanelSelectionLogic(mockPanels, 0);
+    expect(result).toEqual([]);
+  });
+
+  test('flatMapCategories flattens all categories from multiple audit types', () => {
+    const mockAuditTypes: AuditType[] = [
+      {
+        _id: 'at1',
+        questionsCategories: [
+          { _id: 'cat1', name: 'Safety' },
+          { _id: 'cat2', name: 'Quality' },
+        ],
+      },
+      {
+        _id: 'at2',
+        questionsCategories: [
+          { _id: 'cat3', name: 'Environment' },
+        ],
+      },
+    ];
+
+    const categories = testFlatMapLogic(mockAuditTypes);
+    expect(categories).toHaveLength(3);
+    expect(categories[0]).toEqual({ _id: 'cat1', name: 'Safety' });
+    expect(categories[1]).toEqual({ _id: 'cat2', name: 'Quality' });
+    expect(categories[2]).toEqual({ _id: 'cat3', name: 'Environment' });
+  });
+
+  test('dedupeCategories removes duplicate categories by ID', () => {
+    const categories: Category[] = [
+      { _id: 'cat1', name: 'Safety' },
+      { _id: 'cat2', name: 'Quality' },
+      { _id: 'cat1', name: 'Safety Duplicate' },
+      { _id: 'cat3', name: 'Environment' },
+    ];
+
+    const dedupedMap = testMapDeduplicationLogic(categories);
+    
+    // Should have 3 unique categories
+    expect(dedupedMap.size).toBe(3);
+    
+    // First occurrence should be kept
+    expect(dedupedMap.get('cat1')).toEqual({ _id: 'cat1', name: 'Safety' });
+    expect(dedupedMap.get('cat2')).toEqual({ _id: 'cat2', name: 'Quality' });
+    expect(dedupedMap.get('cat3')).toEqual({ _id: 'cat3', name: 'Environment' });
+  });
+
+  test('buildPanels orders panels with All first', () => {
+    const mockAuditTypes: AuditType[] = [
+      {
+        _id: 'at1',
+        questionsCategories: [
+          { _id: 'cat1', name: 'Zebra' },
+          { _id: 'cat2', name: 'Apple' },
+        ],
+      },
+    ];
+
+    const panels = testUniqueCategoriesLogic(mockAuditTypes);
+    
+    // 'All' should always be first
+    expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
+  });
+});

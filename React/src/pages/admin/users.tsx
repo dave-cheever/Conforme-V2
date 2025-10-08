@@ -8,12 +8,11 @@ import { t } from 'i18next';
 import { upperFirst } from 'lodash';
 import pluralize from 'pluralize';
 
-import AdminTableHeader from '../../components/Admin/AdminTableHeader';
-import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
 import { isPermitted } from '../../components/can';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import AvatarCell from '../../components/Table/Cells/AvatarCell';
+import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import UserAuditsCount from '../../components/UserAuditsCount';
 import UserResponseCount from '../../components/UserResponseCount';
 import { useAppContext } from '../../contexts/AppProvider';
@@ -94,353 +93,252 @@ function Users() {
     return pages;
   };
 
-  const renderCountHeaders = () =>
-    module?.type === 'tracker' ? (
-      <>
-        <AdminTableHeaderElement
-          data-id="000587"
-          label={
-            <Flex align="center" data-id="000588" gap="1">
-              <Text data-id="000589">R</Text>
-              <Tooltip
-                data-id="000590"
-                hasArrow
-                label="Responsible on number of responses">
-                <InfoOutlineIcon
-                  boxSize="2.5"
-                  color="gray.500"
-                  data-id="000591"
-                  marginTop={-2}
-                  onClick={() => {
-                    navigateTo('/help');
-                  }} />
-              </Tooltip>
-            </Flex>
-          }
-          ml="13px"
-          onClick={() => {
-            setSortType('responsibleCount');
-            setSortOrder(sortOrder === 'asc' && sortType === 'responsibleCount' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'responsibleCount'}
-          sortOrder={sortType === 'responsibleCount' ? sortOrder : undefined}
-          w="calc(25% - 13px)"
-        />
-        <AdminTableHeaderElement
-          data-id="000592"
-          label={
-            <Flex align="center" data-id="000593" gap="1">
-              <Text data-id="000594">A</Text>
-              <Tooltip
-                data-id="000595"
-                hasArrow
-                label="Accountable on number of responses">
-                <InfoOutlineIcon
-                  boxSize="2.5"
-                  color="gray.500"
-                  data-id="000596"
-                  marginTop={-2}
-                  onClick={() => {
-                    navigateTo('/help');
-                  }} />
-              </Tooltip>
-            </Flex>
-          }
-          ml="13px"
-          onClick={() => {
-            setSortType('accountableCount');
-            setSortOrder(sortOrder === 'asc' && sortType === 'accountableCount' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'accountableCount'}
-          sortOrder={sortType === 'accountableCount' ? sortOrder : undefined}
-          w="calc(25% - 13px)"
-        />
-        <AdminTableHeaderElement
-          data-id="000597"
-          label={
-            <Flex align="center" data-id="000598" gap="1">
-              <Text data-id="000599">C</Text>
-              <Tooltip
-                data-id="000600"
-                hasArrow
-                label="Contributor on number of responses">
-                <InfoOutlineIcon
-                  boxSize="2.5"
-                  color="gray.500"
-                  data-id="000601"
-                  marginTop={-2}
-                  onClick={() => {
-                    navigateTo('/help');
-                  }} />
-              </Tooltip>
-            </Flex>
-          }
-          ml="13px"
-          onClick={() => {
-            setSortType('contributorCount');
-            setSortOrder(sortOrder === 'asc' && sortType === 'contributorCount' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'contributorCount'}
-          sortOrder={sortType === 'contributorCount' ? sortOrder : undefined}
-          w="calc(25% - 13px)"
-        />
-        <AdminTableHeaderElement
-          data-id="000602"
-          label={
-            <Flex align="center" data-id="000603" gap="1">
-              <Text data-id="000604">F</Text>
-              <Tooltip data-id="000605" hasArrow label="Follower on number of responses">
-                <InfoOutlineIcon
-                  boxSize="2.5"
-                  color="gray.500"
-                  data-id="000606"
-                  marginTop={-2}
-                  onClick={() => {
-                    navigateTo('/help');
-                  }} />
-              </Tooltip>
-            </Flex>
-          }
-          ml="13px"
-          onClick={() => {
-            setSortType('followerCount');
-            setSortOrder(sortOrder === 'asc' && sortType === 'followerCount' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'followerCount'}
-          sortOrder={sortType === 'followerCount' ? sortOrder : undefined}
-          w="calc(25% - 13px)"
-        />
-      </>
-    ) : (
-      <>
-        <AdminTableHeaderElement
-          data-id="000607"
-          label={
-            <Flex align="center" data-id="000608" gap="1">
-              <Text data-id="000609">T</Text>
-              <Tooltip
-                data-id="000610"
-                hasArrow
-                label={`Total number of ${pluralize(t('audit'))}`}>
-                <InfoOutlineIcon
-                  boxSize="2.5"
-                  color="gray.500"
-                  data-id="000611"
-                  marginTop={-2}
-                  onClick={() => {
-                    navigateTo('/help');
-                  }} />
-              </Tooltip>
-            </Flex>
-          }
-          ml="13px"
-          onClick={() => {
-            setSortType('totalAuditsCount');
-            setSortOrder(sortOrder === 'asc' && sortType === 'totalAuditsCount' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'totalAuditsCount'}
-          sortOrder={sortType === 'totalAuditsCount' ? sortOrder : undefined}
-          w="calc(25% - 13px)"
-        />
-        <AdminTableHeaderElement
-          data-id="000612"
-          label={
-            <Flex align="center" data-id="000613" gap="1">
-              <Text data-id="000614">C</Text>
-              <Tooltip
-                data-id="000615"
-                hasArrow
-                label={`Number of completed ${pluralize(t('audit'))}`}>
-                <InfoOutlineIcon
-                  boxSize="2.5"
-                  color="gray.500"
-                  data-id="000616"
-                  marginTop={-2}
-                  onClick={() => {
-                    navigateTo('/help');
-                  }} />
-              </Tooltip>
-            </Flex>
-          }
-          ml="13px"
-          onClick={() => {
-            setSortType('completedAuditsCount');
-            setSortOrder(sortOrder === 'asc' && sortType === 'completedAuditsCount' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'completedAuditsCount'}
-          sortOrder={sortType === 'completedAuditsCount' ? sortOrder : undefined}
-          w="calc(25% - 13px)"
-        />
-        <AdminTableHeaderElement
-          data-id="000617"
-          label={
-            <Flex align="center" data-id="000618" gap="1">
-              <Text data-id="000619">U</Text>
-              <Tooltip
-                data-id="000620"
-                hasArrow
-                label={`Number of upcoming ${pluralize(t('audit'))}`}>
-                <InfoOutlineIcon
-                  boxSize="2.5"
-                  color="gray.500"
-                  data-id="000621"
-                  marginTop={-2}
-                  onClick={() => {
-                    navigateTo('/help');
-                  }} />
-              </Tooltip>
-            </Flex>
-          }
-          ml="13px"
-          onClick={() => {
-            setSortType('upcomingAuditsCount');
-            setSortOrder(sortOrder === 'asc' && sortType === 'upcomingAuditsCount' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'upcomingAuditsCount'}
-          sortOrder={sortType === 'upcomingAuditsCount' ? sortOrder : undefined}
-          w="calc(25% - 13px)"
-        />
-        <AdminTableHeaderElement
-          data-id="000622"
-          label={
-            <Flex align="center" data-id="000623" gap="1">
-              <Text data-id="000624">M</Text>
-              <Tooltip
-                data-id="000625"
-                hasArrow
-                label={`Number of missed ${pluralize(t('audit'))}`}>
-                <InfoOutlineIcon
-                  boxSize="2.5"
-                  color="gray.500"
-                  data-id="000626"
-                  marginTop={-2}
-                  onClick={() => {
-                    navigateTo('/help');
-                  }} />
-              </Tooltip>
-            </Flex>
-          }
-          ml="13px"
-          onClick={() => {
-            setSortType('missedAuditsCount');
-            setSortOrder(sortOrder === 'asc' && sortType === 'missedAuditsCount' ? 'desc' : 'asc');
-          }}
-          showSortingIcon={sortType === 'missedAuditsCount'}
-          sortOrder={sortType === 'missedAuditsCount' ? sortOrder : undefined}
-          w="calc(25% - 13px)"
-        />
-      </>
-    );
-
-  const renderCounts = (user: IUser) =>
-    module?.type === 'tracker' ? (
-      <>
-        <UserResponseCount
-          data-id="000627"
-          responseCount={user.responsibleCount}
-          // eslint-disable-next-line jsx-a11y/aria-role
-          role="responsible"
-          userId={user._id}
-        />
-        <UserResponseCount
-          data-id="000628"
-          responseCount={user.accountableCount}
-          // eslint-disable-next-line jsx-a11y/aria-role
-          role="accountable"
-          userId={user._id}
-        />
-        <UserResponseCount
-          data-id="000629"
-          responseCount={user.contributorCount}
-          // eslint-disable-next-line jsx-a11y/aria-role
-          role="contributor"
-          userId={user._id}
-        />
-        <UserResponseCount
-          data-id="000630"
-          responseCount={user.followerCount}
-          // eslint-disable-next-line jsx-a11y/aria-role
-          role="follower"
-          userId={user._id}
-        />
-      </>
-    ) : (
-      <>
-        <UserAuditsCount auditsCount={user.totalAuditsCount} data-id="000631" userId={user._id} />
-        <UserAuditsCount auditsCount={user.completedAuditsCount} data-id="000632" status="completed" userId={user._id} />
-        <UserAuditsCount auditsCount={user.upcomingAuditsCount} data-id="000633" status="upcoming" userId={user._id} />
-        <UserAuditsCount auditsCount={user.missedAuditsCount} data-id="000634" status="missed" userId={user._id} />
-      </>
-    );
-
-  const renderUserRow = (user: IUser, i: number) => {
-    const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
-    return (
-      <Flex
-        _hover={{ bg: '#F5F7FA' }}
-        alignItems="center"
-        bg={rowBg}
-        borderBottomColor="auditsList.headerBorderColor"
-        borderBottomWidth="1px"
-        color="auditsList.fontColor"
-        cursor="pointer"
-        data-id="000635"
-        flexShrink={0}
-        fontSize="14px"
-        fontWeight="500"
-        h="50px"
-        key={user._id}
-        px="10px"
-        w="full"
-      >
-        <Flex data-id="000636" w={['60%', '16%']}>
-        <AvatarCell data-id="001217" users={user ? [user] : []} />
-        </Flex>
-        {device !== 'mobile' && (
-          <>
-            <Box data-id="000639" w="16%">
-              {user.jobTitle ? user.jobTitle : 'Not specified'}
+  // Define columns for ListView
+  const columns: ColumnConfig[] = [
+    {
+      label: 'Name',
+      sortKey: 'displayName',
+      width: '16%',
+      dataId: 'users-col-name',
+      render: (user: IUser) => <AvatarCell data-id="001217" users={user ? [user] : []} />,
+    },
+    {
+      label: 'Job title',
+      sortKey: 'jobTitle',
+      width: '16%',
+      dataId: 'users-col-jobTitle',
+      disabled: device === 'mobile' || device === 'tablet',
+      render: (user: IUser) => <Box data-id="001969">{user.jobTitle ? user.jobTitle : 'Not specified'}</Box>,
+    },
+    {
+      label: 'Role',
+      sortKey: 'role',
+      width: '16%',
+      dataId: 'users-col-role',
+      disabled: device === 'mobile' || device === 'tablet',
+      render: (user: IUser) => <Box data-id="001970">{`${user.role?.charAt(0).toUpperCase()}${user.role?.slice(1)}`}</Box>,
+    },
+    {
+      label: 'Default page',
+      sortKey: 'defaultPage',
+      width: '16%',
+      dataId: 'users-col-defaultPage',
+      disabled: device === 'mobile' || device === 'tablet',
+      render: (user: IUser) => (
+        <Flex data-id="001971" flexDir="column" w="full">
+          {getDefaultPages(user._id).length === 1 ? (
+            <Box data-id="001972">
+              {getDefaultPages(user._id).find(({ url }) => url === (Array.isArray(user.defaultPage) ? user.defaultPage[0]?.path : 'N/A'))?.name}
             </Box>
-            <Box data-id="000640" w="16%">{`${user.role?.charAt(0).toUpperCase()}${user.role?.slice(1)}`}</Box>
-            <Flex data-id="000641" flexDir="column" w="16%">
-              {getDefaultPages(user._id).length === 1 ? (
-                <Box data-id="000642">
-                  {
-                    getDefaultPages(user._id).find(
-                      ({ url }) => url === (Array.isArray(user.defaultPage) ? user.defaultPage[0]?.path : 'N/A'),
-                    )?.name
-                  }
-                </Box>
-              ) : loadingUsers.includes(user._id) ? (
-                <Flex data-id="000643" w="130px">
-                  <Loader data-id="000644" size="sm" />
-                </Flex>
-              ) : (
-                <Select
-                  data-id="000645"
-                  fontSize="14px"
-                  icon={<ArrowDownIcon data-id="000646" h="10px" ml={1} w="10px" />}
-                  onChange={(e) => onHomePageChange(e, user._id)}
-                  value={user.defaultPage?.find((value) => value.name == module?.name)?.path}
-                  variant="unstyled"
-                  w="120px"
-                >
-                  {getDefaultPages(user._id).map((page) => (
-                    <option data-id="000647" key={page.url} value={page.url}>
-                      {page.name}
-                    </option>
-                  ))}
-                </Select>
-              )}
+          ) : loadingUsers.includes(user._id) ? (
+            <Flex data-id="001973" w="130px">
+              <Loader data-id="000644" size="sm" />
             </Flex>
-          </>
-        )}
-        {device !== 'mobile' && (
-          <Flex data-id="000648" h="100%" w="20%">
-            {renderCounts(user)}
-          </Flex>
-        )}
-        <Flex align="center" data-id="000649" ml="20px" w={['40%', 'calc(16% - 20px)']}>
+          ) : (
+            <Select
+              data-id="000645"
+              fontSize="14px"
+              icon={<ArrowDownIcon data-id="000646" h="10px" ml={1} w="10px" />}
+              onChange={(e) => onHomePageChange(e, user._id)}
+              value={user.defaultPage?.find((value) => value.name == module?.name)?.path}
+              variant="unstyled"
+              w="120px"
+            >
+              {getDefaultPages(user._id).map((page) => (
+                <option data-id="000647" key={page.url} value={page.url}>
+                  {page.name}
+                </option>
+              ))}
+            </Select>
+          )}
+        </Flex>
+      ),
+    },
+    ...(module?.type === 'tracker'
+      ? ([
+          {
+            label: (
+              <Flex data-id="001974" align="center" gap="1">
+                <Text data-id="001975">R</Text>
+                <Tooltip data-id="001976" hasArrow label="Responsible on number of responses">
+                  <InfoOutlineIcon
+                    data-id="001977"
+                    boxSize="2.5"
+                    color="gray.500"
+                    marginTop={-2}
+                    onClick={() => navigateTo('/help')} />
+                </Tooltip>
+              </Flex>
+            ),
+            sortKey: 'responsibleCount',
+            width: '5%',
+            dataId: 'users-col-responsible',
+            disabled: device === 'mobile' || device === 'tablet',
+            render: (user: IUser) => <UserResponseCount data-id="000627" responseCount={user.responsibleCount} role="responsible" userId={user._id} />,
+          },
+          {
+            label: (
+              <Flex data-id="001978" align="center" gap="1">
+                <Text data-id="001979">A</Text>
+                <Tooltip data-id="001980" hasArrow label="Accountable on number of responses">
+                  <InfoOutlineIcon
+                    data-id="001981"
+                    boxSize="2.5"
+                    color="gray.500"
+                    marginTop={-2}
+                    onClick={() => navigateTo('/help')} />
+                </Tooltip>
+              </Flex>
+            ),
+            sortKey: 'accountableCount',
+            width: '5%',
+            dataId: 'users-col-accountable',
+            disabled: device === 'mobile' || device === 'tablet',
+            render: (user: IUser) => <UserResponseCount data-id="000628" responseCount={user.accountableCount} role="accountable" userId={user._id} />,
+          },
+          {
+            label: (
+              <Flex data-id="001982" align="center" gap="1">
+                <Text data-id="001983">C</Text>
+                <Tooltip data-id="001984" hasArrow label="Contributor on number of responses">
+                  <InfoOutlineIcon
+                    data-id="001985"
+                    boxSize="2.5"
+                    color="gray.500"
+                    marginTop={-2}
+                    onClick={() => navigateTo('/help')} />
+                </Tooltip>
+              </Flex>
+            ),
+            sortKey: 'contributorCount',
+            width: '5%',
+            dataId: 'users-col-contributor',
+            disabled: device === 'mobile' || device === 'tablet',
+            render: (user: IUser) => <UserResponseCount data-id="000629" responseCount={user.contributorCount} role="contributor" userId={user._id} />,
+          },
+          {
+            label: (
+              <Flex data-id="001986" align="center" gap="1">
+                <Text data-id="001987">F</Text>
+                <Tooltip data-id="001988" hasArrow label="Follower on number of responses">
+                  <InfoOutlineIcon
+                    data-id="001989"
+                    boxSize="2.5"
+                    color="gray.500"
+                    marginTop={-2}
+                    onClick={() => navigateTo('/help')} />
+                </Tooltip>
+              </Flex>
+            ),
+            sortKey: 'followerCount',
+            width: '5%',
+            dataId: 'users-col-follower',
+            disabled: device === 'mobile' || device === 'tablet',
+            render: (user: IUser) => <UserResponseCount data-id="000630" responseCount={user.followerCount} role="follower" userId={user._id} />,
+          },
+        ] as ColumnConfig[])
+      : ([
+          {
+            label: (
+              <Flex data-id="001990" align="center" gap="1">
+                <Text data-id="001991">T</Text>
+                <Tooltip
+                  data-id="001992"
+                  hasArrow
+                  label={`Total number of ${pluralize(t('audit'))}`}>
+                  <InfoOutlineIcon
+                    data-id="001993"
+                    boxSize="2.5"
+                    color="gray.500"
+                    marginTop={-2}
+                    onClick={() => navigateTo('/help')} />
+                </Tooltip>
+              </Flex>
+            ),
+            sortKey: 'totalAuditsCount',
+            width: '5%',
+            dataId: 'users-col-totalAudits',
+            disabled: device === 'mobile' || device === 'tablet',
+            render: (user: IUser) => <UserAuditsCount auditsCount={user.totalAuditsCount} data-id="000631" userId={user._id} />,
+          },
+          {
+            label: (
+              <Flex data-id="001994" align="center" gap="1">
+                <Text data-id="001995">C</Text>
+                <Tooltip
+                  data-id="001996"
+                  hasArrow
+                  label={`Number of completed ${pluralize(t('audit'))}`}>
+                  <InfoOutlineIcon
+                    data-id="001997"
+                    boxSize="2.5"
+                    color="gray.500"
+                    marginTop={-2}
+                    onClick={() => navigateTo('/help')} />
+                </Tooltip>
+              </Flex>
+            ),
+            sortKey: 'completedAuditsCount',
+            width: '5%',
+            dataId: 'users-col-completedAudits',
+            disabled: device === 'mobile' || device === 'tablet',
+            render: (user: IUser) => <UserAuditsCount auditsCount={user.completedAuditsCount} data-id="000632" status="completed" userId={user._id} />,
+          },
+          {
+            label: (
+              <Flex data-id="001998" align="center" gap="1">
+                <Text data-id="001999">U</Text>
+                <Tooltip
+                  data-id="002000"
+                  hasArrow
+                  label={`Number of upcoming ${pluralize(t('audit'))}`}>
+                  <InfoOutlineIcon
+                    data-id="002001"
+                    boxSize="2.5"
+                    color="gray.500"
+                    marginTop={-2}
+                    onClick={() => navigateTo('/help')} />
+                </Tooltip>
+              </Flex>
+            ),
+            sortKey: 'upcomingAuditsCount',
+            width: '5%',
+            dataId: 'users-col-upcomingAudits',
+            disabled: device === 'mobile' || device === 'tablet',
+            render: (user: IUser) => <UserAuditsCount auditsCount={user.upcomingAuditsCount} data-id="000633" status="upcoming" userId={user._id} />,
+          },
+          {
+            label: (
+              <Flex data-id="002002" align="center" gap="1">
+                <Text data-id="002003">M</Text>
+                <Tooltip
+                  data-id="002004"
+                  hasArrow
+                  label={`Number of missed ${pluralize(t('audit'))}`}>
+                  <InfoOutlineIcon
+                    data-id="002005"
+                    boxSize="2.5"
+                    color="gray.500"
+                    marginTop={-2}
+                    onClick={() => navigateTo('/help')} />
+                </Tooltip>
+              </Flex>
+            ),
+            sortKey: 'missedAuditsCount',
+            width: '5%',
+            dataId: 'users-col-missedAudits',
+            disabled: device === 'mobile' || device === 'tablet',
+            render: (user: IUser) => <UserAuditsCount auditsCount={user.missedAuditsCount} data-id="000634" status="missed" userId={user._id} />,
+          },
+        ] as ColumnConfig[])),
+    {
+      label: 'Last login',
+      sortKey: 'lastLogin',
+      width: 'calc(16% - 20px)',
+      ml: '20px',
+      dataId: 'users-col-lastLogin',
+      render: (user: IUser) => (
+        <Flex data-id="002006" align="center">
           {user?.lastLogin
             ? upperFirst(
                 formatDistanceToNow(new Date(user?.lastLogin), {
@@ -449,100 +347,35 @@ function Users() {
               )
             : 'Never'}
         </Flex>
-      </Flex>
-    );
-  };
+      ),
+    },
+  ];
+
 
   return (
     <>
       <Header breadcrumbs={['Admin', 'Users']} data-id="000650" mobileBreadcrumbs={['Users']} />
-      <Flex
-        bg="auditsList.bg"
-        borderRadius="10px"
-        data-id="000651"
-        h="calc(100vh - 160px)"
-        overflow="auto"
-        p={['0', '0 25px 30px 30px']}
-      >
-        <Flex data-id="000652" h="full" px={['25px', 0]} w="full">
-          <Box
-          data-id="000653"
-          h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-           w={['full', 'full', 'calc(100%)']}
-        >
-          <AdminTableHeader data-id="000654">
-            <AdminTableHeaderElement
-              data-id="000655"
-              label="Name"
-              onClick={() => {
-                setSortType('displayName');
-                setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-              }}
-              showSortingIcon={sortType === 'displayName'}
-              sortOrder={sortType === 'displayName' ? sortOrder : undefined}
-              w={['60%', '16%']}
+      <Box bg="auditsList.bg" data-id="users-container" h="full" overflow="hidden">
+        <Flex data-id="users-inner" h="full" px={['25px', 0]}>
+          {loading ? (
+            <Box bg="white" borderBottomRadius="10px" data-id="users-loader-box" h="full" w="full">
+              <Loader center data-id="users-loader" />
+            </Box>
+          ) : (
+            <ListView
+              columns={columns}
+              data={users}
+              data-id="users-listview"
+              dataType="users"
+              onRowClick={() => {}}
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortOrder={sortOrder}
+              sortType={sortType}
             />
-            {device !== 'mobile' && (
-              <>
-                <AdminTableHeaderElement
-                  data-id="000656"
-                  label="Job title"
-                  onClick={() => {
-                    setSortType('jobTitle');
-                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                  }}
-                  showSortingIcon={sortType === 'jobTitle'}
-                  sortOrder={sortType === 'jobTitle' ? sortOrder : undefined}
-                  w="16%"
-                />
-                <AdminTableHeaderElement
-                  data-id="000657"
-                  label="Role"
-                  onClick={() => {
-                    setSortType('role');
-                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                  }}
-                  showSortingIcon={sortType === 'role'}
-                  sortOrder={sortType === 'role' ? sortOrder : undefined}
-                  w="16%"
-                />
-                <AdminTableHeaderElement
-                  data-id="000658"
-                  label="Default page"
-                  onClick={() => {
-                    setSortType('defaultPage');
-                    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                  }}
-                  showSortingIcon={sortType === 'defaultPage'}
-                  sortOrder={sortType === 'defaultPage' ? sortOrder : undefined}
-                  w="16%"
-                />
-              </>
-            )}
-            {device !== 'mobile' && (
-              <Flex data-id="000659" w="20%">
-                {renderCountHeaders()}
-              </Flex>
-            )}
-            <AdminTableHeaderElement
-              data-id="000660"
-              label="Last login"
-              ml="20px"
-              onClick={() => {
-                setSortType('lastLogin');
-                setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-              }}
-              showSortingIcon={sortType === 'lastLogin'}
-              sortOrder={sortType === 'lastLogin' ? sortOrder : undefined}
-              w={['40%', 'calc(16% - 20px)']}
-            />
-          </AdminTableHeader>
-          <Box bg="auditsList.bg" border="1px solid #cbd5e0" borderBottomRadius="10px" data-id="000661" h="full" overflow="auto" w="full">
-            {loading ? <Loader center data-id="000662" /> : users.map((user, i) => renderUserRow(user, i))}
-          </Box>
-          </Box>
+          )}
         </Flex>
-      </Flex>
+      </Box>
     </>
   );
 }

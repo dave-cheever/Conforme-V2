@@ -31,8 +31,8 @@ function AvatarCell({
                 style={{ marginLeft: index > 0 ? '-10px' : '0', zIndex: index }}>
                 <Avatar
                   border="2px solid white"
-                  borderRadius="8px"
-                  boxSize="32px"
+                  borderRadius="6px"
+                  boxSize="26px"
                   data-id="000231"
                   name={sanitizedName}
                   size="sm"
@@ -42,16 +42,15 @@ function AvatarCell({
             );
           })}
       </Flex>
-        <Text
-          color="auditsList.fontColor"
-          data-id="001213"
-          fontSize="14px"
-          fontWeight="500">
-          {users.length > 1 && `${filteredUsers.length} ${userType}`}
-        </Text>
+      <Text
+        color="auditsList.fontColor"
+        data-id="001213"
+        fontSize="14px"
+        fontWeight="500">
+        {users.length > 1 && `${filteredUsers.length} ${userType}`}
+      </Text>
       { filteredUsers.length === 1 && 
           <Text
-              color="auditsList.fontColor"
               data-id="000232"
               fontSize="14px"
               fontWeight="500"

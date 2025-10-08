@@ -3,24 +3,29 @@ import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Modal, ModalOverlay, Text } from '@chakra-ui/react';
+import {  Button, Flex, Grid, Modal, ModalOverlay, Stack, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
 
-import AuditsList from '../components/Audit/AuditsList';
+import AuditSquare from '../components/Audit/AuditSquare';
 import AuditModal from '../components/AuditModal/AuditModal';
 import ChangeViewButton from '../components/ChangeViewButton';
+import EllipsisMenu from '../components/EllipsisMenu';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import { auditPanelConfig, PanelView } from '../components/PanelView';
 import SortButton from '../components/SortButton';
+import AvatarCell from '../components/Table/Cells/AvatarCell';
+import StatusCell from '../components/Table/Cells/StatusCell';
+import ListView, { ColumnConfig } from '../components/Table/ListView';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import AuditModalProvider, { useAuditModalContext } from '../contexts/AuditModalProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
+import { auditWalkTypes } from '../hooks/useFiltersUtils';
 import useNavigate from '../hooks/useNavigate';
 import useSort from '../hooks/useSort';
 import { ExportIcon } from '../icons';
@@ -131,8 +136,150 @@ function Audits() {
     { label: 'Auditor', key: 'auditor.displayName' },
     { label: 'Date submitted', key: 'completedDate' },
   ];
-  const [viewMode, setViewMode] = useState<TViewMode>('panel');
-
+  const [viewMode, setViewMode] = useState<TViewMode>('grid');
+  const columns: ColumnConfig[] = [
+    {
+      label: 'Due date',
+      sortKey: 'dueDate',
+      width: '10%',
+      dataId: '000309',
+      render: (row) => (
+        <Flex color="auditsList.fontColor" data-id="000219" fontSize="14px" fontWeight="500" opacity="1">
+          {row?.dueDate ? (
+            format(new Date(row?.dueDate), 'dd-MMM-yyyy')
+          ) : (
+            <Flex data-id="000220" fontSize="14px" fontWeight="500">
+              No due date
+            </Flex>
+          )}
+        </Flex>
+      ),
+    },
+    {
+      label: capitalize(t('location')),
+      sortKey: 'location.name',
+      width: '15%',
+      dataId: '000310',
+      render: (row) => (
+        <Stack data-id="000221" direction="row" spacing={1}>
+          <Text
+            color="auditsList.fontColor"
+            data-id="000222"
+            fontSize="14px"
+            fontWeight="500"
+            lineHeight="17px"
+            opacity="1"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            w="full"
+            whiteSpace="nowrap"
+          >
+            {row.location?.name ?? 'Virtual'}
+          </Text>
+        </Stack>
+      ),
+    },
+    {
+      label: 'Status',
+      sortKey: 'status',
+      width: '15%',
+      dataId: '000311',
+      render: (row) => <StatusCell data-id="001212" status={row?.status} />,
+    },
+    {
+      label: 'Walk type',
+      sortKey: 'walkType',
+      width: '10%',
+      dataId: '000312',
+      disabled: !module?.featureFlags?.enableSafetyWalk,
+      render: (row) => (
+        <Flex
+          align="flex-start"
+          color="auditsList.fontColor"
+          data-id="000227"
+          fontSize="14px"
+          fontWeight="500"
+          lineHeight="18px"
+          noOfLines={1}
+          opacity="1"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+        >
+          {auditWalkTypes[row?.walkType || '']}
+        </Flex>
+      ),
+    },
+    {
+      label: 'Auditor',
+      sortKey: 'auditor.displayName',
+      width: '20%',
+      dataId: '000313',
+      render: (row) => (
+        <AvatarCell data-id="001206" users={row.auditor ? [row.auditor] : []} userType="auditors" />
+      ),
+    },
+    {
+      label: 'Reference',
+      sortKey: 'reference',
+      width: '15%',
+      dataId: '000314',
+      render: (row) => (
+        <Flex
+          align="flex-start"
+          color="auditsList.fontColor"
+          data-id="000235"
+          fontSize="14px"
+          fontWeight="500"
+          lineHeight="18px"
+          noOfLines={1}
+          opacity="1"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+        >
+          {row.reference}
+        </Flex>
+      ),
+    },
+    {
+      label: 'Date submitted',
+      sortKey: 'completedDate',
+      width: '10%',
+      dataId: '000315',
+      render: (row) => (
+        <Flex color="auditsList.fontColor" data-id="000237" fontSize="14px" fontWeight="500" opacity="1">
+          {row?.status === 'completed' && row?.completedDate ? (
+            format(new Date(row?.completedDate), 'dd-MMM-yyyy')
+          ) : (
+            <Flex data-id="000238" fontSize="14px" fontWeight="500">
+              No submitted date
+            </Flex>
+          )}
+        </Flex>
+      ),
+    },
+    {
+      label: '',
+      sortKey: '',
+      width: '5%',
+      dataId: '000316',
+      hideSortIcon: true,
+      render: (row) => (
+        <Flex data-id="000239" justify="flex-end">
+          <EllipsisMenu
+            data-id="000600"
+            options={[
+              {
+                label: 'View',
+                onClick: () => navigateTo(`/audits/${row._id}`),
+              },
+            ]}
+          />
+        </Flex>
+      ),
+    },
+  ];
   const handleAssignedToMeToggle = (isChecked: boolean) => {
     setAssignedToMe(isChecked);
 
@@ -294,22 +441,25 @@ function Audits() {
     </Flex>
   );
 
-  // Helper function to render list view
-  const renderListView = () => {
-    if (sortedAudits.length > 0) {
-      return (
-        <AuditsList
-          audits={sortedAudits}
-          data-id="000201"
-          setSortOrder={setSortOrder}
-          setSortType={setSortType}
-          sortOrder={sortOrder}
-          sortType={sortType}
-        />
-      );
-    }
-    return renderEmptyState('000202');
-  };
+  // Helper function to render grid view
+  const renderGridView = () => (
+    <Grid
+      data-id="000198"
+      display={['grid', 'grid', 'flex']}
+      flexWrap="wrap"
+      gap={[4, 4, 6]}
+      h="fit-content"
+      pb={[14, 8]}
+      pt="3"
+      px={[4, 8]}
+      templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
+      w="full"
+    >
+      {sortedAudits.length > 0
+        ? sortedAudits.map((audit) => <AuditSquare audit={audit} data-id="000199" key={audit._id} />)
+        : renderEmptyState('000200')}
+    </Grid>
+  );
 
   const renderPanelView = () => 
     sortedAudits?.length > 0 ? (
@@ -339,7 +489,22 @@ function Audits() {
   const renderMainContent = () => {
     if (loading) return <Loader center data-id="000197" />;
 
-    if (viewMode === 'list') return renderListView();
+    if (viewMode === 'grid') return renderGridView();
+
+    if (viewMode === 'list') {
+      return (
+        <ListView
+          columns={columns}
+          data={sortedAudits}
+          data-id="000201"
+          dataType="audits"
+          onRowClick={(row: IAudit) => navigateTo(`/audits/${row._id}`)}
+          setSortOrder={setSortOrder}
+          setSortType={setSortType}
+          sortOrder={sortOrder}
+          sortType={sortType}
+        />
+    )};
 
     if (viewMode === 'panel') return renderPanelView();
 

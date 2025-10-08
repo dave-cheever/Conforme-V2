@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
@@ -8,13 +8,12 @@ import pluralize from 'pluralize';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
-import AdminTableHeader from '../../components/Admin/AdminTableHeader';
-import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
 import { Datepicker, Dropdown } from '../../components/Forms';
 import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
-import { AdminContext } from '../../contexts/AdminProvider';
+import ListView, { ColumnConfig } from '../../components/Table/ListView';
+import { useAdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import { auditFrequencies } from '../../hooks/useAuditUtils';
 import useDevice from '../../hooks/useDevice';
@@ -73,11 +72,32 @@ const defaultValues: Partial<Omit<IAuditType, 'recurring'> & { recurring: string
   businessUnitScope: undefined,
 };
 
+const columns: ColumnConfig[] = [
+  {
+    label: 'Name',
+    sortKey: 'name',
+    width: '100%',
+    dataId: '000389',
+    render: (auditType: IAuditType) => (
+      <Flex
+        data-id="001903"
+        color="auditsList.fontColor"
+        fontSize="14px"
+        fontWeight="500"
+        lineHeight="18px"
+        noOfLines={1}
+        textOverflow="ellipsis">
+        {auditType.name}
+      </Flex>
+    ),
+  },
+];
+
 function AuditTypes() {
   const toast = useToast();
   const { organizationConfig } = useAppContext();
   const frequencyOptions = useMemo(() => auditFrequencies.map((f) => ({ value: f, label: f })), []);
-  const { adminModalState, setAdminModalState } = useContext(AdminContext);
+  const { adminModalState, setAdminModalState } = useAdminContext();
   const { data, loading, refetch } = useQuery(GET_AUDIT_TYPES);
   const [createFunction] = useMutation(CREATE_AUDIT_TYPE);
   const [updateFunction] = useMutation(UPDATE_AUDIT_TYPE);
@@ -309,44 +329,6 @@ function AuditTypes() {
     setValue('sections', updatedSections);
   };
 
-  const renderAuditTypeRow = (auditType: IAuditType, i: number) => {
-    const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
-    return (
-      <Flex
-        _hover={{ bg: '#F5F7FA' }}
-        alignItems="center"
-        bg={rowBg}
-        borderBottomColor="auditsList.headerBorderColor"
-        borderBottomWidth="1px"
-        color="auditsList.fontColor"
-        cursor="pointer"
-        data-id="000355"
-        flexShrink={0}
-        fontSize="14px"
-        fontWeight="500"
-        h="50px"
-        key={auditType._id}
-        px={2}
-        py={4}
-        w="full"
-      >
-        <Flex
-          cursor="pointer"
-          data-id="000356"
-          flexDir="column"
-          mr={4}
-          onClick={() => openAuditTypeModal('edit', auditType)}
-          pl={1}
-          w="full"
-        >
-          <Text data-id="000357" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-            {auditType.name}
-          </Text>
-        </Flex>
-      </Flex>
-    );
-  };
-
   return (
     <>
       <AdminModal
@@ -570,49 +552,32 @@ function AuditTypes() {
         </Stack>
       </AdminModal>
       <Header breadcrumbs={['Admin', 'Audit types']} data-id="000384" mobileBreadcrumbs={['Audit types']} pageLabel="Audit type" />
-      <Flex
+      <Box
         bg="auditsList.bg"
-        borderRadius="10px"
         data-id="000385"
-        h="calc(100vh - 160px)"
-        overflow="auto"
-        p={[0, '0 25px 30px 30px']}
+        h="full"
+        overflow="hidden"
       >
-        <Flex data-id="000386" h="full" px={['25px', 0]} w="full">
-          <Box
-            border="1px solid"
-            borderColor="auditsList.headerBorderColor"
-            data-id="000387"
-            h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-            w={['full', 'full', 'calc(100%)']}
-          >
-            <AdminTableHeader data-id="000388">
-              <AdminTableHeaderElement
-                data-id="000389"
-                label="Name"
-                onClick={() => {
-                  setSortType('name');
-                  setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                }}
-                showSortingIcon={sortType === 'name'}
-                sortOrder={sortType === 'name' ? sortOrder : undefined}
-                w="full"
-              />
-            </AdminTableHeader>
-            <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="000390" h="full" overflow="auto" w="full">
-              {loading ? (
-                <Loader center data-id="000391" />
-              ) : auditTypes?.length > 0 ? (
-                auditTypes?.map(renderAuditTypeRow)
-              ) : (
-                <Flex data-id="000392" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-                  No audit types found
-                </Flex>
-              )}
+        <Flex data-id="000386" h="full" px={['25px', 0]}>
+          {loading ? (
+            <Box bg="white" borderBottomRadius="10px" data-id="000387" h="full" w="full">
+              <Loader center data-id="000388" />
             </Box>
-          </Box>
+          ) : (
+            <ListView
+              columns={columns}
+              data={auditTypes}
+              data-id="000389"
+              dataType="audit types"
+              onRowClick={(row: IAuditType) => openAuditTypeModal('edit', row)}
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortOrder={sortOrder}
+              sortType={sortType}
+            />
+          )}
         </Flex>
-      </Flex>
+      </Box>
     </>
   );
 }

@@ -36,7 +36,7 @@ function EllipsisMenu({
       case 'lg':
         return { w: '48px', h: '48px', iconSize: '20px' };
       default:
-        return { w: '40px', h: '40px', iconSize: '16px' };
+        return { w: '34px', h: '34px', iconSize: '16px' };
     }
   };
 

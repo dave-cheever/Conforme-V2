@@ -65,7 +65,7 @@ describe('ArrowUpSmall', () => {
   test('accepts custom props', () => {
     render(
       <TestWrapper data-id="001587">
-        <ArrowUpSmall data-id="001588" boxSize="24px" color="red" data-testid="custom-arrow-up" />
+        <ArrowUpSmall boxSize="24px" color="red" data-id="001588" data-testid="custom-arrow-up" />
       </TestWrapper>,
     );
 
@@ -76,7 +76,7 @@ describe('ArrowUpSmall', () => {
   test('accepts color prop', () => {
     render(
       <TestWrapper data-id="001589">
-        <ArrowUpSmall data-id="001590" color="blue" />
+        <ArrowUpSmall color="blue" data-id="001590" />
       </TestWrapper>,
     );
 
@@ -87,7 +87,7 @@ describe('ArrowUpSmall', () => {
   test('accepts size props', () => {
     render(
       <TestWrapper data-id="001591">
-        <ArrowUpSmall data-id="001592" boxSize="32px" />
+        <ArrowUpSmall boxSize="32px" data-id="001592" />
       </TestWrapper>,
     );
 
@@ -98,7 +98,7 @@ describe('ArrowUpSmall', () => {
   test('accepts className prop', () => {
     render(
       <TestWrapper data-id="001593">
-        <ArrowUpSmall data-id="001594" className="custom-class" />
+        <ArrowUpSmall className="custom-class" data-id="001594" />
       </TestWrapper>,
     );
 
@@ -132,7 +132,7 @@ describe('ArrowUpSmall', () => {
   test('accepts aria attributes', () => {
     render(
       <TestWrapper data-id="001599">
-        <ArrowUpSmall data-id="001600" aria-label="Collapse section" />
+        <ArrowUpSmall aria-label="Collapse section" data-id="001600" />
       </TestWrapper>,
     );
 
@@ -171,7 +171,7 @@ describe('ArrowUpSmall', () => {
   test('maintains aspect ratio', () => {
     render(
       <TestWrapper data-id="001608">
-        <ArrowUpSmall data-id="001609" boxSize="28px" />
+        <ArrowUpSmall boxSize="28px" data-id="001609" />
       </TestWrapper>,
     );
 

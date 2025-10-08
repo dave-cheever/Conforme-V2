@@ -118,15 +118,6 @@ jobs:
           configMode: manual
           cliProjectKey: cielocosta-projects_Conforme-V2
           cliProjectName: Conforme V2
-          extraProperties: |
-            sonar.sources=React/src
-            sonar.tests=React/src
-            sonar.test.inclusions=React/src/**/*.{test,spec}.{ts,tsx},React/src/**/_tests_/**/*.{ts,tsx}
-            sonar.exclusions=React/src/**/__mocks__/**,React/src/**/*.stories.{ts,tsx}
-            sonar.javascript.lcov.reportPaths=React/coverage/lcov.info
-            sonar.typescript.lcov.reportPaths=React/coverage/lcov.info
-            sonar.coverage.reportPaths=React/coverage/lcov.info
-            # sonar.newCode.referenceBranch=main
 
       - task: NodeTool@0
         displayName: Set Node Version

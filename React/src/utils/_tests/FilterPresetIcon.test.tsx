@@ -118,7 +118,7 @@ describe('FilterPresetsIcon', () => {
   test('accepts custom props', () => {
     render(
       <TestWrapper data-id="001685">
-        <FilterPresetsIcon data-id="001686" boxSize="32px" color="red" data-testid="custom-filter-preset" />
+        <FilterPresetsIcon boxSize="32px" color="red" data-id="001686" data-testid="custom-filter-preset" />
       </TestWrapper>,
     );
 
@@ -129,7 +129,7 @@ describe('FilterPresetsIcon', () => {
   test('accepts color prop', () => {
     render(
       <TestWrapper data-id="001687">
-        <FilterPresetsIcon data-id="001688" color="blue" />
+        <FilterPresetsIcon color="blue" data-id="001688" />
       </TestWrapper>,
     );
 
@@ -140,7 +140,7 @@ describe('FilterPresetsIcon', () => {
   test('accepts size props', () => {
     render(
       <TestWrapper data-id="001689">
-        <FilterPresetsIcon data-id="001690" boxSize="48px" />
+        <FilterPresetsIcon boxSize="48px" data-id="001690" />
       </TestWrapper>,
     );
 
@@ -151,7 +151,7 @@ describe('FilterPresetsIcon', () => {
   test('accepts className prop', () => {
     render(
       <TestWrapper data-id="001691">
-        <FilterPresetsIcon data-id="001692" className="custom-class" />
+        <FilterPresetsIcon className="custom-class" data-id="001692" />
       </TestWrapper>,
     );
 
@@ -185,7 +185,7 @@ describe('FilterPresetsIcon', () => {
   test('accepts aria attributes', () => {
     render(
       <TestWrapper data-id="001697">
-        <FilterPresetsIcon data-id="001698" aria-label="Filter presets" />
+        <FilterPresetsIcon aria-label="Filter presets" data-id="001698" />
       </TestWrapper>,
     );
 
@@ -224,7 +224,7 @@ describe('FilterPresetsIcon', () => {
   test('maintains aspect ratio', () => {
     render(
       <TestWrapper data-id="001706">
-        <FilterPresetsIcon data-id="001707" boxSize="36px" />
+        <FilterPresetsIcon boxSize="36px" data-id="001707" />
       </TestWrapper>,
     );
 
@@ -372,9 +372,9 @@ describe('FilterPresetsIcon', () => {
     expect(circles).toHaveLength(2);
 
     // All circles should be white (filled)
-    for (const circle of circles) {
+    for (const circle of circles) 
       expect(circle).toHaveAttribute('fill', 'white');
-    }
+    
   });
 
   test('uses correct stroke width for visual clarity', () => {

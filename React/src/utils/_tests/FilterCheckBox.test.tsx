@@ -210,9 +210,9 @@ describe('FilterCheckBox', () => {
     );
 
     const labels = screen.getAllByText(/Test \d/);
-    for (const label of labels) {
+    for (const label of labels) 
       expect(label).toBeInTheDocument();
-    }
+    
   });
 
   test('handles undefined props gracefully', () => {

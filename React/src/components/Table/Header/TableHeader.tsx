@@ -1,14 +1,15 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
-function AdminTableHeader({ children, title }: { children: React.ReactNode; title?: string }) {
+function TableHeader({ children, title, ...rest }: { readonly children: React.ReactNode; readonly title?: string }) {
   return (
     <Box
-      bg="adminTableHeader.bg"
       borderBottom="1px solid #CBD5E0"
       borderTop="1px solid #CBD5E0"
       data-id="000334"
+      {...rest}
       position="sticky"
       top={0}
+      
       width="100%"
       zIndex={1}>
       {title && (
@@ -19,26 +20,17 @@ function AdminTableHeader({ children, title }: { children: React.ReactNode; titl
         </Box>
       )}
       <Flex
-        bg="#EDF2F7"
-        borderBottom="1px solid"
-        borderColor="adminTableHeader.border"
-        color="adminTableHeader.font"
+        bg="header.bg"
+        borderColor="row.borderColor"
+        color="header.fontColor"
         data-id="000337"
         fontSize="14px"
         fontWeight="semibold"
-        p="10px 10px">
+      >
         {children}
       </Flex>
     </Box>
   );
 }
 
-export default AdminTableHeader;
-
-export const adminTableHeaderStyles = {
-  adminTableHeader: {
-    bg: '#f5f5f5',
-    font: '#818197',
-    border: '#F0F0F0',
-  },
-};
+export default TableHeader;

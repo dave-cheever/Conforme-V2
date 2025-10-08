@@ -3,19 +3,20 @@ import { CSVLink } from 'react-csv';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
-import { Box, Button, Flex, Grid, HStack, Modal, ModalOverlay, Text } from '@chakra-ui/react';
-import { format } from 'date-fns';
+import { Button, Flex, Grid, HStack, Modal, ModalOverlay, Text } from '@chakra-ui/react';
+import { format, isBefore } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
 
 import { actionStatuses } from '../bootstrap/config';
 import ActionModal from '../components/Actions/ActionModal';
-import ActionsList from '../components/Actions/ActionsList';
 import ActionSquare from '../components/Actions/ActionSquare';
 import ChangeViewButton from '../components/ChangeViewButton';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
+import AvatarCell from '../components/Table/Cells/AvatarCell';
+import ListView, { ColumnConfig } from '../components/Table/ListView';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
@@ -150,6 +151,155 @@ function Actions() {
     { label: capitalize(t('business unit')), key: 'answer.businessUnit.name' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
+  const columns: ColumnConfig[] = [
+    {
+      label: 'Title',
+      sortKey: 'title',
+      width: '13%',
+      dataId: '000407',
+      render: (action: IAction) => (
+        <Flex
+          data-id="001859"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500"
+          lineHeight="18px"
+          noOfLines={1}
+          textOverflow="ellipsis">
+          {action.title}
+        </Flex>
+      ),
+    },
+    {
+      label: 'Priority',
+      sortKey: 'priority',
+      width: '7%',
+      dataId: '000408',
+      render: (action: IAction) => (
+        <Flex
+          data-id="001860"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500"
+          lineHeight="18px"
+          noOfLines={1}
+          textOverflow="ellipsis">
+          {capitalize(action.priority)}
+        </Flex>
+      ),
+    },
+    {
+      label: 'Due date',
+      sortKey: 'dueDate',
+      width: '10%',
+      dataId: '000409',
+      render: (action: IAction) => (
+        <Flex
+          data-id="001861"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500"
+          opacity="1">
+          {action?.dueDate ? (
+            format(new Date(action?.dueDate), 'd MMM yyyy')
+          ) : (
+            <Flex data-id="001862" fontStyle="italic">No date</Flex>
+          )}
+        </Flex>
+      ),
+    },
+    {
+      label: 'Completed date',
+      sortKey: 'completedDate',
+      width: '10%',
+      dataId: '000410',
+      render: (action: IAction) => (
+        <Flex
+          data-id="001863"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500"
+          opacity="1">
+          {action?.completedDate ? (
+            format(new Date(action?.completedDate), 'd MMM yyyy')
+          ) : (
+            <Flex data-id="001864" fontStyle="italic">No date</Flex>
+          )}
+        </Flex>
+      ),
+    },
+    {
+      label: 'Status',
+      sortKey: 'status',
+      width: '7%',
+      dataId: '000411',
+      render: (action: IAction) => {
+        const overdue = action.dueDate && action.status === 'open' && isBefore(new Date(action.dueDate), new Date());
+        return (
+          <Flex
+            data-id="001865"
+            color={`auditsList.${overdue ? 'missed' : action.status}`}
+            fontSize="14px"
+            fontWeight="500">
+            {overdue ? 'Overdue' : capitalize(action.status)}
+          </Flex>
+        );
+      },
+    },
+    {
+      label: 'Assignee',
+      sortKey: 'assignee.displayName',
+      width: '18%',
+      dataId: '000412',
+      render: (action: IAction) => <AvatarCell data-id="001866" users={action.assignee ? [action.assignee] : []} />,
+    },
+    {
+      label: 'Created by',
+      sortKey: 'creator.displayName',
+      width: '10%',
+      dataId: '000413',
+      render: (action: IAction) => <AvatarCell
+        data-id="001867"
+        noDataText="-"
+        users={action.creator ? [action.creator] : []} />,
+    },
+    {
+      label: capitalize(t('location')),
+      sortKey: 'answer.audit.location.name',
+      width: '14%',
+      dataId: '000414',
+      render: (action: IAction) => (
+        <Text
+          data-id="001868"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500"
+          noOfLines={1}
+          textOverflow="ellipsis">
+          {action.answer?.audit?.location?.name ?? 'Virtual'}
+        </Text>
+      ),
+    },
+    {
+      label: capitalize(t('business unit')),
+      sortKey: 'answer.businessUnit.name',
+      width: '10%',
+      dataId: '000415',
+      render: (action: IAction) => (
+        <Text
+          data-id="001869"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500"
+          noOfLines={1}
+          textOverflow="ellipsis">
+          {action?.answer?.audit?.auditType?.businessUnitScope === 'audit'
+            ? (action?.answer?.audit?.businessUnit?.name ?? '-')
+            : (action?.answer?.businessUnit?.name ?? '-')}
+        </Text>
+      ),
+    },
+  ];
   const allowedFilters = useMemo(() => ['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate'], []);
 
   useEffect(() => {
@@ -410,17 +560,17 @@ function Actions() {
               </Grid>
             )}
             {viewMode === 'list' && (
-              <Box data-id="000264" p="6" w="full">
-                <ActionsList
-                  actions={sortedActions}
-                  data-id="000265"
-                  editAction={handleOpenModal}
-                  setSortOrder={setSortOrder}
-                  setSortType={setSortType}
-                  sortOrder={sortOrder}
-                  sortType={sortType} />
-              </Box>
-                
+              <ListView
+                columns={columns}
+                data={sortedActions}
+                data-id="000265"
+                dataType="actions"
+                onRowClick={handleOpenModal}
+                setSortOrder={setSortOrder}
+                setSortType={setSortType}
+                sortOrder={sortOrder}
+                sortType={sortType}
+              />
             )}
           </>
         )}

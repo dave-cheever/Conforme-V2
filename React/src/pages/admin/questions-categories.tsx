@@ -9,14 +9,13 @@ import { capitalize } from 'lodash';
 
 import { availableOptions, toastFailed, toastSuccess } from '../../bootstrap/config';
 import AdminModal from '../../components/Admin/AdminModal';
-import AdminTableHeader from '../../components/Admin/AdminTableHeader';
-import AdminTableHeaderElement from '../../components/Admin/AdminTableHeaderElement';
 import { default as Checkbox } from '../../components/Filters/FilterCheckBox';
 import NumberInput from '../../components/Forms/NumberInput';
 import TextInput from '../../components/Forms/TextInput';
 import Toggle from '../../components/Forms/Toggle';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import { AdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
@@ -303,43 +302,26 @@ function QuestionsCategories() {
     }
   };
 
-  const renderQuestionsCategoryRow = (questionsCategory: IQuestionsCategory, i: number) => {
-    const rowBg = i % 2 === 0 ? 'white' : 'gray.50';
-    return (
-      <Flex
-        _hover={{ bg: '#F5F7FA' }}
-        alignItems="center"
-        bg={rowBg}
-        borderBottomColor="auditsList.headerBorderColor"
-        borderBottomWidth="1px"
-        color="auditsList.fontColor"
-        cursor="pointer"
-        data-id="000447"
-        flexShrink={0}
-        fontSize="14px"
-        fontWeight="500"
-        h="50px"
-        key={questionsCategory?._id}
-        px={2}
-        py={4}
-        w="full"
-      >
+  const columns: ColumnConfig[] = [
+    {
+      label: 'Question Categories',
+      sortKey: 'name',
+      width: '100%',
+      dataId: '000478',
+      render: (qc: IQuestionsCategory) => (
         <Flex
-          cursor="pointer"
-          data-id="000448"
-          flexDir="column"
-          mr={4}
-          onClick={() => openQuestionsCategoryModal('edit', questionsCategory)}
-          pl={1}
-          w="full"
-        >
-          <Text data-id="000449" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-            {questionsCategory.name}
-          </Text>
+          data-id="001929"
+          color="auditsList.fontColor"
+          fontSize="14px"
+          fontWeight="500"
+          lineHeight="18px"
+          noOfLines={1}
+          textOverflow="ellipsis">
+          {qc.name}
         </Flex>
-      </Flex>
-    );
-  };
+      ),
+    },
+  ];
 
   return (
     <>
@@ -506,50 +488,27 @@ function QuestionsCategories() {
         mobileBreadcrumbs={['Questions categories']}
         pageLabel={`${capitalize(t('question'))} set`}
       />
-      <Flex
-        bg="auditsList.bg"
-        borderRadius="10px"
-        data-id="000474"
-        h="calc(100vh - 160px)"
-        overflow="auto"
-        p={[0, '0 25px 30px 30px']}
-      >
-         <Flex data-id="000475" h="full" px={['25px', 0]} w="full">
-          <Box
-          border="1px solid"
-          borderColor="auditsList.headerBorderColor"
-          data-id="000476"
-          h={['calc(100% - 160px)', 'calc(100% - 35px)']}
-            overflow="hidden"
-            w={['full', 'full', 'calc(100%)']}
-        >
-          <AdminTableHeader data-id="000477">
-            <AdminTableHeaderElement
-              data-id="000478"
-              label="Question Categories"
-              onClick={() => {
-                setSortType('name'); // Change 'questionCategory' to 'name'
-                setSortOrder(sortOrder === 'asc' && sortType === 'name' ? 'desc' : 'asc');
-              }}
-              showSortingIcon={sortType === 'name'}
-              sortOrder={sortType === 'name' ? sortOrder : undefined}
-              w="full"
-            />
-          </AdminTableHeader>
-          <Box bg="auditsList.bg" borderBottomRadius="10px" data-id="000479" h="full" overflow="auto" w="full">
-            {loading ? (
+      <Box bg="auditsList.bg" data-id="000474" h="full" overflow="hidden">
+        <Flex data-id="000475" h="full" px={['25px', 0]}>
+          {loading ? (
+            <Box bg="white" borderBottomRadius="10px" data-id="000480" h="full" w="full">
               <Loader center data-id="000480" />
-            ) : questionsCategories?.length > 0 ? (
-              questionsCategories?.map(renderQuestionsCategoryRow)
-            ) : (
-              <Flex data-id="000481" fontSize="18px" fontStyle="italic" h="full" justify="center" mt={4} w="full">
-                No questions categories found
-              </Flex>
-            )}
-          </Box>
-          </Box>
+            </Box>
+          ) : (
+            <ListView
+              columns={columns}
+              data={questionsCategories}
+              data-id="000479"
+              dataType="questions categories"
+              onRowClick={(row: IQuestionsCategory) => openQuestionsCategoryModal('edit', row)}
+              setSortOrder={setSortOrder}
+              setSortType={setSortType}
+              sortOrder={sortOrder}
+              sortType={sortType}
+            />
+          )}
         </Flex>
-      </Flex>
+      </Box>
     </>
   );
 }
