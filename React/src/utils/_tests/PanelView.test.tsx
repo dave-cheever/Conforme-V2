@@ -413,6 +413,251 @@ describe('PanelView', () => {
     });
   });
 
+  describe('Panel Click Functionality', () => {
+    test('renders panel with pointer cursor when panelClick is configured', () => {
+      const mockPanelClick = vi.fn();
+      const configWithPanelClick = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          panelClick: {
+            onClick: mockPanelClick,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001515">
+          <PanelView config={configWithPanelClick} data-id="001516" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Get the panel containers by their data-id attribute (should match panel-2, panel-3, etc.)
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      expect(allPanels).toHaveLength(2);
+      
+      // Check that panels have the correct cursor style
+      for (const panel of allPanels) {
+        expect(panel).toHaveStyle('cursor: pointer');
+      }
+    });
+
+    test('renders panel with default cursor when panelClick is not configured', () => {
+      const { container } = render(
+        <TestWrapper data-id="001517">
+          <PanelView config={mockAuditConfig} data-id="001518" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Get the panel containers by their data-id attribute (should match panel-2, panel-3, etc.)
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      expect(allPanels).toHaveLength(2);
+      
+      // Check that panels have the default cursor style
+      for (const panel of allPanels) {
+        expect(panel).toHaveStyle('cursor: default');
+      }
+    });
+
+    test('calls panelClick onClick handler when panel is clicked', () => {
+      const mockPanelClick = vi.fn();
+      const configWithPanelClick = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          panelClick: {
+            onClick: mockPanelClick,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001519">
+          <PanelView config={configWithPanelClick} data-id="001520" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Get the first panel and click it
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      const firstPanel = allPanels[0];
+      fireEvent.click(firstPanel);
+
+      expect(mockPanelClick).toHaveBeenCalledWith(mockAuditData[0]);
+      expect(mockPanelClick).toHaveBeenCalledTimes(1);
+    });
+
+    test('calls panelClick onClick handler for each panel when clicked', () => {
+      const mockPanelClick = vi.fn();
+      const configWithPanelClick = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          panelClick: {
+            onClick: mockPanelClick,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001521">
+          <PanelView config={configWithPanelClick} data-id="001522" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Click both panels
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      fireEvent.click(allPanels[0]);
+      fireEvent.click(allPanels[1]);
+
+      expect(mockPanelClick).toHaveBeenCalledWith(mockAuditData[0]);
+      expect(mockPanelClick).toHaveBeenCalledWith(mockAuditData[1]);
+      expect(mockPanelClick).toHaveBeenCalledTimes(2);
+    });
+
+    test('does not call onClick when panelClick is not configured', () => {
+      const mockPanelClick = vi.fn();
+      
+      const { container } = render(
+        <TestWrapper data-id="001523">
+          <PanelView config={mockAuditConfig} data-id="001524" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Click the first panel
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      const firstPanel = allPanels[0];
+      fireEvent.click(firstPanel);
+
+      // Should not call any function since panelClick is not configured
+      expect(mockPanelClick).not.toHaveBeenCalled();
+    });
+
+    test('panelClick works independently of primary action', () => {
+      const mockPrimaryClick = vi.fn();
+      const mockPanelClick = vi.fn();
+      const configWithBothActions = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          primary: {
+            label: 'View Audit',
+            icon: AuditDetailIcon,
+            onClick: mockPrimaryClick,
+          },
+          panelClick: {
+            onClick: mockPanelClick,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001525">
+          <PanelView config={configWithBothActions} data-id="001526" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Click the panel
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      const firstPanel = allPanels[0];
+      fireEvent.click(firstPanel);
+
+      // Click the primary action button
+      const firstButton = screen.getAllByText('View Audit')[0];
+      fireEvent.click(firstButton);
+
+      // Both should be called independently
+      expect(mockPanelClick).toHaveBeenCalledWith(mockAuditData[0]);
+      expect(mockPrimaryClick).toHaveBeenCalledWith(mockAuditData[0]);
+      expect(mockPanelClick).toHaveBeenCalledTimes(1);
+      expect(mockPrimaryClick).toHaveBeenCalledTimes(1);
+    });
+
+    test('panelClick handler receives correct item data', () => {
+      const mockPanelClick = vi.fn();
+      const configWithPanelClick = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          panelClick: {
+            onClick: mockPanelClick,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001527">
+          <PanelView config={configWithPanelClick} data-id="001528" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Click the second panel
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      fireEvent.click(allPanels[1]);
+
+      expect(mockPanelClick).toHaveBeenCalledWith(mockAuditData[1]);
+      expect(mockPanelClick).toHaveBeenCalledWith(
+        expect.objectContaining({
+          _id: 'audit2',
+          reference: 'AUD-002',
+          auditType: { name: 'Safety Audit' },
+          status: 'upcoming',
+        })
+      );
+    });
+
+    test('panelClick works with empty items array', () => {
+      const mockPanelClick = vi.fn();
+      const configWithPanelClick = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          panelClick: {
+            onClick: mockPanelClick,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001529">
+          <PanelView config={configWithPanelClick} data-id="001530" items={[]} />
+        </TestWrapper>,
+      );
+
+      // Should render without crashing and no panels to click
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      expect(allPanels).toHaveLength(0);
+      expect(mockPanelClick).not.toHaveBeenCalled();
+    });
+
+    test('panelClick works with single item', () => {
+      const mockPanelClick = vi.fn();
+      const singleItem = [mockAuditData[0]];
+      const configWithPanelClick = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          panelClick: {
+            onClick: mockPanelClick,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001531">
+          <PanelView config={configWithPanelClick} data-id="001532" items={singleItem} />
+        </TestWrapper>,
+      );
+
+      // Click the single panel
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      const panel = allPanels[0];
+      fireEvent.click(panel);
+
+      expect(mockPanelClick).toHaveBeenCalledWith(singleItem[0]);
+      expect(mockPanelClick).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('Linked Item Section', () => {
     test('renders linked item when configured and data exists', () => {
       render(

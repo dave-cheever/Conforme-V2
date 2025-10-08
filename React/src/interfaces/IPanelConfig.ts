@@ -45,6 +45,9 @@ export interface PanelConfig {
       readonly icon?: React.ComponentType;
       readonly onClick: (item: any) => void;
     };
+    readonly panelClick?: {
+      readonly onClick: (item: any) => void;
+    };
     readonly secondary?: {
       readonly label: string;
       readonly onClick: (item: any) => void;

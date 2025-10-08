@@ -108,6 +108,11 @@ const auditPanelConfig: PanelConfig = {
         // Navigate handled by parent component
       },
     },
+    panelClick: {
+      onClick: () => {
+        // Panel click handled by parent component
+      },
+    },
     secondary: {
       label: 'View Details',
       onClick: () => {

@@ -311,11 +311,10 @@ function Audits() {
     return renderEmptyState('000202');
   };
 
-  const renderPanelView = () => {
-    return sortedAudits?.length > 0 ? (
+  const renderPanelView = () => 
+    sortedAudits?.length > 0 ? (
       <PanelView
-        data-id="000207"
-        items={sortedAudits}
+        data-id="001844"
         config={{
           ...auditPanelConfig,
           actions: {
@@ -324,15 +323,17 @@ function Audits() {
               ...auditPanelConfig.actions.primary!,
               onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`),
             },
+            panelClick: {
+              onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`),
+            },
           },
         }}
-      />
+        items={sortedAudits} />
     ) : (
       <Flex data-id="000202" alignItems="center" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
         No audits found. Try adjusting the filters.
       </Flex>
     );
-  };
 
   // Helper function to render main content
   const renderMainContent = () => {

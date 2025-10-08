@@ -168,6 +168,12 @@ function PanelView({
                         key={item._id || index}
                         marginTop={'-10px'}
                         zIndex={5}
+                        cursor={config.actions.panelClick ? 'pointer' : 'default'}
+                        onClick={config.actions.panelClick ? () => config.actions.panelClick?.onClick(item) : undefined}
+                        _hover={config.actions.panelClick ? {
+                            boxShadow: "0 4px 8px 0 rgba(26, 32, 44, 0.12)",
+                            transition: "all 0.2s ease-in-out"
+                        } : undefined}
                     >
 
                         {/* Header with title and primary action */}
@@ -207,14 +213,20 @@ function PanelView({
                                                 <MenuItem
                                                     data-id={`action-menu-item-${index + 2}`}
                                                     icon={config.actions.primary.icon ? <config.actions.primary.icon /> : undefined}
-                                                    onClick={() => config.actions.primary?.onClick(item)}
+                                                    onClick={(e) => {
+                                                e.stopPropagation();
+                                                config.actions.primary?.onClick(item);
+                                            }}
                                                 >
                                                     {config.actions.primary.label}
                                                 </MenuItem>
                                                 {config.actions.secondary && (
                                                     <MenuItem
                                                         data-id={`secondary-action-menu-item-${index + 2}`}
-                                                        onClick={() => config.actions.secondary?.onClick(item)}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            config.actions.secondary?.onClick(item);
+                                                        }}
                                                     >
                                                         {config.actions.secondary.label}
                                                     </MenuItem>
@@ -232,7 +244,10 @@ function PanelView({
                                             fontWeight="normal"
                                             height="28px"
                                             leftIcon={config.actions.primary.icon ? <config.actions.primary.icon /> : undefined}
-                                            onClick={() => config.actions.primary?.onClick(item)}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                config.actions.primary?.onClick(item);
+                                            }}
                                             padding="0px 8px"
                                         >
                                             {config.actions.primary.label}
