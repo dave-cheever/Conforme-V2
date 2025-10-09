@@ -338,7 +338,7 @@ function TrackerItems() {
           )}
         </Flex>
       </Header>
-      <Flex data-id="000292" direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4}>
+      <Flex data-id="000292" direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4} zIndex={-1}>
         {error ? (
           <Flex alignItems="center" data-id="000293" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
             No Tracker Items found, try adjusting the filters.
