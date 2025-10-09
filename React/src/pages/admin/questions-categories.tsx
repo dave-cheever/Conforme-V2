@@ -21,7 +21,7 @@ import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
 import { ChevronRight } from '../../icons';
 import { IQuestionsCategory } from '../../interfaces/IQuestionsCategory';
-import TextCell from '../../components/Table/Cells/TextCell';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_QUESTIONS_CATEGORIES = gql`
   query {
@@ -310,7 +310,7 @@ function QuestionsCategories() {
       width: '100%',
       dataId: '000478',
       render: (qc: IQuestionsCategory) => (
-        <TextCell data-id="002096" text={qc.name} />
+        <TextOrNumberCell data-id="002096" text={qc.name} />
       ),
     },
   ];

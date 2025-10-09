@@ -2,7 +2,7 @@ import { Box, Flex } from '@chakra-ui/react';
 
 import { ColumnConfig } from '../ListView';
 
-function ListViewRow({ row, columns, onRowClick }: { readonly row: any; readonly columns: ColumnConfig[]; readonly onRowClick: (row: any) => void }) {
+function ListViewRow({ row, columns, onRowClick, 'data-testid': dataTestId }: { readonly row: any; readonly columns: ColumnConfig[]; readonly onRowClick: (row: any) => void; readonly 'data-testid'?: string }) {
   const handleClick = () => {
     if (row?.metatags?.removedBy) return;
     onRowClick(row);
@@ -17,6 +17,7 @@ function ListViewRow({ row, columns, onRowClick }: { readonly row: any; readonly
       color="row.color"
       cursor={row?.metatags?.removedBy ? 'default' : 'pointer'}
       data-id="000216"
+      data-testid={dataTestId}
       onClick={handleClick}
       w="full"
     >

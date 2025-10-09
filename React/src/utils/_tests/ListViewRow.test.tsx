@@ -4,9 +4,9 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { render } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import AppProvider from '../../../contexts/AppProvider';
-import { ColumnConfig } from '../ListView';
-import ListViewRow from './ListViewRow';
+import AppProvider from '../../contexts/AppProvider';
+import { ColumnConfig } from '../../components/Table/ListView';
+import ListViewRow from '../../components/Table/Rows/ListViewRow';
 
 // Mock AppProvider for testing
 vi.mock('../../../contexts/AppProvider', () => ({

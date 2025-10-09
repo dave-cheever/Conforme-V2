@@ -19,7 +19,7 @@ import { auditFrequencies } from '../../hooks/useAuditUtils';
 import useDevice from '../../hooks/useDevice';
 import { ChevronRight } from '../../icons';
 import { IAuditType } from '../../interfaces/IAuditType';
-import TextCell from '../../components/Table/Cells/TextCell';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_AUDIT_TYPES = gql`
   query {
@@ -80,7 +80,7 @@ const columns: ColumnConfig[] = [
     width: '100%',
     dataId: '000389',
     render: (auditType: IAuditType) => (
-      <TextCell data-id="002091" text={auditType.name} />
+      <TextOrNumberCell data-id="002091" text={auditType.name} />
     ),
   },
 ];

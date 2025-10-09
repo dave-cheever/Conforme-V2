@@ -20,7 +20,7 @@ import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
 import useSort from '../../hooks/useSort';
 import { IUser } from '../../interfaces/IUser';
-import TextCell from '../../components/Table/Cells/TextCell';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_USERS = gql`
   query {
@@ -109,7 +109,7 @@ function Users() {
       dataId: 'users-col-jobTitle',
       disabled: device === 'mobile' || device === 'tablet',
       render: (user: IUser) => 
-        <TextCell
+        <TextOrNumberCell
           data-id="002098"
           text={user.jobTitle ? user.jobTitle : 'Not specified'}
           fallbackText='Not specified' />
@@ -121,7 +121,7 @@ function Users() {
       dataId: 'users-col-role',
       disabled: device === 'mobile' || device === 'tablet',
       render: (user: IUser) => 
-        <TextCell
+        <TextOrNumberCell
           data-id="002099"
           text={`${user.role?.charAt(0).toUpperCase()}${user.role?.slice(1)}`} />
 ,
@@ -136,7 +136,7 @@ function Users() {
       render: (user: IUser) => (
         <Flex data-id="001971" flexDir="column" w="full">
           {getDefaultPages(user._id).length === 1 ? (
-              <TextCell
+              <TextOrNumberCell
                 data-id="002100"
                 text={getDefaultPages(user._id).find(({ url }) => url === (Array.isArray(user.defaultPage) ? user.defaultPage[0]?.path : 'N/A'))?.name} />
           ) : loadingUsers.includes(user._id) ? (
@@ -348,7 +348,7 @@ function Users() {
       ml: '20px',
       dataId: 'users-col-lastLogin',
       render: (user: IUser) => (
-        <TextCell
+        <TextOrNumberCell
           data-id="002101"
           text={user?.lastLogin
             ? upperFirst(

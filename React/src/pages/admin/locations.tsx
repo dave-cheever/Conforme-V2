@@ -23,7 +23,7 @@ import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
 import { ArrowCount } from '../../icons';
 import { ILocation } from '../../interfaces/ILocation';
-import TextCell from '../../components/Table/Cells/TextCell';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_LOCATIONS = gql`
   query ($moduleId: ID!) {
@@ -245,7 +245,7 @@ function Locations() {
       width: '40%',
       dataId: '000436',
       render: (location: ILocation) => (
-        <TextCell data-id="002094" text={location.name} />
+        <TextOrNumberCell data-id="002094" text={location.name} />
       ),
     },
     {
@@ -255,7 +255,7 @@ function Locations() {
       dataId: '000437',
       disabled: device === 'mobile' || device === 'tablet',
       render: (location: ILocation) => (
-        <TextCell data-id="002095" text={location.notes} />
+        <TextOrNumberCell data-id="002095" text={location.notes} />
       ),
     },
     {

@@ -85,7 +85,7 @@ function FilterPills({
   };
   return (
     <Tabs data-id={dataId} defaultIndex={selectedIndex} onChange={onPillChange} variant="unstyled" w="full" {...tabsProps}>
-      <TabList data-id="001366" flexWrap={wrapTabs ? ['wrap', 'initial'] : 'nowrap'} px={[4, 8]} {...tabListProps} {...tabListStyles}>
+      <TabList data-id="001366" flexWrap={wrapTabs ? ['wrap', 'initial'] : 'nowrap'} px={[4, 8]} pb={4} {...tabListProps} {...tabListStyles}>
         {pills?.map((pill, _index) => (
           <Tab
             data-id="001367"
@@ -106,14 +106,15 @@ function FilterPills({
           </Tab>
         ))}
       </TabList>
-      <TabPanels data-id="001368" {...tabPanelsProps}>
+      <TabPanels data-id="001368" {...tabPanelsProps} h="full">
         {pills?.map((pill, _index) => (
           <TabPanel
             data-id="001369"
             key={pill._id}
-            ml={tabPanelProps?.ml === undefined ? panelMarginLeft : tabPanelProps.ml}
-            p={tabPanelProps?.p === undefined ? panelPadding : tabPanelProps.p}
+            py={tabPanelProps?.p === undefined ? panelPadding : tabPanelProps.p}            
             {...tabPanelProps}
+            h="full"
+            px={0}
           >
             {children(pill, _index)}
           </TabPanel>

@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
 import { Button, Flex, Grid, Modal, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
-import { format } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
@@ -19,7 +18,6 @@ import Header from '../components/Header';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
 import AvatarCell from '../components/Table/Cells/AvatarCell';
-import TextCell from '../components/Table/Cells/TextCell';
 import ListView, { ColumnConfig } from '../components/Table/ListView';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
@@ -29,6 +27,8 @@ import useSort from '../hooks/useSort';
 import { EditIcon, ExportIcon, Trashcan } from '../icons';
 import { IAnswer } from '../interfaces/IAnswer';
 import { TViewMode } from '../interfaces/TViewMode';
+import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
+import DateTimeCell from '../components/Table/Cells/DateTimeCell';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -214,7 +214,7 @@ function Answers() {
       width: '10%',
       dataId: '000020',
       render: (answer: IAnswer) => (
-        <TextCell data-id="002082" text={answer?.question?.questionsCategory?.name} tooltip={answer?.question?.questionsCategory?.name} />
+        <TextOrNumberCell data-id="002082" text={answer?.question?.questionsCategory?.name} tooltip={answer?.question?.questionsCategory?.name} />
       ),
     },
     {
@@ -223,7 +223,7 @@ function Answers() {
       width: '12%',
       dataId: '000021',
       render: (answer: IAnswer) => (
-        <TextCell data-id="002083" text={answer?.question?.question} tooltip={answer?.question?.question} fallbackText="No description" />
+        <TextOrNumberCell data-id="002083" text={answer?.question?.question} tooltip={answer?.question?.question} fallbackText="No description" />
       ),
     },
     {
@@ -232,7 +232,7 @@ function Answers() {
       width: '6%',
       dataId: '000022',
       render: (answer: IAnswer) => (
-        <TextCell
+        <TextOrNumberCell
           data-id="002084"
           text={answer?.question?.questionsCategory?.useStatus ? capitalize(answer?.status) : '-'}
           tooltip={answer?.question?.questionsCategory?.useStatus ? capitalize(answer?.status) : '-'}
@@ -245,7 +245,7 @@ function Answers() {
       width: '12%',
       dataId: '000023',
       render: (answer: IAnswer) => (
-        <TextCell data-id="002085" text={answer?.audit?.location?.name} tooltip={answer?.audit?.location?.name} />
+        <TextOrNumberCell data-id="002085" text={answer?.audit?.location?.name} tooltip={answer?.audit?.location?.name} />
       ),
     },
     {
@@ -254,7 +254,7 @@ function Answers() {
       width: '9%',
       dataId: '000024',
       render: (answer: IAnswer) => (
-        <TextCell
+        <TextOrNumberCell
           data-id="002086"
           text={answer?.audit?.auditType?.businessUnitScope === 'audit' ? answer?.audit?.businessUnit?.name : answer?.businessUnit?.name}
           tooltip={answer?.audit?.auditType?.businessUnitScope === 'audit' ? answer?.audit?.businessUnit?.name : answer?.businessUnit?.name}
@@ -298,17 +298,11 @@ function Answers() {
       width: '9%',
       dataId: '000027',
       render: (answer: IAnswer) => (
-        <Tooltip data-id="001856" label={answer?.metatags?.addedAt && format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')}>
-          <Flex data-id="001857" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1" pr={1}>
-            {answer?.metatags?.addedAt ? (
-              format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')
-            ) : (
-              <Flex data-id="001858" fontStyle="italic" pr={1}>
-                No added date
-              </Flex>
-            )}
-          </Flex>
-        </Tooltip>
+        <DateTimeCell
+          data-id="002170"
+          date={answer?.metatags?.addedAt}
+          fallbackText="No added date"
+          showTime={false} />
       ),
     },
     {
@@ -535,7 +529,7 @@ function Answers() {
               pills={panels}
               selectedIndex={selectedPanel}
               onPillChange={setSelectedPanel}
-              panelPadding={['4', viewMode === 'list' ? '6' : '2']}
+              panelPadding={['4', '0']}
             >
               {(panel) => (
                 <>

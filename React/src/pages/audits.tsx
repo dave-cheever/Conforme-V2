@@ -18,7 +18,7 @@ import { auditPanelConfig, PanelView } from '../components/PanelView';
 import SortButton from '../components/SortButton';
 import AvatarCell from '../components/Table/Cells/AvatarCell';
 import StatusCell from '../components/Table/Cells/StatusCell';
-import TextCell from '../components/Table/Cells/TextCell';
+import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
 import TableActionsEllipsis from '../components/Table/Cells/TableActionsEllipsis';
 import ListView, { ColumnConfig } from '../components/Table/ListView';
 import { useAdminContext } from '../contexts/AdminProvider';
@@ -33,6 +33,7 @@ import { ExportIcon } from '../icons';
 import { IAudit } from '../interfaces/IAudit';
 import { TViewMode } from '../interfaces/TViewMode';
 import updateLocalStorageFilter from '../utils/filterStorage';
+import DateTimeCell from '../components/Table/Cells/DateTimeCell';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -145,15 +146,11 @@ function Audits() {
       width: '10%',
       dataId: '000309',
       render: (row) => (
-        <Flex color="auditsList.fontColor" data-id="000219" fontSize="14px" fontWeight="500" opacity="1">
-          {row?.dueDate ? (
-            format(new Date(row?.dueDate), 'dd-MMM-yyyy')
-          ) : (
-            <Flex data-id="000220" fontSize="14px" fontWeight="500">
-              No due date
-            </Flex>
-          )}
-        </Flex>
+        <DateTimeCell
+          data-id="002149"
+          date={row?.dueDate}
+          fallbackText="No due date"
+          showTime={false} />
       ),
     },
     {
@@ -162,7 +159,7 @@ function Audits() {
       width: module?.featureFlags?.enableSafetyWalk ? '23%' : '13%',
       dataId: '000310',
       render: (row) => (
-        <TextCell data-id="002087" text={row.location?.name} fallbackText="Virtual" />
+        <TextOrNumberCell data-id="002087" text={row.location?.name} fallbackText="Virtual" />
       ),
     },
     {
@@ -179,7 +176,7 @@ function Audits() {
       dataId: '000312',
       disabled: !module?.featureFlags?.enableSafetyWalk,
       render: (row) => (
-        <TextCell data-id="002088" text={auditWalkTypes[row?.walkType]} />
+        <TextOrNumberCell data-id="002088" text={auditWalkTypes[row?.walkType]} />
       ),
     },
     {
@@ -197,7 +194,7 @@ function Audits() {
       width: '15%',
       dataId: '000314',
       render: (row) => (
-        <TextCell data-id="002089" text={row.reference} />
+        <TextOrNumberCell data-id="002089" text={row.reference} />
       ),
     },
     {
@@ -206,15 +203,11 @@ function Audits() {
       width: '12%',
       dataId: '000315',
       render: (row) => (
-        <Flex color="auditsList.fontColor" data-id="000237" fontSize="14px" fontWeight="500" opacity="1">
-          {row?.status === 'completed' && row?.completedDate ? (
-            format(new Date(row?.completedDate), 'dd-MMM-yyyy')
-          ) : (
-            <Flex data-id="000238" fontSize="14px" fontWeight="500">
-              No submitted date
-            </Flex>
-          )}
-        </Flex>
+        <DateTimeCell
+          data-id="002150"
+          date={row?.status === 'completed' && row?.completedDate}
+          fallbackText="No submitted date"
+          showTime={true} />
       ),
     },
     {
@@ -252,8 +245,6 @@ function Audits() {
     filters.push('status', 'locationsIds', 'businessUnitsIds', 'usersIds', 'createdDate', 'dueDate', 'showArchived');
     return filters;
   }, [module]);
-
-  console.log('Audits: ', data);
 
   useEffect(() => {
     if (!user || usedFilters.length === 0) return;

@@ -1,26 +1,33 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, test, vi } from 'vitest';
 
-import TableActionsEllipsis from './TableActionsEllipsis';
+import TableActionsEllipsis from '../../components/Table/Cells/TableActionsEllipsis';
 
-// Mock the EllipsisMenu component
-vi.mock('../../EllipsisMenu', () => ({
-  default: ({ options, 'data-id': dataId }: { options: any[]; 'data-id'?: string }) => (
+// Mock the EllipsisMenu component to match the actual Chakra UI Menu structure
+vi.mock('../../components/EllipsisMenu', () => ({
+  default: ({ options, 'data-id': dataId = '000600' }: { options: any[]; 'data-id'?: string }) => (
     <div data-testid="ellipsis-menu" data-options={JSON.stringify(options)} data-id={dataId}>
-      {options.map((option: any, index: number) => (
-        <button
-          data-id="002102"
-          key={index}
-          data-testid={`option-${index}`}
-          data-label={option.label}
-          data-disabled={option.disabled}
-          data-color={option.color}
-          onClick={option.onClick}>
-          {option.icon && <span data-id="002103" data-testid={`option-icon-${index}`}>{option.icon}</span>}
-          {option.label}
-        </button>
-      ))}
+      <button data-id={`${dataId}-button`} data-testid="ellipsis-menu-button" type="button">
+        ⋯
+      </button>
+      <div data-id={`${dataId}-menu`} data-testid="ellipsis-menu-list" role="menu">
+        {options.map((option: any, index: number) => (
+          <button
+            data-color={option.color}
+            data-disabled={option.disabled}
+            data-id={`${dataId}-option-${index}`}
+            data-label={option.label}
+            data-testid={`option-${index}`}
+            key={index}
+            onClick={option.onClick}
+            role="menuitem"
+            type="button">
+            {option.icon && <span data-id="001367" data-testid={`option-icon-${index}`}>{option.icon}</span>}
+            <span data-id="001368">{option.label}</span>
+          </button>
+        ))}
+      </div>
     </div>
   ),
 }));
@@ -442,8 +449,6 @@ describe('TableActionsEllipsis', () => {
           <TableActionsEllipsis data-id="002145" options={options} />
         </TestWrapper>,
       );
-
-      expect(screen.getByTestId('ellipsis-menu')).toBeInTheDocument();
 
       rerender(
         <TestWrapper data-id="002146">

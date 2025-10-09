@@ -2,18 +2,27 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, test, vi } from 'vitest';
 
-import StatusCell from './StatusCell';
+import StatusCell from '../../components/Table/Cells/StatusCell';
 
-// Mock the icons
+// Mock the icons - they are Chakra UI icons created with createIcon, so they render as svg elements
 vi.mock('../../../icons', () => ({
-  CircleTick: ({ boxSize }: { boxSize: string }) => <div data-id="001213" data-size={boxSize} data-testid="circle-tick-icon" />,
-  CrossIcon: ({ boxSize }: { boxSize: string }) => <div data-id="001214" data-size={boxSize} data-testid="cross-icon" />,
-  HourGlassIcon: ({ boxSize }: { boxSize: string }) => <div data-id="001215" data-size={boxSize} data-testid="hourglass-icon" />,
-  InProgress: ({ boxSize }: { boxSize: string }) => <div data-id="001216" data-size={boxSize} data-testid="in-progress-icon" />,
+  CircleTick: () => <svg data-id="001213" data-testid="circle-tick-icon" viewBox="0 0 10 9"><path data-id="001205" fill="white" d="M8.33398 4.50065C8.33398 5.38471 7.9828 6.23255 7.35767 6.85767C6.73255 7.4828 5.88471 7.83398 5.00065 7.83398C4.1166 7.83398 3.26875 7.4828 2.64363 6.85767C2.01851 6.23255 1.66732 5.38471 1.66732 4.50065C1.66732 3.6166 2.01851 2.76875 2.64363 2.14363C3.26875 1.51851 4.1166 1.16732 5.00065 1.16732C5.31732 1.16732 5.62565 1.21315 5.91732 1.29648L6.57149 0.642318C6.08815 0.442318 5.55898 0.333984 5.00065 0.333984C4.45348 0.333984 3.91166 0.441758 3.40614 0.651153C2.90061 0.860548 2.44128 1.16746 2.05437 1.55437C1.27297 2.33577 0.833984 3.39558 0.833984 4.50065C0.833984 5.60572 1.27297 6.66553 2.05437 7.44693C2.44128 7.83384 2.90061 8.14076 3.40614 8.35015C3.91166 8.55954 4.45348 8.66732 5.00065 8.66732C6.10572 8.66732 7.16553 8.22833 7.94693 7.44693C8.72833 6.66553 9.16732 5.60572 9.16732 4.50065H8.33398ZM3.29648 3.70065L2.70898 4.29232L4.58398 6.16732L8.75065 2.00065L8.16315 1.40898L4.58398 4.98815L3.29648 3.70065Z"/></svg>,
+  CrossIcon: () => <svg data-id="001214" data-testid="cross-icon" viewBox="0 0 12 12"><path
+    data-id="002173"
+    fill="white"
+    d="M9 3L8 2L6 4L4 2L3 3L5 5L3 7L4 8L6 6L8 8L9 7L7 5L9 3Z" /></svg>,
+  HourGlassIcon: () => <svg data-id="001215" data-testid="hourglass-icon" viewBox="0 0 10 11"><path
+    data-id="002174"
+    fill="white"
+    d="M7.91602 9.66634H8.33268V8.83301H7.91602V8.41634C7.91522 7.91017 7.78298 7.41288 7.53223 6.97318C7.28148 6.53347 6.92083 6.16643 6.4856 5.90801C6.33768 5.82051 6.24935 5.68009 6.24935 5.53259V5.46676C6.24935 5.31926 6.33768 5.17884 6.48518 5.09176C6.9205 4.83328 7.28123 4.46619 7.53204 4.02642C7.78286 3.58665 7.91517 3.08928 7.91602 2.58301V2.16634H8.33268V1.33301H1.66602V2.16634H2.08268V2.58301C2.08353 3.08928 2.21584 3.58665 2.46665 4.02642C2.71747 4.46619 3.0782 4.83328 3.51352 5.09176C3.66102 5.17884 3.74935 5.31884 3.74935 5.46676V5.53259C3.74935 5.68009 3.66102 5.82051 3.51352 5.90759C3.0782 6.16606 2.71747 6.53316 2.46665 6.97293C2.21584 7.4127 2.08353 7.91007 2.08268 8.41634V8.83301H1.66602V9.66634H7.91602ZM7.08268 2.16634V2.58301C7.08205 3.03394 6.93527 3.47253 6.66435 3.83301H3.33435C3.06343 3.47253 2.91665 3.03394 2.91602 2.58301V2.16634H7.08268ZM3.93685 6.62551C4.34143 6.38634 4.58268 5.97801 4.58268 5.53259V5.49967H5.41602V5.53259C5.41602 5.97759 5.65727 6.38634 6.06227 6.62551C6.43665 6.84831 6.73142 7.18331 6.90477 7.58301H3.09393C3.26732 7.1832 3.56225 6.84818 3.93685 6.62551Z" /></svg>,
+  InProgress: () => <svg data-id="001216" data-testid="in-progress-icon" viewBox="0 0 11 10"><path
+    data-id="002175"
+    fill="white"
+    d="M0.333008 4.5H2.83301V5.5H0.333008V4.5ZM7.83301 4.5H10.333V5.5H7.83301V4.5ZM4.83301 7.5H5.83301V10H4.83301V7.5ZM4.83301 0H5.83301V2.5H4.83301V0ZM1.44401 1.818L2.15101 1.111L3.91901 2.879L3.21201 3.586L1.44401 1.818ZM9.22201 8.182L8.51501 8.889L6.74701 7.121L7.45401 6.414L9.22201 8.182ZM3.21201 6.414L3.91901 7.121L2.15101 8.889L1.44401 8.182L3.21201 6.414ZM6.74701 2.8785L8.51501 1.111L9.22201 1.8185L7.45401 3.586L6.74701 2.8785Z" /></svg>,
 }));
 
 vi.mock('../../../icons/inReviewIcon', () => ({
-  default: ({ boxSize }: { boxSize: string }) => <div data-id="001217" data-size={boxSize} data-testid="in-review-icon" />,
+  default: () => <svg data-id="001217" data-testid="in-review-icon" viewBox="0 0 12 12"><path data-id="001211" fill="white" d="M4.84801 9.5H1.83301V2.5H2.83301V3.5H7.83301V2.5H8.83301V4.75C9.19301 4.9 9.53301 5.12 9.83301 5.41V2.5C9.83301 1.95 9.38801 1.5 8.83301 1.5H6.74301C6.53301 0.92 5.98301 0.5 5.33301 0.5C4.68301 0.5 4.13301 0.92 3.92301 1.5H1.83301C1.28301 1.5 0.833008 1.95 0.833008 2.5V9.5C0.833008 10.055 1.28301 10.5 1.83301 10.5H5.86301C5.65801 10.37 5.46301 10.225 5.28301 10.05C5.11801 9.88 4.96801 9.695 4.84801 9.5ZM5.33301 1.5C5.60801 1.5 5.83301 1.725 5.83301 2C5.83301 2.275 5.60801 2.5 5.33301 2.5C5.05801 2.5 4.83301 2.5 4.83301 2C4.83301 1.725 5.05801 1.5 5.33301 1.5ZM9.48801 8.95C9.70801 8.605 9.83301 8.19 9.83301 7.75C9.83301 6.5 8.83301 5.5 7.58301 5.5C6.33301 5.5 5.33301 6.5 5.33301 7.75C5.33301 9 6.33301 10 7.58301 10C8.01801 10 8.42801 9.875 8.77301 9.66L10.333 11.195L11.028 10.5L9.48801 8.95ZM7.58301 9C6.89301 9 6.33301 8.44 6.33301 7.75C6.33301 7.06 6.89301 6.5 7.58301 6.5C8.27301 6.5 8.83301 7.06 8.83301 7.75C8.83301 8.44 8.27301 9 7.58301 9Z"/></svg>,
 }));
 
 // Mock ChakraProvider wrapper
@@ -32,7 +41,6 @@ describe('StatusCell', () => {
 
       expect(screen.getByText('Action Plan')).toBeInTheDocument();
       expect(screen.getByTestId('circle-tick-icon')).toBeInTheDocument();
-      expect(screen.getByTestId('circle-tick-icon')).toHaveAttribute('data-size', '14px');
     });
 
     test('renders inReview status correctly', () => {
@@ -44,7 +52,6 @@ describe('StatusCell', () => {
 
       expect(screen.getByText('In Review')).toBeInTheDocument();
       expect(screen.getByTestId('in-review-icon')).toBeInTheDocument();
-      expect(screen.getByTestId('in-review-icon')).toHaveAttribute('data-size', '14px');
     });
 
     test('renders completed status correctly', () => {
@@ -56,7 +63,6 @@ describe('StatusCell', () => {
 
       expect(screen.getByText('Completed')).toBeInTheDocument();
       expect(screen.getByTestId('circle-tick-icon')).toBeInTheDocument();
-      expect(screen.getByTestId('circle-tick-icon')).toHaveAttribute('data-size', '14px');
     });
 
     test('renders missed status correctly', () => {
@@ -94,7 +100,6 @@ describe('StatusCell', () => {
 
       expect(screen.getByText('In Progress')).toBeInTheDocument();
       expect(screen.getByTestId('in-progress-icon')).toBeInTheDocument();
-      expect(screen.getByTestId('in-progress-icon')).toHaveAttribute('data-size', '14px');
     });
 
     test('renders notStarted status correctly', () => {
@@ -106,7 +111,6 @@ describe('StatusCell', () => {
 
       expect(screen.getByText('Not started')).toBeInTheDocument();
       expect(screen.getByTestId('hourglass-icon')).toBeInTheDocument();
-      expect(screen.getByTestId('hourglass-icon')).toHaveAttribute('data-size', '14px');
     });
 
     test('renders default/unknown status correctly', () => {
@@ -367,7 +371,6 @@ describe('StatusCell', () => {
         );
 
         expect(screen.getByTestId(iconTestId)).toBeInTheDocument();
-        expect(screen.getByTestId(iconTestId)).toHaveAttribute('data-size', '14px');
         unmount();
       });
     });

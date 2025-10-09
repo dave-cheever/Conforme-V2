@@ -19,7 +19,7 @@ import { AdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
 import { IQuestion } from '../../interfaces/IQuestion';
 import { TQuestionValue } from '../../interfaces/TQuestionValue';
-import TextCell from '../../components/Table/Cells/TextCell';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_QUESTIONS = gql`
   query ($questionQuery: QuestionQuery) {
@@ -312,7 +312,7 @@ function Questions() {
       width: '100%',
       dataId: '000497',
       render: (q: IQuestion<TQuestionValue>) => (
-        <TextCell data-id="002097" text={q.question} />
+        <TextOrNumberCell data-id="002097" text={q.question} />
       ),
     },
   ];

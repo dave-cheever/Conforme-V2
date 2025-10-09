@@ -16,7 +16,7 @@ function StatusCell({ status, size = 'md' }: StatusCellProps) {
             label: 'Action Plan',
             bg: '#5850EC',
             color: 'white',
-            icon: <CircleTick boxSize="14px" data-id="001308" />,
+            icon: <CircleTick boxSize="14px" data-id="001308" data-testid="circle-tick-icon" />,
         };
       case 'inReview':
         return {
@@ -24,14 +24,14 @@ function StatusCell({ status, size = 'md' }: StatusCellProps) {
           colorScheme: 'orange',
           bg: '#F97316',
           color: 'white',
-          icon: <InReviewIcon boxSize="14px" data-id="001309" />,
+          icon: <InReviewIcon boxSize="14px" data-id="001309" data-testid="in-review-icon" />,
         };
       case 'completed':
         return {
           label: 'Completed',
           bg: '#00A650',
           color: 'white',
-          icon: <CircleTick boxSize="14px" data-id="001310" />,
+          icon: <CircleTick boxSize="14px" data-id="001310" data-testid="circle-tick-icon" />,
         };
       case 'missed':
         return {
@@ -62,14 +62,14 @@ function StatusCell({ status, size = 'md' }: StatusCellProps) {
           label: 'In Progress',
           bg: '#0073E6',
           color: 'white',
-          icon: <InProgress boxSize="14px" data-id="001311" />,
+          icon: <InProgress boxSize="14px" data-id="001311" data-testid="in-progress-icon" />,
         };
       case 'notStarted':
         return {
             label: 'Not started',
             bg: '#A0AEC0',
             color: 'white',
-            icon: <HourGlassIcon boxSize="14px" data-id="001312" />,
+            icon: <HourGlassIcon boxSize="14px" data-id="001312" data-testid="hourglass-icon" />,
         };
       default:
         return {

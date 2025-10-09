@@ -5,7 +5,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import AppProvider from '../../contexts/AppProvider';
-import ListView, { ColumnConfig } from './ListView';
+import ListView, { ColumnConfig } from '../../components/Table/ListView';
 
 // Mock AppProvider for testing
 vi.mock('../../contexts/AppProvider', () => ({

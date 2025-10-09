@@ -11,15 +11,13 @@ import { capitalize, isEmpty } from 'lodash';
 import { actionStatuses, toastFailed, toastSuccess } from '../bootstrap/config';
 import ActionModal from '../components/Actions/ActionModal';
 import ActionSquare from '../components/Actions/ActionSquare';
+import AvatarCell from '../components/Table/Cells/AvatarCell';
 import ChangeViewButton from '../components/ChangeViewButton';
+import DateTimeCell from '../components/Table/Cells/DateTimeCell';
 import EllipsisMenu from '../components/EllipsisMenu';
 import FilterPills from '../components/FilterPills';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
-import SortButton from '../components/SortButton';
-import AvatarCell from '../components/Table/Cells/AvatarCell';
-import StatusCell from '../components/Table/Cells/StatusCell';
-import TextCell from '../components/Table/Cells/TextCell';
 import ListView, { ColumnConfig } from '../components/Table/ListView';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
@@ -28,7 +26,11 @@ import useDevice from '../hooks/useDevice';
 import useSort from '../hooks/useSort';
 import { EditIcon, ExportIcon, Trashcan } from '../icons';
 import { IAction } from '../interfaces/IAction';
+import SortButton from '../components/SortButton';
+import StatusCell from '../components/Table/Cells/StatusCell';
+import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
 import { TViewMode } from '../interfaces/TViewMode';
+
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -203,14 +205,14 @@ function Actions() {
       sortKey: 'title',
       width: '12%',
       dataId: '000407',
-      render: (action: IAction) => <TextCell data-id="002077" text={action.title} />,
+      render: (action: IAction) => <TextOrNumberCell data-id="002077" text={action.title} />,
     },
     {
       label: 'Priority',
       sortKey: 'priority',
       width: '6%',
       dataId: '000408',
-      render: (action: IAction) => <TextCell data-id="002078" text={capitalize(action.priority)} />,
+      render: (action: IAction) => <TextOrNumberCell data-id="002078" text={capitalize(action.priority)} />,
     },
     {
       label: 'Due date',
@@ -218,15 +220,11 @@ function Actions() {
       width: '9%',
       dataId: '000409',
       render: (action: IAction) => (
-        <Flex data-id="001861" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1">
-          {action?.dueDate ? (
-            format(new Date(action?.dueDate), 'd MMM yyyy')
-          ) : (
-            <Flex data-id="001862" fontStyle="italic">
-              No date
-            </Flex>
-          )}
-        </Flex>
+        <DateTimeCell
+          data-id="002171"
+          date={action?.dueDate}
+          fallbackText="No date"
+          showTime={false} />
       ),
     },
     {
@@ -235,15 +233,11 @@ function Actions() {
       width: '9%',
       dataId: '000410',
       render: (action: IAction) => (
-        <Flex data-id="001863" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1">
-          {action?.completedDate ? (
-            format(new Date(action?.completedDate), 'd MMM yyyy')
-          ) : (
-            <Flex data-id="001864" fontStyle="italic">
-              No date
-            </Flex>
-          )}
-        </Flex>
+        <DateTimeCell
+          data-id="002172"
+          date={action?.completedDate}
+          fallbackText="No date"
+          showTime={false} />
       ),
     },
     {
@@ -275,7 +269,7 @@ function Actions() {
       sortKey: 'answer.audit.location.name',
       width: '12%',
       dataId: '000414',
-      render: (action: IAction) => <TextCell data-id="002080" text={action.answer?.audit?.location?.name} fallbackText="Virtual" />,
+      render: (action: IAction) => <TextOrNumberCell data-id="002080" text={action.answer?.audit?.location?.name} fallbackText="Virtual" />,
     },
     {
       label: capitalize(t('business unit')),
@@ -283,7 +277,7 @@ function Actions() {
       width: '9%',
       dataId: '000415',
       render: (action: IAction) => (
-        <TextCell
+        <TextOrNumberCell
           data-id="002081"
           text={
             action?.answer?.audit?.auditType?.businessUnitScope === 'audit'
@@ -578,19 +572,17 @@ function Actions() {
                 </Grid>
               )}
               {viewMode === 'list' && (
-                <Box data-id="000264" p="6" w="full">
-                  <ListView
-                    columns={columns}
-                    data={sortedActions}
-                    data-id="000265"
-                    dataType="actions"
-                    onRowClick={handleViewModal}
-                    setSortOrder={setSortOrder}
-                    setSortType={setSortType}
-                    sortOrder={sortOrder}
-                    sortType={sortType}
-                  />
-                </Box>
+                <ListView
+                  columns={columns}
+                  data={sortedActions}
+                  data-id="000265"
+                  dataType="actions"
+                  onRowClick={handleOpenModal}
+                  setSortOrder={setSortOrder}
+                  setSortType={setSortType}
+                  sortOrder={sortOrder}
+                  sortType={sortType}
+                />
               )}
             </>
           );

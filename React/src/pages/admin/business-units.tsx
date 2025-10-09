@@ -22,7 +22,7 @@ import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
 import { ArrowCount } from '../../icons';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
-import TextCell from '../../components/Table/Cells/TextCell';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_BUSINESS_UNITS = gql`
   query ($moduleId: ID!) {
@@ -249,7 +249,7 @@ function BusinessUnits() {
       width: '40%',
       dataId: '000418',
       render: (businessUnit: IBusinessUnit) => (
-        <TextCell data-id="002093" text={businessUnit.name} />
+        <TextOrNumberCell data-id="002093" text={businessUnit.name} />
       ),
     },
     {

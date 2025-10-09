@@ -78,8 +78,8 @@ function ListView({
             ))}
         </TableHeader>
         <Flex data-id="000316" flexDir="column" pb={4} w="full">
-          {data?.map((row) => 
-            <ListViewRow columns={columns} data-id="000317" key={row._id} onRowClick={onRowClick} row={row} />)}
+          {data?.map((row, index) =>
+            <ListViewRow columns={columns} data-id="000317" data-testid={`row-${index + 1}`} key={row._id} onRowClick={onRowClick} row={row} />)}
         </Flex>
       </Box>
     </Box>
