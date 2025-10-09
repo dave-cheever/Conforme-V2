@@ -23,7 +23,7 @@ function TableHeaderElement({
     <Flex
       alignItems="center"
       bg={sortOrder ? "#E2E8F0" : "header.bg"}
-      cursor="pointer"
+      cursor={onClick ? "pointer" : "default"}
       data-id="000338"
       ml={ml || '0'}
       onClick={onClick}

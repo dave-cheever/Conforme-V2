@@ -41,6 +41,14 @@ function StatusCell({ status, size = 'md' }: StatusCellProps) {
           color: 'white',
           icon: null,
         };
+      case 'open':
+        return {
+          label: 'Open',
+          colorScheme: 'red',
+          bg: '#00A650',
+          color: 'white',
+          icon: null,
+        };
       case 'upcoming':
         return {
           label: 'Upcoming',

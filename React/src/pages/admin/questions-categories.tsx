@@ -21,6 +21,7 @@ import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
 import { ChevronRight } from '../../icons';
 import { IQuestionsCategory } from '../../interfaces/IQuestionsCategory';
+import TextCell from '../../components/Table/Cells/TextCell';
 
 const GET_QUESTIONS_CATEGORIES = gql`
   query {
@@ -309,16 +310,7 @@ function QuestionsCategories() {
       width: '100%',
       dataId: '000478',
       render: (qc: IQuestionsCategory) => (
-        <Flex
-          data-id="001929"
-          color="auditsList.fontColor"
-          fontSize="14px"
-          fontWeight="500"
-          lineHeight="18px"
-          noOfLines={1}
-          textOverflow="ellipsis">
-          {qc.name}
-        </Flex>
+        <TextCell data-id="002096" text={qc.name} />
       ),
     },
   ];

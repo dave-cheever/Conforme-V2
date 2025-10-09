@@ -26,6 +26,7 @@ import useSort from '../hooks/useSort';
 import { ExportIcon } from '../icons';
 import { IAnswer } from '../interfaces/IAnswer';
 import { TViewMode } from '../interfaces/TViewMode';
+import TextCell from '../components/Table/Cells/TextCell';
 import { format } from 'date-fns';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
@@ -212,20 +213,10 @@ function Answers() {
       width: '11%',
       dataId: '000020',
       render: (answer: IAnswer) => (
-        <Tooltip data-id="001844" label={answer?.question?.questionsCategory?.name}>
-          <Flex
-            data-id="001845"
-            align="flex-start"
-            color="auditsList.fontColor"
-            fontSize="14px"
-            fontWeight="500"
-            lineHeight="18px"
-            noOfLines={1}
-            textOverflow="ellipsis"
-          >
-            {answer?.question?.questionsCategory?.name}
-          </Flex>
-        </Tooltip>
+        <TextCell
+          data-id="002082"
+          text={answer?.question?.questionsCategory?.name}
+          tooltip={answer?.question?.questionsCategory?.name} />
       ),
     },
     {
@@ -234,20 +225,11 @@ function Answers() {
       width: '13%',
       dataId: '000021',
       render: (answer: IAnswer) => (
-        <Tooltip data-id="001846" label={answer?.question?.question}>
-          <Flex
-            data-id="001847"
-            align="flex-start"
-            color="auditsList.fontColor"
-            fontSize="14px"
-            fontWeight="500"
-            lineHeight="18px"
-            noOfLines={1}
-            textOverflow="ellipsis"
-          >
-            {answer?.question?.question ?? 'No description'}
-          </Flex>
-        </Tooltip>
+        <TextCell
+          data-id="002083"
+          text={answer?.question?.question}
+          tooltip={answer?.question?.question}
+          fallbackText="No description" />
       ),
     },
     {
@@ -256,19 +238,12 @@ function Answers() {
       width: '7%',
       dataId: '000022',
       render: (answer: IAnswer) => (
-        <Flex
-          data-id="001848"
-          align="flex-start"
-          color="auditsList.fontColor"
-          fontSize="14px"
-          fontWeight="500"
-          lineHeight="18px"
-          noOfLines={1}
-          textOverflow="ellipsis"
-        >
-          {answer?.question?.questionsCategory?.useStatus ? capitalize(answer?.status) : '-'}
-        </Flex>
+        <TextCell
+          data-id="002084"
+          text={answer?.question?.questionsCategory?.useStatus ? capitalize(answer?.status) : '-'}
+          tooltip={answer?.question?.questionsCategory?.useStatus ? capitalize(answer?.status) : '-'} />
       ),
+
     },
     {
       label: capitalize(t('location')),
@@ -276,20 +251,10 @@ function Answers() {
       width: '14%',
       dataId: '000023',
       render: (answer: IAnswer) => (
-        <Tooltip data-id="001849" label={answer?.audit?.location?.name}>
-          <Flex
-            data-id="001850"
-            align="flex-start"
-            color="auditsList.fontColor"
-            fontSize="14px"
-            fontWeight="500"
-            lineHeight="18px"
-            noOfLines={1}
-            textOverflow="ellipsis"
-          >
-            {answer?.audit?.location?.name ?? '-'}
-          </Flex>
-        </Tooltip>
+        <TextCell
+          data-id="002085"
+          text={answer?.audit?.location?.name}
+          tooltip={answer?.audit?.location?.name} />
       ),
     },
     {
@@ -298,29 +263,14 @@ function Answers() {
       width: '10%',
       dataId: '000024',
       render: (answer: IAnswer) => (
-        <Tooltip
-          data-id="001851"
-          label={
-            answer?.audit?.auditType?.businessUnitScope === 'audit'
-              ? (answer?.audit?.businessUnit?.name ?? '-')
-              : (answer?.businessUnit?.name ?? '-')
-          }
-        >
-          <Flex
-            data-id="001852"
-            align="flex-start"
-            color="auditsList.fontColor"
-            fontSize="14px"
-            fontWeight="500"
-            lineHeight="18px"
-            noOfLines={1}
-            textOverflow="ellipsis"
-          >
-            {answer?.audit?.auditType?.businessUnitScope === 'audit'
-              ? (answer?.audit?.businessUnit?.name ?? '-')
-              : (answer?.businessUnit?.name ?? '-')}
-          </Flex>
-        </Tooltip>
+        <TextCell
+          data-id="002086"
+          text={answer?.audit?.auditType?.businessUnitScope === 'audit'
+            ? answer?.audit?.businessUnit?.name
+            : answer?.businessUnit?.name}
+          tooltip={answer?.audit?.auditType?.businessUnitScope === 'audit'
+            ? answer?.audit?.businessUnit?.name
+            : answer?.businessUnit?.name} />
       ),
     },
     {
@@ -329,6 +279,7 @@ function Answers() {
       width: '10%',
       dataId: '000025',
       render: (answer: IAnswer) => (
+        
         <Flex
           data-id="001853"
           align="flex-start"

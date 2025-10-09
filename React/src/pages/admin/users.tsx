@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon, InfoOutlineIcon } from '@chakra-ui/icons';
 import { Box, Flex, Select, Text, Tooltip } from '@chakra-ui/react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { t } from 'i18next';
@@ -19,8 +19,8 @@ import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
 import useSort from '../../hooks/useSort';
-import { ArrowDownIcon } from '../../icons';
 import { IUser } from '../../interfaces/IUser';
+import TextCell from '../../components/Table/Cells/TextCell';
 
 const GET_USERS = gql`
   query {
@@ -108,7 +108,11 @@ function Users() {
       width: '16%',
       dataId: 'users-col-jobTitle',
       disabled: device === 'mobile' || device === 'tablet',
-      render: (user: IUser) => <Box data-id="001969">{user.jobTitle ? user.jobTitle : 'Not specified'}</Box>,
+      render: (user: IUser) => 
+        <TextCell
+          data-id="002098"
+          text={user.jobTitle ? user.jobTitle : 'Not specified'}
+          fallbackText='Not specified' />
     },
     {
       label: 'Role',
@@ -116,20 +120,25 @@ function Users() {
       width: '16%',
       dataId: 'users-col-role',
       disabled: device === 'mobile' || device === 'tablet',
-      render: (user: IUser) => <Box data-id="001970">{`${user.role?.charAt(0).toUpperCase()}${user.role?.slice(1)}`}</Box>,
+      render: (user: IUser) => 
+        <TextCell
+          data-id="002099"
+          text={`${user.role?.charAt(0).toUpperCase()}${user.role?.slice(1)}`} />
+,
     },
     {
       label: 'Default page',
       sortKey: 'defaultPage',
       width: '16%',
       dataId: 'users-col-defaultPage',
+      disableSort: true,
       disabled: device === 'mobile' || device === 'tablet',
       render: (user: IUser) => (
         <Flex data-id="001971" flexDir="column" w="full">
           {getDefaultPages(user._id).length === 1 ? (
-            <Box data-id="001972">
-              {getDefaultPages(user._id).find(({ url }) => url === (Array.isArray(user.defaultPage) ? user.defaultPage[0]?.path : 'N/A'))?.name}
-            </Box>
+              <TextCell
+                data-id="002100"
+                text={getDefaultPages(user._id).find(({ url }) => url === (Array.isArray(user.defaultPage) ? user.defaultPage[0]?.path : 'N/A'))?.name} />
           ) : loadingUsers.includes(user._id) ? (
             <Flex data-id="001973" w="130px">
               <Loader data-id="000644" size="sm" />
@@ -138,7 +147,8 @@ function Users() {
             <Select
               data-id="000645"
               fontSize="14px"
-              icon={<ArrowDownIcon data-id="000646" h="10px" ml={1} w="10px" />}
+              fontWeight="500"
+              icon={<ChevronDownIcon data-id="000646" h="10px" w="10px" />}
               onChange={(e) => onHomePageChange(e, user._id)}
               value={user.defaultPage?.find((value) => value.name == module?.name)?.path}
               variant="unstyled"
@@ -334,19 +344,19 @@ function Users() {
     {
       label: 'Last login',
       sortKey: 'lastLogin',
-      width: 'calc(16% - 20px)',
+      width: '16%',
       ml: '20px',
       dataId: 'users-col-lastLogin',
       render: (user: IUser) => (
-        <Flex data-id="002006" align="center">
-          {user?.lastLogin
+        <TextCell
+          data-id="002101"
+          text={user?.lastLogin
             ? upperFirst(
                 formatDistanceToNow(new Date(user?.lastLogin), {
                   addSuffix: true,
                 }),
               )
-            : 'Never'}
-        </Flex>
+            : 'Never'} />
       ),
     },
   ];

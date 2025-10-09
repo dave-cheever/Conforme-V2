@@ -15,6 +15,7 @@ import { AdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
 import { IBaseWithName } from '../../interfaces/IBaseWithName';
+import TextCell from '../../components/Table/Cells/TextCell';
 
 const GET_CATEGORIES = gql`
   query ($moduleId: ID!) {
@@ -241,13 +242,7 @@ function Categories() {
             dataId: '000347',
             tooltip: 'Only published items',
             render: (category: IBaseWithName & { trackerItemsResponsesCount: number }) => (
-              <Flex
-                data-id="001928"
-                color="auditsList.fontColor"
-                fontSize="14px"
-                fontWeight="500">
-                {category.trackerItemsResponsesCount || 0}
-              </Flex>
+              <TextCell data-id="002092" text={category.trackerItemsResponsesCount || 0} />
             ),
           },
         ]

@@ -22,6 +22,7 @@ import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
 import { ArrowCount } from '../../icons';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
+import TextCell from '../../components/Table/Cells/TextCell';
 
 const GET_BUSINESS_UNITS = gql`
   query ($moduleId: ID!) {
@@ -248,16 +249,7 @@ function BusinessUnits() {
       width: '40%',
       dataId: '000418',
       render: (businessUnit: IBusinessUnit) => (
-        <Flex
-          data-id="001904"
-          color="auditsList.fontColor"
-          fontSize="14px"
-          fontWeight="500"
-          lineHeight="18px"
-          noOfLines={1}
-          textOverflow="ellipsis">
-          {businessUnit.name}
-        </Flex>
+        <TextCell data-id="002093" text={businessUnit.name} />
       ),
     },
     {

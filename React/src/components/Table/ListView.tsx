@@ -9,6 +9,7 @@ export interface ColumnConfig {
   sortKey: string;
   width: string;
   hideSortIcon?: boolean;
+  disableSort?: boolean;
   tooltip?: string;
   dataId?: string;
   ml?: string;
@@ -68,7 +69,7 @@ function ListView({
                 key={`${column.sortKey}-${index}`}
                 label={column.label}
                 ml={column.ml}
-                onClick={() => handleSort(column.sortKey)}
+                onClick={column.disableSort ? undefined : () => handleSort(column.sortKey)}
                 showSortingIcon={sortType === column.sortKey}
                 sortOrder={sortType === column.sortKey ? sortOrder : undefined}
                 tooltip={column.tooltip}
@@ -77,7 +78,8 @@ function ListView({
             ))}
         </TableHeader>
         <Flex data-id="000316" flexDir="column" pb={4} w="full">
-          {data?.map((row) => <ListViewRow columns={columns} data-id="000317" key={row._id} onRowClick={onRowClick} row={row} />)}
+          {data?.map((row) => 
+            <ListViewRow columns={columns} data-id="000317" key={row._id} onRowClick={onRowClick} row={row} />)}
         </Flex>
       </Box>
     </Box>

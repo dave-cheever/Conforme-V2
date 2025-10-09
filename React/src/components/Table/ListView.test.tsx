@@ -296,6 +296,52 @@ describe('ListView', () => {
     expect(actionsHeader).toBeInTheDocument();
   });
 
+  it('should handle columns with disableSort flag', () => {
+    const columnsWithDisableSort: ColumnConfig[] = [
+      {
+        label: 'Name',
+        sortKey: 'name',
+        width: '40%',
+        dataId: 'col-name',
+        render: (row) => <div data-id="001875">{row.name}</div>,
+      },
+      {
+        label: 'Actions',
+        sortKey: '',
+        width: '30%',
+        dataId: 'col-actions',
+        disableSort: true,
+        render: () => <button data-id="002030" type="button">Edit</button>,
+      },
+    ];
+
+    render(
+      <ListView
+        data-id="002044"
+        columns={columnsWithDisableSort}
+        data={mockData}
+        dataType="audits"
+        onRowClick={mockOnRowClick}
+        setSortOrder={mockSetSortOrder}
+        setSortType={mockSetSortType}
+        sortOrder="asc"
+        sortType="name" />,
+      { wrapper: createWrapper() },
+    );
+
+    // Actions column has disableSort: true, clicking should not trigger sort
+    const actionsHeader = screen.getByText('Actions');
+    fireEvent.click(actionsHeader);
+    
+    // setSortType should not be called for actions column since it has disableSort
+    expect(mockSetSortType).not.toHaveBeenCalled();
+    
+    // But clicking on Name should still work
+    const nameHeader = screen.getByText('Name');
+    fireEvent.click(nameHeader);
+    expect(mockSetSortType).toHaveBeenCalledWith('name');
+  });
+
   it('should maintain correct data-id attributes', () => {
     const { container } = render(
       <ListView

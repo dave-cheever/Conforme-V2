@@ -19,6 +19,7 @@ import { auditFrequencies } from '../../hooks/useAuditUtils';
 import useDevice from '../../hooks/useDevice';
 import { ChevronRight } from '../../icons';
 import { IAuditType } from '../../interfaces/IAuditType';
+import TextCell from '../../components/Table/Cells/TextCell';
 
 const GET_AUDIT_TYPES = gql`
   query {
@@ -79,16 +80,7 @@ const columns: ColumnConfig[] = [
     width: '100%',
     dataId: '000389',
     render: (auditType: IAuditType) => (
-      <Flex
-        data-id="001903"
-        color="auditsList.fontColor"
-        fontSize="14px"
-        fontWeight="500"
-        lineHeight="18px"
-        noOfLines={1}
-        textOverflow="ellipsis">
-        {auditType.name}
-      </Flex>
+      <TextCell data-id="002091" text={auditType.name} />
     ),
   },
 ];

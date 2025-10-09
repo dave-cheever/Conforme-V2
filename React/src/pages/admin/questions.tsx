@@ -19,6 +19,7 @@ import { AdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
 import { IQuestion } from '../../interfaces/IQuestion';
 import { TQuestionValue } from '../../interfaces/TQuestionValue';
+import TextCell from '../../components/Table/Cells/TextCell';
 
 const GET_QUESTIONS = gql`
   query ($questionQuery: QuestionQuery) {
@@ -311,16 +312,7 @@ function Questions() {
       width: '100%',
       dataId: '000497',
       render: (q: IQuestion<TQuestionValue>) => (
-        <Flex
-          data-id="001946"
-          color="auditsList.fontColor"
-          fontSize="14px"
-          fontWeight="500"
-          lineHeight="18px"
-          noOfLines={1}
-          textOverflow="ellipsis">
-          {q.question}
-        </Flex>
+        <TextCell data-id="002097" text={q.question} />
       ),
     },
   ];

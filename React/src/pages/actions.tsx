@@ -26,6 +26,8 @@ import useSort from '../hooks/useSort';
 import { ExportIcon } from '../icons';
 import { IAction } from '../interfaces/IAction';
 import { TViewMode } from '../interfaces/TViewMode';
+import TextCell from '../components/Table/Cells/TextCell';
+import StatusCell from '../components/Table/Cells/StatusCell';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -159,17 +161,7 @@ function Actions() {
       width: '13%',
       dataId: '000407',
       render: (action: IAction) => (
-        <Flex
-          data-id="001859"
-          color="auditsList.fontColor"
-          fontSize="14px"
-          fontWeight="500"
-          lineHeight="18px"
-          noOfLines={1}
-          textOverflow="ellipsis"
-        >
-          {action.title}
-        </Flex>
+        <TextCell data-id="002077" text={action.title} />
       ),
     },
     {
@@ -178,17 +170,7 @@ function Actions() {
       width: '7%',
       dataId: '000408',
       render: (action: IAction) => (
-        <Flex
-          data-id="001860"
-          color="auditsList.fontColor"
-          fontSize="14px"
-          fontWeight="500"
-          lineHeight="18px"
-          noOfLines={1}
-          textOverflow="ellipsis"
-        >
-          {capitalize(action.priority)}
-        </Flex>
+        <TextCell data-id="002078" text={capitalize(action.priority)} />
       ),
     },
     {
@@ -232,11 +214,7 @@ function Actions() {
       dataId: '000411',
       render: (action: IAction) => {
         const overdue = action.dueDate && action.status === 'open' && isBefore(new Date(action.dueDate), new Date());
-        return (
-          <Flex data-id="001865" color={`auditsList.${overdue ? 'missed' : action.status}`} fontSize="14px" fontWeight="500">
-            {overdue ? 'Overdue' : capitalize(action.status)}
-          </Flex>
-        );
+        return (<StatusCell data-id="002079" status={overdue ? 'missed' : action.status} />);
       },
     },
     {
@@ -259,9 +237,10 @@ function Actions() {
       width: '14%',
       dataId: '000414',
       render: (action: IAction) => (
-        <Text data-id="001868" color="auditsList.fontColor" fontSize="14px" fontWeight="500" noOfLines={1} textOverflow="ellipsis">
-          {action.answer?.audit?.location?.name ?? 'Virtual'}
-        </Text>
+        <TextCell
+          data-id="002080"
+          text={action.answer?.audit?.location?.name}
+          fallbackText="Virtual" />
       ),
     },
     {
@@ -270,14 +249,15 @@ function Actions() {
       width: '10%',
       dataId: '000415',
       render: (action: IAction) => (
-        <Text data-id="001869" color="auditsList.fontColor" fontSize="14px" fontWeight="500" noOfLines={1} textOverflow="ellipsis">
-          {action?.answer?.audit?.auditType?.businessUnitScope === 'audit'
+        <TextCell
+          data-id="002081"
+          text={action?.answer?.audit?.auditType?.businessUnitScope === 'audit'
             ? (action?.answer?.audit?.businessUnit?.name ?? '-')
-            : (action?.answer?.businessUnit?.name ?? '-')}
-        </Text>
+            : (action?.answer?.businessUnit?.name ?? '-')} />
       ),
     },
   ];
+  
   const allowedFilters = useMemo(() => ['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate'], []);
 
   // Create pills for FilterPills component

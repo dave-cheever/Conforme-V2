@@ -11,7 +11,6 @@ import pluralize from 'pluralize';
 import AuditSquare from '../components/Audit/AuditSquare';
 import AuditModal from '../components/AuditModal/AuditModal';
 import ChangeViewButton from '../components/ChangeViewButton';
-import EllipsisMenu from '../components/EllipsisMenu';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
@@ -19,6 +18,8 @@ import { auditPanelConfig, PanelView } from '../components/PanelView';
 import SortButton from '../components/SortButton';
 import AvatarCell from '../components/Table/Cells/AvatarCell';
 import StatusCell from '../components/Table/Cells/StatusCell';
+import TextCell from '../components/Table/Cells/TextCell';
+import TableActionsEllipsis from '../components/Table/Cells/TableActionsEllipsis';
 import ListView, { ColumnConfig } from '../components/Table/ListView';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
@@ -158,25 +159,10 @@ function Audits() {
     {
       label: capitalize(t('location')),
       sortKey: 'location.name',
-      width: '15%',
+      width: module?.featureFlags?.enableSafetyWalk ? '23%' : '13%',
       dataId: '000310',
       render: (row) => (
-        <Stack data-id="000221" direction="row" spacing={1}>
-          <Text
-            color="auditsList.fontColor"
-            data-id="000222"
-            fontSize="14px"
-            fontWeight="500"
-            lineHeight="17px"
-            opacity="1"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            w="full"
-            whiteSpace="nowrap"
-          >
-            {row.location?.name ?? 'Virtual'}
-          </Text>
-        </Stack>
+        <TextCell data-id="002087" text={row.location?.name} fallbackText="Virtual" />
       ),
     },
     {
@@ -193,21 +179,7 @@ function Audits() {
       dataId: '000312',
       disabled: !module?.featureFlags?.enableSafetyWalk,
       render: (row) => (
-        <Flex
-          align="flex-start"
-          color="auditsList.fontColor"
-          data-id="000227"
-          fontSize="14px"
-          fontWeight="500"
-          lineHeight="18px"
-          noOfLines={1}
-          opacity="1"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          whiteSpace="nowrap"
-        >
-          {auditWalkTypes[row?.walkType || '']}
-        </Flex>
+        <TextCell data-id="002088" text={auditWalkTypes[row?.walkType]} />
       ),
     },
     {
@@ -225,27 +197,13 @@ function Audits() {
       width: '15%',
       dataId: '000314',
       render: (row) => (
-        <Flex
-          align="flex-start"
-          color="auditsList.fontColor"
-          data-id="000235"
-          fontSize="14px"
-          fontWeight="500"
-          lineHeight="18px"
-          noOfLines={1}
-          opacity="1"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          whiteSpace="nowrap"
-        >
-          {row.reference}
-        </Flex>
+        <TextCell data-id="002089" text={row.reference} />
       ),
     },
     {
       label: 'Date submitted',
       sortKey: 'completedDate',
-      width: '10%',
+      width: '12%',
       dataId: '000315',
       render: (row) => (
         <Flex color="auditsList.fontColor" data-id="000237" fontSize="14px" fontWeight="500" opacity="1">
@@ -264,19 +222,16 @@ function Audits() {
       sortKey: '',
       width: '5%',
       dataId: '000316',
-      hideSortIcon: true,
+      disableSort: true,
       render: (row) => (
-        <Flex data-id="000239" justify="flex-end">
-          <EllipsisMenu
-            data-id="000600"
-            options={[
-              {
-                label: 'View',
-                onClick: () => navigateTo(`/audits/${row._id}`),
-              },
-            ]}
-          />
-        </Flex>
+        <TableActionsEllipsis
+          data-id="002090"
+          options={[
+            {
+              label: 'View',
+              onClick: () => navigateTo(`/audits/${row._id}`),
+            },
+          ]} />
       ),
     },
   ];
