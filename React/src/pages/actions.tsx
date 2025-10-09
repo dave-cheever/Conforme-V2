@@ -2,32 +2,33 @@ import { useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { gql, useQuery } from '@apollo/client';
-import { Box, Button, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { Box, Button, Flex, Grid, Modal, ModalContent, ModalOverlay, Text, useToast } from '@chakra-ui/react';
 import { format, isBefore } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
 
-import { actionStatuses } from '../bootstrap/config';
+import { actionStatuses, toastFailed, toastSuccess } from '../bootstrap/config';
 import ActionModal from '../components/Actions/ActionModal';
 import ActionSquare from '../components/Actions/ActionSquare';
 import ChangeViewButton from '../components/ChangeViewButton';
+import EllipsisMenu from '../components/EllipsisMenu';
 import FilterPills from '../components/FilterPills';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
 import AvatarCell from '../components/Table/Cells/AvatarCell';
+import StatusCell from '../components/Table/Cells/StatusCell';
+import TextCell from '../components/Table/Cells/TextCell';
 import ListView, { ColumnConfig } from '../components/Table/ListView';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import useSort from '../hooks/useSort';
-import { ExportIcon } from '../icons';
+import { EditIcon, ExportIcon, Trashcan } from '../icons';
 import { IAction } from '../interfaces/IAction';
 import { TViewMode } from '../interfaces/TViewMode';
-import TextCell from '../components/Table/Cells/TextCell';
-import StatusCell from '../components/Table/Cells/StatusCell';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -101,6 +102,12 @@ const GET_ACTIONS = gql`
   }
 `;
 
+const DELETE_ACTION = gql`
+  mutation DeleteAction($_id: ID!) {
+    deleteAction(_id: $_id)
+  }
+`;
+
 function Actions() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -119,6 +126,8 @@ function Actions() {
   const { user } = useAppContext();
   const device = useDevice();
   const { adminModalState, setAdminModalState } = useAdminContext();
+  const toast = useToast();
+  const [deleteAction] = useMutation(DELETE_ACTION);
   const closeModal = () => {
     // If id is in URL params, clean it
     if (queryParams.has('id')) {
@@ -154,29 +163,59 @@ function Actions() {
     { label: capitalize(t('business unit')), key: 'answer.businessUnit.name' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
+  const [selectedAction, setSelectedAction] = useState<IAction>();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const handleOpenModal = (action: IAction) => {
+    setSelectedAction(action);
+    setAdminModalState('edit');
+  };
+
+  const handleViewModal = (action: IAction) => {
+    setSelectedAction(action);
+    setAdminModalState('view');
+  };
+
+  const handleDeleteAction = (action: IAction) => {
+    setSelectedAction(action);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedAction) return;
+    try {
+      await deleteAction({
+        variables: {
+          _id: selectedAction._id,
+        },
+      });
+      refetch();
+      toast({ ...toastSuccess, description: 'Action deleted' });
+      setIsDeleteModalOpen(false);
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    }
+  };
+
   const columns: ColumnConfig[] = [
     {
       label: 'Title',
       sortKey: 'title',
-      width: '13%',
+      width: '12%',
       dataId: '000407',
-      render: (action: IAction) => (
-        <TextCell data-id="002077" text={action.title} />
-      ),
+      render: (action: IAction) => <TextCell data-id="002077" text={action.title} />,
     },
     {
       label: 'Priority',
       sortKey: 'priority',
-      width: '7%',
+      width: '6%',
       dataId: '000408',
-      render: (action: IAction) => (
-        <TextCell data-id="002078" text={capitalize(action.priority)} />
-      ),
+      render: (action: IAction) => <TextCell data-id="002078" text={capitalize(action.priority)} />,
     },
     {
       label: 'Due date',
       sortKey: 'dueDate',
-      width: '10%',
+      width: '9%',
       dataId: '000409',
       render: (action: IAction) => (
         <Flex data-id="001861" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1">
@@ -193,7 +232,7 @@ function Actions() {
     {
       label: 'Completed date',
       sortKey: 'completedDate',
-      width: '10%',
+      width: '9%',
       dataId: '000410',
       render: (action: IAction) => (
         <Flex data-id="001863" color="auditsList.fontColor" fontSize="14px" fontWeight="500" opacity="1">
@@ -210,54 +249,83 @@ function Actions() {
     {
       label: 'Status',
       sortKey: 'status',
-      width: '7%',
+      width: '6%',
       dataId: '000411',
       render: (action: IAction) => {
         const overdue = action.dueDate && action.status === 'open' && isBefore(new Date(action.dueDate), new Date());
-        return (<StatusCell data-id="002079" status={overdue ? 'missed' : action.status} />);
+        return <StatusCell data-id="002079" status={overdue ? 'missed' : action.status} />;
       },
     },
     {
       label: 'Assignee',
       sortKey: 'assignee.displayName',
-      width: '18%',
+      width: '15%',
       dataId: '000412',
       render: (action: IAction) => <AvatarCell data-id="001866" users={action.assignee ? [action.assignee] : []} />,
     },
     {
       label: 'Created by',
       sortKey: 'creator.displayName',
-      width: '10%',
+      width: '9%',
       dataId: '000413',
       render: (action: IAction) => <AvatarCell data-id="001867" noDataText="-" users={action.creator ? [action.creator] : []} />,
     },
     {
       label: capitalize(t('location')),
       sortKey: 'answer.audit.location.name',
-      width: '14%',
+      width: '12%',
       dataId: '000414',
-      render: (action: IAction) => (
-        <TextCell
-          data-id="002080"
-          text={action.answer?.audit?.location?.name}
-          fallbackText="Virtual" />
-      ),
+      render: (action: IAction) => <TextCell data-id="002080" text={action.answer?.audit?.location?.name} fallbackText="Virtual" />,
     },
     {
       label: capitalize(t('business unit')),
       sortKey: 'answer.businessUnit.name',
-      width: '10%',
+      width: '9%',
       dataId: '000415',
       render: (action: IAction) => (
         <TextCell
           data-id="002081"
-          text={action?.answer?.audit?.auditType?.businessUnitScope === 'audit'
-            ? (action?.answer?.audit?.businessUnit?.name ?? '-')
-            : (action?.answer?.businessUnit?.name ?? '-')} />
+          text={
+            action?.answer?.audit?.auditType?.businessUnitScope === 'audit'
+              ? (action?.answer?.audit?.businessUnit?.name ?? '-')
+              : (action?.answer?.businessUnit?.name ?? '-')
+          }
+        />
+      ),
+    },
+    {
+      label: 'Actions',
+      sortKey: 'actions',
+      width: '7%',
+      dataId: '000416',
+      disableSort: true,
+      render: (action: IAction) => (
+        <Flex data-id="002149" justify="flex-end" w="full">
+          <EllipsisMenu
+            data-id="000600"
+            options={[
+              {
+                label: 'Edit',
+                icon: <EditIcon boxSize="16px" data-id="001447" stroke="#344054" />,
+                onClick: () => {
+                  handleOpenModal(action);
+                },
+              },
+              {
+                label: 'Delete',
+                icon: <Trashcan boxSize="16px" data-id="001448" stroke="#344054" />,
+                onClick: () => {
+                  handleDeleteAction(action);
+                },
+                color: 'red.500',
+              },
+            ]}
+          />
+        </Flex>
       ),
     },
   ];
-  
+
   const allowedFilters = useMemo(() => ['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate'], []);
 
   // Create pills for FilterPills component
@@ -365,12 +433,6 @@ function Actions() {
     };
   }, [JSON.stringify(filtersValues)]);
 
-  const [selectedAction, setSelectedAction] = useState<IAction>();
-  const handleOpenModal = (action: IAction) => {
-    setSelectedAction(action);
-    setAdminModalState('edit');
-  };
-
   useEffect(() => {
     if (data && data?.actions && !error) {
       const items = [...(data?.actions || [])];
@@ -418,6 +480,25 @@ function Actions() {
       >
         <ModalOverlay data-id="000247" />
         <ActionModal action={selectedAction} closeModal={closeModal} data-id="000248" refetch={refetch} />
+      </Modal>
+      <Modal data-id="000600" isCentered isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
+        <ModalOverlay data-id="000601" />
+        <ModalContent bg="white" borderRadius="12px" boxShadow="lg" data-id="000602" p={6} textAlign="center">
+          <Box color="gray.800" data-id="000603" fontSize="xl" fontWeight="bold" mb={4}>
+            Confirm Delete
+          </Box>
+          <Box color="gray.600" data-id="000604" mb={6}>
+            Are you sure you want to delete this action? This action cannot be undone.
+          </Box>
+          <Flex data-id="000605" justify="center">
+            <Button colorScheme="gray" data-id="000606" mr={3} onClick={() => setIsDeleteModalOpen(false)} variant="outline">
+              Cancel
+            </Button>
+            <Button colorScheme="red" data-id="000607" onClick={handleConfirmDelete}>
+              Delete
+            </Button>
+          </Flex>
+        </ModalContent>
       </Modal>
       <Header breadcrumbs={['Actions']} data-id="000249" mobileBreadcrumbs={['Actions']}>
         <ChangeViewButton data-id="000250" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
@@ -503,7 +584,7 @@ function Actions() {
                     data={sortedActions}
                     data-id="000265"
                     dataType="actions"
-                    onRowClick={handleOpenModal}
+                    onRowClick={handleViewModal}
                     setSortOrder={setSortOrder}
                     setSortType={setSortType}
                     sortOrder={sortOrder}

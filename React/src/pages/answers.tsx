@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
 import { Button, Flex, Grid, Modal, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
+import { format } from 'date-fns';
 import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
@@ -12,22 +13,22 @@ import AnswerDeleteModal from '../components/Answers/AnswerDeleteModal';
 import AnswerModal from '../components/Answers/AnswerModal';
 import AnswerSquare from '../components/Answers/AnswerSquare';
 import ChangeViewButton from '../components/ChangeViewButton';
+import EllipsisMenu from '../components/EllipsisMenu';
 import FilterPills from '../components/FilterPills';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
 import AvatarCell from '../components/Table/Cells/AvatarCell';
+import TextCell from '../components/Table/Cells/TextCell';
 import ListView, { ColumnConfig } from '../components/Table/ListView';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useDevice from '../hooks/useDevice';
 import useSort from '../hooks/useSort';
-import { ExportIcon } from '../icons';
+import { EditIcon, ExportIcon, Trashcan } from '../icons';
 import { IAnswer } from '../interfaces/IAnswer';
 import { TViewMode } from '../interfaces/TViewMode';
-import TextCell from '../components/Table/Cells/TextCell';
-import { format } from 'date-fns';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -210,76 +211,62 @@ function Answers() {
     {
       label: 'Type',
       sortKey: 'question.questionsCategory.name',
-      width: '11%',
+      width: '10%',
       dataId: '000020',
       render: (answer: IAnswer) => (
-        <TextCell
-          data-id="002082"
-          text={answer?.question?.questionsCategory?.name}
-          tooltip={answer?.question?.questionsCategory?.name} />
+        <TextCell data-id="002082" text={answer?.question?.questionsCategory?.name} tooltip={answer?.question?.questionsCategory?.name} />
       ),
     },
     {
       label: 'Description',
       sortKey: 'question.question',
-      width: '13%',
+      width: '12%',
       dataId: '000021',
       render: (answer: IAnswer) => (
-        <TextCell
-          data-id="002083"
-          text={answer?.question?.question}
-          tooltip={answer?.question?.question}
-          fallbackText="No description" />
+        <TextCell data-id="002083" text={answer?.question?.question} tooltip={answer?.question?.question} fallbackText="No description" />
       ),
     },
     {
       label: 'Status',
       sortKey: 'status',
-      width: '7%',
+      width: '6%',
       dataId: '000022',
       render: (answer: IAnswer) => (
         <TextCell
           data-id="002084"
           text={answer?.question?.questionsCategory?.useStatus ? capitalize(answer?.status) : '-'}
-          tooltip={answer?.question?.questionsCategory?.useStatus ? capitalize(answer?.status) : '-'} />
+          tooltip={answer?.question?.questionsCategory?.useStatus ? capitalize(answer?.status) : '-'}
+        />
       ),
-
     },
     {
       label: capitalize(t('location')),
       sortKey: 'audit.location.name',
-      width: '14%',
+      width: '12%',
       dataId: '000023',
       render: (answer: IAnswer) => (
-        <TextCell
-          data-id="002085"
-          text={answer?.audit?.location?.name}
-          tooltip={answer?.audit?.location?.name} />
+        <TextCell data-id="002085" text={answer?.audit?.location?.name} tooltip={answer?.audit?.location?.name} />
       ),
     },
     {
       label: capitalize(t('business unit')),
       sortKey: 'businessUnit.name',
-      width: '10%',
+      width: '9%',
       dataId: '000024',
       render: (answer: IAnswer) => (
         <TextCell
           data-id="002086"
-          text={answer?.audit?.auditType?.businessUnitScope === 'audit'
-            ? answer?.audit?.businessUnit?.name
-            : answer?.businessUnit?.name}
-          tooltip={answer?.audit?.auditType?.businessUnitScope === 'audit'
-            ? answer?.audit?.businessUnit?.name
-            : answer?.businessUnit?.name} />
+          text={answer?.audit?.auditType?.businessUnitScope === 'audit' ? answer?.audit?.businessUnit?.name : answer?.businessUnit?.name}
+          tooltip={answer?.audit?.auditType?.businessUnitScope === 'audit' ? answer?.audit?.businessUnit?.name : answer?.businessUnit?.name}
+        />
       ),
     },
     {
       label: '# of actions',
       sortKey: 'actions.length',
-      width: '10%',
+      width: '8%',
       dataId: '000025',
       render: (answer: IAnswer) => (
-        
         <Flex
           data-id="001853"
           align="flex-start"
@@ -297,7 +284,7 @@ function Answers() {
     {
       label: 'Added by',
       sortKey: 'addedBy.displayName',
-      width: '18%',
+      width: '15%',
       dataId: '000026',
       render: (answer: IAnswer) => (
         <Tooltip data-id="001854" label={answer.addedBy?.displayName}>
@@ -308,7 +295,7 @@ function Answers() {
     {
       label: 'Date added',
       sortKey: 'metatags.addedAt',
-      width: '10%',
+      width: '9%',
       dataId: '000027',
       render: (answer: IAnswer) => (
         <Tooltip data-id="001856" label={answer?.metatags?.addedAt && format(new Date(answer?.metatags.addedAt), 'd MMM yyyy')}>
@@ -322,6 +309,38 @@ function Answers() {
             )}
           </Flex>
         </Tooltip>
+      ),
+    },
+    {
+      label: 'Actions',
+      sortKey: 'actions',
+      width: '7%',
+      dataId: '000028',
+      disableSort: true,
+      render: (answer: IAnswer) => (
+        <Flex data-id="002150" justify="flex-end" w="full">
+          <EllipsisMenu
+            data-id="000600"
+            options={[
+              {
+                label: 'Edit',
+                icon: <EditIcon boxSize="16px" data-id="001447" stroke="#344054" />,
+                onClick: () => {
+                  handleOpenModal(answer);
+                },
+              },
+              {
+                label: 'Delete',
+                icon: <Trashcan boxSize="16px" data-id="001448" stroke="#344054" />,
+                onClick: () => {
+                  setSelectedAnswer(answer);
+                  handleDeleteQuestionModalOpen();
+                },
+                color: 'red.500',
+              },
+            ]}
+          />
+        </Flex>
       ),
     },
   ];
@@ -406,6 +425,11 @@ function Answers() {
   const handleOpenModal = (answer: IAnswer) => {
     setSelectedAnswer(answer);
     setAdminModalState('edit');
+  };
+
+  const handleViewModal = (answer: IAnswer) => {
+    setSelectedAnswer(answer);
+    setAdminModalState('view');
   };
 
   useEffect(() => {
@@ -549,7 +573,7 @@ function Answers() {
                       sortType={sortType}
                       setSortOrder={setSortOrder}
                       setSortType={setSortType}
-                      onRowClick={handleOpenModal}
+                      onRowClick={handleViewModal}
                     />
                   )}
                 </>

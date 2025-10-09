@@ -24,6 +24,7 @@ import { t } from 'i18next';
 import { capitalize } from 'lodash';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
+import { useAdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useShareContext } from '../../contexts/ShareProvider';
 import useNavigate from '../../hooks/useNavigate';
@@ -60,11 +61,13 @@ function AnswerModal({
   handleDeleteQuestionModalOpen,
   closeModal,
 }: {
-  answer?: IAnswer;
-  refetch: () => void;
-  handleDeleteQuestionModalOpen: () => void;
-  closeModal: () => void;
+  readonly answer?: IAnswer;
+  readonly refetch: () => void;
+  readonly handleDeleteQuestionModalOpen: () => void;
+  readonly closeModal: () => void;
 }) {
+  const { adminModalState } = useAdminContext();
+  const isViewMode = adminModalState === 'view';
   const toast = useToast();
   const { openInNewTab } = useNavigate();
   const { user } = useAppContext();
@@ -344,7 +347,7 @@ function AnswerModal({
                         <TextInput
                           control={control}
                           data-id="000812"
-                          disabled={!isFormEnabled}
+                          disabled={!isFormEnabled || isViewMode}
                           label="Question"
                           name="question"
                           required
@@ -360,7 +363,7 @@ function AnswerModal({
                       <TextInputMultiline
                         control={control}
                         data-id="000815"
-                        disabled={!isFormEnabled}
+                        disabled={!isFormEnabled || isViewMode}
                         label="Answer"
                         name="answer"
                         required
@@ -374,7 +377,7 @@ function AnswerModal({
                   <TextInputMultiline
                     control={control}
                     data-id="000816"
-                    disabled={!isFormEnabled}
+                    disabled={!isFormEnabled || isViewMode}
                     label="Description"
                     name="question"
                     required
@@ -388,7 +391,7 @@ function AnswerModal({
                     <Dropdown
                       control={control}
                       data-id="000818"
-                      disabled={!canChangeStatus}
+                      disabled={!canChangeStatus || isViewMode}
                       label="Status"
                       name="status"
                       options={[
@@ -407,7 +410,7 @@ function AnswerModal({
                         <Toggle
                           control={control}
                           data-id="000821"
-                          disabled={!isFormEnabled}
+                          disabled={!isFormEnabled || isViewMode}
                           falseLabel={name}
                           key={name}
                           name={`options[${setting}]`}
@@ -463,51 +466,53 @@ function AnswerModal({
           </Stack>
         </Stack>
       </ModalBody>
-      <ModalFooter data-id="000831" p={1}>
-        <Flex data-id="000832" flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" w="full">
-          <Can
-            action="answers.delete"
-            data={{ answer, audit: answer?.audit }}
-            data-id="000833"
-            // eslint-disable-next-line react/no-unstable-nested-components
-            yes={() => (
+      {!isViewMode && (
+        <ModalFooter data-id="000831" p={1}>
+          <Flex data-id="000832" flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" w="full">
+            <Can
+              action="answers.delete"
+              data={{ answer, audit: answer?.audit }}
+              data-id="000833"
+              // eslint-disable-next-line react/no-unstable-nested-components
+              yes={() => (
+                <Button
+                  bg="answerModal.buttons.secondary.bg"
+                  color="answerModal.buttons.secondary.color"
+                  data-id="000834"
+                  fontSize="smm"
+                  fontWeight="700"
+                  h="40px"
+                  ml={3}
+                  onClick={handleDeleteQuestionModalOpen}
+                  rounded="10px"
+                  w="fit-content"
+                >
+                  Delete
+                </Button>
+              )}
+            />
+            <Spacer data-id="000835" />
+            {(isFormEnabled || canChangeStatus) && (
               <Button
-                bg="answerModal.buttons.secondary.bg"
-                color="answerModal.buttons.secondary.color"
-                data-id="000834"
+                bg="answerModal.buttons.primary.bg"
+                color="answerModal.buttons.primary.color"
+                data-id="000836"
+                disabled={!isValid}
                 fontSize="smm"
                 fontWeight="700"
                 h="40px"
                 ml={3}
-                onClick={handleDeleteQuestionModalOpen}
+                onClick={handlePrimaryButtonClick}
+                rightIcon={<Icon as={TickIcon} data-id="000837" size={24} stroke="answerModal.buttons.primary.icon" />}
                 rounded="10px"
                 w="fit-content"
               >
-                Delete
+                Update
               </Button>
             )}
-          />
-          <Spacer data-id="000835" />
-          {(isFormEnabled || canChangeStatus) && (
-            <Button
-              bg="answerModal.buttons.primary.bg"
-              color="answerModal.buttons.primary.color"
-              data-id="000836"
-              disabled={!isValid}
-              fontSize="smm"
-              fontWeight="700"
-              h="40px"
-              ml={3}
-              onClick={handlePrimaryButtonClick}
-              rightIcon={<Icon as={TickIcon} data-id="000837" size={24} stroke="answerModal.buttons.primary.icon" />}
-              rounded="10px"
-              w="fit-content"
-            >
-              Update
-            </Button>
-          )}
-        </Flex>
-      </ModalFooter>
+          </Flex>
+        </ModalFooter>
+      )}
     </ModalContent>
   );
 }
