@@ -267,7 +267,7 @@ function Answers() {
     {
       label: capitalize(t('location')),
       sortKey: 'audit.location.name',
-      width: '12%',
+      width: '14%',
       dataId: '000023',
       render: (answer: IAnswer) => (
         <TextOrNumberCell data-id="002085" text={answer?.audit?.location?.name} tooltip={answer?.audit?.location?.name} />
@@ -276,7 +276,7 @@ function Answers() {
     {
       label: capitalize(t('business unit')),
       sortKey: 'businessUnit.name',
-      width: '9%',
+      width: '11%',
       dataId: '000024',
       render: (answer: IAnswer) => (
         <TextOrNumberCell
@@ -289,7 +289,7 @@ function Answers() {
     {
       label: '# of actions',
       sortKey: 'actions.length',
-      width: '8%',
+      width: '10%',
       dataId: '000025',
       render: (answer: IAnswer) => (
         <Flex
@@ -309,7 +309,7 @@ function Answers() {
     {
       label: 'Added by',
       sortKey: 'addedBy.displayName',
-      width: '15%',
+      width: '17%',
       dataId: '000026',
       render: (answer: IAnswer) => (
         <Tooltip data-id="001854" label={answer.addedBy?.displayName}>
@@ -320,16 +320,16 @@ function Answers() {
     {
       label: 'Date added',
       sortKey: 'metatags.addedAt',
-      width: '9%',
+      width: '11%',
       dataId: '000027',
       render: (answer: IAnswer) => (
         <DateTimeCell data-id="002170" date={answer?.metatags?.addedAt} fallbackText="No added date" showTime={false} />
       ),
     },
     {
-      label: 'Actions',
+      label: '',
       sortKey: 'actions',
-      width: '7%',
+      width: '9%',
       dataId: '000028',
       disableSort: true,
       render: (answer: IAnswer) => (

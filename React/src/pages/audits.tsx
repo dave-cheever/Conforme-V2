@@ -29,7 +29,7 @@ import useDevice from '../hooks/useDevice';
 import { auditWalkTypes } from '../hooks/useFiltersUtils';
 import useNavigate from '../hooks/useNavigate';
 import useSort from '../hooks/useSort';
-import { ExportIcon } from '../icons';
+import { ExportIcon, LocationIcon } from '../icons';
 import { IAudit } from '../interfaces/IAudit';
 import { TViewMode } from '../interfaces/TViewMode';
 import updateLocalStorageFilter from '../utils/filterStorage';
@@ -153,7 +153,7 @@ function Audits() {
       sortKey: 'location.name',
       width: module?.featureFlags?.enableSafetyWalk ? '20%' : '12%',
       dataId: '000310',
-      render: (row) => <TextOrNumberCell data-id="002087" fallbackText="Virtual" text={row.location?.name} />,
+      render: (row) => <TextOrNumberCell icon={LocationIcon} data-id="002087" fallbackText="Virtual" text={row.location?.name} />,
     },
     {
       label: 'Status',

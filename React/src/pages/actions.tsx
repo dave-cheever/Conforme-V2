@@ -220,14 +220,14 @@ function Actions() {
     {
       label: 'Completed date',
       sortKey: 'completedDate',
-      width: '9%',
+      width: '10%',
       dataId: '000410',
       render: (action: IAction) => <DateTimeCell data-id="002172" date={action?.completedDate} fallbackText="No date" showTime={false} />,
     },
     {
       label: 'Status',
       sortKey: 'status',
-      width: '6%',
+      width: '7%',
       dataId: '000411',
       render: (action: IAction) => {
         const overdue = action.dueDate && action.status === 'open' && isBefore(new Date(action.dueDate), new Date());
@@ -244,21 +244,21 @@ function Actions() {
     {
       label: 'Created by',
       sortKey: 'creator.displayName',
-      width: '9%',
+      width: '10%',
       dataId: '000413',
       render: (action: IAction) => <AvatarCell data-id="001867" noDataText="-" users={action.creator ? [action.creator] : []} />,
     },
     {
       label: capitalize(t('location')),
       sortKey: 'answer.audit.location.name',
-      width: '12%',
+      width: '13%',
       dataId: '000414',
       render: (action: IAction) => <TextOrNumberCell data-id="002080" fallbackText="Virtual" text={action.answer?.audit?.location?.name} />,
     },
     {
       label: capitalize(t('business unit')),
       sortKey: 'answer.businessUnit.name',
-      width: '9%',
+      width: '10%',
       dataId: '000415',
       render: (action: IAction) => (
         <TextOrNumberCell
@@ -272,9 +272,9 @@ function Actions() {
       ),
     },
     {
-      label: 'Actions',
+      label: '',
       sortKey: 'actions',
-      width: '7%',
+      width: '8%',
       dataId: '000416',
       disableSort: true,
       render: (action: IAction) => (
