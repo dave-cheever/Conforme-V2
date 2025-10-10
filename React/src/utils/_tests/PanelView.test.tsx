@@ -486,6 +486,118 @@ describe('PanelView', () => {
       expect(mockPanelClick).toHaveBeenCalledTimes(1);
     });
 
+    test('applies hover effects when panelClick is configured', () => {
+      const mockPanelClick = vi.fn();
+      const configWithPanelClick = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          panelClick: {
+            onClick: mockPanelClick,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001521">
+          <PanelView config={configWithPanelClick} data-id="001522" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Get the panel containers
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      expect(allPanels).toHaveLength(2);
+      
+      // Check that panels have the correct initial styles
+      for (const panel of allPanels) {
+        // Check initial shadow styles
+        expect(panel).toHaveStyle('box-shadow: 0 2px 2px 0 rgba(26, 32, 44, 0.08)');
+        
+        // Verify that the panel has the correct cursor and is clickable
+        expect(panel).toHaveStyle('cursor: pointer');
+      }
+    });
+
+    test('does not apply hover effects when panelClick is not configured', () => {
+      const { container } = render(
+        <TestWrapper data-id="001523">
+          <PanelView config={mockAuditConfig} data-id="001524" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Get the panel containers
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      expect(allPanels).toHaveLength(2);
+      
+      // Check that panels do not have transition styles
+      for (const panel of allPanels) {
+        expect(panel).not.toHaveStyle('transition: all 300ms ease-out');
+      }
+    });
+
+    test('applies correct hover styles on mouse enter', () => {
+      const mockPanelClick = vi.fn();
+      const configWithPanelClick = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          panelClick: {
+            onClick: mockPanelClick,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001525">
+          <PanelView config={configWithPanelClick} data-id="001526" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Get the first panel
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      const firstPanel = allPanels[0];
+      
+      // Simulate mouse enter
+      fireEvent.mouseEnter(firstPanel);
+      
+      // Check that hover styles are applied
+      const computedStyle = window.getComputedStyle(firstPanel);
+      expect(computedStyle.boxShadow).toContain('rgba(26, 32, 44, 0.12)');
+      expect(computedStyle.boxShadow).toContain('4px 10px');
+    });
+
+    test('removes hover styles on mouse leave', () => {
+      const mockPanelClick = vi.fn();
+      const configWithPanelClick = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          panelClick: {
+            onClick: mockPanelClick,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001527">
+          <PanelView config={configWithPanelClick} data-id="001528" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Get the first panel
+      const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
+      const firstPanel = allPanels[0];
+      
+      // Simulate mouse enter and then leave
+      fireEvent.mouseEnter(firstPanel);
+      fireEvent.mouseLeave(firstPanel);
+      
+      // Check that original styles are restored
+      const computedStyle = window.getComputedStyle(firstPanel);
+      expect(computedStyle.boxShadow).toContain('rgba(26, 32, 44, 0.08)');
+      expect(computedStyle.boxShadow).toContain('2px 2px');
+    });
+
     test('calls panelClick onClick handler for each panel when clicked', () => {
       const mockPanelClick = vi.fn();
       const configWithPanelClick = {

@@ -190,7 +190,7 @@ function Answers() {
   const [selectedPanel, setSelectedPanel] = useState(0);
   const [filteredAnswers, setFilteredAnswers] = useState<IAnswer[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<IAnswer>();
-  
+
   const handleOpenModal = (answer: IAnswer) => {
     setSelectedAnswer(answer);
     setAdminModalState('edit');
