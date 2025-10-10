@@ -4,9 +4,9 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { render } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import AppProvider from '../../contexts/AppProvider';
 import { ColumnConfig } from '../../components/Table/ListView';
 import ListViewRow from '../../components/Table/Rows/ListViewRow';
+import AppProvider from '../../contexts/AppProvider';
 
 // Mock AppProvider for testing
 vi.mock('../../../contexts/AppProvider', () => ({
@@ -89,8 +89,8 @@ describe('ListViewRow', () => {
   it('should render all non-disabled columns', () => {
     const { container } = render(
       <ListViewRow
-        data-id="002067"
         columns={mockColumns}
+        data-id="002067"
         onRowClick={mockOnRowClick}
         row={mockRow} />,
       { wrapper: createWrapper() },
@@ -115,8 +115,8 @@ describe('ListViewRow', () => {
 
     const { container } = render(
       <ListViewRow
-        data-id="002068"
         columns={columnsWithDisabled}
+        data-id="002068"
         onRowClick={mockOnRowClick}
         row={mockRow} />,
       { wrapper: createWrapper() },
@@ -129,8 +129,8 @@ describe('ListViewRow', () => {
   it('should apply correct width to each column', () => {
     const { container } = render(
       <ListViewRow
-        data-id="002069"
         columns={mockColumns}
+        data-id="002069"
         onRowClick={mockOnRowClick}
         row={mockRow} />,
       { wrapper: createWrapper() },
@@ -145,8 +145,8 @@ describe('ListViewRow', () => {
   it('should render column content using render function', () => {
     const { container } = render(
       <ListViewRow
-        data-id="002070"
         columns={mockColumns}
+        data-id="002070"
         onRowClick={mockOnRowClick}
         row={mockRow} />,
       { wrapper: createWrapper() },
@@ -161,8 +161,8 @@ describe('ListViewRow', () => {
     const rowWithoutLocation = { ...mockRow, location: null };
     const { container } = render(
       <ListViewRow
-        data-id="002071"
         columns={mockColumns}
+        data-id="002071"
         onRowClick={mockOnRowClick}
         row={rowWithoutLocation} />,
       { wrapper: createWrapper() },
@@ -174,8 +174,8 @@ describe('ListViewRow', () => {
   it('should have pointer cursor when row is not removed', () => {
     const { container } = render(
       <ListViewRow
-        data-id="002072"
         columns={mockColumns}
+        data-id="002072"
         onRowClick={mockOnRowClick}
         row={mockRow} />,
       { wrapper: createWrapper() },
@@ -193,8 +193,8 @@ describe('ListViewRow', () => {
 
     const { container } = render(
       <ListViewRow
-        data-id="002073"
         columns={mockColumns}
+        data-id="002073"
         onRowClick={mockOnRowClick}
         row={removedRow} />,
       { wrapper: createWrapper() },
@@ -206,7 +206,7 @@ describe('ListViewRow', () => {
 
   it('should render with empty columns array', () => {
     const { container } = render(
-      <ListViewRow data-id="002074" columns={[]} onRowClick={mockOnRowClick} row={mockRow} />,
+      <ListViewRow columns={[]} data-id="002074" onRowClick={mockOnRowClick} row={mockRow} />,
       { wrapper: createWrapper() },
     );
 
@@ -226,8 +226,8 @@ describe('ListViewRow', () => {
 
     const { container } = render(
       <ListViewRow
-        data-id="002075"
         columns={columnsWithoutRender}
+        data-id="002075"
         onRowClick={mockOnRowClick}
         row={mockRow} />,
       { wrapper: createWrapper() },
@@ -241,8 +241,8 @@ describe('ListViewRow', () => {
   it('should maintain correct data-id attributes', () => {
     const { container } = render(
       <ListViewRow
-        data-id="002076"
         columns={mockColumns}
+        data-id="002076"
         onRowClick={mockOnRowClick}
         row={mockRow} />,
       { wrapper: createWrapper() },

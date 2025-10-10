@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 import { gql, useMutation } from '@apollo/client';
@@ -67,6 +67,7 @@ function AnswerModal({
   readonly closeModal: () => void;
 }) {
   const { adminModalState } = useAdminContext();
+  const [isClosing, setIsClosing] = useState(false);
   const isViewMode = adminModalState === 'view';
   const toast = useToast();
   const { openInNewTab } = useNavigate();
@@ -116,6 +117,11 @@ function AnswerModal({
 
   const [saveQuestion] = useMutation(SAVE_QUESTION);
   const [saveAnswer] = useMutation(SAVE_ANSWER);
+
+  const handleCloseModal = () => {
+    setIsClosing(true);
+    closeModal();
+  };
 
   const { control, formState, watch, reset } = useForm({
     mode: 'all',
@@ -169,7 +175,7 @@ function AnswerModal({
         description: e.message,
       });
     } finally {
-      closeModal();
+      handleCloseModal();
     }
   };
 
@@ -200,7 +206,7 @@ function AnswerModal({
                 handleShareOpen();
               }}
             />
-            <Close cursor="pointer" data-id="000773" h="15px" onClick={closeModal} stroke="answerModal.closeIcon" w="15px" />
+            <Close cursor="pointer" data-id="000773" h="15px" onClick={handleCloseModal} stroke="answerModal.closeIcon" w="15px" />
           </Flex>
         </Flex>
       </ModalHeader>
@@ -466,7 +472,7 @@ function AnswerModal({
           </Stack>
         </Stack>
       </ModalBody>
-      {!isViewMode && (
+      {!isViewMode && !isClosing && (
         <ModalFooter data-id="000831" p={1}>
           <Flex data-id="000832" flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" w="full">
             <Can

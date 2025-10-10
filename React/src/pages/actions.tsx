@@ -11,13 +11,16 @@ import { capitalize, isEmpty } from 'lodash';
 import { actionStatuses, toastFailed, toastSuccess } from '../bootstrap/config';
 import ActionModal from '../components/Actions/ActionModal';
 import ActionSquare from '../components/Actions/ActionSquare';
-import AvatarCell from '../components/Table/Cells/AvatarCell';
 import ChangeViewButton from '../components/ChangeViewButton';
-import DateTimeCell from '../components/Table/Cells/DateTimeCell';
 import EllipsisMenu from '../components/EllipsisMenu';
 import FilterPills from '../components/FilterPills';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
+import SortButton from '../components/SortButton';
+import AvatarCell from '../components/Table/Cells/AvatarCell';
+import DateTimeCell from '../components/Table/Cells/DateTimeCell';
+import StatusCell from '../components/Table/Cells/StatusCell';
+import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../components/Table/ListView';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
@@ -26,9 +29,6 @@ import useDevice from '../hooks/useDevice';
 import useSort from '../hooks/useSort';
 import { EditIcon, ExportIcon, Trashcan } from '../icons';
 import { IAction } from '../interfaces/IAction';
-import SortButton from '../components/SortButton';
-import StatusCell from '../components/Table/Cells/StatusCell';
-import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
 import { TViewMode } from '../interfaces/TViewMode';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
@@ -116,8 +116,10 @@ function Actions() {
   const [activeTab, setActiveTab] = useState<number>(0);
   const {
     filtersValues,
+    appliedFilters,
     setUsedFilters,
     setFilters,
+    applyFiltersImmediately,
     cleanFilters,
     setShowFiltersPanel,
     actionFiltersValue,
@@ -213,26 +215,14 @@ function Actions() {
       sortKey: 'dueDate',
       width: '9%',
       dataId: '000409',
-      render: (action: IAction) => (
-        <DateTimeCell
-          data-id="002171"
-          date={action?.dueDate}
-          fallbackText="No date"
-          showTime={false} />
-      ),
+      render: (action: IAction) => <DateTimeCell data-id="002171" date={action?.dueDate} fallbackText="No date" showTime={false} />,
     },
     {
       label: 'Completed date',
       sortKey: 'completedDate',
       width: '9%',
       dataId: '000410',
-      render: (action: IAction) => (
-        <DateTimeCell
-          data-id="002172"
-          date={action?.completedDate}
-          fallbackText="No date"
-          showTime={false} />
-      ),
+      render: (action: IAction) => <DateTimeCell data-id="002172" date={action?.completedDate} fallbackText="No date" showTime={false} />,
     },
     {
       label: 'Status',
@@ -263,7 +253,7 @@ function Actions() {
       sortKey: 'answer.audit.location.name',
       width: '12%',
       dataId: '000414',
-      render: (action: IAction) => <TextOrNumberCell data-id="002080" text={action.answer?.audit?.location?.name} fallbackText="Virtual" />,
+      render: (action: IAction) => <TextOrNumberCell data-id="002080" fallbackText="Virtual" text={action.answer?.audit?.location?.name} />,
     },
     {
       label: capitalize(t('business unit')),
@@ -348,7 +338,7 @@ function Actions() {
 
   useEffect(() => {
     // Parse filters to format expected by GraphQL Query
-    const parsedFilters = Object.entries(filtersValues).reduce((acc, filter) => {
+    const parsedFilters = Object.entries(appliedFilters).reduce((acc, filter) => {
       if (!filter || !filter[1] || !allowedFilters.includes(filter[0])) return { ...acc };
 
       const [key, value] = filter;
@@ -375,7 +365,7 @@ function Actions() {
         },
       });
     }
-  }, [filtersValues]);
+  }, [appliedFilters]);
 
   useEffect(() => {
     if (data && data?.actions && !error) {
@@ -387,7 +377,7 @@ function Actions() {
 
   const setQuickFilter = (filterName: string, filterValue) => {
     cleanFilters();
-    setFilters({ [filterName]: filterValue });
+    applyFiltersImmediately({ [filterName]: filterValue });
   };
 
   const handlePillChange = (index: number) => {

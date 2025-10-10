@@ -10,12 +10,12 @@ import BarChart from '../../components/BarChart';
 import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import { AdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
 import { IBaseWithName } from '../../interfaces/IBaseWithName';
-import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_CATEGORIES = gql`
   query ($moduleId: ID!) {
@@ -222,8 +222,8 @@ function Categories() {
       dataId: '000346',
       render: (category: IBaseWithName) => (
         <Flex
-          data-id="001927"
           color="auditsList.fontColor"
+          data-id="001927"
           fontSize="14px"
           fontWeight="500"
           lineHeight="18px"

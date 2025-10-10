@@ -57,6 +57,7 @@ const mockUsedFilters = ['businessUnitsIds', 'categoriesIds', 'hiddenFilter', 'r
 // Mock functions
 const mockSetShowFiltersPanel = vi.fn();
 const mockCleanFilters = vi.fn();
+const mockApplyFilters = vi.fn();
 
 // Mock the contexts and hooks
 vi.mock('../../contexts/AppProvider', () => ({
@@ -142,6 +143,7 @@ describe('FiltersPanel', () => {
       showFiltersPanel: true,
       setShowFiltersPanel: mockSetShowFiltersPanel,
       cleanFilters: mockCleanFilters,
+      applyFilters: mockApplyFilters,
     } as any);
 
     vi.mocked(useDevice).mockReturnValue('desktop');
@@ -166,6 +168,7 @@ describe('FiltersPanel', () => {
       showFiltersPanel: false,
       setShowFiltersPanel: mockSetShowFiltersPanel,
       cleanFilters: mockCleanFilters,
+      applyFilters: mockApplyFilters,
     } as any);
 
     render(
@@ -252,6 +255,7 @@ describe('FiltersPanel', () => {
     const applyButton = screen.getByText('Apply filters');
     await user.click(applyButton);
 
+    expect(mockApplyFilters).toHaveBeenCalled();
     expect(mockSetShowFiltersPanel).toHaveBeenCalledWith(false);
   });
 
@@ -306,6 +310,7 @@ describe('FiltersPanel', () => {
       showFiltersPanel: true,
       setShowFiltersPanel: mockSetShowFiltersPanel,
       cleanFilters: mockCleanFilters,
+      applyFilters: mockApplyFilters,
     } as any);
 
     render(
@@ -325,6 +330,7 @@ describe('FiltersPanel', () => {
       showFiltersPanel: true,
       setShowFiltersPanel: mockSetShowFiltersPanel,
       cleanFilters: mockCleanFilters,
+      applyFilters: mockApplyFilters,
     } as any);
 
     render(
@@ -406,6 +412,7 @@ describe('FiltersPanel', () => {
       showFiltersPanel: true,
       setShowFiltersPanel: mockSetShowFiltersPanel,
       cleanFilters: mockCleanFilters,
+      applyFilters: mockApplyFilters,
     } as any);
 
     render(

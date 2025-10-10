@@ -11,7 +11,7 @@ import FiltersPanelItem from './FiltersPanelItem';
 
 function FiltersPanel() {
   const { user } = useAppContext();
-  const { filtersValues, usedFilters, showFiltersPanel, setShowFiltersPanel, cleanFilters } = useFiltersContext();
+  const { filtersValues, usedFilters, showFiltersPanel, setShowFiltersPanel, cleanFilters, applyFilters } = useFiltersContext();
   const panelRef = useRef(null);
   const device = useDevice();
   useOutsideClick({
@@ -132,7 +132,10 @@ function FiltersPanel() {
           fontWeight="500"
           h="35px"
           leftIcon={<FilterWhite data-id="001523" h="16px" w="16px" />}
-          onClick={() => setShowFiltersPanel(false)}
+          onClick={() => {
+            applyFilters();
+            setShowFiltersPanel(false);
+          }}
           variant="solid"
           w={['130px', '133px']}
         >

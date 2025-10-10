@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Divider, Flex } from '@chakra-ui/react';
 import { t } from 'i18next';
@@ -93,8 +94,10 @@ function TrackerItems() {
   const device = useDevice();
   const {
     filtersValues,
+    appliedFilters,
     setUsedFilters,
     setFilters,
+    applyFiltersImmediately,
     setResponsesStatusesCounts,
     setShowFiltersPanel,
     setResponseFiltersValue,
@@ -119,7 +122,7 @@ function TrackerItems() {
         contributorIds: [],
         followerIds: [],
       };
-      updateLocalStorageFilter(module._id, 'usersIds', 'User', filterValue, user._id, setFilters);
+      updateLocalStorageFilter(module._id, 'usersIds', 'User', filterValue, user._id, applyFiltersImmediately);
     } else if (!isChecked && user && module) {
       // When unchecked, clear the responsible filter
       const filterValue = {
@@ -128,7 +131,7 @@ function TrackerItems() {
         contributorIds: [],
         followerIds: [],
       };
-      updateLocalStorageFilter(module._id, 'usersIds', 'User', filterValue, user._id, setFilters);
+      updateLocalStorageFilter(module._id, 'usersIds', 'User', filterValue, user._id, applyFiltersImmediately);
     }
   };
 
@@ -220,9 +223,11 @@ function TrackerItems() {
     setLocalStorageChecked(true);
   }, [user, usedFilters]);
 
-  // 2️ Always re-parse current filtersValues
+  // 2️ Always re-parse current appliedFilters
   useEffect(() => {
-    const parsed = Object.entries(filtersValues).reduce(
+    if (!appliedFilters) return;
+
+    const parsed = Object.entries(appliedFilters).reduce(
       (acc, [rawKey, val]) => {
         if (!val?.value) return acc;
         const key = rawKey === 'Status' ? 'status' : rawKey;
@@ -241,19 +246,19 @@ function TrackerItems() {
     setParsedFilters(parsed);
 
     // Safely check for responsibleIds or userIds in usersIds filter
-    const usersFilter = filtersValues?.usersIds?.value;
+    const usersFilter = (appliedFilters as any)?.usersIds?.value;
     let assignedToMe = false;
     if (usersFilter) {
-      if (Array.isArray((usersFilter as any).responsibleIds)) {
-        const ids = (usersFilter as any).responsibleIds;
+      if (Array.isArray(usersFilter.responsibleIds)) {
+        const ids = usersFilter.responsibleIds;
         if (ids.length === 1 && ids[0] === user?.userId) assignedToMe = true;
-      } else if (Array.isArray((usersFilter as any).userIds)) {
-        const ids = (usersFilter as any).userIds;
+      } else if (Array.isArray(usersFilter.userIds)) {
+        const ids = usersFilter.userIds;
         if (ids.length === 1 && ids[0] === user?.userId) assignedToMe = true;
       }
     }
     setAssignedToMe(assignedToMe);
-  }, [filtersValues]);
+  }, [appliedFilters]);
 
   // Load function
   const loadResponses = async (page: number) => {

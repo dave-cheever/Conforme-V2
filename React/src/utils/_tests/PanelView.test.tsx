@@ -75,13 +75,13 @@ const mockIncidentData = [
 // Mock configuration for audits
 const mockAuditConfig: PanelConfig = {
   title: {
-    primary: { 
-      key: 'reference', 
+    primary: {
+      key: 'reference',
       type: 'text',
       fallback: 'No Reference',
     },
-    secondary: { 
-      key: 'auditType.name', 
+    secondary: {
+      key: 'auditType.name',
       type: 'text',
       fallback: 'No Audit Type',
     },
@@ -92,13 +92,13 @@ const mockAuditConfig: PanelConfig = {
     badgeConfig: {
       variant: 'solid',
       statusConfig: {
-        'completed': {
+        completed: {
           bg: '#0073E6',
           color: 'white',
           icon: CheckIcon,
           text: 'Completed',
         },
-        'upcoming': {
+        upcoming: {
           bg: '#F97316',
           color: 'white',
           icon: WarningIcon,
@@ -109,14 +109,14 @@ const mockAuditConfig: PanelConfig = {
     fallback: 'Unknown',
   },
   details: [
-    { 
-      key: 'dueDate', 
-      type: 'date', 
+    {
+      key: 'dueDate',
+      type: 'date',
       dateFormat: 'd MMM yyyy',
       fallback: 'No Due Date',
     },
-    { 
-      key: 'auditor', 
+    {
+      key: 'auditor',
       type: 'custom',
       fallback: 'Unassigned',
       render: (auditor: any) => {
@@ -137,13 +137,13 @@ const mockAuditConfig: PanelConfig = {
 // Mock configuration with linked item
 const mockActionConfig: PanelConfig = {
   title: {
-    primary: { 
-      key: 'action_title', 
+    primary: {
+      key: 'action_title',
       type: 'text',
       fallback: 'No Title',
     },
-    secondary: { 
-      key: 'action_type', 
+    secondary: {
+      key: 'action_type',
       type: 'text',
       fallback: 'No Type',
     },
@@ -154,7 +154,7 @@ const mockActionConfig: PanelConfig = {
     badgeConfig: {
       variant: 'solid',
       statusConfig: {
-        'Completed': {
+        Completed: {
           bg: '#10B981',
           color: 'white',
           text: 'Completed',
@@ -164,8 +164,8 @@ const mockActionConfig: PanelConfig = {
     fallback: 'Unknown',
   },
   details: [
-    { 
-      key: 'action_assigned_to', 
+    {
+      key: 'action_assigned_to',
       type: 'text',
       fallback: 'Unassigned',
     },
@@ -186,11 +186,7 @@ const mockActionConfig: PanelConfig = {
 
 // Test wrapper component
 function TestWrapper({ children }: { readonly children: React.ReactNode }) {
-  return (
-    <ChakraProvider data-id="001468">
-      {children}
-    </ChakraProvider>
-  );
+  return <ChakraProvider data-id="001468">{children}</ChakraProvider>;
 }
 
 describe('PanelView', () => {
@@ -209,7 +205,7 @@ describe('PanelView', () => {
       expect(screen.getByText('AUD-001')).toBeInTheDocument();
       expect(screen.getByText('Compliance Audit')).toBeInTheDocument();
       expect(screen.getAllByText('View Audit')).toHaveLength(2);
-      
+
       expect(screen.getByText('AUD-002')).toBeInTheDocument();
       expect(screen.getByText('Safety Audit')).toBeInTheDocument();
     });
@@ -227,14 +223,10 @@ describe('PanelView', () => {
 
     test('renders with custom container props', () => {
       const customContainerProps = { bg: '#F0F0F0', p: '20px', gap: '10px' };
-      
+
       render(
         <TestWrapper data-id="001473">
-          <PanelView
-            config={mockAuditConfig}
-            containerProps={customContainerProps}
-            data-id="001474"
-            items={mockAuditData} />
+          <PanelView config={mockAuditConfig} containerProps={customContainerProps} data-id="001474" items={mockAuditData} />
         </TestWrapper>,
       );
 
@@ -268,9 +260,7 @@ describe('PanelView', () => {
     });
 
     test('shows fallback when title data is missing', () => {
-      const itemWithMissingTitle = [
-        { _id: 'test', status: 'completed' },
-      ];
+      const itemWithMissingTitle = [{ _id: 'test', status: 'completed' }];
 
       render(
         <TestWrapper data-id="001479">
@@ -296,9 +286,7 @@ describe('PanelView', () => {
     });
 
     test('shows fallback status when status is unknown', () => {
-      const itemWithUnknownStatus = [
-        { _id: 'test', reference: 'TEST-001', status: 'unknown_status' },
-      ];
+      const itemWithUnknownStatus = [{ _id: 'test', reference: 'TEST-001', status: 'unknown_status' }];
 
       render(
         <TestWrapper data-id="001483">
@@ -335,9 +323,7 @@ describe('PanelView', () => {
     });
 
     test('shows fallback for missing detail data', () => {
-      const itemWithMissingDetails = [
-        { _id: 'test', reference: 'TEST-001', status: 'completed' },
-      ];
+      const itemWithMissingDetails = [{ _id: 'test', reference: 'TEST-001', status: 'completed' }];
 
       render(
         <TestWrapper data-id="001489">
@@ -435,11 +421,9 @@ describe('PanelView', () => {
       // Get the panel containers by their data-id attribute (should match panel-2, panel-3, etc.)
       const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
       expect(allPanels).toHaveLength(2);
-      
+
       // Check that panels have the correct cursor style
-      for (const panel of allPanels) {
-        expect(panel).toHaveStyle('cursor: pointer');
-      }
+      for (const panel of allPanels) expect(panel).toHaveStyle('cursor: pointer');
     });
 
     test('renders panel with default cursor when panelClick is not configured', () => {
@@ -452,11 +436,9 @@ describe('PanelView', () => {
       // Get the panel containers by their data-id attribute (should match panel-2, panel-3, etc.)
       const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
       expect(allPanels).toHaveLength(2);
-      
+
       // Check that panels have the default cursor style
-      for (const panel of allPanels) {
-        expect(panel).toHaveStyle('cursor: default');
-      }
+      for (const panel of allPanels) expect(panel).toHaveStyle('cursor: default');
     });
 
     test('calls panelClick onClick handler when panel is clicked', () => {
@@ -507,12 +489,12 @@ describe('PanelView', () => {
       // Get the panel containers
       const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
       expect(allPanels).toHaveLength(2);
-      
+
       // Check that panels have the correct initial styles
       for (const panel of allPanels) {
         // Check initial shadow styles
         expect(panel).toHaveStyle('box-shadow: 0 2px 2px 0 rgba(26, 32, 44, 0.08)');
-        
+
         // Verify that the panel has the correct cursor and is clickable
         expect(panel).toHaveStyle('cursor: pointer');
       }
@@ -528,11 +510,9 @@ describe('PanelView', () => {
       // Get the panel containers
       const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
       expect(allPanels).toHaveLength(2);
-      
+
       // Check that panels do not have transition styles
-      for (const panel of allPanels) {
-        expect(panel).not.toHaveStyle('transition: all 300ms ease-out');
-      }
+      for (const panel of allPanels) expect(panel).not.toHaveStyle('transition: all 300ms ease-out');
     });
 
     test('applies correct hover styles on mouse enter', () => {
@@ -556,10 +536,10 @@ describe('PanelView', () => {
       // Get the first panel
       const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
       const firstPanel = allPanels[0];
-      
+
       // Simulate mouse enter
       fireEvent.mouseEnter(firstPanel);
-      
+
       // Check that hover styles are applied
       const computedStyle = window.getComputedStyle(firstPanel);
       expect(computedStyle.boxShadow).toContain('rgba(26, 32, 44, 0.12)');
@@ -587,11 +567,11 @@ describe('PanelView', () => {
       // Get the first panel
       const allPanels = container.querySelectorAll('[data-id="panel-2"], [data-id="panel-3"]');
       const firstPanel = allPanels[0];
-      
+
       // Simulate mouse enter and then leave
       fireEvent.mouseEnter(firstPanel);
       fireEvent.mouseLeave(firstPanel);
-      
+
       // Check that original styles are restored
       const computedStyle = window.getComputedStyle(firstPanel);
       expect(computedStyle.boxShadow).toContain('rgba(26, 32, 44, 0.08)');
@@ -628,7 +608,7 @@ describe('PanelView', () => {
 
     test('does not call onClick when panelClick is not configured', () => {
       const mockPanelClick = vi.fn();
-      
+
       const { container } = render(
         <TestWrapper data-id="001523">
           <PanelView config={mockAuditConfig} data-id="001524" items={mockAuditData} />
@@ -713,7 +693,7 @@ describe('PanelView', () => {
           reference: 'AUD-002',
           auditType: { name: 'Safety Audit' },
           status: 'upcoming',
-        })
+        }),
       );
     });
 
@@ -783,9 +763,7 @@ describe('PanelView', () => {
     });
 
     test('does not render linked item when data is missing', () => {
-      const itemWithoutLinkedItem = [
-        { _id: 'action1', action_title: 'Test Action', status: 'Completed' },
-      ];
+      const itemWithoutLinkedItem = [{ _id: 'action1', action_title: 'Test Action', status: 'Completed' }];
 
       render(
         <TestWrapper data-id="001499">
@@ -917,7 +895,7 @@ describe('PanelView', () => {
 
       const buttons = screen.getAllByRole('button');
       expect(buttons).toHaveLength(2); // Two primary action buttons
-      
+
       for (const button of buttons) {
         expect(button).toHaveTextContent('View Audit');
         expect(button).toBeVisible();

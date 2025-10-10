@@ -25,9 +25,9 @@ const TEST_USER = { _id: 'u1-db', userId: 'u1-app', displayName: 'User One' };
 const TEST_MODULE = { _id: 'm1', featureFlags: { enableSafetyWalk: true } };
 
 // 1) i18next: ensure t() always returns a string so pluralize(...) is safe
-vi.mock('react-i18next', async () => 
+vi.mock('react-i18next', async () =>
   // some projects import useTranslation from react-i18next too
-   ({
+  ({
     useTranslation: () => ({ t: (k: string) => k || 'audit' }),
   }),
 );
@@ -47,8 +47,10 @@ vi.mock('../../contexts/AdminProvider', () => ({
 vi.mock('../../contexts/FiltersProvider', () => ({
   useFiltersContext: () => ({
     filtersValues: MOCK_FILTERS_VALUES,
+    appliedFilters: MOCK_FILTERS_VALUES,
     setUsedFilters: mockSetUsedFilters,
     setFilters: mockSetFilters,
+    applyFiltersImmediately: mockSetFilters,
     setDefaultFilters: mockSetDefaultFilters,
     setShowFiltersPanel: mockSetShowFiltersPanel,
     auditFiltersValue: {},
@@ -116,7 +118,11 @@ vi.mock('../../components/SortButton', () => ({ default: () => <div data-id="001
 
 // CSVLink wrapper so DOM is trivial
 vi.mock('react-csv', () => ({
-  CSVLink: ({ children }: any) => <div data-id="001357" data-testid="csvlink">{children}</div>,
+  CSVLink: ({ children }: any) => (
+    <div data-id="001357" data-testid="csvlink">
+      {children}
+    </div>
+  ),
 }));
 
 // AssignedToMeFilter must expose isChecked and trigger onToggle
@@ -125,7 +131,9 @@ vi.mock('../../components/Filters/AssignedToMeFilter', () => ({
   __esModule: true,
   default: ({ isChecked, onToggle }: { isChecked: boolean; onToggle: (v: boolean) => void }) => (
     <div data-id="001358">
-      <span data-id="001359" data-testid="assigned-state">{String(isChecked)}</span>
+      <span data-id="001359" data-testid="assigned-state">
+        {String(isChecked)}
+      </span>
       <button
         data-id="001360"
         data-testid="toggle-on"
@@ -133,7 +141,8 @@ vi.mock('../../components/Filters/AssignedToMeFilter', () => ({
           assignedToToggleSpy('on');
           onToggle(true);
         }}
-        type="button">
+        type="button"
+      >
         on
       </button>
       <button
@@ -143,7 +152,8 @@ vi.mock('../../components/Filters/AssignedToMeFilter', () => ({
           assignedToToggleSpy('off');
           onToggle(false);
         }}
-        type="button">
+        type="button"
+      >
         off
       </button>
     </div>
@@ -155,18 +165,10 @@ vi.mock('../../components/ChangeViewButton', () => ({
   __esModule: true,
   default: ({ setViewMode }: { setViewMode: (v: string) => void }) => (
     <div data-id="001362" data-testid="change-view">
-      <button
-        data-id="001363"
-        type="button"
-        data-testid="to-panel"
-        onClick={() => setViewMode('panel')}>
+      <button data-id="001363" data-testid="to-panel" onClick={() => setViewMode('panel')} type="button">
         panel
       </button>
-      <button
-        data-id="001364"
-        data-testid="to-list"
-        onClick={() => setViewMode('list')}
-        type="button">
+      <button data-id="001364" data-testid="to-list" onClick={() => setViewMode('list')} type="button">
         list
       </button>
     </div>
@@ -185,11 +187,12 @@ vi.mock('../../utils/filterStorage', () => ({
 import AuditsWithContext from '../../pages/audits';
 /* eslint-enable import/first */
 
-const renderPage = () => render(
-  <BrowserRouter data-id="001515">
-    <AuditsWithContext data-id="001365" />
-  </BrowserRouter>,
-);
+const renderPage = () =>
+  render(
+    <BrowserRouter data-id="001515">
+      <AuditsWithContext data-id="001365" />
+    </BrowserRouter>,
+  );
 
 // ---------- Reset shared state ----------
 beforeEach(() => {

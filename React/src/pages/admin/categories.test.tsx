@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { ChakraProvider } from '@chakra-ui/react';
@@ -12,11 +13,11 @@ vi.mock('i18next', () => ({
 }));
 
 // Mock Apollo hooks
-const mockUseQuery = vi.fn((...args: any[]) => ({}));
-const mockUseMutation = vi.fn((...args: any[]) => [vi.fn()]);
+const mockUseQuery = vi.fn(() => ({}));
+const mockUseMutation = vi.fn(() => [vi.fn()]);
 vi.mock('@apollo/client', () => ({
-  useQuery: () => mockUseQuery({}),
-  useMutation: () => mockUseMutation([vi.fn()]),
+  useQuery: () => mockUseQuery(),
+  useMutation: () => mockUseMutation(),
   ApolloProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   gql: (strings: TemplateStringsArray) => strings.join(''),
 }));
@@ -28,7 +29,7 @@ vi.mock('../../contexts/AppProvider', () => ({
 
 vi.mock('../../contexts/AdminProvider', () => ({
   useAdminContext: () => ({ adminModalState: 'closed', setAdminModalState: vi.fn() }),
-  AdminContext: require('react').createContext({ adminModalState: 'closed', setAdminModalState: vi.fn() }),
+  AdminContext: React.createContext({ adminModalState: 'closed', setAdminModalState: vi.fn() }),
 }));
 
 // Mock navigation
@@ -39,13 +40,11 @@ vi.mock('../../hooks/useNavigate', () => ({
 // Mock ListView to capture passed props
 vi.mock('../../components/Table/ListView', () => ({
   default: ({ data, dataType, columns }: { data: any[]; dataType: string; columns: any[] }) => (
-    <div
-      data-id="002048"
-      data-datatype={dataType}
-      data-length={data?.length ?? 0}
-      data-testid="listview">
+    <div data-datatype={dataType} data-id="002048" data-length={data?.length ?? 0} data-testid="listview">
       {columns?.map((c, i) => (
-        <div data-id="002049" data-testid={`col-${i}`} key={i}>{typeof c.label === 'string' ? c.label : 'node'}</div>
+        <div data-id="002049" data-testid={`col-${i}`} key={i}>
+          {typeof c.label === 'string' ? c.label : 'node'}
+        </div>
       ))}
     </div>
   ),
@@ -53,7 +52,11 @@ vi.mock('../../components/Table/ListView', () => ({
 
 // Mock heavy child components
 vi.mock('../../components/Admin/AdminModal', () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div data-id="001917" data-testid="admin-modal">{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div data-id="001917" data-testid="admin-modal">
+      {children}
+    </div>
+  ),
 }));
 vi.mock('../../components/Forms/TextInput', () => ({
   default: () => <div data-id="001918" data-testid="text-input" />,
@@ -65,13 +68,14 @@ vi.mock('../../components/BarChart', () => ({
   default: () => <div data-id="001920" data-testid="bar-chart" />,
 }));
 
-const createWrapper = () => (function({ children }: { children: React.ReactNode }) {
-  return (
-    <ChakraProvider data-id="002050">
-      <BrowserRouter data-id="002051">{children}</BrowserRouter>
-    </ChakraProvider>
-  );
-});
+const createWrapper = () =>
+  (function Wrapper({ children }: { children: React.ReactNode }) {
+    return (
+      <ChakraProvider data-id="002050">
+        <BrowserRouter data-id="002051">{children}</BrowserRouter>
+      </ChakraProvider>
+    );
+  });
 
 const sampleData = [
   { _id: 'cat-1', name: 'Category 1', trackerItemsResponsesCount: 5 },
@@ -97,7 +101,6 @@ describe('Categories page', () => {
     expect(screen.getByTestId('col-0')).toHaveTextContent('Category');
     expect(screen.getByTestId('col-1')).toHaveTextContent('Responses count');
   });
-
 
   it('shows empty ListView when no data', () => {
     mockUseQuery.mockReturnValue({
@@ -203,7 +206,7 @@ describe('Categories page', () => {
     });
 
     render(<Categories data-id="001933" />, { wrapper: createWrapper() });
-    
+
     // Verify both column headers are present
     expect(screen.getByTestId('col-0')).toHaveTextContent('Category');
     expect(screen.getByTestId('col-1')).toHaveTextContent('Responses count');

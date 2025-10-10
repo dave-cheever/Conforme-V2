@@ -3,14 +3,17 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
+// Import the component after mocks
+import SortButton from '../../components/SortButton';
+
 // Mock icons
 vi.mock('../../icons', () => ({
   ChevronRight: ({ transform, color, ...props }: any) => (
     <div
+      data-color={color}
       data-id="001617"
       data-testid="chevron-right"
       data-transform={transform}
-      data-color={color}
       {...props}>
       →
     </div>
@@ -18,10 +21,9 @@ vi.mock('../../icons', () => ({
   UpAndDownIcon: () => <div data-id="001618" data-testid="up-down-icon">↕</div>,
 }));
 
-// Import the component after mocks
-import SortButton from '../../components/SortButton';
-
-const TestWrapper = ({ children }: { children: React.ReactNode }) => <ChakraProvider data-id="001619">{children}</ChakraProvider>;
+function TestWrapper({ children }: { children: React.ReactNode }) {
+  return <ChakraProvider data-id="001619">{children}</ChakraProvider>
+}
 
 describe('SortButton', () => {
   const mockSetSortType = vi.fn();
@@ -94,7 +96,7 @@ describe('SortButton', () => {
     test('shows ascending indicator for current sort type and order', () => {
       render(
         <TestWrapper data-id="001628">
-          <SortButton data-id="001629" {...defaultProps} sortType="name" sortOrder="asc" />
+          <SortButton data-id="001629" {...defaultProps} sortOrder="asc" sortType="name" />
         </TestWrapper>,
       );
 
@@ -105,7 +107,7 @@ describe('SortButton', () => {
     test('shows descending indicator for current sort type and order', () => {
       render(
         <TestWrapper data-id="001630">
-          <SortButton data-id="001631" {...defaultProps} sortType="name" sortOrder="desc" />
+          <SortButton data-id="001631" {...defaultProps} sortOrder="desc" sortType="name" />
         </TestWrapper>,
       );
 
@@ -193,7 +195,7 @@ describe('SortButton', () => {
     test('shows active color for current sort type and order', () => {
       render(
         <TestWrapper data-id="001642">
-          <SortButton data-id="001643" {...defaultProps} sortType="name" sortOrder="asc" />
+          <SortButton data-id="001643" {...defaultProps} sortOrder="asc" sortType="name" />
         </TestWrapper>,
       );
 
@@ -204,7 +206,7 @@ describe('SortButton', () => {
     test('shows default color for inactive sort options', () => {
       render(
         <TestWrapper data-id="001644">
-          <SortButton data-id="001645" {...defaultProps} sortType="name" sortOrder="asc" />
+          <SortButton data-id="001645" {...defaultProps} sortOrder="asc" sortType="name" />
         </TestWrapper>,
       );
 

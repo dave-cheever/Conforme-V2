@@ -4,8 +4,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import AppProvider from '../../contexts/AppProvider';
 import ListView, { ColumnConfig } from '../../components/Table/ListView';
+import AppProvider from '../../contexts/AppProvider';
 
 // Mock AppProvider for testing
 vi.mock('../../contexts/AppProvider', () => ({
@@ -24,7 +24,6 @@ vi.mock('./Rows/ListViewRow', () => ({
     </div>
   ),
 }));
-
 
 const createWrapper = () => (function({ children }: { children: React.ReactNode }) {
   return (
@@ -81,9 +80,9 @@ describe('ListView', () => {
   it('should render table headers for all non-disabled columns', () => {
     render(
       <ListView
-        data-id="002031"
         columns={mockColumns}
         data={mockData}
+        data-id="002031"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -101,9 +100,9 @@ describe('ListView', () => {
   it('should render all data rows', () => {
     render(
       <ListView
-        data-id="002032"
         columns={mockColumns}
         data={mockData}
+        data-id="002032"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -121,9 +120,9 @@ describe('ListView', () => {
   it('should handle sort column click', () => {
     render(
       <ListView
-        data-id="002033"
         columns={mockColumns}
         data={mockData}
+        data-id="002033"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -143,9 +142,9 @@ describe('ListView', () => {
   it('should toggle sort order when clicking same column', () => {
     render(
       <ListView
-        data-id="002034"
         columns={mockColumns}
         data={mockData}
+        data-id="002034"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -176,9 +175,9 @@ describe('ListView', () => {
 
     render(
       <ListView
-        data-id="002035"
         columns={columnsWithDisabled}
         data={mockData}
+        data-id="002035"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -194,9 +193,9 @@ describe('ListView', () => {
   it('should show empty state when no data', () => {
     render(
       <ListView
-        data-id="002036"
         columns={mockColumns}
         data={[]}
+        data-id="002036"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -212,9 +211,9 @@ describe('ListView', () => {
   it('should display correct empty state message for different data types', () => {
     render(
       <ListView
-        data-id="002037"
         columns={mockColumns}
         data={[]}
+        data-id="002037"
         dataType="users"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -230,9 +229,9 @@ describe('ListView', () => {
   it('should pass correct props to table headers', () => {
     render(
       <ListView
-        data-id="002038"
         columns={mockColumns}
         data={mockData}
+        data-id="002038"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -261,9 +260,9 @@ describe('ListView', () => {
 
     render(
       <ListView
-        data-id="002039"
         columns={columnsWithTooltip}
         data={mockData}
+        data-id="002039"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -279,9 +278,9 @@ describe('ListView', () => {
   it('should handle columns with hideSortIcon flag', () => {
     render(
       <ListView
-        data-id="002040"
         columns={mockColumns}
         data={mockData}
+        data-id="002040"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -317,9 +316,9 @@ describe('ListView', () => {
 
     render(
       <ListView
-        data-id="002044"
         columns={columnsWithDisableSort}
         data={mockData}
+        data-id="002044"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -345,9 +344,9 @@ describe('ListView', () => {
   it('should maintain correct data-id attributes', () => {
     const { container } = render(
       <ListView
-        data-id="002041"
         columns={mockColumns}
         data={mockData}
+        data-id="002041"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -368,9 +367,9 @@ describe('ListView', () => {
 
     render(
       <ListView
-        data-id="002042"
         columns={mockColumns}
         data={singleItem}
+        data-id="002042"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
@@ -387,9 +386,9 @@ describe('ListView', () => {
   it('should apply correct widths to column headers', () => {
     const { container } = render(
       <ListView
-        data-id="002043"
         columns={mockColumns}
         data={mockData}
+        data-id="002043"
         dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}

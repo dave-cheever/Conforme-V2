@@ -14,6 +14,7 @@ import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import AvatarCell from '../../components/Table/Cells/AvatarCell';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import { useAdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
@@ -22,7 +23,6 @@ import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
 import { ArrowCount } from '../../icons';
 import { IBusinessUnit } from '../../interfaces/IBusinessUnit';
-import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_BUSINESS_UNITS = gql`
   query ($moduleId: ID!) {
@@ -270,16 +270,16 @@ function BusinessUnits() {
             tooltip: 'Only published items',
             render: (businessUnit: IBusinessUnit) => (
               <Flex
-                data-id="001906"
                 alignItems="center"
                 color="auditsList.fontColor"
+                data-id="001906"
                 fontSize="14px"
                 fontWeight="500">
                 {businessUnit.trackerItemsResponsesCount || 0}
                 <Tooltip data-id="001907" fontSize="md" label="Show Items">
                   <ArrowCount
-                    data-id="001908"
                     cursor="pointer"
+                    data-id="001908"
                     h="10px"
                     ml="13px"
                     onClick={(e) => {
@@ -302,16 +302,16 @@ function BusinessUnits() {
             dataId: '000421',
             render: (businessUnit: IBusinessUnit) => (
               <Flex
-                data-id="001909"
                 alignItems="center"
                 color="auditsList.fontColor"
+                data-id="001909"
                 fontSize="14px"
                 fontWeight="500">
                 {businessUnit.totalAnswersCount || 0}
                 <Tooltip data-id="001910" fontSize="md" label="Show Items">
                   <ArrowCount
-                    data-id="001911"
                     cursor="pointer"
+                    data-id="001911"
                     h="10px"
                     ml="13px"
                     onClick={(e) => {
@@ -332,16 +332,16 @@ function BusinessUnits() {
             dataId: '000422',
             render: (businessUnit: IBusinessUnit) => (
               <Flex
-                data-id="001912"
                 alignItems="center"
                 color="auditsList.fontColor"
+                data-id="001912"
                 fontSize="14px"
                 fontWeight="500">
                 {businessUnit.totalAuditsCount || 0}
                 <Tooltip data-id="001913" fontSize="md" label="Show Items">
                   <ArrowCount
-                    data-id="001914"
                     cursor="pointer"
+                    data-id="001914"
                     h="10px"
                     ml="13px"
                     onClick={(e) => {

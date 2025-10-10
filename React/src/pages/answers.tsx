@@ -18,6 +18,8 @@ import Header from '../components/Header';
 import Loader from '../components/Loader';
 import SortButton from '../components/SortButton';
 import AvatarCell from '../components/Table/Cells/AvatarCell';
+import DateTimeCell from '../components/Table/Cells/DateTimeCell';
+import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../components/Table/ListView';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
@@ -27,8 +29,6 @@ import useSort from '../hooks/useSort';
 import { EditIcon, ExportIcon, Trashcan } from '../icons';
 import { IAnswer } from '../interfaces/IAnswer';
 import { TViewMode } from '../interfaces/TViewMode';
-import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
-import DateTimeCell from '../components/Table/Cells/DateTimeCell';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -179,8 +179,17 @@ function Answers() {
     onOpen: handleDeleteQuestionModalOpen,
     onClose: handleDeleteQuestionModalClose,
   } = useDisclosure();
-  const { filtersValues, setUsedFilters, setFilters, setShowFiltersPanel, answerFiltersValue, setAnswerFiltersValue, usedFilters } =
-    useFiltersContext();
+  const {
+    filtersValues,
+    appliedFilters,
+    setUsedFilters,
+    setFilters,
+    applyFiltersImmediately,
+    setShowFiltersPanel,
+    answerFiltersValue,
+    setAnswerFiltersValue,
+    usedFilters,
+  } = useFiltersContext();
   const { user } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const device = useDevice();
@@ -194,11 +203,6 @@ function Answers() {
   const handleOpenModal = (answer: IAnswer) => {
     setSelectedAnswer(answer);
     setAdminModalState('edit');
-  };
-
-  const handleViewModal = (answer: IAnswer) => {
-    setSelectedAnswer(answer);
-    setAdminModalState('view');
   };
 
   const {
@@ -226,7 +230,11 @@ function Answers() {
       width: '10%',
       dataId: '000020',
       render: (answer: IAnswer) => (
-        <TextOrNumberCell data-id="002082" text={answer?.question?.questionsCategory?.name} tooltip={answer?.question?.questionsCategory?.name} />
+        <TextOrNumberCell
+          data-id="002082"
+          text={answer?.question?.questionsCategory?.name}
+          tooltip={answer?.question?.questionsCategory?.name}
+        />
       ),
     },
     {
@@ -235,7 +243,12 @@ function Answers() {
       width: '12%',
       dataId: '000021',
       render: (answer: IAnswer) => (
-        <TextOrNumberCell data-id="002083" text={answer?.question?.question} tooltip={answer?.question?.question} fallbackText="No description" />
+        <TextOrNumberCell
+          data-id="002083"
+          fallbackText="No description"
+          text={answer?.question?.question}
+          tooltip={answer?.question?.question}
+        />
       ),
     },
     {
@@ -280,9 +293,9 @@ function Answers() {
       dataId: '000025',
       render: (answer: IAnswer) => (
         <Flex
-          data-id="001853"
           align="flex-start"
           color="auditsList.fontColor"
+          data-id="001853"
           fontSize="14px"
           fontWeight="500"
           lineHeight="18px"
@@ -310,11 +323,7 @@ function Answers() {
       width: '9%',
       dataId: '000027',
       render: (answer: IAnswer) => (
-        <DateTimeCell
-          data-id="002170"
-          date={answer?.metatags?.addedAt}
-          fallbackText="No added date"
-          showTime={false} />
+        <DateTimeCell data-id="002170" date={answer?.metatags?.addedAt} fallbackText="No added date" showTime={false} />
       ),
     },
     {
@@ -391,14 +400,18 @@ function Answers() {
   }, [filtersValues, usedFilters, setAnswerFiltersValue, answerFiltersValue, setFilters]);
 
   useEffect(() => {
-    setFilters({
-      questionsCategoriesIds: panels[selectedPanel]._id !== 'all' ? [panels[selectedPanel]._id] : null,
-    });
-  }, [selectedPanel]);
+    if (applyFiltersImmediately) {
+      applyFiltersImmediately({
+        questionsCategoriesIds: panels[selectedPanel]._id !== 'all' ? [panels[selectedPanel]._id] : null,
+      });
+    }
+  }, [selectedPanel, applyFiltersImmediately]);
 
   useEffect(() => {
+    if (!appliedFilters) return;
+
     // Parse filters to format expected by GraphQL Query
-    const parsedFilters: any = Object.entries(filtersValues).reduce((acc, entry) => {
+    const parsedFilters: any = Object.entries(appliedFilters).reduce((acc, entry) => {
       const [key, wrapped] = entry;
       if (!wrapped || !allowedFilters.includes(key)) return acc;
 
@@ -425,7 +438,12 @@ function Answers() {
         },
       });
     }
-  }, [filtersValues]);
+  }, [appliedFilters]);
+
+  const handleViewModal = (answer: IAnswer) => {
+    setSelectedAnswer(answer);
+    setAdminModalState('view');
+  };
 
   useEffect(() => {
     if (data && data?.answers && !error) {

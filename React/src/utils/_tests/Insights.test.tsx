@@ -91,7 +91,7 @@ vi.mock('../../components/Header', () => ({
 
 vi.mock('../../components/Loader', () => ({
   default: ({ center, 'data-id': dataId }: { center?: boolean; 'data-id': string }) => (
-    <div data-id="001492" data-center={center} data-testid={`loader-${dataId}`}>
+    <div data-center={center} data-id="001492" data-testid={`loader-${dataId}`}>
       Loading...
     </div>
   ),

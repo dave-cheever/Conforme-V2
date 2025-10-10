@@ -13,18 +13,22 @@ vi.mock('i18next', () => ({
 }));
 
 // Mock Apollo hooks
-const mockUseQuery = vi.fn((...args: any[]) => ({}));
-const mockUseMutation = vi.fn((...args: any[]) => [vi.fn()]);
+const mockUseQuery = vi.fn(() => ({}));
+const mockUseMutation = vi.fn(() => [vi.fn()]);
 vi.mock('@apollo/client', () => ({
-  useQuery: () => mockUseQuery({}),
-  useMutation: () => mockUseMutation([vi.fn()]),
+  useQuery: () => mockUseQuery(),
+  useMutation: () => mockUseMutation(),
   ApolloProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   gql: (strings: TemplateStringsArray) => strings.join(''),
 }));
 
 // Mock heavy child components
 vi.mock('../../components/Admin/AdminModal', () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div data-id="001948" data-testid="admin-modal">{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div data-id="001948" data-testid="admin-modal">
+      {children}
+    </div>
+  ),
 }));
 vi.mock('../../components/Forms/Dropdown', () => ({
   default: () => <div data-id="001949" data-testid="dropdown" />,
@@ -42,29 +46,28 @@ vi.mock('../../components/Header', () => ({
 // Mock ListView to capture passed props
 vi.mock('../../components/Table/ListView', () => ({
   default: ({ data, dataType, columns }: { data: any[]; dataType: string; columns: any[] }) => (
-    <div
-      data-id="002056"
-      data-datatype={dataType}
-      data-length={data?.length ?? 0}
-      data-testid="listview">
+    <div data-datatype={dataType} data-id="002056" data-length={data?.length ?? 0} data-testid="listview">
       {columns?.map((c, i) => (
-        <div data-id="002057" data-testid={`col-${i}`} key={i}>{typeof c.label === 'string' ? c.label : 'node'}</div>
+        <div data-id="002057" data-testid={`col-${i}`} key={i}>
+          {typeof c.label === 'string' ? c.label : 'node'}
+        </div>
       ))}
     </div>
   ),
 }));
 
-const createWrapper = (adminValue?: any) => (function({ children }: { children: React.ReactNode }) {
-  return (
-    <ChakraProvider data-id="002058">
-      <BrowserRouter data-id="002059">
-        <AdminContext.Provider value={adminValue || { adminModalState: 'closed', setAdminModalState: vi.fn() }}>
-          {children}
-        </AdminContext.Provider>
-      </BrowserRouter>
-    </ChakraProvider>
-  );
-});
+const createWrapper = (adminValue?: any) => {
+  const defaultAdminValue = { adminModalState: 'closed', setAdminModalState: vi.fn() };
+  return function Wrapper({ children }: { children: React.ReactNode }) {
+    return (
+      <ChakraProvider data-id="002058">
+        <BrowserRouter data-id="002059">
+          <AdminContext.Provider value={adminValue || defaultAdminValue}>{children}</AdminContext.Provider>
+        </BrowserRouter>
+      </ChakraProvider>
+    );
+  };
+};
 
 describe('Questions page', () => {
   beforeEach(() => {
@@ -73,8 +76,26 @@ describe('Questions page', () => {
 
   it('renders ListView with questions and correct column', () => {
     const sampleQuestions = [
-      { _id: 'q1', type: 'text', question: 'First question', description: '', questionsCategoryId: 'c1', positiveValue: '', negativeValue: '', scope: { module: 'audits' } },
-      { _id: 'q2', type: 'text', question: 'Second question', description: '', questionsCategoryId: 'c1', positiveValue: '', negativeValue: '', scope: { module: 'audits' } },
+      {
+        _id: 'q1',
+        type: 'text',
+        question: 'First question',
+        description: '',
+        questionsCategoryId: 'c1',
+        positiveValue: '',
+        negativeValue: '',
+        scope: { module: 'audits' },
+      },
+      {
+        _id: 'q2',
+        type: 'text',
+        question: 'Second question',
+        description: '',
+        questionsCategoryId: 'c1',
+        positiveValue: '',
+        negativeValue: '',
+        scope: { module: 'audits' },
+      },
     ];
 
     mockUseQuery.mockReturnValue({
@@ -156,9 +177,36 @@ describe('Questions page', () => {
 
   it('renders with multiple questions', () => {
     const questions = [
-      { _id: 'q1', type: 'text', question: 'Q1', description: '', questionsCategoryId: 'c1', positiveValue: '', negativeValue: '', scope: { module: 'audits' } },
-      { _id: 'q2', type: 'text', question: 'Q2', description: '', questionsCategoryId: 'c1', positiveValue: '', negativeValue: '', scope: { module: 'audits' } },
-      { _id: 'q3', type: 'text', question: 'Q3', description: '', questionsCategoryId: 'c1', positiveValue: '', negativeValue: '', scope: { module: 'audits' } },
+      {
+        _id: 'q1',
+        type: 'text',
+        question: 'Q1',
+        description: '',
+        questionsCategoryId: 'c1',
+        positiveValue: '',
+        negativeValue: '',
+        scope: { module: 'audits' },
+      },
+      {
+        _id: 'q2',
+        type: 'text',
+        question: 'Q2',
+        description: '',
+        questionsCategoryId: 'c1',
+        positiveValue: '',
+        negativeValue: '',
+        scope: { module: 'audits' },
+      },
+      {
+        _id: 'q3',
+        type: 'text',
+        question: 'Q3',
+        description: '',
+        questionsCategoryId: 'c1',
+        positiveValue: '',
+        negativeValue: '',
+        scope: { module: 'audits' },
+      },
     ];
 
     mockUseQuery.mockReturnValue({
@@ -172,4 +220,3 @@ describe('Questions page', () => {
     expect(list.getAttribute('data-length')).toBe('3');
   });
 });
-

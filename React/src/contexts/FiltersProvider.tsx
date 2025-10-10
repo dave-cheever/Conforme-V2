@@ -85,17 +85,13 @@ function FiltersProvider({ children }) {
             Object.entries(parsed).map(([key, obj]) => {
               if (key === 'usersIds') {
                 let mergedValue;
-                if (module?.type === 'tracker') 
+                if (module?.type === 'tracker')
                   mergedValue = { responsibleIds: [], accountableIds: [], contributorIds: [], followerIds: [], ...(obj as any).value };
-                 else if (module?.type === 'audits') 
-                  mergedValue = { auditorsIds: [], participantsIds: [], ...(obj as any).value };
-                 else if (module?.type === 'actions') 
-                  mergedValue = { assigneesIds: [], ...(obj as any).value };
-                 else if (module?.type === 'answers') 
-                  mergedValue = { addedByIds: [], ...(obj as any).value };
-                 else 
-                  mergedValue = { ...(obj as any).value };
-                
+                else if (module?.type === 'audits') mergedValue = { auditorsIds: [], participantsIds: [], ...(obj as any).value };
+                else if (module?.type === 'actions') mergedValue = { assigneesIds: [], ...(obj as any).value };
+                else if (module?.type === 'answers') mergedValue = { addedByIds: [], ...(obj as any).value };
+                else mergedValue = { ...(obj as any).value };
+
                 return [key, mergedValue];
               }
               return [key, (obj as any).value];
@@ -113,6 +109,7 @@ function FiltersProvider({ children }) {
   };
 
   const [filtersValues, setFiltersValues] = useState<IFilters>(getInitialFilters);
+  const [appliedFilters, setAppliedFilters] = useState<object>({});
   const [usedFilters, setUsedFilters] = useState<string[]>([]);
   const [defaultFilters, setDefaultFilters] = useState<object>({});
   const [responseFiltersValue, setResponseFiltersValue] = useState<TDeepPartial<IResponseFilters>>({});
@@ -133,6 +130,7 @@ function FiltersProvider({ children }) {
   }).length;
 
   const setFilters = (filters = {}) => {
+    // Update the UI filters immediately for user feedback
     setFiltersValues(
       getFilters({
         usedFilters,
@@ -141,11 +139,27 @@ function FiltersProvider({ children }) {
     );
   };
 
+  const applyFilters = () => {
+    // Apply the current filter values to the applied filters state
+    setAppliedFilters(filtersValues);
+  };
+
+  const applyFiltersImmediately = (filters: object) => {
+    // Apply filters immediately, bypassing the Apply Filters button logic
+    const newFilters = getFilters({
+      usedFilters,
+      newFilters: filters,
+    });
+    setFiltersValues(newFilters);
+    setAppliedFilters(newFilters);
+  };
+
   const cleanFilters = () => {
     if (module && user) {
       const localStorageKey = `${module._id}-filters-${user._id}`;
       localStorage.removeItem(localStorageKey);
       setDefaultFilters({});
+      setAppliedFilters({});
       setFiltersValues(
         getFilters({
           defaultFilters: {},
@@ -160,13 +174,21 @@ function FiltersProvider({ children }) {
     setFilters();
   }, [usedFilters, defaultFilters]);
 
+  // Initialize applied filters when filters are first loaded
+  useEffect(() => {
+    if (Object.keys(filtersValues).length > 0 && Object.keys(appliedFilters).length === 0) setAppliedFilters(filtersValues);
+  }, [filtersValues, appliedFilters]);
+
   const value = useMemo(
     () => ({
       filtersValues,
       setFiltersValues,
+      appliedFilters,
       usedFilters,
       setUsedFilters,
       setFilters,
+      applyFilters,
+      applyFiltersImmediately,
       cleanFilters,
       showFiltersPanel,
       setShowFiltersPanel,
@@ -215,7 +237,11 @@ function FiltersProvider({ children }) {
     ],
   );
 
-  return <FiltersContext.Provider data-id="000013" value={value}>{children}</FiltersContext.Provider>;
+  return (
+    <FiltersContext.Provider data-id="000013" value={value}>
+      {children}
+    </FiltersContext.Provider>
+  );
 }
 
 export default FiltersProvider;

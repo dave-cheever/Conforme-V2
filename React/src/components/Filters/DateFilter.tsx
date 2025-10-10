@@ -8,13 +8,8 @@ import { isArray } from 'lodash';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
-import {
-  actionsFilterDates,
-  auditsFilterDates,
-  trackerFilterDates,
-} from '../../hooks/useFiltersUtils';
+import { actionsFilterDates, auditsFilterDates, trackerFilterDates } from '../../hooks/useFiltersUtils';
 import useNavigate from '../../hooks/useNavigate';
-import { MinusIcon } from '../../icons';
 import updateLocalStorageFilter from '../../utils/filterStorage';
 
 function DateFilter({ filterName }: { filterName: string }) {
@@ -48,9 +43,9 @@ function DateFilter({ filterName }: { filterName: string }) {
   const value = (filtersValues?.[filterKey]?.value || []) as { value?: any[] } | any[];
   const [filterValue, startDate, endDate] = isArray(value) ? value : (value as { value?: any[] })?.value || [];
   const selectedKey = useMemo(() => {
-  if (Array.isArray(value)) {
-    if (Array.isArray(value[0])) return value[0][0]; // e.g., [["dateRange", date1, date2]]
-    return value[0]; // e.g., ["exactDate"]
+    if (Array.isArray(value)) {
+      if (Array.isArray(value[0])) return value[0][0]; // e.g., [["dateRange", date1, date2]]
+      return value[0]; // e.g., ["exactDate"]
     }
     return null;
   }, [value]);
@@ -58,92 +53,67 @@ function DateFilter({ filterName }: { filterName: string }) {
   const onChange = (e, key) => {
     const newValue = e.target.checked ? [key] : null;
 
-    if(user && module)
-    {updateLocalStorageFilter(
-      module?.type,
-      filterKey,
-      filterKey === 'dueDate' ? 'Expires on' : 'Created on',
-      newValue,
-      user?._id,
-      setFilters,
-    );}
+    if (user && module) {
+      updateLocalStorageFilter(
+        module?.type,
+        filterKey,
+        filterKey === 'dueDate' ? 'Expires on' : 'Created on',
+        newValue,
+        user?._id,
+        setFilters,
+      );
+    }
   };
 
   const handleExactDateChange = (date: Date) => {
     const newVal = ['exactDate', date];
-    if(module && user)
-      {updateLocalStorageFilter(
-      module._id,
-      filterKey,
-      filterKey === 'dueDate' ? 'Expires on' : 'Created on',
-      newVal,
-      user?._id,
-      setFilters,
-    );}
+    if (module && user)
+      updateLocalStorageFilter(module._id, filterKey, filterKey === 'dueDate' ? 'Expires on' : 'Created on', newVal, user?._id, setFilters);
   };
 
   const handleRangeChange = (date: [Date, Date]) => {
     const newVal = [['dateRange', ...date]];
-    if(module && user)
-    {updateLocalStorageFilter(
-      module._id,
-      filterKey,
-      filterKey === 'dueDate' ? 'Expires on' : 'Created on',
-      newVal,
-      user?._id,
-      setFilters,
-    );}
+    if (module && user)
+      updateLocalStorageFilter(module._id, filterKey, filterKey === 'dueDate' ? 'Expires on' : 'Created on', newVal, user?._id, setFilters);
   };
 
   return (
     <Box data-id="000110" w="full">
       <Stack data-id="000111" direction="column" mb={5}>
-        {Object.entries(module?.type === 'tracker' ? trackerFilterDates : auditsUsedFilters).map(
-          ([key, label]) => (
-            <Checkbox
-              colorScheme="purpleHeart"
-              css={{
-                '.chakra-checkbox__control': {
-                  borderRadius: '50%',
-                  width: '20px',
-                  height: '20px',
-                  background: 'white',
-                  borderWidth: '1px',
-                  borderColor: '#81819750',
-                  '&[data-checked]': {
-                    background: '#462AC4',
-                    borderColor: '#462AC4',
-                    '&[data-hover]': {
-                      background: '#462AC4',
-                      borderColor: '#462AC4',
-                    },
-                  },
+        {Object.entries(module?.type === 'tracker' ? trackerFilterDates : auditsUsedFilters).map(([key, label]) => (
+          <Checkbox
+            css={{
+              '.chakra-checkbox__control': {
+                borderRadius: '50%',
+                width: '16px',
+                height: '16px',
+                borderWidth: '2px',
+                borderColor: '#A0AEC0', // default gray border
+                background: 'transparent',
+                boxShadow: 'none',
+                transition: 'all 0.2s ease',
+                position: 'relative',
+                '&[data-checked]': {
+                  borderColor: '#005C96',
+                  borderWidth: '5px',
+                  background: 'transparent',
                 },
-              }}
-              data-id="000112"
-              icon={<MinusIcon data-id="000113" />}
-              isChecked={selectedKey === key}
-              key={key}
-              onChange={(e) => onChange(e, key)}
-            >
-              <Text
-                color="filterPanel.checkboxLabelColor"
-                data-id="000114"
-                fontSize="14px"
-              >
-                {label}
-              </Text>
-            </Checkbox>
-          ),
-        )}
+              },
+            }}
+            data-id="000112"
+            icon={<span data-id="000113" />}
+            isChecked={selectedKey === key}
+            key={key}
+            onChange={(e) => onChange(e, key)}
+          >
+            <Text color="filterPanel.checkboxLabelColor" data-id="000114" fontSize="14px">
+              {label}
+            </Text>
+          </Checkbox>
+        ))}
       </Stack>
       {filterValue === 'exactDate' && (
-        <DatePicker
-          data-id="000115"
-          inline
-          onChange={handleExactDateChange}
-          selected={startDate ? new Date(startDate) : new Date()}
-        />
+        <DatePicker data-id="000115" inline onChange={handleExactDateChange} selected={startDate ? new Date(startDate) : new Date()} />
       )}
       {filterValue === 'dateRange' && (
         <DatePicker

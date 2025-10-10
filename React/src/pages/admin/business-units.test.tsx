@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { ChakraProvider } from '@chakra-ui/react';
@@ -12,11 +13,11 @@ vi.mock('i18next', () => ({
 }));
 
 // Mock Apollo hooks
-const mockUseQuery = vi.fn((...args: any[]) => ({}));
-const mockUseMutation = vi.fn((...args: any[]) => [vi.fn()]);
+const mockUseQuery = vi.fn(() => ({}));
+const mockUseMutation = vi.fn(() => [vi.fn()]);
 vi.mock('@apollo/client', () => ({
-  useQuery: () => mockUseQuery({}),
-  useMutation: () => mockUseMutation([vi.fn()]),
+  useQuery: () => mockUseQuery(),
+  useMutation: () => mockUseMutation(),
   ApolloProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   gql: (strings: TemplateStringsArray) => strings.join(''),
 }));
@@ -29,7 +30,7 @@ vi.mock('../../contexts/AppProvider', () => ({
 
 vi.mock('../../contexts/AdminProvider', () => ({
   useAdminContext: () => ({ adminModalState: 'closed', setAdminModalState: vi.fn() }),
-  AdminContext: require('react').createContext({ adminModalState: 'closed', setAdminModalState: vi.fn() }),
+  AdminContext: React.createContext({ adminModalState: 'closed', setAdminModalState: vi.fn() }),
 }));
 
 vi.mock('../../contexts/FiltersProvider', () => ({
@@ -48,13 +49,11 @@ vi.mock('../../hooks/useNavigate', () => ({
 // Mock ListView to capture passed props
 vi.mock('../../components/Table/ListView', () => ({
   default: ({ data, dataType, columns }: { data: any[]; dataType: string; columns: any[] }) => (
-    <div
-      data-id="002044"
-      data-datatype={dataType}
-      data-length={data?.length ?? 0}
-      data-testid="listview">
+    <div data-datatype={dataType} data-id="002044" data-length={data?.length ?? 0} data-testid="listview">
       {columns?.map((c, i) => (
-        <div data-id="002045" data-testid={`col-${i}`} key={i}>{typeof c.label === 'string' ? c.label : 'node'}</div>
+        <div data-id="002045" data-testid={`col-${i}`} key={i}>
+          {typeof c.label === 'string' ? c.label : 'node'}
+        </div>
       ))}
     </div>
   ),
@@ -62,7 +61,11 @@ vi.mock('../../components/Table/ListView', () => ({
 
 // Mock heavy child components
 vi.mock('../../components/Admin/AdminModal', () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div data-id="001894" data-testid="admin-modal">{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div data-id="001894" data-testid="admin-modal">
+      {children}
+    </div>
+  ),
 }));
 vi.mock('../../components/Forms/PeoplePicker', () => ({
   default: () => <div data-id="001895" data-testid="people-picker" />,
@@ -77,17 +80,34 @@ vi.mock('../../components/Table/Cells/AvatarCell', () => ({
   default: () => <div data-id="001898" data-testid="avatar-cell" />,
 }));
 
-const createWrapper = () => (function({ children }: { children: React.ReactNode }) {
-  return (
-    <ChakraProvider data-id="002046">
-      <BrowserRouter data-id="002047">{children}</BrowserRouter>
-    </ChakraProvider>
-  );
-});
+const createWrapper = () =>
+  (function Wrapper({ children }: { children: React.ReactNode }) {
+    return (
+      <ChakraProvider data-id="002046">
+        <BrowserRouter data-id="002047">{children}</BrowserRouter>
+      </ChakraProvider>
+    );
+  });
 
 const sampleData = [
-  { _id: 'bu-1', name: 'BU 1', ownerId: 'u1', owner: { displayName: 'Owner 1' }, totalAnswersCount: 3, totalAuditsCount: 2, trackerItemsResponsesCount: 1 },
-  { _id: 'bu-2', name: 'BU 2', ownerId: 'u2', owner: { displayName: 'Owner 2' }, totalAnswersCount: 10, totalAuditsCount: 5, trackerItemsResponsesCount: 4 },
+  {
+    _id: 'bu-1',
+    name: 'BU 1',
+    ownerId: 'u1',
+    owner: { displayName: 'Owner 1' },
+    totalAnswersCount: 3,
+    totalAuditsCount: 2,
+    trackerItemsResponsesCount: 1,
+  },
+  {
+    _id: 'bu-2',
+    name: 'BU 2',
+    ownerId: 'u2',
+    owner: { displayName: 'Owner 2' },
+    totalAnswersCount: 10,
+    totalAuditsCount: 5,
+    trackerItemsResponsesCount: 4,
+  },
 ];
 
 describe('BusinessUnits page', () => {
@@ -204,9 +224,33 @@ describe('BusinessUnits page', () => {
 
   it('renders with multiple business units', () => {
     const units = [
-      { _id: 'bu-1', name: 'BU 1', ownerId: 'u1', owner: { displayName: 'Owner 1' }, totalAnswersCount: 3, totalAuditsCount: 2, trackerItemsResponsesCount: 1 },
-      { _id: 'bu-2', name: 'BU 2', ownerId: 'u2', owner: { displayName: 'Owner 2' }, totalAnswersCount: 10, totalAuditsCount: 5, trackerItemsResponsesCount: 4 },
-      { _id: 'bu-3', name: 'BU 3', ownerId: 'u3', owner: { displayName: 'Owner 3' }, totalAnswersCount: 7, totalAuditsCount: 3, trackerItemsResponsesCount: 2 },
+      {
+        _id: 'bu-1',
+        name: 'BU 1',
+        ownerId: 'u1',
+        owner: { displayName: 'Owner 1' },
+        totalAnswersCount: 3,
+        totalAuditsCount: 2,
+        trackerItemsResponsesCount: 1,
+      },
+      {
+        _id: 'bu-2',
+        name: 'BU 2',
+        ownerId: 'u2',
+        owner: { displayName: 'Owner 2' },
+        totalAnswersCount: 10,
+        totalAuditsCount: 5,
+        trackerItemsResponsesCount: 4,
+      },
+      {
+        _id: 'bu-3',
+        name: 'BU 3',
+        ownerId: 'u3',
+        owner: { displayName: 'Owner 3' },
+        totalAnswersCount: 7,
+        totalAuditsCount: 3,
+        trackerItemsResponsesCount: 2,
+      },
     ];
 
     mockUseQuery.mockReturnValue({
@@ -220,4 +264,3 @@ describe('BusinessUnits page', () => {
     expect(list.getAttribute('data-length')).toBe('3');
   });
 });
-

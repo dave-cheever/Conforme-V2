@@ -25,13 +25,8 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
       px={4}
     >
       <Flex align="center" data-id="000268" gap="2">
-        <Filter data-id="000269" h="18px" mt={"7px"} />
-        <Flex
-          color="black"
-          data-id="000270"
-          fontSize="14px"
-          fontWeight="semi_medium"
-        >
+        <Filter boxSize={'14px'} data-id="000269" h="20px" mt={'2px'} />
+        <Flex color="black" data-id="000270" fontSize="14px" fontWeight="semi_medium">
           Filters
         </Flex>
       </Flex>

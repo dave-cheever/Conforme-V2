@@ -7,13 +7,13 @@ import { describe, expect, test, vi } from 'vitest';
 
 import * as useDeviceModule from '../../hooks/useDevice';
 import Answers, {
-  GET_ANSWERS,
-  Category,
   AuditType,
-  flatMapCategories,
-  dedupeCategories,
   buildPanels,
+  Category,
   categoryIdsForPanel,
+  dedupeCategories,
+  flatMapCategories,
+  GET_ANSWERS,
 } from '../../pages/answers';
 
 // Mock components
@@ -51,7 +51,9 @@ vi.mock('../../contexts/FiltersProvider', () => ({
     setUsedFilters: vi.fn(),
     setShowFiltersPanel: vi.fn(),
     setFilters: vi.fn(),
+    applyFiltersImmediately: vi.fn(),
     filtersValues: {},
+    appliedFilters: {},
     answerFiltersValue: {},
     setAnswerFiltersValue: vi.fn(),
     usedFilters: [],

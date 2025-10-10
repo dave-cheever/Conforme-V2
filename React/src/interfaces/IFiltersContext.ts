@@ -15,8 +15,11 @@ import { TDeepPartial } from './TDeepPartial';
 export interface IFiltersContext {
   filtersValues: IFilters;
   setFiltersValues: Dispatch<SetStateAction<IFilters>>;
+  appliedFilters: object;
 
   setFilters: (filters: object) => void;
+  applyFilters: () => void;
+  applyFiltersImmediately: (filters: object) => void;
   cleanFilters: () => void;
 
   usedFilters: string[];

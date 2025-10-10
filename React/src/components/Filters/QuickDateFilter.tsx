@@ -9,7 +9,7 @@ import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import { actionsFilterDates, auditsFilterDates, trackerFilterDates } from '../../hooks/useFiltersUtils';
 import useNavigate from '../../hooks/useNavigate';
-import { CalendarIcon, MinusIcon } from '../../icons';
+import { CalendarIcon } from '../../icons';
 import CustomDatePicker from './CustomDatePicker';
 
 function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: string; toggleActiveFilters?: () => void }) {
@@ -68,14 +68,15 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
 
   return (
     <Flex
-        borderRadius="10px"
-        data-id="000130"
-        flexDir="column"
-        justify="center"
-        key={`quick-filter-item-${filterName}`}
-        minW="215px"
-        mt={2}
-        my={2}>
+      borderRadius="10px"
+      data-id="000130"
+      flexDir="column"
+      justify="center"
+      key={`quick-filter-item-${filterName}`}
+      minW="215px"
+      mt={2}
+      my={2}
+    >
       <Flex
         align="center"
         bg={isOpen ? 'filtersPanelItem.openBg' : 'filtersPanelItem.closeBg'}
@@ -85,7 +86,8 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
         justify="space-between"
         mb="0.5"
         p="3"
-        w="full">
+        w="full"
+      >
         <CalendarIcon data-id="000132" h="16px" mr="10px" stroke="#1E1836" w="16px" />
         <Text
           color="#1E1836"
@@ -97,7 +99,8 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
             onToggle();
             if (toggleActiveFilters) toggleActiveFilters();
           }}
-          w="full">
+          w="full"
+        >
           {format(selectedDate, 'd MMMM yyyy')}
         </Text>
       </Flex>
@@ -110,37 +113,35 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
               data-id="000136"
               direction="column"
               p="20px"
-              w={filterValue === 'exactDate' || filterValue === 'dateRange' ? 'max-content' : '215px'}>
+              w={filterValue === 'exactDate' || filterValue === 'dateRange' ? 'max-content' : '215px'}
+            >
               {Object.entries(module?.type === 'tracker' ? trackerFilterDates : auditsUsedFilters).map(([key, label]) => (
                 <Checkbox
-                  colorScheme="purpleHeart"
                   css={{
                     '.chakra-checkbox__control': {
                       borderRadius: '50%',
-                      width: '20px',
-                      height: '20px',
-                      background: 'white',
-                      borderWidth: '1px',
-                      borderColor: '#81819750',
+                      width: '16px',
+                      height: '16px',
+                      borderWidth: '2px',
+                      borderColor: '#A0AEC0', // default gray border
+                      background: 'transparent',
+                      boxShadow: 'none',
+                      transition: 'all 0.2s ease',
+                      position: 'relative',
                       '&[data-checked]': {
-                        background: '#462AC4',
-                        borderColor: '#462AC4',
-                        '&[data-hover]': {
-                          background: '#462AC4',
-                          borderColor: '#462AC4',
-                        },
+                        borderColor: '#005C96',
+                        borderWidth: '5px',
+                        background: 'transparent',
                       },
                     },
                   }}
                   data-id="000137"
-                  icon={<MinusIcon data-id="000138" />}
+                  icon={<span data-id="000138" />}
                   isChecked={value?.includes(key)}
                   key={key}
-                  onChange={(e) => onChange(e, key)}>
-                  <Text
-                    color="filterPanel.checkboxLabelColor"
-                    data-id="000139"
-                    fontSize="14px">
+                  onChange={(e) => onChange(e, key)}
+                >
+                  <Text color="filterPanel.checkboxLabelColor" data-id="000139" fontSize="14px">
                     {label}
                   </Text>
                 </Checkbox>
@@ -156,7 +157,8 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
                     setSelectedDate(date);
                     setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: ['exactDate', date] });
                   }}
-                  selected={startDate ? new Date(startDate) : new Date()} />
+                  selected={startDate ? new Date(startDate) : new Date()}
+                />
               )}
               {filterValue === 'dateRange' && (
                 <CustomDatePicker
@@ -170,7 +172,8 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
                   }}
                   selected={startDate}
                   selectsRange
-                  startDate={startDate ? new Date(startDate) : new Date()} />
+                  startDate={startDate ? new Date(startDate) : new Date()}
+                />
               )}
             </Flex>
           </Box>

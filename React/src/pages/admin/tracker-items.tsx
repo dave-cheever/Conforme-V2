@@ -71,7 +71,7 @@ const GET_TRACKER_ITEMS = gql`
 
 function TrackerItemsAdmin() {
   const device = useDevice();
-  const { filtersValues, setUsedFilters, setShowFiltersPanel } = useFiltersContext();
+  const { appliedFilters, setUsedFilters, setShowFiltersPanel } = useFiltersContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { trackerItem, reset } = useTrackerItemModalContext();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
@@ -99,7 +99,7 @@ function TrackerItemsAdmin() {
 
   const parsedFilters = useMemo(
     () =>
-      Object.entries(filtersValues).reduce((acc, [key, value]) => {
+      Object.entries(appliedFilters).reduce((acc, [key, value]) => {
         if (
           !value.value ||
           (Array.isArray(value.value) && value.value.length === 0) ||
@@ -115,7 +115,7 @@ function TrackerItemsAdmin() {
           [key]: value.value,
         };
       }, {}),
-    [filtersValues],
+    [appliedFilters],
   );
 
   const [fetchTrackerItems, { loading, data, refetch }] = useLazyQuery(GET_TRACKER_ITEMS, {
@@ -276,13 +276,15 @@ function TrackerItemsAdmin() {
         variant={adminModalState === 'delete' ? 'deleteModal' : 'conformeModal'}
       >
         <ModalOverlay data-id="000519" />
-        {adminModalState === 'delete' ? (
-          <DeleteTrackerItemModal data-id="000520" onItemDeleted={handleListRefresh} refetch={refetch} />
-        ) : adminModalState === 'clone' ? (
-          <CloneTrackerItemModal data-id="000521" refetch={refetch} />
-        ) : (
-          <TrackerItemModal data-id="000522" onItemAdded={handleListRefresh} refetch={refetch} />
-        )}
+        {(() => {
+          if (adminModalState === 'delete') 
+            return <DeleteTrackerItemModal data-id="000520" onItemDeleted={handleListRefresh} refetch={refetch} />;
+          
+          if (adminModalState === 'clone') 
+            return <CloneTrackerItemModal data-id="000521" refetch={refetch} />;
+          
+          return <TrackerItemModal data-id="000522" onItemAdded={handleListRefresh} refetch={refetch} />;
+        })()}
       </Modal>
       <Header
         breadcrumbs={['Admin', pluralize(t('tracker item'))]}

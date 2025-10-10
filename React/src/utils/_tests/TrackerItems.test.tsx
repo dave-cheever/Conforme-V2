@@ -34,8 +34,10 @@ vi.mock('i18next', () => ({
 vi.mock('../../contexts/FiltersProvider', () => ({
   useFiltersContext: () => ({
     filtersValues: MOCK_FILTERS_VALUES,
+    appliedFilters: MOCK_FILTERS_VALUES,
     setUsedFilters: mockSetUsedFilters,
     setFilters: mockSetFilters,
+    applyFiltersImmediately: mockSetFilters,
     setResponsesStatusesCounts: mockSetResponsesStatusesCounts,
     setShowFiltersPanel: mockSetShowFiltersPanel,
     setResponseFiltersValue: mockSetResponseFiltersValue,

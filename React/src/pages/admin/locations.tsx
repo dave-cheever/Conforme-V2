@@ -15,6 +15,7 @@ import TextInputMultiline from '../../components/Forms/TextInputMultiline';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import AvatarCell from '../../components/Table/Cells/AvatarCell';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import { useAdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
@@ -23,7 +24,6 @@ import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
 import { ArrowCount } from '../../icons';
 import { ILocation } from '../../interfaces/ILocation';
-import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_LOCATIONS = gql`
   query ($moduleId: ID!) {
@@ -274,9 +274,9 @@ function Locations() {
       tooltip: module?.type === 'tracker' ? 'Only published items' : undefined,
       render: (location: ILocation) => (
         <Flex
-          data-id="001945"
           alignItems="center"
           color="auditsList.fontColor"
+          data-id="001945"
           fontSize="14px"
           fontWeight="500">
           {module?.type === 'tracker' ? location.trackerItemsResponsesCount || 0 : location.totalAuditsCount || 0}

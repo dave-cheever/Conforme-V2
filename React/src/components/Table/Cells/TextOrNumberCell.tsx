@@ -64,8 +64,8 @@ function TextOrNumberCell({
   const textElement = (
     <Flex
       align="flex-start"
-      data-id={dataId}
       color={color}
+      data-id={dataId}
       fontSize={fontSize}
       fontWeight={fontWeight}
       lineHeight={lineHeight}

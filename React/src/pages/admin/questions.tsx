@@ -14,12 +14,12 @@ import TextInput from '../../components/Forms/TextInput';
 import TextInputMultiline from '../../components/Forms/TextInputMultiline';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import { AdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
 import { IQuestion } from '../../interfaces/IQuestion';
 import { TQuestionValue } from '../../interfaces/TQuestionValue';
-import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_QUESTIONS = gql`
   query ($questionQuery: QuestionQuery) {
@@ -370,7 +370,7 @@ function Questions() {
         <Flex data-id="000494" h="full" px={['25px', 0]}>
           {loading ? (
             <Box bg="white" borderBottomRadius="10px" data-id="000499" h="full" w="full">
-              <Loader data-id="001947" center />
+              <Loader center data-id="001947" />
             </Box>
           ) : (
             <ListView

@@ -15,13 +15,13 @@ import TextInput from '../../components/Forms/TextInput';
 import Toggle from '../../components/Forms/Toggle';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import { AdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
 import { ChevronRight } from '../../icons';
 import { IQuestionsCategory } from '../../interfaces/IQuestionsCategory';
-import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_QUESTIONS_CATEGORIES = gql`
   query {

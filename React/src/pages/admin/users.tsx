@@ -12,6 +12,7 @@ import { isPermitted } from '../../components/can';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import AvatarCell from '../../components/Table/Cells/AvatarCell';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import UserAuditsCount from '../../components/UserAuditsCount';
 import UserResponseCount from '../../components/UserResponseCount';
@@ -20,7 +21,6 @@ import useDevice from '../../hooks/useDevice';
 import useNavigate from '../../hooks/useNavigate';
 import useSort from '../../hooks/useSort';
 import { IUser } from '../../interfaces/IUser';
-import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_USERS = gql`
   query {
@@ -111,8 +111,8 @@ function Users() {
       render: (user: IUser) => 
         <TextOrNumberCell
           data-id="002098"
-          text={user.jobTitle ? user.jobTitle : 'Not specified'}
-          fallbackText='Not specified' />
+          fallbackText='Not specified'
+          text={user.jobTitle ? user.jobTitle : 'Not specified'} />,
     },
     {
       label: 'Role',
@@ -168,13 +168,13 @@ function Users() {
       ? ([
           {
             label: (
-              <Flex data-id="001974" align="center" gap="1">
+              <Flex align="center" data-id="001974" gap="1">
                 <Text data-id="001975">R</Text>
                 <Tooltip data-id="001976" hasArrow label="Responsible on number of responses">
                   <InfoOutlineIcon
-                    data-id="001977"
                     boxSize="2.5"
                     color="gray.500"
+                    data-id="001977"
                     marginTop={-2}
                     onClick={() => navigateTo('/help')} />
                 </Tooltip>
@@ -184,17 +184,17 @@ function Users() {
             width: '5%',
             dataId: 'users-col-responsible',
             disabled: device === 'mobile' || device === 'tablet',
-            render: (user: IUser) => <UserResponseCount data-id="000627" responseCount={user.responsibleCount} userRole="responsible" userId={user._id} />,
+            render: (user: IUser) => <UserResponseCount data-id="000627" responseCount={user.responsibleCount} userId={user._id} userRole="responsible" />,
           },
           {
             label: (
-              <Flex data-id="001978" align="center" gap="1">
+              <Flex align="center" data-id="001978" gap="1">
                 <Text data-id="001979">A</Text>
                 <Tooltip data-id="001980" hasArrow label="Accountable on number of responses">
                   <InfoOutlineIcon
-                    data-id="001981"
                     boxSize="2.5"
                     color="gray.500"
+                    data-id="001981"
                     marginTop={-2}
                     onClick={() => navigateTo('/help')} />
                 </Tooltip>
@@ -204,17 +204,17 @@ function Users() {
             width: '5%',
             dataId: 'users-col-accountable',
             disabled: device === 'mobile' || device === 'tablet',
-            render: (user: IUser) => <UserResponseCount data-id="000628" responseCount={user.accountableCount} userRole="accountable" userId={user._id} />,
+            render: (user: IUser) => <UserResponseCount data-id="000628" responseCount={user.accountableCount} userId={user._id} userRole="accountable" />,
           },
           {
             label: (
-              <Flex data-id="001982" align="center" gap="1">
+              <Flex align="center" data-id="001982" gap="1">
                 <Text data-id="001983">C</Text>
                 <Tooltip data-id="001984" hasArrow label="Contributor on number of responses">
                   <InfoOutlineIcon
-                    data-id="001985"
                     boxSize="2.5"
                     color="gray.500"
+                    data-id="001985"
                     marginTop={-2}
                     onClick={() => navigateTo('/help')} />
                 </Tooltip>
@@ -224,17 +224,17 @@ function Users() {
             width: '5%',
             dataId: 'users-col-contributor',
             disabled: device === 'mobile' || device === 'tablet',
-            render: (user: IUser) => <UserResponseCount data-id="000629" responseCount={user.contributorCount} userRole="contributor" userId={user._id} />,
+            render: (user: IUser) => <UserResponseCount data-id="000629" responseCount={user.contributorCount} userId={user._id} userRole="contributor" />,
           },
           {
             label: (
-              <Flex data-id="001986" align="center" gap="1">
+              <Flex align="center" data-id="001986" gap="1">
                 <Text data-id="001987">F</Text>
                 <Tooltip data-id="001988" hasArrow label="Follower on number of responses">
                   <InfoOutlineIcon
-                    data-id="001989"
                     boxSize="2.5"
                     color="gray.500"
+                    data-id="001989"
                     marginTop={-2}
                     onClick={() => navigateTo('/help')} />
                 </Tooltip>
@@ -244,22 +244,22 @@ function Users() {
             width: '5%',
             dataId: 'users-col-follower',
             disabled: device === 'mobile' || device === 'tablet',
-            render: (user: IUser) => <UserResponseCount data-id="000630" responseCount={user.followerCount} userRole="follower" userId={user._id} />,
+            render: (user: IUser) => <UserResponseCount data-id="000630" responseCount={user.followerCount} userId={user._id} userRole="follower" />,
           },
         ] as ColumnConfig[])
       : ([
           {
             label: (
-              <Flex data-id="001990" align="center" gap="1">
+              <Flex align="center" data-id="001990" gap="1">
                 <Text data-id="001991">T</Text>
                 <Tooltip
                   data-id="001992"
                   hasArrow
                   label={`Total number of ${pluralize(t('audit'))}`}>
                   <InfoOutlineIcon
-                    data-id="001993"
                     boxSize="2.5"
                     color="gray.500"
+                    data-id="001993"
                     marginTop={-2}
                     onClick={() => navigateTo('/help')} />
                 </Tooltip>
@@ -273,16 +273,16 @@ function Users() {
           },
           {
             label: (
-              <Flex data-id="001994" align="center" gap="1">
+              <Flex align="center" data-id="001994" gap="1">
                 <Text data-id="001995">C</Text>
                 <Tooltip
                   data-id="001996"
                   hasArrow
                   label={`Number of completed ${pluralize(t('audit'))}`}>
                   <InfoOutlineIcon
-                    data-id="001997"
                     boxSize="2.5"
                     color="gray.500"
+                    data-id="001997"
                     marginTop={-2}
                     onClick={() => navigateTo('/help')} />
                 </Tooltip>
@@ -296,16 +296,16 @@ function Users() {
           },
           {
             label: (
-              <Flex data-id="001998" align="center" gap="1">
+              <Flex align="center" data-id="001998" gap="1">
                 <Text data-id="001999">U</Text>
                 <Tooltip
                   data-id="002000"
                   hasArrow
                   label={`Number of upcoming ${pluralize(t('audit'))}`}>
                   <InfoOutlineIcon
-                    data-id="002001"
                     boxSize="2.5"
                     color="gray.500"
+                    data-id="002001"
                     marginTop={-2}
                     onClick={() => navigateTo('/help')} />
                 </Tooltip>
@@ -319,16 +319,16 @@ function Users() {
           },
           {
             label: (
-              <Flex data-id="002002" align="center" gap="1">
+              <Flex align="center" data-id="002002" gap="1">
                 <Text data-id="002003">M</Text>
                 <Tooltip
                   data-id="002004"
                   hasArrow
                   label={`Number of missed ${pluralize(t('audit'))}`}>
                   <InfoOutlineIcon
-                    data-id="002005"
                     boxSize="2.5"
                     color="gray.500"
+                    data-id="002005"
                     marginTop={-2}
                     onClick={() => navigateTo('/help')} />
                 </Tooltip>

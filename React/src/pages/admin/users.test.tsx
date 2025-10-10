@@ -12,11 +12,11 @@ vi.mock('i18next', () => ({
 }));
 
 // Mock Apollo hooks
-const mockUseQuery = vi.fn((...args: any[]) => ({}));
-const mockUseMutation = vi.fn((...args: any[]) => [vi.fn()]);
+const mockUseQuery = vi.fn(() => ({}));
+const mockUseMutation = vi.fn(() => [vi.fn()]);
 vi.mock('@apollo/client', () => ({
-  useQuery: () => mockUseQuery({}),
-  useMutation: () => mockUseMutation([vi.fn()]),
+  useQuery: () => mockUseQuery(),
+  useMutation: () => mockUseMutation(),
   ApolloProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   gql: (strings: TemplateStringsArray) => strings.join(''),
 }));
@@ -49,25 +49,24 @@ vi.mock('../../components/UserResponseCount', () => ({
 // Mock ListView to capture props
 vi.mock('../../components/Table/ListView', () => ({
   default: ({ data, dataType, columns }: { data: any[]; dataType: string; columns: any[] }) => (
-    <div
-      data-id="002060"
-      data-datatype={dataType}
-      data-length={data?.length ?? 0}
-      data-testid="listview">
+    <div data-datatype={dataType} data-id="002060" data-length={data?.length ?? 0} data-testid="listview">
       {columns?.map((c, i) => (
-        <div data-id="002061" data-testid={`col-${i}`} key={i}>{typeof c.label === 'string' ? c.label : 'node'}</div>
+        <div data-id="002061" data-testid={`col-${i}`} key={i}>
+          {typeof c.label === 'string' ? c.label : 'node'}
+        </div>
       ))}
     </div>
   ),
 }));
 
-const createWrapper = () => (function({ children }: { children: React.ReactNode }) {
-  return (
-    <ChakraProvider data-id="002062">
-      <BrowserRouter data-id="002063">{children}</BrowserRouter>
-    </ChakraProvider>
-  );
-});
+const createWrapper = () =>
+  (function Wrapper({ children }: { children: React.ReactNode }) {
+    return (
+      <ChakraProvider data-id="002062">
+        <BrowserRouter data-id="002063">{children}</BrowserRouter>
+      </ChakraProvider>
+    );
+  });
 
 describe('Users page (ListView)', () => {
   beforeEach(() => {
@@ -76,7 +75,14 @@ describe('Users page (ListView)', () => {
 
   it('renders ListView with users and expected columns (tracker)', () => {
     const users = [
-      { _id: 'u1', displayName: 'Alice', role: 'admin', jobTitle: 'Manager', defaultPage: [{ name: 'Home', path: '/' }], lastLogin: new Date().toISOString() },
+      {
+        _id: 'u1',
+        displayName: 'Alice',
+        role: 'admin',
+        jobTitle: 'Manager',
+        defaultPage: [{ name: 'Home', path: '/' }],
+        lastLogin: new Date().toISOString(),
+      },
       { _id: 'u2', displayName: 'Bob', role: 'user', jobTitle: '', defaultPage: [{ name: 'Home', path: '/' }], lastLogin: null },
     ];
 
@@ -108,7 +114,14 @@ describe('Users page (ListView)', () => {
     }));
 
     const users = [
-      { _id: 'u1', displayName: 'Alice', role: 'admin', jobTitle: 'Manager', defaultPage: [{ name: 'Home', path: '/' }], lastLogin: new Date().toISOString() },
+      {
+        _id: 'u1',
+        displayName: 'Alice',
+        role: 'admin',
+        jobTitle: 'Manager',
+        defaultPage: [{ name: 'Home', path: '/' }],
+        lastLogin: new Date().toISOString(),
+      },
     ];
     mockUseQuery.mockReturnValue({ data: { users }, loading: false, refetch: vi.fn() });
 
@@ -173,7 +186,14 @@ describe('Users page (ListView)', () => {
 
   it('passes correct dataType to ListView', () => {
     const users = [
-      { _id: 'u1', displayName: 'Alice', role: 'admin', jobTitle: 'Manager', defaultPage: [{ name: 'Home', path: '/' }], lastLogin: new Date().toISOString() },
+      {
+        _id: 'u1',
+        displayName: 'Alice',
+        role: 'admin',
+        jobTitle: 'Manager',
+        defaultPage: [{ name: 'Home', path: '/' }],
+        lastLogin: new Date().toISOString(),
+      },
     ];
 
     mockUseQuery.mockReturnValue({
@@ -189,9 +209,23 @@ describe('Users page (ListView)', () => {
 
   it('renders with multiple users', () => {
     const users = [
-      { _id: 'u1', displayName: 'Alice', role: 'admin', jobTitle: 'Manager', defaultPage: [{ name: 'Home', path: '/' }], lastLogin: new Date().toISOString() },
+      {
+        _id: 'u1',
+        displayName: 'Alice',
+        role: 'admin',
+        jobTitle: 'Manager',
+        defaultPage: [{ name: 'Home', path: '/' }],
+        lastLogin: new Date().toISOString(),
+      },
       { _id: 'u2', displayName: 'Bob', role: 'user', jobTitle: 'Developer', defaultPage: [{ name: 'Home', path: '/' }], lastLogin: null },
-      { _id: 'u3', displayName: 'Charlie', role: 'user', jobTitle: 'Analyst', defaultPage: [{ name: 'Home', path: '/' }], lastLogin: new Date().toISOString() },
+      {
+        _id: 'u3',
+        displayName: 'Charlie',
+        role: 'user',
+        jobTitle: 'Analyst',
+        defaultPage: [{ name: 'Home', path: '/' }],
+        lastLogin: new Date().toISOString(),
+      },
     ];
 
     mockUseQuery.mockReturnValue({
@@ -205,4 +239,3 @@ describe('Users page (ListView)', () => {
     expect(list.getAttribute('data-length')).toBe('3');
   });
 });
-

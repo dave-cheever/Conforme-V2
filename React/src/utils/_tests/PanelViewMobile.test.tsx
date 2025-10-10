@@ -1,6 +1,7 @@
 import React from 'react';
+
 import { render, screen } from '@testing-library/react';
-import { describe, expect, test, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import PanelView from '../../components/PanelView/PanelView';
 import { PanelConfig } from '../../interfaces/IPanelConfig';
@@ -86,7 +87,7 @@ describe('PanelView Mobile Responsive', () => {
     test('shows dropdown menu with ellipsis icon on mobile', () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView data-id="001544" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001544" items={mockItems} />);
 
       // Should show ellipsis buttons (one for each item)
       const ellipsisButtons = screen.getAllByLabelText('Actions');
@@ -99,7 +100,7 @@ describe('PanelView Mobile Responsive', () => {
     test('hides regular action button on mobile', () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView data-id="001545" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001545" items={mockItems} />);
 
       // Should not show the regular button
       expect(screen.queryByRole('button', { name: /View Details/ })).not.toBeInTheDocument();
@@ -108,7 +109,7 @@ describe('PanelView Mobile Responsive', () => {
     test('shows regular action button on desktop', () => {
       mockUseDevice.mockReturnValue('desktop');
 
-      render(<PanelView data-id="001546" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001546" items={mockItems} />);
 
       // Should show regular action buttons (one for each item)
       const actionButtons = screen.getAllByRole('button', { name: /View Details/ });
@@ -121,7 +122,7 @@ describe('PanelView Mobile Responsive', () => {
     test('shows regular action button on tablet', () => {
       mockUseDevice.mockReturnValue('tablet');
 
-      render(<PanelView data-id="001547" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001547" items={mockItems} />);
 
       // Should show regular action buttons (one for each item)
       const actionButtons = screen.getAllByRole('button', { name: /View Details/ });
@@ -136,7 +137,7 @@ describe('PanelView Mobile Responsive', () => {
     test('applies ellipsis styles to secondary title on mobile', () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView data-id="001548" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001548" items={mockItems} />);
 
       // Find the secondary title field renderer
       const secondaryTitle = screen.getByText('This is a very long description that should be truncated on mobile devices when it overlaps with the status badge');
@@ -149,7 +150,7 @@ describe('PanelView Mobile Responsive', () => {
     test('does not apply ellipsis styles to secondary title on desktop', () => {
       mockUseDevice.mockReturnValue('desktop');
 
-      render(<PanelView data-id="001549" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001549" items={mockItems} />);
 
       // Secondary title should be fully visible
       const secondaryTitle = screen.getByText('This is a very long description that should be truncated on mobile devices when it overlaps with the status badge');
@@ -161,7 +162,7 @@ describe('PanelView Mobile Responsive', () => {
     test('applies mobile-specific margin to title/actions container', () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView data-id="001550" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001550" items={mockItems} />);
 
       // The margin is applied via sx prop with media queries
       // This is tested by ensuring the component renders without errors
@@ -171,7 +172,7 @@ describe('PanelView Mobile Responsive', () => {
     test('applies desktop-specific margin to title/actions container', () => {
       mockUseDevice.mockReturnValue('desktop');
 
-      render(<PanelView data-id="001551" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001551" items={mockItems} />);
 
       // The margin is applied via sx prop with media queries
       // This is tested by ensuring the component renders without errors
@@ -183,7 +184,7 @@ describe('PanelView Mobile Responsive', () => {
     test('dropdown menu contains primary action on mobile', () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView data-id="001552" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001552" items={mockItems} />);
 
       // Should show ellipsis buttons (one for each item)
       const ellipsisButtons = screen.getAllByLabelText('Actions');
@@ -196,7 +197,7 @@ describe('PanelView Mobile Responsive', () => {
     test('dropdown menu contains secondary action on mobile when available', () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView data-id="001553" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001553" items={mockItems} />);
 
       // Should show ellipsis buttons
       const ellipsisButtons = screen.getAllByLabelText('Actions');
@@ -216,7 +217,7 @@ describe('PanelView Mobile Responsive', () => {
 
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView data-id="001554" items={mockItems} config={configWithoutSecondary} />);
+      render(<PanelView config={configWithoutSecondary} data-id="001554" items={mockItems} />);
 
       // Should show ellipsis buttons
       const ellipsisButtons = screen.getAllByLabelText('Actions');
@@ -231,7 +232,7 @@ describe('PanelView Mobile Responsive', () => {
     test('maintains data-id attributes on mobile', () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView data-id="001555" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001555" items={mockItems} />);
 
       // Should have data-id attributes
       const mainContainer = screen.getByRole('main');
@@ -245,7 +246,7 @@ describe('PanelView Mobile Responsive', () => {
     test('maintains data-id attributes on desktop', () => {
       mockUseDevice.mockReturnValue('desktop');
 
-      render(<PanelView data-id="001556" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001556" items={mockItems} />);
 
       // Should have data-id attributes
       const mainContainer = screen.getByRole('main');
@@ -261,7 +262,7 @@ describe('PanelView Mobile Responsive', () => {
     test('handles undefined device gracefully', () => {
       mockUseDevice.mockReturnValue(undefined);
 
-      render(<PanelView data-id="001557" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001557" items={mockItems} />);
 
       // Should default to desktop behavior
       const actionButtons = screen.getAllByRole('button', { name: /View Details/ });
@@ -271,7 +272,7 @@ describe('PanelView Mobile Responsive', () => {
     test('handles null device gracefully', () => {
       mockUseDevice.mockReturnValue(null);
 
-      render(<PanelView data-id="001558" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001558" items={mockItems} />);
 
       // Should default to desktop behavior
       const actionButtons = screen.getAllByRole('button', { name: /View Details/ });
@@ -283,7 +284,7 @@ describe('PanelView Mobile Responsive', () => {
     test('applies responsive container styles on mobile', () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView data-id="001559" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001559" items={mockItems} />);
 
       // Container should render with proper styling
       const mainContainer = screen.getByRole('main');
@@ -294,7 +295,7 @@ describe('PanelView Mobile Responsive', () => {
     test('applies responsive container styles on desktop', () => {
       mockUseDevice.mockReturnValue('desktop');
 
-      render(<PanelView data-id="001560" items={mockItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001560" items={mockItems} />);
 
       // Container should render with proper styling
       const mainContainer = screen.getByRole('main');
@@ -316,7 +317,7 @@ describe('PanelView Mobile Responsive', () => {
       }));
 
       const startTime = performance.now();
-      render(<PanelView data-id="001561" items={manyItems} config={mockConfig} />);
+      render(<PanelView config={mockConfig} data-id="001561" items={manyItems} />);
       const endTime = performance.now();
 
       // Should render within reasonable time (less than 2000ms for 50 items)

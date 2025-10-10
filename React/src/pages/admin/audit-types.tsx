@@ -12,6 +12,7 @@ import { Datepicker, Dropdown } from '../../components/Forms';
 import TextInput from '../../components/Forms/TextInput';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import { useAdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
@@ -19,7 +20,6 @@ import { auditFrequencies } from '../../hooks/useAuditUtils';
 import useDevice from '../../hooks/useDevice';
 import { ChevronRight } from '../../icons';
 import { IAuditType } from '../../interfaces/IAuditType';
-import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 
 const GET_AUDIT_TYPES = gql`
   query {

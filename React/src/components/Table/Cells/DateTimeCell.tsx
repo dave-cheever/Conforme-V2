@@ -52,8 +52,8 @@ function DateTimeCell({
 
   return (
     <Flex
-      data-id="002169"
       align="flex-start"
+      data-id="002169"
       fontSize={"14px"}
       fontWeight={500}
       lineHeight={"18px"}

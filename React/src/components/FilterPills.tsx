@@ -64,7 +64,6 @@ function FilterPills({
   tabListStyles = {},
   tabStyles = {},
   wrapTabs = true,
-  mobileTabWidth = 'calc(50% - .5rem)',
   tabMargin = ['1', '2'],
   panelPadding = ['4', '6'],
   'data-id': dataId,
@@ -84,19 +83,26 @@ function FilterPills({
   };
   return (
     <Tabs data-id={dataId} defaultIndex={selectedIndex} onChange={onPillChange} variant="unstyled" w="full" {...tabsProps}>
-      <TabList data-id="001366" flexWrap={wrapTabs ? ['wrap', 'initial'] : 'nowrap'} px={[4, 8]} pb={4} {...tabListProps} {...tabListStyles}>
+      <TabList
+        data-id="001366"
+        flexWrap={wrapTabs ? ['wrap', 'initial'] : 'nowrap'}
+        pb={4}
+        px={[4, 8]}
+        {...tabListProps}
+        {...tabListStyles}
+      >
         {pills?.map((pill, _index) => (
           <Tab
-            data-id="001367"
             _hover={{ ...defaultHoverStyles, ...hoverStyles }}
             _selected={{ ...defaultSelectedStyles, ...selectedStyles }}
             borderRadius="50px"
+            data-id="001367"
             fontSize="14px"
             key={pill._id + _index}
             ml={[1, 0]}
             mr={tabMargin}
             my={[1, 0]}
-            w={[mobileTabWidth, 'auto', 'auto']}
+            w={['auto', 'auto', 'auto']}
             {...tabProps}
             {...defaultTabStyles}
             {...tabStyles}
@@ -110,7 +116,7 @@ function FilterPills({
           <TabPanel
             data-id="001369"
             key={pill._id}
-            py={tabPanelProps?.p === undefined ? panelPadding : tabPanelProps.p}            
+            py={tabPanelProps?.p === undefined ? panelPadding : tabPanelProps.p}
             {...tabPanelProps}
             h="full"
             px={0}

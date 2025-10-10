@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { ChakraProvider } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
-import { describe, expect, test, vi, beforeEach } from 'vitest';
+import format from 'date-fns/format';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import DateTimeCell from '../../components/Table/Cells/DateTimeCell';
 
@@ -9,7 +11,6 @@ import DateTimeCell from '../../components/Table/Cells/DateTimeCell';
 vi.mock('date-fns/format', () => ({
   default: vi.fn(() => 'MOCK_FORMATTED'),
 }));
-import format from 'date-fns/format';
 
 // Wrapper consistent with other table cell tests
 function TestWrapper({ children }: { readonly children: React.ReactNode }) {
@@ -38,7 +39,7 @@ describe('DateTimeCell', () => {
     test('renders custom fallback text', () => {
       render(
         <TestWrapper data-id="002154">
-          <DateTimeCell data-id="002155" showTime={true} fallbackText="N/A" />
+          <DateTimeCell data-id="002155" fallbackText="N/A" showTime />
         </TestWrapper>,
       );
 
@@ -53,7 +54,7 @@ describe('DateTimeCell', () => {
       const mockedFormat = format as unknown as ReturnType<typeof vi.fn>;
       render(
         <TestWrapper data-id="002158">
-          <DateTimeCell data-id="002159" showTime={false} date={'2023-08-15T14:30:00.000Z'} />
+          <DateTimeCell data-id="002159" date={'2023-08-15T14:30:00.000Z'} showTime={false} />
         </TestWrapper>,
       );
 
@@ -68,7 +69,7 @@ describe('DateTimeCell', () => {
       const mockedFormat = format as unknown as ReturnType<typeof vi.fn>;
       render(
         <TestWrapper data-id="002160">
-          <DateTimeCell data-id="002161" showTime={true} date={'2023-08-15T14:30:00.000Z'} />
+          <DateTimeCell data-id="002161" date={'2023-08-15T14:30:00.000Z'} showTime />
         </TestWrapper>,
       );
 
@@ -86,10 +87,10 @@ describe('DateTimeCell', () => {
       render(
         <TestWrapper data-id="002164">
           <DateTimeCell
+            bracketsText={'60 days'}
             data-id="002165"
-            showTime={false}
             date={'2023-08-15'}
-            bracketsText={'60 days'} />
+            showTime={false} />
         </TestWrapper>,
       );
 
@@ -103,7 +104,7 @@ describe('DateTimeCell', () => {
     test('does not render bracket span when bracketsText is absent', () => {
       const { queryByTestId } = render(
         <TestWrapper data-id="002166">
-          <DateTimeCell data-id="002167" showTime={false} date={'2023-08-15'} />
+          <DateTimeCell data-id="002167" date={'2023-08-15'} showTime={false} />
         </TestWrapper>,
       );
 
@@ -112,5 +113,4 @@ describe('DateTimeCell', () => {
     });
   });
 });
-
 

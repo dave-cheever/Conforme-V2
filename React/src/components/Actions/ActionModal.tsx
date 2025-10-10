@@ -57,12 +57,21 @@ const DELETE_ACTION = gql`
   }
 `;
 
-function ActionModal({ action, closeModal, refetch }: { readonly action?: IAction; readonly closeModal: () => void; readonly refetch: () => void }) {
+function ActionModal({
+  action,
+  closeModal,
+  refetch,
+}: {
+  readonly action?: IAction;
+  readonly closeModal: () => void;
+  readonly refetch: () => void;
+}) {
   const toast = useToast();
   const { openInNewTab } = useNavigate();
   const { user } = useAppContext();
   const { handleShareOpen, setShareItemUrl, setShareItemName } = useShareContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
+  const [isClosing, setIsClosing] = useState(false);
   const isViewMode = adminModalState === 'view';
   const isUserPermittedToModify = isPermitted({
     user,
@@ -73,6 +82,11 @@ function ActionModal({ action, closeModal, refetch }: { readonly action?: IActio
   const [saveAction] = useMutation(SAVE_ACTION);
   const [deleteAction] = useMutation(DELETE_ACTION);
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsClosing(true);
+    closeModal();
+  };
 
   const { control, formState, watch, reset } = useForm({
     mode: 'all',
@@ -180,7 +194,7 @@ function ActionModal({ action, closeModal, refetch }: { readonly action?: IActio
                   handleShareOpen();
                 }}
               />
-              <Close cursor="pointer" data-id="000594" h="15px" onClick={closeModal} stroke="actionModal.closeIcon" w="15px" />
+              <Close cursor="pointer" data-id="000594" h="15px" onClick={handleCloseModal} stroke="actionModal.closeIcon" w="15px" />
             </Flex>
           </Flex>
         </ModalHeader>
@@ -404,7 +418,7 @@ function ActionModal({ action, closeModal, refetch }: { readonly action?: IActio
             </Stack>
           </Stack>
         </ModalBody>
-        {!isViewMode && (
+        {!isViewMode && !isClosing && (
           <ModalFooter data-id="000638" p={1}>
             <Flex data-id="000639" flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" w="full">
               {isPermitted({ user, action: 'actions.delete' }) ? (

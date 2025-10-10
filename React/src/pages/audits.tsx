@@ -3,7 +3,7 @@ import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
 import { gql, useQuery } from '@apollo/client';
-import {  Button, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
+import { Button, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
@@ -19,7 +19,6 @@ import SortButton from '../components/SortButton';
 import AvatarCell from '../components/Table/Cells/AvatarCell';
 import DateTimeCell from '../components/Table/Cells/DateTimeCell';
 import StatusCell from '../components/Table/Cells/StatusCell';
-import TableActionsEllipsis from '../components/Table/Cells/TableActionsEllipsis';
 import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../components/Table/ListView';
 import { useAdminContext } from '../contexts/AdminProvider';
@@ -106,8 +105,10 @@ function Audits() {
   const { t } = useTranslation();
   const {
     filtersValues,
+    appliedFilters,
     setUsedFilters,
     setFilters,
+    applyFiltersImmediately,
     setDefaultFilters,
     setShowFiltersPanel,
     auditFiltersValue,
@@ -143,88 +144,73 @@ function Audits() {
     {
       label: 'Due date',
       sortKey: 'dueDate',
-      width: '10%',
+      width: '9%',
       dataId: '000309',
-      render: (row) => (
-        <DateTimeCell
-          data-id="002149"
-          date={row?.dueDate}
-          fallbackText="No due date"
-          showTime={false} />
-      ),
+      render: (row) => <DateTimeCell data-id="002149" date={row?.dueDate} fallbackText="No due date" showTime={false} />,
     },
     {
       label: capitalize(t('location')),
       sortKey: 'location.name',
-      width: module?.featureFlags?.enableSafetyWalk ? '23%' : '13%',
+      width: module?.featureFlags?.enableSafetyWalk ? '20%' : '12%',
       dataId: '000310',
-      render: (row) => (
-        <TextOrNumberCell data-id="002087" text={row.location?.name} fallbackText="Virtual" />
-      ),
+      render: (row) => <TextOrNumberCell data-id="002087" fallbackText="Virtual" text={row.location?.name} />,
     },
     {
       label: 'Status',
       sortKey: 'status',
-      width: '15%',
+      width: '12%',
       dataId: '000311',
       render: (row) => <StatusCell data-id="001212" status={row?.status} />,
     },
     {
       label: 'Walk type',
       sortKey: 'walkType',
-      width: '10%',
+      width: '9%',
       dataId: '000312',
       disabled: !module?.featureFlags?.enableSafetyWalk,
-      render: (row) => (
-        <TextOrNumberCell data-id="002088" text={auditWalkTypes[row?.walkType]} />
-      ),
+      render: (row) => <TextOrNumberCell data-id="002088" text={auditWalkTypes[row?.walkType]} />,
     },
     {
       label: 'Auditor',
       sortKey: 'auditor.displayName',
-      width: '20%',
+      width: '18%',
       dataId: '000313',
-      render: (row) => (
-        <AvatarCell data-id="001206" users={row.auditor ? [row.auditor] : []} userType="auditors" />
-      ),
+      render: (row) => <AvatarCell data-id="001206" users={row.auditor ? [row.auditor] : []} userType="auditors" />,
     },
     {
       label: 'Reference',
       sortKey: 'reference',
-      width: '15%',
+      width: '13%',
       dataId: '000314',
-      render: (row) => (
-        <TextOrNumberCell data-id="002089" text={row.reference} />
-      ),
+      render: (row) => <TextOrNumberCell data-id="002089" text={row.reference} />,
     },
     {
       label: 'Date submitted',
       sortKey: 'completedDate',
-      width: '12%',
+      width: '10%',
       dataId: '000315',
       render: (row) => (
-        <DateTimeCell
-          data-id="002150"
-          date={row?.status === 'completed' && row?.completedDate}
-          fallbackText="No submitted date"
-          showTime />
+        <DateTimeCell data-id="002150" date={row?.status === 'completed' && row?.completedDate} fallbackText="No submitted date" showTime />
       ),
     },
     {
-      label: '',
+      label: 'View',
       sortKey: '',
-      width: '5%',
+      width: '7%',
       dataId: '000316',
       disableSort: true,
       render: (row) => (
-        <TableActionsEllipsis
-          data-id="002090"
-          options={[
-            {
-              label: 'View',
-              onClick: () => navigateTo(`/audits/${row._id}`),
-            },
-          ]} />
+        <Button
+          data-id="002091"
+          onClick={(e) => {
+            e.stopPropagation();
+            navigateTo(`/audits/${row._id}`);
+          }}
+          size="sm"
+          variant="outline"
+        >
+          View
+        </Button>
       ),
     },
   ];
@@ -236,7 +222,7 @@ function Audits() {
     const myId = String(user.userId ?? user._id ?? '');
     const filterValue = isChecked ? { auditorsIds: myId ? [myId] : [], participantsIds: [] } : { auditorsIds: [], participantsIds: [] };
 
-    updateLocalStorageFilter(module._id, 'usersIds', 'User', filterValue, user._id, setFilters);
+    updateLocalStorageFilter(module._id, 'usersIds', 'User', filterValue, user._id, applyFiltersImmediately);
   };
 
   const allowedFilters = useMemo(() => {
@@ -274,7 +260,6 @@ function Audits() {
         // Don't set filtersInitialized here - let it be set after filters are applied
       } else setFiltersInitialized(true);
     } catch (err) {
-      console.error('Failed to parse stored filters', err);
       setFiltersInitialized(true);
     }
   }, [user, usedFilters]);
@@ -317,11 +302,13 @@ function Audits() {
   }, [filtersValues, usedFilters, auditFiltersValue, setAuditFiltersValue, setFilters]);
 
   useEffect(() => {
-    const parsedFilters = Object.entries(filtersValues).reduce((acc, [key, value]) => {
+    if (!appliedFilters) return;
+
+    const parsedFilters = Object.entries(appliedFilters).reduce((acc, [key, value]) => {
       if (!value || !allowedFilters.includes(key)) return acc;
       let extractedValue = value?.value;
       if (key === 'dueDate') {
-        if (Array.isArray(extractedValue) && extractedValue.length > 0) extractedValue = extractedValue[0];
+        if (Array.isArray(extractedValue) && extractedValue.length > 0) [extractedValue] = extractedValue;
         else if (typeof extractedValue !== 'string') return acc;
       }
       if (key === 'usersIds' && typeof extractedValue === 'object')
@@ -334,10 +321,10 @@ function Audits() {
     if (Object.keys(parsedFilters).length > 0) refetch({ auditQueryInput: parsedFilters });
 
     // Safely check for auditorsIds array and userId match
-    const auditorsIds = (filtersValues?.usersIds?.value as any)?.auditorsIds;
+    const { auditorsIds } = (appliedFilters as any)?.usersIds?.value || {};
     if (Array.isArray(auditorsIds) && auditorsIds.length === 1 && auditorsIds[0] === user?.userId) setAssignedToMe(true);
     else setAssignedToMe(false);
-  }, [filtersValues, user?.userId]);
+  }, [appliedFilters, user?.userId]);
 
   useEffect(() => {
     if (data && data?.audits && !error) setFilteredAudits(data?.audits);
@@ -345,13 +332,13 @@ function Audits() {
 
   // Sync assignedToMe state with current filter state
   useEffect(() => {
-    if (!filtersInitialized) return;
+    if (!filtersInitialized || !appliedFilters) return;
 
     const myIds = getMyIds(user || undefined);
-    const currentUsersFilter = filtersValues.usersIds?.value;
+    const currentUsersFilter = (appliedFilters as any).usersIds?.value;
 
     setAssignedToMe(isAssignedToMeFilter(currentUsersFilter, myIds));
-  }, [filtersValues.usersIds, user?._id, user?.userId, filtersInitialized]);
+  }, [(appliedFilters as any)?.usersIds, user?._id, user?.userId, filtersInitialized]);
 
   const onCloseModal = async () => {
     await trigger();
@@ -407,10 +394,9 @@ function Audits() {
     </Grid>
   );
 
-  const renderPanelView = () => 
+  const renderPanelView = () =>
     sortedAudits?.length > 0 ? (
       <PanelView
-        data-id="001844"
         config={{
           ...auditPanelConfig,
           actions: {
@@ -424,9 +410,11 @@ function Audits() {
             },
           },
         }}
-        items={sortedAudits} />
+        data-id="002176"
+        items={sortedAudits}
+      />
     ) : (
-      <Flex data-id="000202" alignItems="center" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
+      <Flex alignItems="center" data-id="000202" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
         No audits found. Try adjusting the filters.
       </Flex>
     );
@@ -450,7 +438,8 @@ function Audits() {
           sortOrder={sortOrder}
           sortType={sortType}
         />
-    )};
+      );
+    }
 
     if (viewMode === 'panel') return renderPanelView();
 
@@ -500,6 +489,7 @@ function Audits() {
                 </Button>
               </CSVLinkComponent>
             )}
+
             <SortButton
               data-id="000195"
               setSortOrder={setSortOrder}

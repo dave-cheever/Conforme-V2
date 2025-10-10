@@ -7,7 +7,7 @@ import TableActionsEllipsis from '../../components/Table/Cells/TableActionsEllip
 // Mock the EllipsisMenu component to match the actual Chakra UI Menu structure
 vi.mock('../../components/EllipsisMenu', () => ({
   default: ({ options, 'data-id': dataId = '000600' }: { options: any[]; 'data-id'?: string }) => (
-    <div data-testid="ellipsis-menu" data-options={JSON.stringify(options)} data-id={dataId}>
+    <div data-id={dataId} data-options={JSON.stringify(options)} data-testid="ellipsis-menu">
       <button data-id={`${dataId}-button`} data-testid="ellipsis-menu-button" type="button">
         ⋯
       </button>
@@ -226,14 +226,14 @@ describe('TableActionsEllipsis', () => {
       // Chakra sets width via CSS variable to 100%, accept either representation
       expect(
         getComputedStyle(flexWrapper).width === '100%' ||
-        getComputedStyle(flexWrapper).width === 'var(--chakra-sizes-full)'
+        getComputedStyle(flexWrapper).width === 'var(--chakra-sizes-full)',
       ).toBe(true);
       // Chakra uses logical property padding-inline-end via "pr". Accept CSS var or concrete px.
       const inlineStyle = (flexWrapper.getAttribute('style') || '').replace(/\s+/g, '');
       expect(
         inlineStyle.includes('padding-inline-end:8px') ||
         /padding-inline-end:var\(--chakra-space-2\)/.test(inlineStyle) ||
-        getComputedStyle(flexWrapper).paddingRight === '8px'
+        getComputedStyle(flexWrapper).paddingRight === '8px',
       ).toBe(true);
     });
   });
@@ -249,7 +249,7 @@ describe('TableActionsEllipsis', () => {
 
       const { container } = render(
         <TestWrapper data-id="002127">
-          <TableActionsEllipsis options={options} data-id="custom-123" />
+          <TableActionsEllipsis data-id="custom-123" options={options} />
         </TestWrapper>,
       );
 
