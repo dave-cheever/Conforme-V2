@@ -189,6 +189,18 @@ function Answers() {
 
   const [selectedPanel, setSelectedPanel] = useState(0);
   const [filteredAnswers, setFilteredAnswers] = useState<IAnswer[]>([]);
+  const [selectedAnswer, setSelectedAnswer] = useState<IAnswer>();
+  
+  const handleOpenModal = (answer: IAnswer) => {
+    setSelectedAnswer(answer);
+    setAdminModalState('edit');
+  };
+
+  const handleViewModal = (answer: IAnswer) => {
+    setSelectedAnswer(answer);
+    setAdminModalState('view');
+  };
+
   const {
     sortedData: sortedAnswers,
     sortOrder,
@@ -414,17 +426,6 @@ function Answers() {
       });
     }
   }, [filtersValues]);
-
-  const [selectedAnswer, setSelectedAnswer] = useState<IAnswer>();
-  const handleOpenModal = (answer: IAnswer) => {
-    setSelectedAnswer(answer);
-    setAdminModalState('edit');
-  };
-
-  const handleViewModal = (answer: IAnswer) => {
-    setSelectedAnswer(answer);
-    setAdminModalState('view');
-  };
 
   useEffect(() => {
     if (data && data?.answers && !error) {

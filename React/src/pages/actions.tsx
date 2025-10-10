@@ -31,7 +31,6 @@ import StatusCell from '../components/Table/Cells/StatusCell';
 import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
 import { TViewMode } from '../interfaces/TViewMode';
 
-
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
 const GET_ACTIONS = gql`
@@ -171,11 +170,6 @@ function Actions() {
   const handleOpenModal = (action: IAction) => {
     setSelectedAction(action);
     setAdminModalState('edit');
-  };
-
-  const handleViewModal = (action: IAction) => {
-    setSelectedAction(action);
-    setAdminModalState('view');
   };
 
   const handleDeleteAction = (action: IAction) => {

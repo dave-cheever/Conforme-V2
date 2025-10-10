@@ -183,7 +183,7 @@ function QuestionsCategories() {
           },
         });
         refetch();
-        toast({ ...toastSuccess, description: 'Questions set added' });
+        toast({ ...toastSuccess, description: `${t('question')} set added` });
       } else {
         toast({
           ...toastFailed,
@@ -295,7 +295,7 @@ function QuestionsCategories() {
         },
       });
 
-      toast({ ...toastSuccess, description: 'Questions set added' });
+      toast({ ...toastSuccess, description: `${t('question')} set added` });
       reset(defaultValues);
       refetch();
     } catch (e: any) {
@@ -305,7 +305,7 @@ function QuestionsCategories() {
 
   const columns: ColumnConfig[] = [
     {
-      label: 'Question Categories',
+      label: `${capitalize(t('question'))} sets`,
       sortKey: 'name',
       width: '100%',
       dataId: '000478',
@@ -318,7 +318,7 @@ function QuestionsCategories() {
   return (
     <>
       <AdminModal
-        collection="questions categories"
+        collection={`${t('question')} sets`}
         data-id="000450"
         isOpenModal={adminModalState !== 'closed'}
         modalType={adminModalState}
@@ -396,7 +396,7 @@ function QuestionsCategories() {
             label="Count in audit card"
             name="countInAuditCard"
             placeholder="Count in audit card"
-            tooltip={`If enabled, total of questions related to this question category will be displayed in ${t('audit')} card`}
+            tooltip={`If enabled, total of questions related to this ${t('question')} set will be displayed in ${t('audit')} card`}
             variant="secondaryVariant"
           />
           <Controller
@@ -475,9 +475,9 @@ function QuestionsCategories() {
         </Stack>
       </AdminModal>
       <Header
-        breadcrumbs={['Admin', 'Questions categories']}
+        breadcrumbs={['Admin', `${capitalize(t('question'))} sets`]}
         data-id="000473"
-        mobileBreadcrumbs={['Questions categories']}
+        mobileBreadcrumbs={[`${capitalize(t('question'))} sets`]}
         pageLabel={`${capitalize(t('question'))} set`}
       />
       <Box bg="auditsList.bg" data-id="000474" h="full" overflow="hidden">
@@ -491,7 +491,7 @@ function QuestionsCategories() {
               columns={columns}
               data={questionsCategories}
               data-id="000479"
-              dataType="questions categories"
+              dataType={`${t('question')} sets`}
               onRowClick={(row: IQuestionsCategory) => openQuestionsCategoryModal('edit', row)}
               setSortOrder={setSortOrder}
               setSortType={setSortType}

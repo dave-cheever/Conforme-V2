@@ -3,7 +3,7 @@ import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
 import { gql, useQuery } from '@apollo/client';
-import {  Button, Flex, Grid, Modal, ModalOverlay, Stack, Text } from '@chakra-ui/react';
+import {  Button, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
@@ -17,9 +17,10 @@ import Loader from '../components/Loader';
 import { auditPanelConfig, PanelView } from '../components/PanelView';
 import SortButton from '../components/SortButton';
 import AvatarCell from '../components/Table/Cells/AvatarCell';
+import DateTimeCell from '../components/Table/Cells/DateTimeCell';
 import StatusCell from '../components/Table/Cells/StatusCell';
-import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
 import TableActionsEllipsis from '../components/Table/Cells/TableActionsEllipsis';
+import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../components/Table/ListView';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
@@ -33,7 +34,6 @@ import { ExportIcon } from '../icons';
 import { IAudit } from '../interfaces/IAudit';
 import { TViewMode } from '../interfaces/TViewMode';
 import updateLocalStorageFilter from '../utils/filterStorage';
-import DateTimeCell from '../components/Table/Cells/DateTimeCell';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -207,7 +207,7 @@ function Audits() {
           data-id="002150"
           date={row?.status === 'completed' && row?.completedDate}
           fallbackText="No submitted date"
-          showTime={true} />
+          showTime />
       ),
     },
     {

@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
-
+import { useEffect, useState } from 'react';
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Divider, Flex } from '@chakra-ui/react';
 import { t } from 'i18next';

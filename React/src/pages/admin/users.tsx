@@ -184,7 +184,7 @@ function Users() {
             width: '5%',
             dataId: 'users-col-responsible',
             disabled: device === 'mobile' || device === 'tablet',
-            render: (user: IUser) => <UserResponseCount data-id="000627" responseCount={user.responsibleCount} role="responsible" userId={user._id} />,
+            render: (user: IUser) => <UserResponseCount data-id="000627" responseCount={user.responsibleCount} userRole="responsible" userId={user._id} />,
           },
           {
             label: (
@@ -204,7 +204,7 @@ function Users() {
             width: '5%',
             dataId: 'users-col-accountable',
             disabled: device === 'mobile' || device === 'tablet',
-            render: (user: IUser) => <UserResponseCount data-id="000628" responseCount={user.accountableCount} role="accountable" userId={user._id} />,
+            render: (user: IUser) => <UserResponseCount data-id="000628" responseCount={user.accountableCount} userRole="accountable" userId={user._id} />,
           },
           {
             label: (
@@ -224,7 +224,7 @@ function Users() {
             width: '5%',
             dataId: 'users-col-contributor',
             disabled: device === 'mobile' || device === 'tablet',
-            render: (user: IUser) => <UserResponseCount data-id="000629" responseCount={user.contributorCount} role="contributor" userId={user._id} />,
+            render: (user: IUser) => <UserResponseCount data-id="000629" responseCount={user.contributorCount} userRole="contributor" userId={user._id} />,
           },
           {
             label: (
@@ -244,7 +244,7 @@ function Users() {
             width: '5%',
             dataId: 'users-col-follower',
             disabled: device === 'mobile' || device === 'tablet',
-            render: (user: IUser) => <UserResponseCount data-id="000630" responseCount={user.followerCount} role="follower" userId={user._id} />,
+            render: (user: IUser) => <UserResponseCount data-id="000630" responseCount={user.followerCount} userRole="follower" userId={user._id} />,
           },
         ] as ColumnConfig[])
       : ([
@@ -360,7 +360,6 @@ function Users() {
       ),
     },
   ];
-
 
   return (
     <>

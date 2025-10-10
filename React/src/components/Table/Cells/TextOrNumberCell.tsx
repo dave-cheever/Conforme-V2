@@ -50,7 +50,6 @@ interface TextOrNumberCellProps {
  * />
  */
 
-
 function TextOrNumberCell({
   color="row.color",
   text,

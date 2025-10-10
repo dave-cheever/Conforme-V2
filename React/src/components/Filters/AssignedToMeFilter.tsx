@@ -11,7 +11,7 @@ function AssignedToMeFilter({ isChecked, onToggle }: AssignedToMeFilterProps) {
   };
 
   return (
-    <HStack align="center" data-id="000155" ml={[0, "2px"]} mt={[0,1]} paddingEnd={4} spacing={2}>
+    <HStack align="center" data-id="000155" ml={[0, 2]} mt={[0, 1]} paddingEnd={4} spacing={2}>
       <Checkbox
         _checked={{
           bg: '#0068A3',

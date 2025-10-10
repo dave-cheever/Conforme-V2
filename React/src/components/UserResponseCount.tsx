@@ -3,13 +3,13 @@ import { Flex } from '@chakra-ui/react';
 import { useFiltersContext } from '../contexts/FiltersProvider';
 import useNavigate from '../hooks/useNavigate';
 
-function UserResponseCount({ userId, role, responseCount }) {
+function UserResponseCount({ userId, userRole, responseCount }) {
   const { setFilters, setResponseFiltersValue } = useFiltersContext();
   const { navigateTo } = useNavigate();
 
   const handleClick = () => {
     navigateTo('/');
-    switch (role) {
+    switch (userRole) {
       case 'responsible':
         setResponseFiltersValue({
           usersIds: {

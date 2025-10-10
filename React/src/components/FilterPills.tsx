@@ -67,7 +67,6 @@ function FilterPills({
   mobileTabWidth = 'calc(50% - .5rem)',
   tabMargin = ['1', '2'],
   panelPadding = ['4', '6'],
-  panelMarginLeft = ['0', '10px'],
   'data-id': dataId,
 }: Readonly<FilterPillsProps>) {
   const theme = useTheme();
