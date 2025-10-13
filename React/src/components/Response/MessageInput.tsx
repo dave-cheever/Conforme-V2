@@ -35,14 +35,8 @@ function MessageInput({ control, name, label, placeholder = '', validations = {}
     if (!chatParticipants || !Array.isArray(chatParticipants)) return [];
 
     const filteredParticipants = chatParticipants.filter((participant) => {
-      if (!participant || !participant._id) {
-        console.warn('Invalid participant object:', participant);
-        return false;
-      }
-      if (!participant.displayName || typeof participant.displayName !== 'string' || participant.displayName.trim() === '') {
-        console.warn('Invalid displayName for participant:', participant);
-        return false;
-      }
+      if (!participant?._id) return false;
+      if (!participant.displayName || typeof participant.displayName !== 'string' || participant.displayName.trim() === '') return false;
       return true;
     });
 
@@ -102,10 +96,7 @@ function MessageInput({ control, name, label, placeholder = '', validations = {}
                 displayTransform={(id, display) => `@${display}`}
                 renderSuggestion={(highlightedDisplay) => {
                   // Additional safety check for the suggestion
-                  if (!highlightedDisplay || !highlightedDisplay.display) {
-                    console.warn('Invalid highlightedDisplay:', highlightedDisplay);
-                    return null;
-                  }
+                  if (!highlightedDisplay?.display) return null;
                   return (
                     <Flex color="mentionListItem.color" data-id="000327" fontSize="14px" pl="13px" py="10px" w="full">
                       <Avatar data-id="000328" name={highlightedDisplay.display.replace(/\s*\(.*?\)\s*/g, '')} size="xs" />

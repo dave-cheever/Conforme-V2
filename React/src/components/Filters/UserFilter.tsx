@@ -133,9 +133,9 @@ function UserFilter() {
         'User',
         {
           ...userIdsFilter,
-          [`${userRole  }Ids`]: value,
+          [`${userRole}Ids`]: value,
         },
-        user._id,
+        user.userId,
         setFilters,
       );
     } else {
@@ -197,7 +197,7 @@ function UserFilter() {
           ...userIdsFilter,
           [key]: value,
         },
-        user._id,
+        user.userId,
         setFilters,
       );
     } else {

@@ -5,8 +5,9 @@ import { Box, Button, Flex, HStack, Spacer, useOutsideClick } from '@chakra-ui/r
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
-import { CrossIcon, FilterPresetsIcon, FilterWhite, ResetIcon } from '../../icons';
+import { CrossIcon, FilterWhite, ResetIcon } from '../../icons';
 import { isPermitted } from '../can';
+import FilterPreset from '../FilterPreset';
 import FiltersPanelItem from './FiltersPanelItem';
 
 function FiltersPanel() {
@@ -80,22 +81,7 @@ function FiltersPanel() {
       >
         {/* Left group */}
         <HStack data-id="001519" spacing="3">
-          <Button
-            _hover={{ opacity: 0.9 }}
-            bg="white"
-            border="1px solid #CBD5E0"
-            color="filterPanel.resetButtonColor"
-            data-id="000128"
-            fontSize="14px"
-            fontWeight="500"
-            h="35px"
-            leftIcon={<FilterPresetsIcon data-id="001520" h="16px" w="16px" />}
-            onClick={() => console.log('Filter presets clicked')}
-            variant="outline"
-            w={['130px', '133px']}
-          >
-            Filter presets
-          </Button>
+          <FilterPreset data-id="filter-preset" />
 
           <Button
             _hover={{ opacity: 0.9 }}

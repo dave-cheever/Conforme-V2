@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { ChakraProvider } from '@chakra-ui/react';
@@ -5,7 +6,7 @@ import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AdminContext } from '../../contexts/AdminProvider';
-import Questions from './questions';
+import Questions from '../../pages/admin/questions';
 
 // Mock i18next
 vi.mock('i18next', () => ({
@@ -56,18 +57,18 @@ vi.mock('../../components/Table/ListView', () => ({
   ),
 }));
 
-const createWrapper = (adminValue?: any) => {
-  const defaultAdminValue = { adminModalState: 'closed', setAdminModalState: vi.fn() };
-  return function Wrapper({ children }: { children: React.ReactNode }) {
+const createWrapper = (adminValue?: any) =>
+  (function TestWrapper({ children }: { children: React.ReactNode }) {
+    const contextValue = useMemo(() => adminValue || { adminModalState: 'closed', setAdminModalState: vi.fn() }, [adminValue]);
+
     return (
       <ChakraProvider data-id="002058">
         <BrowserRouter data-id="002059">
-          <AdminContext.Provider value={adminValue || defaultAdminValue}>{children}</AdminContext.Provider>
+          <AdminContext.Provider value={contextValue}>{children}</AdminContext.Provider>
         </BrowserRouter>
       </ChakraProvider>
     );
-  };
-};
+  });
 
 describe('Questions page', () => {
   beforeEach(() => {

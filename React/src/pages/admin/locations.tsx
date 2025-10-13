@@ -244,9 +244,7 @@ function Locations() {
       sortKey: 'name',
       width: '40%',
       dataId: '000436',
-      render: (location: ILocation) => (
-        <TextOrNumberCell data-id="002094" text={location.name} />
-      ),
+      render: (location: ILocation) => <TextOrNumberCell data-id="002094" text={location.name} />,
     },
     {
       label: 'Notes',
@@ -254,9 +252,7 @@ function Locations() {
       width: '30%',
       dataId: '000437',
       disabled: device === 'mobile' || device === 'tablet',
-      render: (location: ILocation) => (
-        <TextOrNumberCell data-id="002095" text={location.notes} />
-      ),
+      render: (location: ILocation) => <TextOrNumberCell data-id="002095" text={location.notes} />,
     },
     {
       label: 'Owner',
@@ -273,12 +269,7 @@ function Locations() {
       dataId: '000441',
       tooltip: module?.type === 'tracker' ? 'Only published items' : undefined,
       render: (location: ILocation) => (
-        <Flex
-          alignItems="center"
-          color="auditsList.fontColor"
-          data-id="001945"
-          fontSize="14px"
-          fontWeight="500">
+        <Flex alignItems="center" color="auditsList.fontColor" data-id="001945" fontSize="14px" fontWeight="500">
           {module?.type === 'tracker' ? location.trackerItemsResponsesCount || 0 : location.totalAuditsCount || 0}
           <ArrowCount
             cursor="pointer"
@@ -339,12 +330,7 @@ function Locations() {
         </Flex>
       </AdminModal>
       <Header breadcrumbs={['Admin', pluralize(capitalize(t('location')))]} data-id="000431" pageLabel={capitalize(t('location'))} />
-      <Box
-        bg="auditsList.bg"
-        data-id="000432"
-        h="full"
-        overflow="hidden"
-      >
+      <Box bg="auditsList.bg" data-id="000432" h="full" overflow="hidden">
         <Flex data-id="000433" h="full" px={['25px', 0]}>
           {loading ? (
             <Box bg="white" borderBottomRadius="10px" data-id="000442" h="full" w="full">

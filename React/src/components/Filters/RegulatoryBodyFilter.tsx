@@ -13,23 +13,11 @@ function RegulatoryBodyFilter() {
   const value = useMemo(() => filtersValues.regulatoryBodiesIds?.value, [filtersValues]) as string[];
 
   const handleChange = (newValue: string[]) => {
-    if(user && module)
-      {updateLocalStorageFilter(
-       module._id,
-      'regulatoryBodiesIds',
-      'Regulatory body',
-      newValue,
-      user?._id,
-      setFilters,
-    );}
+    if (user && module) updateLocalStorageFilter(module._id, 'regulatoryBodiesIds', 'Regulatory body', newValue, user?.userId, setFilters);
   };
 
   return (
-    <CheckboxGroup
-      data-id="000149"
-      onChange={handleChange}
-      value={value}
-    >
+    <CheckboxGroup data-id="000149" onChange={handleChange} value={value}>
       <Stack data-id="000150" direction="column">
         {regulatoryBodies?.map(({ name, _id }) => (
           <FilterCheckBox data-id="000151" key={_id} label={name} value={_id} />

@@ -18,7 +18,8 @@ const { MentionMock, MentionsInputMock } = vi.hoisted(() => {
           onChange={(event) => onChange?.({ target: { value: event.target.value } })}
           onKeyDown={(event) => onKeyDown?.(event)}
           placeholder={placeholder}
-          value={value ?? ''} />
+          value={value ?? ''}
+        />
         {children}
       </div>
     );
@@ -70,15 +71,9 @@ describe('MessageInput', () => {
     function Wrapper() {
       const { control } = useForm({ defaultValues: { text: '' } });
       return (
-        <MockedProvider addTypename={false} data-id="001196">
+        <MockedProvider data-id="001196">
           <ChakraProvider data-id="001197">
-            <MessageInput
-              control={control}
-              data-id="001198"
-              label="Comment"
-              name="text"
-              onAction={mockOnAction}
-              {...props} />
+            <MessageInput control={control} data-id="001198" label="Comment" name="text" onAction={mockOnAction} {...props} />
           </ChakraProvider>
         </MockedProvider>
       );
@@ -127,4 +122,3 @@ describe('MessageInput', () => {
     expect(mockOnAction).not.toHaveBeenCalled();
   });
 });
-

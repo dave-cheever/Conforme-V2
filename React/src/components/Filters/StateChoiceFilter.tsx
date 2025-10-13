@@ -55,15 +55,7 @@ function StateChoiceFilter({ name }: { name: string }) {
       priority: 'Priority',
       walkType: 'Walk type',
     };
-    if(user && module)
-      {updateLocalStorageFilter(
-      module._id,
-      name,
-      labelMap[name] || name,
-      newValue,
-      user?._id,
-      setFilters,
-    );}
+    if (user && module) updateLocalStorageFilter(module._id, name, labelMap[name] || name, newValue, user?.userId, setFilters);
   };
 
   const renderChoices = () => {
@@ -73,9 +65,7 @@ function StateChoiceFilter({ name }: { name: string }) {
           <FilterCheckBox data-id="000184" key={key} label={label} value={key} />
         ));
       case 'status':
-        return Object.entries(usedStatuses).map(([key, label]) => (
-          <FilterCheckBox data-id="000185" key={key} label={label} value={key} />
-        ));
+        return Object.entries(usedStatuses).map(([key, label]) => <FilterCheckBox data-id="000185" key={key} label={label} value={key} />);
       case 'priority':
         return Object.entries(actionPriorities).map(([key, label]) => (
           <FilterCheckBox data-id="000186" key={key} label={label} value={key} />

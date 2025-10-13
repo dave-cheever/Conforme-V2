@@ -50,6 +50,33 @@ const userSchema = new Schema<IUser, IUserModel>({
   organizationsIds: [String],
   userCreated: Date,
   lastLogin: Date,
+  filtersPreset: {
+    type: [
+      {
+        _id: { type: String, required: true },
+        name: { type: String, required: true },
+        filters: { type: Schema.Types.Mixed, required: true },
+        moduleId: { type: String, required: true },
+        moduleType: { type: String, required: true },
+        pageName: { type: String, required: true },
+        userId: { type: String, required: true },
+        metadata: {
+          modulePath: { type: String, required: true },
+          fullPath: { type: String, required: true },
+          usedFilters: [{ type: String }],
+        },
+        metatags: {
+          addedAt: { type: Date, required: true },
+          addedBy: { type: String, required: true },
+          updatedAt: { type: Date },
+          updatedBy: { type: String },
+          removedAt: { type: Date },
+          removedBy: { type: String },
+        },
+      },
+    ],
+    default: [],
+  },
   metatags: {
     addedAt: Date,
     addedBy: String,

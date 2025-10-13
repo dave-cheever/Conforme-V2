@@ -6,6 +6,29 @@ export interface DefaultPage {
   path?: string;
 }
 
+export interface FilterPreset {
+  _id: string;
+  name: string;
+  filters: Record<string, any>;
+  moduleId: string;
+  moduleType: string;
+  pageName: string;
+  userId: string;
+  metadata: {
+    modulePath: string;
+    fullPath: string;
+    usedFilters: string[];
+  };
+  metatags: {
+    addedBy: string;
+    addedAt: Date;
+    updatedBy?: string;
+    updatedAt?: Date;
+    removedBy?: string;
+    removedAt?: Date;
+  };
+}
+
 export interface IUser {
   _id: string;
   firstName?: string;
@@ -54,6 +77,7 @@ export interface IUser {
   resolvedAnswersCount?: number;
   closedAnswersCount?: number;
   totalAnswersCount?: number;
+  filtersPreset?: FilterPreset[];
 }
 
 export interface IGraphUser {

@@ -18,22 +18,15 @@ function TrackerItemStatusFilter({ name }: { name: string }) {
   const value = useMemo(() => filtersValues[name]?.value, [filtersValues, name]) as string[];
 
   const handleChange = (newValue: string[]) => {
-    if (user && module) 
-      updateLocalStorageFilter(module._id, name, 'Status', newValue, user._id, setFilters);
-     else 
-      setFilters({ [name]: newValue });
-    
+    if (user && module) updateLocalStorageFilter(module._id, name, 'Status', newValue, user.userId, setFilters);
+    else setFilters({ [name]: newValue });
   };
 
   return (
     <CheckboxGroup data-id="000181" onChange={handleChange} value={value}>
       <Stack data-id="000182" direction="column">
         {trackerItemStatusOptions.map((option) => (
-          <FilterCheckBox
-            data-id="000183"
-            key={option.value}
-            label={option.label}
-            value={option.value} />
+          <FilterCheckBox data-id="000183" key={option.value} label={option.label} value={option.value} />
         ))}
       </Stack>
     </CheckboxGroup>

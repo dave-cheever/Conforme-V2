@@ -47,6 +47,9 @@ export interface IFiltersContext {
 
   numberOfSelectedFilters: number;
 
+  sortingState: { sortType: string; sortOrder: 'asc' | 'desc' } | null;
+  setSortingState: Dispatch<SetStateAction<{ sortType: string; sortOrder: 'asc' | 'desc' } | null>>;
+
   trackerItems: Partial<ITrackerItem>[];
   categories: Partial<IBaseWithName>[];
   regulatoryBodies: Partial<IBaseWithName>[];

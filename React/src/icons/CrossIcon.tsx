@@ -9,14 +9,20 @@ const CrossIcon = createIcon({
         d="M12.4168 1.58325L1.5835 12.4166"
         data-id="000077"
         fill="none"
+        stroke="currentColor"
         strokeLinecap="round"
-        strokeLinejoin="round" />
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
       <path
         d="M1.5835 1.58325L12.4168 12.4166"
         data-id="000078"
         fill="none"
+        stroke="currentColor"
         strokeLinecap="round"
-        strokeLinejoin="round" />
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
     </g>
   ),
 });

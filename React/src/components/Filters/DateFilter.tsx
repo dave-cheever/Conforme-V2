@@ -59,7 +59,7 @@ function DateFilter({ filterName }: { filterName: string }) {
         filterKey,
         filterKey === 'dueDate' ? 'Expires on' : 'Created on',
         newValue,
-        user?._id,
+        user?.userId,
         setFilters,
       );
     }
@@ -67,14 +67,30 @@ function DateFilter({ filterName }: { filterName: string }) {
 
   const handleExactDateChange = (date: Date) => {
     const newVal = ['exactDate', date];
-    if (module && user)
-      updateLocalStorageFilter(module._id, filterKey, filterKey === 'dueDate' ? 'Expires on' : 'Created on', newVal, user?._id, setFilters);
+    if (module && user) {
+      updateLocalStorageFilter(
+        module._id,
+        filterKey,
+        filterKey === 'dueDate' ? 'Expires on' : 'Created on',
+        newVal,
+        user?.userId,
+        setFilters,
+      );
+    }
   };
 
   const handleRangeChange = (date: [Date, Date]) => {
     const newVal = [['dateRange', ...date]];
-    if (module && user)
-      updateLocalStorageFilter(module._id, filterKey, filterKey === 'dueDate' ? 'Expires on' : 'Created on', newVal, user?._id, setFilters);
+    if (module && user) {
+      updateLocalStorageFilter(
+        module._id,
+        filterKey,
+        filterKey === 'dueDate' ? 'Expires on' : 'Created on',
+        newVal,
+        user?.userId,
+        setFilters,
+      );
+    }
   };
 
   return (

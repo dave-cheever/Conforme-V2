@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Divider, Flex } from '@chakra-ui/react';
@@ -103,6 +103,8 @@ function TrackerItems() {
     setResponseFiltersValue,
     setDefaultFilters,
     usedFilters,
+    sortingState,
+    setSortingState,
   } = useFiltersContext();
 
   const [responses, setResponses] = useState<IResponse[]>([]);
@@ -136,6 +138,33 @@ function TrackerItems() {
   };
 
   const { sortOrder, sortType, setSortType, setSortOrder } = useSort([], 'dueDate');
+
+  // Apply sorting from context when it changes (e.g., from preset)
+  const prevSortingStateRef = useRef<{ sortType: string; sortOrder: 'asc' | 'desc' } | null>(null);
+  const isApplyingFromContext = useRef(false);
+
+  useEffect(() => {
+    if (
+      sortingState &&
+      (prevSortingStateRef.current === null ||
+        prevSortingStateRef.current.sortType !== sortingState.sortType ||
+        prevSortingStateRef.current.sortOrder !== sortingState.sortOrder)
+    ) {
+      isApplyingFromContext.current = true;
+      setSortType(sortingState.sortType);
+      setSortOrder(sortingState.sortOrder);
+      // Reset the flag after state updates
+      setTimeout(() => {
+        isApplyingFromContext.current = false;
+      }, 0);
+    }
+    prevSortingStateRef.current = sortingState;
+  }, [sortingState, setSortType, setSortOrder]);
+
+  // Update context when local sorting changes (but not when applying from context)
+  useEffect(() => {
+    if (!isApplyingFromContext.current) setSortingState({ sortType, sortOrder });
+  }, [sortType, sortOrder, setSortingState]);
   const { navigateTo } = useNavigate();
   const sortBy = [
     { label: 'Item name', key: 'trackerItem.name' },
@@ -187,7 +216,7 @@ function TrackerItems() {
   useEffect(() => {
     if (!user || usedFilters.length === 0) return;
 
-    const key = `${module?._id}-filters-${user._id}`;
+    const key = `${module?._id}-filters-${user.userId}`;
     const stored = localStorage.getItem(key);
     let validFilters: Record<string, { value: any }> = {};
 

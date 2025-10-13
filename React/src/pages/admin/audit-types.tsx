@@ -79,9 +79,7 @@ const columns: ColumnConfig[] = [
     sortKey: 'name',
     width: '100%',
     dataId: '000389',
-    render: (auditType: IAuditType) => (
-      <TextOrNumberCell data-id="002091" text={auditType.name} />
-    ),
+    render: (auditType: IAuditType) => <TextOrNumberCell data-id="002091" text={auditType.name} />,
   },
 ];
 
@@ -156,7 +154,10 @@ function AuditTypes() {
 
   const sections = watch('sections') || [];
 
-  const selectedQuestionsCategoriesIds = useMemo(() => sections.filter((section) => section.type === 'questionsCategory').map((section) => section._id), [sections]);
+  const selectedQuestionsCategoriesIds = useMemo(
+    () => sections.filter((section) => section.type === 'questionsCategory').map((section) => section._id),
+    [sections],
+  );
 
   // Get available questions categories that haven't been selected yet
   const availableQuestionsCategories = useCallback(
@@ -175,7 +176,10 @@ function AuditTypes() {
     [questionsCategories, selectedQuestionsCategoriesIds],
   );
 
-  const disableAddNewSection = useMemo(() => selectedQuestionsCategoriesIds.length === questionsCategories?.length, [selectedQuestionsCategoriesIds, questionsCategories]);
+  const disableAddNewSection = useMemo(
+    () => selectedQuestionsCategoriesIds.length === questionsCategories?.length,
+    [selectedQuestionsCategoriesIds, questionsCategories],
+  );
 
   // Reset the form after closing
   useEffect(() => {
@@ -544,12 +548,7 @@ function AuditTypes() {
         </Stack>
       </AdminModal>
       <Header breadcrumbs={['Admin', 'Audit types']} data-id="000384" mobileBreadcrumbs={['Audit types']} pageLabel="Audit type" />
-      <Box
-        bg="auditsList.bg"
-        data-id="000385"
-        h="full"
-        overflow="hidden"
-      >
+      <Box bg="auditsList.bg" data-id="000385" h="full" overflow="hidden">
         <Flex data-id="000386" h="full" px={['25px', 0]}>
           {loading ? (
             <Box bg="white" borderBottomRadius="10px" data-id="000387" h="full" w="full">

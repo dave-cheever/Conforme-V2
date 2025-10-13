@@ -228,7 +228,8 @@ function Categories() {
           fontWeight="500"
           lineHeight="18px"
           noOfLines={1}
-          textOverflow="ellipsis">
+          textOverflow="ellipsis"
+        >
           {category.name}
         </Flex>
       ),
@@ -275,9 +276,7 @@ function Categories() {
           />
         </Flex>
       </AdminModal>
-      <Header
-        breadcrumbs={['Admin', 'Categories']}
-        data-id="000341" mobileBreadcrumbs={['Categories']} pageLabel="Category" />
+      <Header breadcrumbs={['Admin', 'Categories']} data-id="000341" mobileBreadcrumbs={['Categories']} pageLabel="Category" />
       <Box bg="auditsList.bg" data-id="000342" h="full" overflow="hidden">
         <Flex data-id="000343" h="full" px={['25px', 0]}>
           {loading ? (

@@ -311,9 +311,7 @@ function Questions() {
       sortKey: 'question',
       width: '100%',
       dataId: '000497',
-      render: (q: IQuestion<TQuestionValue>) => (
-        <TextOrNumberCell data-id="002097" text={q.question} />
-      ),
+      render: (q: IQuestion<TQuestionValue>) => <TextOrNumberCell data-id="002097" text={q.question} />,
     },
   ];
 

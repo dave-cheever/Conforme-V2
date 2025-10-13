@@ -15,8 +15,7 @@ function BusinessUnitFilter() {
 
   const handleChange = ({ target: { value } }) => {
     const newValues = Array.isArray(value) ? value : [value];
-    if(user && module)
-    updateLocalStorageFilter(module._id, 'businessUnitsIds', 'Business unit', newValues, user?._id, setFilters);
+    if (user && module) updateLocalStorageFilter(module._id, 'businessUnitsIds', 'Business unit', newValues, user?.userId, setFilters);
   };
 
   return (

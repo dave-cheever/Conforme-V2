@@ -35,7 +35,7 @@ const actionPanelConfig: PanelConfig = {
                 fontWeight: '600',
               },
             },
-            [React.createElement(Icon), value || 'Unknown Type'],
+            [React.createElement(Icon, { key: 'type-icon' }), value || 'Unknown Type'],
           );
         },
       },

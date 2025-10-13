@@ -74,7 +74,7 @@ function FiltersProvider({ children }) {
   // NEW: Load filters from localStorage if available
   const getInitialFilters = () => {
     if (module && user) {
-      const localStorageKey = `${module._id}-filters-${user._id}`;
+      const localStorageKey = `${module._id}-filters-${user.userId}`;
       const existing = localStorage.getItem(localStorageKey);
       if (existing) {
         try {
@@ -118,6 +118,7 @@ function FiltersProvider({ children }) {
   const [answerFiltersValue, setAnswerFiltersValue] = useState<TDeepPartial<IAnswerFilters>>({});
   const [showFiltersPanel, setShowFiltersPanel] = useState<boolean>(false);
   const [openedFilterPanel, setOpenedFilterPanel] = useState<string | null>(null);
+  const [sortingState, setSortingState] = useState<{ sortType: string; sortOrder: 'asc' | 'desc' } | null>(null);
   const [responsesStatusesCounts, setResponsesStatusesCounts] = useState<{
     [statusName: string]: number;
   }>({});
@@ -156,7 +157,7 @@ function FiltersProvider({ children }) {
 
   const cleanFilters = () => {
     if (module && user) {
-      const localStorageKey = `${module._id}-filters-${user._id}`;
+      const localStorageKey = `${module._id}-filters-${user.userId}`;
       localStorage.removeItem(localStorageKey);
       setDefaultFilters({});
       setAppliedFilters({});
@@ -206,6 +207,8 @@ function FiltersProvider({ children }) {
       setAnswerFiltersValue,
       setDefaultFilters,
       numberOfSelectedFilters,
+      sortingState,
+      setSortingState,
       trackerItems: data?.trackerItems?.trackerItems,
       categories: data?.categories,
       locations: data?.locations,
@@ -233,6 +236,7 @@ function FiltersProvider({ children }) {
       setActionFiltersValue,
       answerFiltersValue,
       setAnswerFiltersValue,
+      sortingState,
       data,
     ],
   );

@@ -309,9 +309,7 @@ function QuestionsCategories() {
       sortKey: 'name',
       width: '100%',
       dataId: '000478',
-      render: (qc: IQuestionsCategory) => (
-        <TextOrNumberCell data-id="002096" text={qc.name} />
-      ),
+      render: (qc: IQuestionsCategory) => <TextOrNumberCell data-id="002096" text={qc.name} />,
     },
   ];
 
@@ -405,23 +403,12 @@ function QuestionsCategories() {
             name="icon"
             render={({ field }) => (
               <>
-                <FormLabel
-                  alignItems="center"
-                  columnGap={1}
-                  data-id="000461"
-                  display={'flex'}
-                  fontSize="12px"
-                  fontWeight="regular"
-                  mb={1}
-                  >
-                    Icon <Text
-                  as="span"
-                  color="#e93c44"
-                  data-id="000462"
-                  fontSize="22px"
-                  fontWeight="bold"
-                  mt={"12px"}>*</Text>
-                  </FormLabel>
+                <FormLabel alignItems="center" columnGap={1} data-id="000461" display={'flex'} fontSize="12px" fontWeight="regular" mb={1}>
+                  Icon{' '}
+                  <Text as="span" color="#e93c44" data-id="000462" fontSize="22px" fontWeight="bold" mt={'12px'}>
+                    *
+                  </Text>
+                </FormLabel>
 
                 <Select
                   data-id="000463"
@@ -442,7 +429,8 @@ function QuestionsCategories() {
                   icon={<ChevronRight data-id="000464" stroke="dropdown.chevronDownIcon" transform="rotate(90deg)" />}
                   mb={2}
                   placeholder="Select an icon"
-                  variant="outline">
+                  variant="outline"
+                >
                   {allIconNames.map((iconName) => (
                     <option data-id="000465" key={iconName} value={iconName}>
                       {iconName}
@@ -451,13 +439,16 @@ function QuestionsCategories() {
                 </Select>
                 {field.value && ChakraIcons[field.value] && (
                   <Flex align="center" data-id="000466" gap={2} mt={1}>
-                    <Text data-id="000467" fontSize="sm">Preview:</Text>
+                    <Text data-id="000467" fontSize="sm">
+                      Preview:
+                    </Text>
                     <Icon as={ChakraIcons[field.value] || ''} boxSize={4} data-id="000468" />
                   </Flex>
                 )}
               </>
             )}
-            rules={{ required: 'Icon is required' }} />
+            rules={{ required: 'Icon is required' }}
+          />
           <Stack data-id="000469" pt={2}>
             <Text data-id="000470" fontSize="11px" fontWeight="bold">
               Options

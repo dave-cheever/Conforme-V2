@@ -1,5 +1,8 @@
 import { render } from '@testing-library/react';
+import * as echarts from 'echarts';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+
+import InsightsChart from '../../components/Insights/InsightsChart';
 
 // ---- Mocks we need to assert against across tests
 const resizeMock = vi.fn();
@@ -43,11 +46,6 @@ class MockResizeObserver {
 globalThis.ResizeObserver = MockResizeObserver;
 
 // SUT import AFTER mocks
-/* eslint-disable import/first */
-import * as echarts from 'echarts';
-
-import InsightsChart from '../../components/Insights/InsightsChart';
-/* eslint-enable import/first */
 
 beforeEach(() => {
   vi.useFakeTimers();

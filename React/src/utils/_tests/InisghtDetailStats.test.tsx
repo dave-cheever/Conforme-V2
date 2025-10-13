@@ -114,7 +114,8 @@ const baseProps = {
 describe('InsightsDetailedStats – FilterPills integration', () => {
   test('returns null on mobile', () => {
     DEVICE = 'mobile';
-    const { container } = render(<InsightsDetailedStats data-id="001479" {...baseProps} insightsType="audits" />);
+    const result = render(<InsightsDetailedStats data-id="001479" {...baseProps} insightsType="audits" />);
+    const container = result.container;
     expect(container.firstChild).toBeNull();
   });
 
@@ -313,13 +314,15 @@ describe('InsightsDetailedStats – FilterPills integration', () => {
     MOCK_QUERY_DATA = { totals: { users: null, locations: null, businessUnits: null } };
 
     // Test audits type
-    const { unmount: unmountAudits } = render(<InsightsDetailedStats data-id="001483" {...baseProps} insightsType="audits" />);
+    const result = render(<InsightsDetailedStats data-id="001483" {...baseProps} insightsType="audits" />);
+    const unmountAudits = result.unmount;
     let table = screen.getByTestId('insights-table');
     expect(table.dataset.totals).toBe('0');
     unmountAudits();
 
     // Test actions type
-    const { unmount: unmountActions } = render(<InsightsDetailedStats data-id="001483" {...baseProps} insightsType="actions" />);
+    const actionsResult = render(<InsightsDetailedStats data-id="001483" {...baseProps} insightsType="actions" />);
+    const unmountActions = actionsResult.unmount;
     table = screen.getByTestId('insights-table');
     expect(table.dataset.totals).toBe('0');
     unmountActions();

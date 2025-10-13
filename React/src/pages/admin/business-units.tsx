@@ -248,9 +248,7 @@ function BusinessUnits() {
       sortKey: 'name',
       width: '40%',
       dataId: '000418',
-      render: (businessUnit: IBusinessUnit) => (
-        <TextOrNumberCell data-id="002093" text={businessUnit.name} />
-      ),
+      render: (businessUnit: IBusinessUnit) => <TextOrNumberCell data-id="002093" text={businessUnit.name} />,
     },
     {
       label: 'Owner',
@@ -269,12 +267,7 @@ function BusinessUnits() {
             dataId: '000420',
             tooltip: 'Only published items',
             render: (businessUnit: IBusinessUnit) => (
-              <Flex
-                alignItems="center"
-                color="auditsList.fontColor"
-                data-id="001906"
-                fontSize="14px"
-                fontWeight="500">
+              <Flex alignItems="center" color="auditsList.fontColor" data-id="001906" fontSize="14px" fontWeight="500">
                 {businessUnit.trackerItemsResponsesCount || 0}
                 <Tooltip data-id="001907" fontSize="md" label="Show Items">
                   <ArrowCount
@@ -288,7 +281,8 @@ function BusinessUnits() {
                       navigateTo('/');
                     }}
                     stroke="#282F36"
-                    w="10px" />
+                    w="10px"
+                  />
                 </Tooltip>
               </Flex>
             ),
@@ -301,12 +295,7 @@ function BusinessUnits() {
             width: '15%',
             dataId: '000421',
             render: (businessUnit: IBusinessUnit) => (
-              <Flex
-                alignItems="center"
-                color="auditsList.fontColor"
-                data-id="001909"
-                fontSize="14px"
-                fontWeight="500">
+              <Flex alignItems="center" color="auditsList.fontColor" data-id="001909" fontSize="14px" fontWeight="500">
                 {businessUnit.totalAnswersCount || 0}
                 <Tooltip data-id="001910" fontSize="md" label="Show Items">
                   <ArrowCount
@@ -320,7 +309,8 @@ function BusinessUnits() {
                       navigateTo('/answers');
                     }}
                     stroke="#282F36"
-                    w="10px" />
+                    w="10px"
+                  />
                 </Tooltip>
               </Flex>
             ),
@@ -331,12 +321,7 @@ function BusinessUnits() {
             width: '15%',
             dataId: '000422',
             render: (businessUnit: IBusinessUnit) => (
-              <Flex
-                alignItems="center"
-                color="auditsList.fontColor"
-                data-id="001912"
-                fontSize="14px"
-                fontWeight="500">
+              <Flex alignItems="center" color="auditsList.fontColor" data-id="001912" fontSize="14px" fontWeight="500">
                 {businessUnit.totalAuditsCount || 0}
                 <Tooltip data-id="001913" fontSize="md" label="Show Items">
                   <ArrowCount
@@ -350,7 +335,8 @@ function BusinessUnits() {
                       navigateTo('/dashboard');
                     }}
                     stroke="#282F36"
-                    w="10px" />
+                    w="10px"
+                  />
                 </Tooltip>
               </Flex>
             ),
@@ -391,12 +377,7 @@ function BusinessUnits() {
         mobileBreadcrumbs={[pluralize(capitalize(t('business unit')))]}
         pageLabel={capitalize(t('business unit'))}
       />
-      <Box
-        bg="auditsList.bg"
-        data-id="000414"
-        h="full"
-        overflow="hidden"
-      >
+      <Box bg="auditsList.bg" data-id="000414" h="full" overflow="hidden">
         <Flex data-id="000415" h="full" px={['25px', 0]}>
           {loading ? (
             <Box bg="white" borderBottomRadius="10px" data-id="000423" h="full" w="full">

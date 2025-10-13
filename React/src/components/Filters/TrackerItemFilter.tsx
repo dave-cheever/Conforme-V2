@@ -17,10 +17,7 @@ function TrackerItemFilter() {
 
   const isSelected = useCallback((_id: string) => value?.includes(_id), [value]);
 
-  const selectedTrackerItems = useMemo(
-    () => trackerItems?.filter(({ _id }) => _id && isSelected(_id)),
-    [trackerItems, isSelected],
-  );
+  const selectedTrackerItems = useMemo(() => trackerItems?.filter(({ _id }) => _id && isSelected(_id)), [trackerItems, isSelected]);
 
   const filteredTrackerItems = useMemo(() => {
     const nameMatch = (name: string) => name.toLowerCase().includes(search.toLowerCase());
@@ -28,15 +25,7 @@ function TrackerItemFilter() {
   }, [trackerItems, search, isSelected]);
 
   const handleChange = (newValue: string[]) => {
-    if(user && module)
-      {updateLocalStorageFilter(
-      module._id,
-      'trackerItemsIds',
-      'Tracker item',
-      newValue,
-      user?._id,
-      setFilters,
-    );}
+    if (user && module) updateLocalStorageFilter(module._id, 'trackerItemsIds', 'Tracker item', newValue, user?.userId, setFilters);
   };
 
   return (
@@ -56,14 +45,7 @@ function TrackerItemFilter() {
           value={search}
           w="full"
         />
-        <Magnifier
-          bottom="25px"
-          data-id="000177"
-          h="12px"
-          left="14px"
-          position="absolute"
-          w="12x"
-        />
+        <Magnifier bottom="25px" data-id="000177" h="12px" left="14px" position="absolute" w="12x" />
       </InputGroup>
       <CheckboxGroup data-id="000178" onChange={handleChange} value={value}>
         {selectedTrackerItems?.map(({ name, _id }) => (

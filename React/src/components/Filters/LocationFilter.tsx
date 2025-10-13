@@ -15,25 +15,12 @@ function LocationFilter() {
 
   const handleChange = ({ target: { value } }) => {
     const newValues = Array.isArray(value) ? value : [value];
-    if(user && module)
-      {updateLocalStorageFilter(
-       module._id,
-      'locationsIds',
-      'Location',
-      newValues,
-      user?._id,
-      setFilters,
-    );}
+    if (user && module) updateLocalStorageFilter(module._id, 'locationsIds', 'Location', newValues, user?.userId, setFilters);
   };
 
   return (
     <Box data-id="000516" w="full">
-      <LocationsSelector
-        data-id="000517"
-        handleChange={handleChange}
-        locations={locations as ILocation[]}
-        selected={value}
-      />
+      <LocationsSelector data-id="000517" handleChange={handleChange} locations={locations as ILocation[]} selected={value} />
     </Box>
   );
 }

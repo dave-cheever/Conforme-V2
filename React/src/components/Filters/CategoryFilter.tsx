@@ -13,7 +13,7 @@ function CategoryFilter() {
   const value = useMemo(() => filtersValues.categoriesIds?.value, [filtersValues]) as string[];
 
   const handleChange = (newValue: string[]) => {
-    if (user && module) updateLocalStorageFilter(module._id, 'categoriesIds', 'Category', newValue, user?._id, setFilters);
+    if (user && module) updateLocalStorageFilter(module._id, 'categoriesIds', 'Category', newValue, user?.userId, setFilters);
   };
 
   return (

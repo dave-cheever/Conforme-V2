@@ -4,7 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import Users from './users';
+import Users from '../../pages/admin/users';
 
 // Mock i18next
 vi.mock('i18next', () => ({
@@ -125,9 +125,8 @@ describe('Users page (ListView)', () => {
     ];
     mockUseQuery.mockReturnValue({ data: { users }, loading: false, refetch: vi.fn() });
 
-    const { default: UsersAudits } = await import('./users');
-
-    render(<UsersAudits data-id="001968" />, { wrapper: createWrapper() });
+    // Use the already imported component
+    render(<Users data-id="001968" />, { wrapper: createWrapper() });
 
     // After the first 4 columns, the next 4 are metrics (nodes), then Last login text column
     expect(screen.getByTestId('col-4')).toHaveTextContent('node');

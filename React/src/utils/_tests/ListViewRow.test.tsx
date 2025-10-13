@@ -22,26 +22,31 @@ vi.mock('../../../hooks/useNavigate', () => ({
 
 // Mock cell components
 vi.mock('../Cells/StatusCell', () => ({
-  default: ({ status }: { status: string }) => <div data-id="002007" data-testid="status-cell">{status}</div>,
+  default: ({ status }: { status: string }) => (
+    <div data-id="002007" data-testid="status-cell">
+      {status}
+    </div>
+  ),
 }));
 
 vi.mock('../Cells/AvatarCell', () => ({
   default: ({ users }: { users: any[] }) => (
-    <div data-id="002008" data-testid="avatar-cell">{users.length > 0 ? users[0].displayName : 'No users'}</div>
+    <div data-id="002008" data-testid="avatar-cell">
+      {users.length > 0 ? users[0].displayName : 'No users'}
+    </div>
   ),
 }));
 
-const createWrapper = () => (function({ children }: { children: React.ReactNode }) {
-  return (
-    <ChakraProvider data-id="002064">
+const createWrapper = () =>
+  (function TestWrapper({ children }: { children: React.ReactNode }) {
+    return (
+      <ChakraProvider data-id="002064">
         <BrowserRouter data-id="002065">
-          <AppProvider data-id="002066">
-            {children}
-          </AppProvider>
+          <AppProvider data-id="002066">{children}</AppProvider>
         </BrowserRouter>
       </ChakraProvider>
-  );
-});
+    );
+  });
 
 describe('ListViewRow', () => {
   const mockRow = {
@@ -76,7 +81,11 @@ describe('ListViewRow', () => {
       sortKey: 'status',
       width: '15%',
       dataId: 'col-3',
-      render: (row) => <div data-id="002014" data-testid="status-cell">{row.status}</div>,
+      render: (row) => (
+        <div data-id="002014" data-testid="status-cell">
+          {row.status}
+        </div>
+      ),
     },
   ];
 
@@ -87,14 +96,9 @@ describe('ListViewRow', () => {
   });
 
   it('should render all non-disabled columns', () => {
-    const { container } = render(
-      <ListViewRow
-        columns={mockColumns}
-        data-id="002067"
-        onRowClick={mockOnRowClick}
-        row={mockRow} />,
-      { wrapper: createWrapper() },
-    );
+    const { container } = render(<ListViewRow columns={mockColumns} data-id="002067" onRowClick={mockOnRowClick} row={mockRow} />, {
+      wrapper: createWrapper(),
+    });
 
     const columnElements = container.querySelectorAll('[data-id^="col-"]');
     expect(columnElements.length).toBe(3);
@@ -113,28 +117,18 @@ describe('ListViewRow', () => {
       },
     ];
 
-    const { container } = render(
-      <ListViewRow
-        columns={columnsWithDisabled}
-        data-id="002068"
-        onRowClick={mockOnRowClick}
-        row={mockRow} />,
-      { wrapper: createWrapper() },
-    );
+    const { container } = render(<ListViewRow columns={columnsWithDisabled} data-id="002068" onRowClick={mockOnRowClick} row={mockRow} />, {
+      wrapper: createWrapper(),
+    });
 
     const disabledColumn = container.querySelector('[data-id="col-disabled"]');
     expect(disabledColumn).toBeNull();
   });
 
   it('should apply correct width to each column', () => {
-    const { container } = render(
-      <ListViewRow
-        columns={mockColumns}
-        data-id="002069"
-        onRowClick={mockOnRowClick}
-        row={mockRow} />,
-      { wrapper: createWrapper() },
-    );
+    const { container } = render(<ListViewRow columns={mockColumns} data-id="002069" onRowClick={mockOnRowClick} row={mockRow} />, {
+      wrapper: createWrapper(),
+    });
 
     const columnElements = container.querySelectorAll('[data-id^="col-"]');
     expect(columnElements[0]).toHaveStyle({ width: '10%' });
@@ -143,14 +137,9 @@ describe('ListViewRow', () => {
   });
 
   it('should render column content using render function', () => {
-    const { container } = render(
-      <ListViewRow
-        columns={mockColumns}
-        data-id="002070"
-        onRowClick={mockOnRowClick}
-        row={mockRow} />,
-      { wrapper: createWrapper() },
-    );
+    const { container } = render(<ListViewRow columns={mockColumns} data-id="002070" onRowClick={mockOnRowClick} row={mockRow} />, {
+      wrapper: createWrapper(),
+    });
 
     expect(container.textContent).toContain('2025-10-15');
     expect(container.textContent).toContain('Test Location');
@@ -160,11 +149,7 @@ describe('ListViewRow', () => {
   it('should handle row with null location', () => {
     const rowWithoutLocation = { ...mockRow, location: null };
     const { container } = render(
-      <ListViewRow
-        columns={mockColumns}
-        data-id="002071"
-        onRowClick={mockOnRowClick}
-        row={rowWithoutLocation} />,
+      <ListViewRow columns={mockColumns} data-id="002071" onRowClick={mockOnRowClick} row={rowWithoutLocation} />,
       { wrapper: createWrapper() },
     );
 
@@ -172,14 +157,9 @@ describe('ListViewRow', () => {
   });
 
   it('should have pointer cursor when row is not removed', () => {
-    const { container } = render(
-      <ListViewRow
-        columns={mockColumns}
-        data-id="002072"
-        onRowClick={mockOnRowClick}
-        row={mockRow} />,
-      { wrapper: createWrapper() },
-    );
+    const { container } = render(<ListViewRow columns={mockColumns} data-id="002072" onRowClick={mockOnRowClick} row={mockRow} />, {
+      wrapper: createWrapper(),
+    });
 
     const rowElement = container.querySelector('[data-id="000216"]');
     expect(rowElement).toHaveStyle({ cursor: 'pointer' });
@@ -191,24 +171,18 @@ describe('ListViewRow', () => {
       metatags: { removedBy: 'user-1' },
     };
 
-    const { container } = render(
-      <ListViewRow
-        columns={mockColumns}
-        data-id="002073"
-        onRowClick={mockOnRowClick}
-        row={removedRow} />,
-      { wrapper: createWrapper() },
-    );
+    const { container } = render(<ListViewRow columns={mockColumns} data-id="002073" onRowClick={mockOnRowClick} row={removedRow} />, {
+      wrapper: createWrapper(),
+    });
 
     const rowElement = container.querySelector('[data-id="000216"]');
     expect(rowElement).toHaveStyle({ cursor: 'default' });
   });
 
   it('should render with empty columns array', () => {
-    const { container } = render(
-      <ListViewRow columns={[]} data-id="002074" onRowClick={mockOnRowClick} row={mockRow} />,
-      { wrapper: createWrapper() },
-    );
+    const { container } = render(<ListViewRow columns={[]} data-id="002074" onRowClick={mockOnRowClick} row={mockRow} />, {
+      wrapper: createWrapper(),
+    });
 
     const columnElements = container.querySelectorAll('[data-id^="col-"]');
     expect(columnElements.length).toBe(0);
@@ -225,11 +199,7 @@ describe('ListViewRow', () => {
     ];
 
     const { container } = render(
-      <ListViewRow
-        columns={columnsWithoutRender}
-        data-id="002075"
-        onRowClick={mockOnRowClick}
-        row={mockRow} />,
+      <ListViewRow columns={columnsWithoutRender} data-id="002075" onRowClick={mockOnRowClick} row={mockRow} />,
       { wrapper: createWrapper() },
     );
 
@@ -239,14 +209,9 @@ describe('ListViewRow', () => {
   });
 
   it('should maintain correct data-id attributes', () => {
-    const { container } = render(
-      <ListViewRow
-        columns={mockColumns}
-        data-id="002076"
-        onRowClick={mockOnRowClick}
-        row={mockRow} />,
-      { wrapper: createWrapper() },
-    );
+    const { container } = render(<ListViewRow columns={mockColumns} data-id="002076" onRowClick={mockOnRowClick} row={mockRow} />, {
+      wrapper: createWrapper(),
+    });
 
     expect(container.querySelector('[data-id="000216"]')).not.toBeNull();
     expect(container.querySelector('[data-id="000217"]')).not.toBeNull();
@@ -255,4 +220,3 @@ describe('ListViewRow', () => {
     expect(container.querySelector('[data-id="col-3"]')).not.toBeNull();
   });
 });
-

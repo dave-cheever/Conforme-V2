@@ -26,7 +26,7 @@ const incidentPanelConfig: PanelConfig = {
                 fontWeight: '600',
               },
             },
-            [React.createElement(Building), value || 'Unknown Hospital'],
+            [React.createElement(Building, { key: 'building-icon' }), value || 'Unknown Hospital'],
           ),
       },
       {
@@ -191,10 +191,11 @@ const incidentPanelConfig: PanelConfig = {
           },
         },
         [
-          React.createElement(IncidentIcon),
+          React.createElement(IncidentIcon, { key: 'icon' }),
           React.createElement(
             'span',
             {
+              key: 'text',
               style: {
                 fontSize: '14px',
                 fontWeight: '500',

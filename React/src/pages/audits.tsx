@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
@@ -114,6 +114,8 @@ function Audits() {
     auditFiltersValue,
     setAuditFiltersValue,
     usedFilters,
+    sortingState,
+    setSortingState,
   } = useFiltersContext();
   const device = useDevice();
   const { navigateTo } = useNavigate();
@@ -131,6 +133,33 @@ function Audits() {
     setSortType,
     setSortOrder,
   } = useSort(filteredAudits, 'auditor.displayName', 'asc');
+
+  // Apply sorting from context when it changes (e.g., from preset)
+  const prevSortingStateRef = useRef<{ sortType: string; sortOrder: 'asc' | 'desc' } | null>(null);
+  const isApplyingFromContext = useRef(false);
+
+  useEffect(() => {
+    if (
+      sortingState &&
+      (prevSortingStateRef.current === null ||
+        prevSortingStateRef.current.sortType !== sortingState.sortType ||
+        prevSortingStateRef.current.sortOrder !== sortingState.sortOrder)
+    ) {
+      isApplyingFromContext.current = true;
+      setSortType(sortingState.sortType);
+      setSortOrder(sortingState.sortOrder);
+      // Reset the flag after state updates
+      setTimeout(() => {
+        isApplyingFromContext.current = false;
+      }, 0);
+    }
+    prevSortingStateRef.current = sortingState;
+  }, [sortingState, setSortType, setSortOrder]);
+
+  // Update context when local sorting changes (but not when applying from context)
+  useEffect(() => {
+    if (!isApplyingFromContext.current) setSortingState({ sortType, sortOrder });
+  }, [sortType, sortOrder, setSortingState]);
   const sortBy = [
     { label: 'Due date', key: 'dueDate' },
     { label: capitalize(t('location')), key: 'location.name' },
@@ -234,7 +263,7 @@ function Audits() {
 
   useEffect(() => {
     if (!user || usedFilters.length === 0) return;
-    const stored = localStorage.getItem(`${module?._id}-filters-${user._id}`);
+    const stored = localStorage.getItem(`${module?._id}-filters-${user.userId}`);
 
     if (!stored) {
       setFiltersInitialized(true);

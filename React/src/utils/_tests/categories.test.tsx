@@ -5,7 +5,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import Categories from './categories';
+import Categories from '../../pages/admin/categories';
 
 // Mock i18next
 vi.mock('i18next', () => ({
@@ -69,7 +69,7 @@ vi.mock('../../components/BarChart', () => ({
 }));
 
 const createWrapper = () =>
-  (function Wrapper({ children }: { children: React.ReactNode }) {
+  (function TestWrapper({ children }: { children: React.ReactNode }) {
     return (
       <ChakraProvider data-id="002050">
         <BrowserRouter data-id="002051">{children}</BrowserRouter>

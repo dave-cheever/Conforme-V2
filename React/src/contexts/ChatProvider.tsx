@@ -59,7 +59,6 @@ function ChatProvider({ children, component }: { children: React.ReactNode; comp
     const uniqueParticipants = [...new Set(participants.filter((id) => id && id.trim() !== ''))];
 
     if (uniqueParticipants.length > 0) {
-      console.log('Fetching participants:', uniqueParticipants); // Debug log
       getParticipants({
         variables: {
           userQuery: { usersIds: uniqueParticipants },
@@ -91,7 +90,11 @@ function ChatProvider({ children, component }: { children: React.ReactNode; comp
     [isOpenMessage, participantsData, participantsLoading],
   ) as IChatContext;
 
-  return <ChatContext.Provider data-id="000008" value={value}>{children}</ChatContext.Provider>;
+  return (
+    <ChatContext.Provider data-id="000008" value={value}>
+      {children}
+    </ChatContext.Provider>
+  );
 }
 
 export default ChatProvider;

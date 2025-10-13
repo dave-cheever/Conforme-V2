@@ -80,36 +80,29 @@ interface TextOrNumberCellProps {
  */
 
 function TextOrNumberCell({
-  color="row.color",
+  color = 'row.color',
   text,
-  fallbackText = "-",
-  fontSize = "14px",
-  fontWeight = "500",
-  lineHeight = "18px",
+  fallbackText = '-',
+  fontSize = '14px',
+  fontWeight = '500',
+  lineHeight = '18px',
   noOfLines = 1,
-  dataId = "000235",
+  dataId = '000235',
   tooltip,
   icon,
   iconPosition = 'before',
-  iconSize = "16px",
-  iconSpacing = "4px",
+  iconSize = '16px',
+  iconSpacing = '4px',
 }: TextOrNumberCellProps) {
-  const IconComponent = icon ? React.createElement(icon, {
-    boxSize: iconSize,
-    color,
-    'data-id': `${dataId}-icon`,
-  }) : null;
+  const IconComponent = icon
+    ? React.createElement(icon, {
+        boxSize: iconSize,
+        color,
+        'data-id': `${dataId}-icon`,
+      })
+    : null;
 
-  const greyCircle = icon ? (
-    <Box
-      bg="gray.300"
-      borderRadius="50%"
-      data-id={`${dataId}-separator`}
-      h="4px"
-      w="4px"
-      mr="2px"
-    />
-  ) : null;
+  const greyCircle = icon ? <Box bg="gray.300" borderRadius="50%" data-id={`${dataId}-separator`} h="4px" w="4px" mr="2px" /> : null;
 
   const textContent = (
     <Flex data-id="002181" align="center" flexDirection="row" gap={iconSpacing}>

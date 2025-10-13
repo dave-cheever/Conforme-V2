@@ -42,7 +42,7 @@ function SortButton({
                 </Text>
               </Flex>
             </MenuButton>
-            <MenuList border="none" boxShadow="simple" data-id="000480" rounded="lg" w="100px" zIndex={2}>
+            <MenuList border="none" boxShadow="simple" data-id="000480" rounded="lg" w="100px" zIndex={200}>
               {sortBy.map((sortItem) => (
                 <Flex data-id="000481" key={sortItem.key} px={3} py={2}>
                   <Box data-id="000482">

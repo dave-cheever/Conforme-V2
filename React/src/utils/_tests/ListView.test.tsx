@@ -25,17 +25,16 @@ vi.mock('./Rows/ListViewRow', () => ({
   ),
 }));
 
-const createWrapper = () => (function({ children }: { children: React.ReactNode }) {
-  return (
-    <ChakraProvider data-id="002027">
+const createWrapper = () =>
+  (function({ children }: { children: React.ReactNode }) {
+    return (
+      <ChakraProvider data-id="002027">
         <BrowserRouter data-id="002028">
-          <AppProvider data-id="002029">
-            {children}
-          </AppProvider>
+          <AppProvider data-id="002029">{children}</AppProvider>
         </BrowserRouter>
       </ChakraProvider>
-  );
-});
+    );
+  });
 
 describe('ListView', () => {
   const mockData = [
@@ -65,7 +64,11 @@ describe('ListView', () => {
       width: '30%',
       dataId: 'col-actions',
       hideSortIcon: true,
-      render: () => <button data-id="002030" type="button">Edit</button>,
+      render: () => (
+        <button data-id="002030" type="button">
+          Edit
+        </button>
+      ),
     },
   ];
 
@@ -88,7 +91,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="name" />,
+        sortType="name"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -108,7 +112,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="name" />,
+        sortType="name"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -128,7 +133,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="name" />,
+        sortType="name"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -150,7 +156,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="name" />,
+        sortType="name"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -183,7 +190,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="name" />,
+        sortType="name"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -201,7 +209,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="name" />,
+        sortType="name"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -219,7 +228,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="name" />,
+        sortType="name"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -237,7 +247,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="desc"
-        sortType="status" />,
+        sortType="status"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -268,7 +279,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="name" />,
+        sortType="name"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -286,7 +298,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="actions" />,
+        sortType="actions"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -310,7 +323,11 @@ describe('ListView', () => {
         width: '30%',
         dataId: 'col-actions',
         disableSort: true,
-        render: () => <button data-id="002030" type="button">Edit</button>,
+        render: () => (
+          <button data-id="002030" type="button">
+            Edit
+          </button>
+        ),
       },
     ];
 
@@ -324,17 +341,18 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="name" />,
+        sortType="name"
+      />,
       { wrapper: createWrapper() },
     );
 
     // Actions column has disableSort: true, clicking should not trigger sort
     const actionsHeader = screen.getByText('Actions');
     fireEvent.click(actionsHeader);
-    
+
     // setSortType should not be called for actions column since it has disableSort
     expect(mockSetSortType).not.toHaveBeenCalled();
-    
+
     // But clicking on Name should still work
     const nameHeader = screen.getByText('Name');
     fireEvent.click(nameHeader);
@@ -352,7 +370,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="name" />,
+        sortType="name"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -375,7 +394,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="name" />,
+        sortType="name"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -394,7 +414,8 @@ describe('ListView', () => {
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
         sortOrder="asc"
-        sortType="name" />,
+        sortType="name"
+      />,
       { wrapper: createWrapper() },
     );
 
@@ -403,4 +424,3 @@ describe('ListView', () => {
     expect(headerContainer).not.toBeNull();
   });
 });
-

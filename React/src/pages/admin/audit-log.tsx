@@ -84,13 +84,11 @@ function AuditLog() {
     });
   }, [skip, dateLimit, refetch, auditLogLimit]);
 
-useEffect(() => {
-  if (data) {
-    console.log("Fetched raw data", data);
+  const processAuditLogData = (auditLogData: any) => {
     const groupedByDay: Record<string, IAuditLog> = {};
 
-    data.auditLog.auditLogs.forEach((group) => {
-      group.records.forEach((record) => {
+    for (const group of auditLogData.auditLog.auditLogs) {
+      for (const record of group.records) {
         const dateKey = moment(record.metatags.addedAt).format('YYYY-MM-DD');
         if (!groupedByDay[dateKey]) {
           groupedByDay[dateKey] = {
@@ -101,66 +99,55 @@ useEffect(() => {
         }
 
         // Prevent duplicates
-        const alreadyExists = groupedByDay[dateKey].records.some(
-          (r) => r.metatags?.addedAt === record.metatags.addedAt,
-        );
+        const alreadyExists = groupedByDay[dateKey].records.some((r) => r.metatags?.addedAt === record.metatags.addedAt);
 
         if (!alreadyExists) {
           groupedByDay[dateKey].records.push(record);
           setCountAuditLogs((prev) => prev + 1);
         }
-      });
-    });
+      }
+    }
 
-    // Convert object to array and sort by date (latest first)
-    const sortedAuditLogs = Object.values(groupedByDay).sort((a, b) =>
-      moment(b._id).diff(moment(a._id)),
-    );
+    return groupedByDay;
+  };
 
-    setAuditLogs((prev) => {
-      const merged = [...prev];
-      sortedAuditLogs.forEach((newLog) => {
-        const existing = merged.find((p) => p._id === newLog._id);
-        if (existing) {
-          newLog.records.forEach((r) => {
-            if (!existing.records.some((e) => e.metatags?.addedAt === r.metatags?.addedAt)) 
-              existing.records.push(r);
-            
-          });
-        } else 
-          merged.push(newLog);
-        
-      });
-      return merged;
-    });
+  const mergeAuditLogs = (prevLogs: IAuditLog[], newLogs: IAuditLog[]) => {
+    const merged = [...prevLogs];
+    for (const newLog of newLogs) {
+      const existing = merged.find((p) => p._id === newLog._id);
+      if (existing) {
+        for (const record of newLog.records) {
+          if (!existing.records.some((e) => e.metatags?.addedAt === record.metatags?.addedAt)) {
+            existing.records.push(record);
+          }
+        }
+      } else {
+        merged.push(newLog);
+      }
+    }
+    return merged;
+  };
 
-    setTotalAuditLogs(data?.auditLog?.totalAuditLogs || 0);
-    setIsLoadingMore(false);
-  }
-}, [data]);
+  useEffect(() => {
+    if (data) {
+      const groupedByDay = processAuditLogData(data);
+
+      // Convert object to array and sort by date (latest first)
+      const sortedAuditLogs = Object.values(groupedByDay).sort((a, b) => moment(b._id).diff(moment(a._id)));
+
+      setAuditLogs((prev) => mergeAuditLogs(prev, sortedAuditLogs));
+
+      setTotalAuditLogs(data?.auditLog?.totalAuditLogs || 0);
+      setIsLoadingMore(false);
+    }
+  }, [data]);
 
   return (
     <>
       <Header breadcrumbs={['Admin', 'Audit log']} data-id="000305" />
-      <Box
-        data-id="000306"
-        h="calc(100vh - 150px)"
-        overflow="auto"
-        p={["10px", "30px"]}
-        pt="0px">
-        <Flex
-          bg="white"
-          borderRadius="20px"
-          data-id="000307"
-          flexDir="column"
-          h="fit-content"
-          pt="3"
-          px="6">
-          <AuditLogComponent
-            auditLogs={auditLogs}
-            data-id="000308"
-            isLoadingMore={isLoadingMore}
-            loading={loading} />
+      <Box data-id="000306" h="calc(100vh - 150px)" overflow="auto" p={['10px', '30px']} pt="0px">
+        <Flex bg="white" borderRadius="20px" data-id="000307" flexDir="column" h="fit-content" pt="3" px="6">
+          <AuditLogComponent auditLogs={auditLogs} data-id="000308" isLoadingMore={isLoadingMore} loading={loading} />
           {!loading &&
             (totalAuditLogs === countAuditLogs ? (
               <Text color="auditLog.noLogs" data-id="000309" mb={4}>
@@ -175,7 +162,8 @@ useEffect(() => {
                 onClick={() => {
                   setSkip((prev) => prev + 5);
                   setIsLoadingMore(true);
-                }}>
+                }}
+              >
                 Load more audit logs
               </Text>
             ))}

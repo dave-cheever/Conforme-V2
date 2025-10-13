@@ -8,13 +8,21 @@ const PlusIcon = createIcon({
       <path
         d="M7.3158 0.518188V13.4818"
         data-id="000969"
+        fill="none"
+        stroke="currentColor"
         strokeLinecap="round"
-        strokeLinejoin="round" />
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
       <path
         d="M0.833984 7H13.7976"
         data-id="000970"
+        fill="none"
+        stroke="currentColor"
         strokeLinecap="round"
-        strokeLinejoin="round" />
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
     </g>
   ),
 });

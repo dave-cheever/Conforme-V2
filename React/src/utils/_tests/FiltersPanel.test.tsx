@@ -1,6 +1,8 @@
+import { MockedProvider } from '@apollo/client/testing';
 import { ChakraProvider } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { isPermitted } from '../../components/can';
@@ -99,6 +101,7 @@ vi.mock('../../icons', () => ({
   ),
   FilterPresetsIcon: (props: any) => <div data-id="001737" data-testid="filter-preset-icon" {...props} />,
   FilterWhite: (props: any) => <div data-id="001738" data-testid="filter-white-icon" {...props} />,
+  PlusIcon: (props: any) => <div data-id="001739" data-testid="plus-icon" {...props} />,
 }));
 
 // Mock theme
@@ -122,9 +125,13 @@ const mockTheme = {
 // Test wrapper
 function TestWrapper({ children }: { readonly children: React.ReactNode }) {
   return (
-    <ChakraProvider data-id="001739" theme={mockTheme}>
-      {children}
-    </ChakraProvider>
+    <BrowserRouter data-id="002341">
+      <MockedProvider data-id="002342" mocks={[]} addTypename={false}>
+        <ChakraProvider data-id="001739" theme={mockTheme}>
+          {children}
+        </ChakraProvider>
+      </MockedProvider>
+    </BrowserRouter>
   );
 }
 
@@ -259,9 +266,8 @@ describe('FiltersPanel', () => {
     expect(mockSetShowFiltersPanel).toHaveBeenCalledWith(false);
   });
 
-  test('logs message when filter presets button is clicked', async () => {
+  test('opens filter presets menu when button is clicked', async () => {
     const user = userEvent.setup();
-    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 
     render(
       <TestWrapper data-id="001754">
@@ -269,12 +275,11 @@ describe('FiltersPanel', () => {
       </TestWrapper>,
     );
 
-    const presetsButton = screen.getByText('Filter presets');
+    const presetsButton = screen.getByRole('button', { name: /filter presets/i });
     await user.click(presetsButton);
 
-    expect(consoleSpy).toHaveBeenCalledWith('Filter presets clicked');
-
-    consoleSpy.mockRestore();
+    // Check that the menu is opened by looking for the menu content
+    expect(screen.getByText('Save preset')).toBeInTheDocument();
   });
 
   test('renders with correct styling for desktop', () => {
@@ -364,7 +369,7 @@ describe('FiltersPanel', () => {
       </TestWrapper>,
     );
 
-    expect(screen.getByText('Filter presets')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /filter presets/i })).toBeInTheDocument();
     expect(screen.getByText('Reset filters')).toBeInTheDocument();
     expect(screen.getByText('Apply filters')).toBeInTheDocument();
   });
