@@ -1,6 +1,7 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
-import { Tab, TabList, TabPanel, TabPanels, Tabs, useTheme } from '@chakra-ui/react';
+import { ChevronRightIcon } from '@chakra-ui/icons';
+import { Box, Icon, Tab, TabList, TabPanel, TabPanels, Tabs, useTheme } from '@chakra-ui/react';
 
 export interface FilterPill {
   _id: string;
@@ -63,12 +64,50 @@ function FilterPills({
   hoverStyles = {},
   tabListStyles = {},
   tabStyles = {},
-  wrapTabs = true,
   tabMargin = ['1', '2'],
   panelPadding = ['4', '6'],
   'data-id': dataId,
 }: Readonly<FilterPillsProps>) {
   const theme = useTheme();
+  const tabListRef = useRef<HTMLDivElement>(null);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false);
+  const [isAtEnd, setIsAtEnd] = useState(false);
+
+  const scrollRight = () => {
+    if (tabListRef.current) {
+      const scrollAmount = 200; // Scroll by 200px
+      tabListRef.current.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  useEffect(() => {
+    const checkScroll = () => {
+      if (tabListRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = tabListRef.current;
+        const hasOverflow = scrollWidth > clientWidth;
+        const atEnd = scrollLeft + clientWidth >= scrollWidth - 10; // 10px tolerance
+
+        setShowScrollIndicator(hasOverflow);
+        setIsAtEnd(atEnd);
+      }
+    };
+
+    checkScroll();
+
+    const tabList = tabListRef.current;
+    if (tabList) {
+      tabList.addEventListener('scroll', checkScroll);
+      window.addEventListener('resize', checkScroll);
+
+      return () => {
+        tabList.removeEventListener('scroll', checkScroll);
+        window.removeEventListener('resize', checkScroll);
+      };
+    }
+  }, [pills]);
   const defaultSelectedStyles = {
     bg: theme.colors.filterPills?.selected?.bg || '#0068A3',
     color: theme.colors.filterPills?.selected?.color || 'white',
@@ -82,35 +121,98 @@ function FilterPills({
     fontWeight: theme.colors.filterPills?.tab?.fontWeight || '500',
   };
   return (
-    <Tabs data-id={dataId} defaultIndex={selectedIndex} onChange={onPillChange} variant="unstyled" w="full" {...tabsProps}>
-      <TabList
-        data-id="001366"
-        flexWrap={wrapTabs ? ['wrap', 'initial'] : 'nowrap'}
-        pb={4}
-        px={[4, 8]}
-        {...tabListProps}
-        {...tabListStyles}
-      >
-        {pills?.map((pill, _index) => (
-          <Tab
-            _hover={{ ...defaultHoverStyles, ...hoverStyles }}
-            _selected={{ ...defaultSelectedStyles, ...selectedStyles }}
-            borderRadius="50px"
-            data-id="001367"
-            fontSize="14px"
-            key={pill._id + _index}
-            ml={[1, 0]}
-            mr={tabMargin}
-            my={[1, 0]}
-            w={['auto', 'auto', 'auto']}
-            {...tabProps}
-            {...defaultTabStyles}
-            {...tabStyles}
-          >
-            {pill.name}
-          </Tab>
-        ))}
-      </TabList>
+    <Tabs data-id={dataId} defaultIndex={selectedIndex} mt="4" onChange={onPillChange} variant="unstyled" w="full" {...tabsProps}>
+      <Box data-id="002343" position="relative">
+        <TabList
+          css={{
+            '&::-webkit-scrollbar': {
+              height: '4px',
+            },
+            '&::-webkit-scrollbar-track': {
+              background: 'transparent',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: '#CBD5E0',
+              borderRadius: '2px',
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              background: '#A0AEC0',
+            },
+          }}
+          data-id="001366"
+          flexWrap="nowrap"
+          overflowX="auto"
+          overflowY="hidden"
+          pb={4}
+          px={[4, 8]}
+          ref={tabListRef}
+          w={['98%', '100%']} // 90% width on mobile, 100% on desktop
+          {...tabListProps}
+          {...tabListStyles}
+        >
+          {pills?.map((pill, _index) => (
+            <Tab
+              _hover={{ ...defaultHoverStyles, ...hoverStyles }}
+              _selected={{ ...defaultSelectedStyles, ...selectedStyles }}
+              borderRadius="50px"
+              data-id="001367"
+              flexShrink={0}
+              fontSize="14px"
+              key={pill._id + _index}
+              ml={[1, 0]}
+              mr={tabMargin}
+              my={[1, 0]}
+              whiteSpace="nowrap"
+              {...tabProps}
+              {...defaultTabStyles}
+              {...tabStyles}
+            >
+              {pill.name}
+            </Tab>
+          ))}
+        </TabList>
+
+        {/* Fade effect and scroll indicator */}
+        {showScrollIndicator && !isAtEnd && (
+          <Box
+            background="linear-gradient(to right, #ffffffe0, white)"
+            bottom="0"
+            data-id="002344"
+            display={['block', 'none']} // Only show on mobile
+            pointerEvents="none"
+            position="absolute"
+            right="0"
+            top="0"
+            width="40px"
+            zIndex="1"
+          />
+        )}
+
+        {showScrollIndicator && !isAtEnd && (
+          <Box
+            data-id="002347"
+            _hover={{
+              bg: 'gray.100',
+              borderRadius: '50%',
+            }}
+            alignItems="center"
+            cursor="pointer"
+            // Only show on mobile
+            display={['flex', 'none']}
+            height="30px"
+            justifyContent="center"
+            onClick={scrollRight}
+            position="absolute"
+            right="0px"
+            top="40%"
+            transform="translateY(-50%)"
+            transition="all 0.2s"
+            width="30px"
+            zIndex="2">
+            <Icon data-id="002348" as={ChevronRightIcon} color="gray.600" h="18px" w="18px" />
+          </Box>
+        )}
+      </Box>
       <TabPanels data-id="001368" {...tabPanelsProps} h="full">
         {pills?.map((pill, _index) => (
           <TabPanel

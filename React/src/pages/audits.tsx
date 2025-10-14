@@ -182,7 +182,7 @@ function Audits() {
       sortKey: 'location.name',
       width: module?.featureFlags?.enableSafetyWalk ? '20%' : '12%',
       dataId: '000310',
-      render: (row) => <TextOrNumberCell icon={LocationIcon} data-id="002087" fallbackText="Virtual" text={row.location?.name} />,
+      render: (row) => <TextOrNumberCell data-id="002087" fallbackText="Virtual" icon={LocationIcon} text={row.location?.name} />,
     },
     {
       label: 'Status',
@@ -330,20 +330,51 @@ function Audits() {
     }
   }, [filtersValues, usedFilters, auditFiltersValue, setAuditFiltersValue, setFilters]);
 
+  const parseDueDateFilter = (extractedValue: any) => {
+    if (!Array.isArray(extractedValue) || extractedValue.length === 0) return typeof extractedValue === 'string' ? extractedValue : null;
+
+    // Support both shapes:
+    // 1) ['dateRange', startDate, endDate]
+    // 2) [['dateRange', startDate, endDate]]
+    if (Array.isArray(extractedValue[0])) {
+      const [nestedArray] = extractedValue;
+      return nestedArray;
+    }
+    if (extractedValue[0] === 'dateRange') {
+      const [filter, start, end] = extractedValue;
+      return [filter, start, end ?? null];
+    }
+    if (extractedValue.length === 1 && typeof extractedValue[0] === 'string') {
+      // Simple date array: ['date'] -> just the date string
+      const [date] = extractedValue;
+      return date;
+    }
+    // Exact date format: ['exactDate', date] -> [filter, startDate, undefined]
+    const [filter, date] = extractedValue;
+    return [filter, date, undefined];
+  };
+
+  const parseUsersIdsFilter = (extractedValue: any) => {
+    if (typeof extractedValue !== 'object') return extractedValue;
+    if (!extractedValue.auditorsIds?.length && !extractedValue.participantsIds?.length) return null;
+    return extractedValue;
+  };
+
+  const isValidFilterValue = (value: any) => value !== undefined && value !== null && !(Array.isArray(value) && value.length === 0);
+
   useEffect(() => {
     if (!appliedFilters) return;
 
     const parsedFilters = Object.entries(appliedFilters).reduce((acc, [key, value]) => {
       if (!value || !allowedFilters.includes(key)) return acc;
+
       let extractedValue = value?.value;
-      if (key === 'dueDate') {
-        if (Array.isArray(extractedValue) && extractedValue.length > 0) [extractedValue] = extractedValue;
-        else if (typeof extractedValue !== 'string') return acc;
-      }
-      if (key === 'usersIds' && typeof extractedValue === 'object')
-        if (!extractedValue.auditorsIds?.length && !extractedValue.participantsIds?.length) return acc;
-      if (extractedValue === undefined || extractedValue === null || (Array.isArray(extractedValue) && extractedValue.length === 0))
-        return acc;
+
+      if (key === 'dueDate') extractedValue = parseDueDateFilter(extractedValue);
+      else if (key === 'usersIds') extractedValue = parseUsersIdsFilter(extractedValue);
+
+      if (!isValidFilterValue(extractedValue)) return acc;
+
       return { ...acc, [key]: extractedValue };
     }, {});
 

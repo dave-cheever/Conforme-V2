@@ -69,6 +69,9 @@ function AnswerModal({
   const { adminModalState } = useAdminContext();
   const [isClosing, setIsClosing] = useState(false);
   const isViewMode = adminModalState === 'view';
+
+  // Set isClosing to true immediately when modal starts closing
+  const shouldHideButtons = isViewMode || isClosing || adminModalState === 'closed';
   const toast = useToast();
   const { openInNewTab } = useNavigate();
   const { user } = useAppContext();
@@ -428,7 +431,7 @@ function AnswerModal({
                 </GridItem>
               </Grid>
               <Stack data-id="000822">
-                {isUserPermittedToModify && !!isFormEnabled && (
+                {isUserPermittedToModify && !!isFormEnabled && !isViewMode && (
                   <>
                     <Text data-id="000823" fontSize="11px" fontWeight="700" mb={2}>
                       Add photos or files
@@ -472,7 +475,7 @@ function AnswerModal({
           </Stack>
         </Stack>
       </ModalBody>
-      {!isViewMode && !isClosing && (
+      {!shouldHideButtons && (
         <ModalFooter data-id="000831" p={1}>
           <Flex data-id="000832" flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" w="full">
             <Can

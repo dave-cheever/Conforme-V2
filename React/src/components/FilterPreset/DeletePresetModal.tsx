@@ -1,25 +1,23 @@
-import React from 'react';
-
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from '@chakra-ui/react';
 
 interface DeletePresetModalProps {
-  isOpen: boolean;
-  presetToDelete: { id: string; name: string } | null;
-  onConfirm: () => void;
-  onCancel: () => void;
+  readonly isOpen: boolean;
+  readonly presetToDelete: { id: string; name: string } | null;
+  readonly onConfirm: () => void;
+  readonly onCancel: () => void;
 }
 
-const DeletePresetModal: React.FC<DeletePresetModalProps> = ({ isOpen, presetToDelete, onConfirm, onCancel }) => {
+function DeletePresetModal({ isOpen, presetToDelete, onConfirm, onCancel }: Readonly<DeletePresetModalProps>) {
   return (
     <Modal
+      closeOnEsc
+      closeOnOverlayClick={false}
       data-id="002328"
       isCentered
       isOpen={isOpen}
       onClose={() => {
         onCancel();
       }}
-      closeOnOverlayClick={false}
-      closeOnEsc={true}
     >
       <ModalOverlay data-id="002329" />
       <ModalContent data-id="002330">
@@ -33,8 +31,8 @@ const DeletePresetModal: React.FC<DeletePresetModalProps> = ({ isOpen, presetToD
             Cancel
           </Button>
           <Button
-            data-id="002337"
             colorScheme="red"
+            data-id="002337"
             onMouseDown={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -48,6 +46,6 @@ const DeletePresetModal: React.FC<DeletePresetModalProps> = ({ isOpen, presetToD
       </ModalContent>
     </Modal>
   );
-};
+}
 
 export default DeletePresetModal;

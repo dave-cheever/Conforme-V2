@@ -151,13 +151,11 @@ vi.mock('../../utils/filterStorage', () => ({
   default: (...args: any[]) => updateLocalStorageFilterSpy(...args),
 }));
 
-const renderPage = () => {
-  return render(
+const renderPage = () => render(
     <BrowserRouter data-id="001517">
       <TrackerItems data-id="001348" />
     </BrowserRouter>,
   );
-};
 
 beforeEach(() => {
   vi.clearAllMocks();

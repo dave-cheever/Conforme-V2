@@ -22,7 +22,12 @@ function FiltersPanelItem({ name, filter }: { name: string; filter: IFilter }) {
 
   const filtersLength: number = useMemo(() => {
     const filterValue = filtersValues?.[name]?.value;
-    if (Array.isArray(filterValue)) return filterValue?.length;
+    if (Array.isArray(filterValue)) {
+      // Special handling for date filters - only count when there's actually a date selected
+      if (filterValue.length >= 2 && (filterValue[0] === 'exactDate' || filterValue[0] === 'dateRange'))
+        return filterValue[1] === null ? 0 : 1; // Only count if there's a start date
+      return filterValue?.length;
+    }
 
     if (typeof filterValue === 'object' && !Array.isArray(filterValue) && filterValue !== null)
       return Object.values(filterValue).reduce((acc: number, curr) => acc + (curr as string[]).length, 0);

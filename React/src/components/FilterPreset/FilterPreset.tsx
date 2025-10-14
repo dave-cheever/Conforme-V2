@@ -434,10 +434,10 @@ function FilterPreset({ placement = 'bottom-start', 'data-id': dataId = 'filter-
           }}
           p="0"
         >
-          <VStack data-id="002312" align="stretch" spacing={0}>
+          <VStack align="stretch" data-id="002312" spacing={0}>
             {/* Header */}
             <Box data-id="002313" px="16px" py="12px">
-              <Flex data-id="002314" align="center" justify="space-between">
+              <Flex align="center" data-id="002314" justify="space-between">
                 <Text color="#1A202C" data-id={`${dataId}-title`} fontSize="14px" fontWeight="500">
                   Filter presets
                 </Text>
@@ -450,7 +450,7 @@ function FilterPreset({ placement = 'bottom-start', 'data-id': dataId = 'filter-
                     fontSize="12px"
                     fontWeight="500"
                     h="auto"
-                    leftIcon={<PlusIcon data-id="002315" color="#4A5568" h="12px" w="12px" />}
+                    leftIcon={<PlusIcon color="#4A5568" data-id="002315" h="12px" w="12px" />}
                     onClick={(e) => {
                       e.stopPropagation();
                       setIsSaving(true);
@@ -462,12 +462,12 @@ function FilterPreset({ placement = 'bottom-start', 'data-id': dataId = 'filter-
                   </Button>
                 )}
               </Flex>
-              <Divider data-id="002316" borderColor="#E4E7EC" mt="8px" />
+              <Divider borderColor="#E4E7EC" data-id="002316" mt="8px" />
             </Box>
 
             {/* Save Preset Input Section */}
             {isSaving && (
-              <Box data-id="002317" borderBottom="1px solid #CBD5E0" pb="10px" px="16px">
+              <Box borderBottom="1px solid #CBD5E0" data-id="002317" pb="10px" px="16px">
                 <SavePresetForm
                   data-id="002318"
                   dataId={dataId}

@@ -109,6 +109,29 @@ const DELETE_ACTION = gql`
   }
 `;
 
+// Export functions for testing
+export const parseDueDateFilter = (val: any) => {
+  if (!Array.isArray(val) || val.length === 0) return typeof val === 'string' ? val : null;
+
+  if (Array.isArray(val[0])) return val[0];
+
+  if (val[0] === 'dateRange') {
+    const [filter, start, end] = val;
+    return [filter, start, end ?? null];
+  }
+
+  // Exact date format: ['exactDate', date] -> [filter, date, undefined]
+  const [filter, date] = val;
+  return [filter, date, undefined];
+};
+
+export const isValidFilterValue = (value: any, key: string) => {
+  if (!value || !value.value) return false;
+  if (Array.isArray(value.value) && value.value.length === 0) return false;
+  if (key === 'usersIds' && (!value.value.assigneesIds || value.value.assigneesIds.length === 0)) return false;
+  return true;
+};
+
 function Actions() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -171,7 +194,7 @@ function Actions() {
 
   const handleOpenModal = (action: IAction) => {
     setSelectedAction(action);
-    setAdminModalState('edit');
+    setAdminModalState('view');
   };
 
   const handleDeleteAction = (action: IAction) => {
@@ -342,12 +365,14 @@ function Actions() {
       if (!filter || !filter[1] || !allowedFilters.includes(filter[0])) return { ...acc };
 
       const [key, value] = filter;
-      if (
-        !value.value ||
-        (Array.isArray(value.value) && value.value.length === 0) ||
-        (key === 'usersIds' && value.value?.assigneesIds?.length === 0)
-      )
-        return acc;
+      if (!isValidFilterValue(value, key)) return acc;
+
+      // Handle date filters properly
+      if (key === 'dueDate') {
+        const parsedDate = parseDueDateFilter(value.value);
+        if (!parsedDate) return acc;
+        return { ...acc, [key]: parsedDate };
+      }
 
       return {
         ...acc,

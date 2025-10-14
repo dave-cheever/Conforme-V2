@@ -5,8 +5,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import FilterPreset from '../../components/FilterPreset';
-import { GET_FILTER_PRESETS, SAVE_FILTER_PRESET } from '../../components/FilterPreset';
+import FilterPreset, { GET_FILTER_PRESETS, SAVE_FILTER_PRESET } from '../../components/FilterPreset';
 
 // Mock the contexts
 const mockAppContext = {
@@ -133,7 +132,7 @@ const mocks = [
 function TestWrapper({ children }: { readonly children: React.ReactNode }) {
   return (
     <ChakraProvider data-id="002201" theme={mockTheme}>
-      <MockedProvider data-id="002202" addTypename={false} mocks={mocks}>
+      <MockedProvider addTypename={false} data-id="002202" mocks={mocks}>
         <BrowserRouter data-id="002203">{children}</BrowserRouter>
       </MockedProvider>
     </ChakraProvider>
@@ -416,7 +415,7 @@ describe('FilterPreset', () => {
 
     render(
       <TestWrapper data-id="002220">
-        <button data-id="002221" type="button" onClick={handleClick}>
+        <button data-id="002221" onClick={handleClick} type="button">
           <FilterPreset data-id="filter-preset" />
         </button>
       </TestWrapper>,

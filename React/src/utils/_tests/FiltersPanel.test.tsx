@@ -1,8 +1,9 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import { MockedProvider } from '@apollo/client/testing';
 import { ChakraProvider } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { isPermitted } from '../../components/can';
@@ -126,7 +127,7 @@ const mockTheme = {
 function TestWrapper({ children }: { readonly children: React.ReactNode }) {
   return (
     <BrowserRouter data-id="002341">
-      <MockedProvider data-id="002342" mocks={[]} addTypename={false}>
+      <MockedProvider addTypename={false} data-id="002342" mocks={[]}>
         <ChakraProvider data-id="001739" theme={mockTheme}>
           {children}
         </ChakraProvider>

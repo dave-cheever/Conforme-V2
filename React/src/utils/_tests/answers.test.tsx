@@ -14,6 +14,9 @@ import Answers, {
   dedupeCategories,
   flatMapCategories,
   GET_ANSWERS,
+  isValidFilterValue,
+  parseCreatedDateFilter,
+  parseUsersIdsFilter,
 } from '../../pages/answers';
 
 // Mock components
@@ -572,5 +575,235 @@ describe('Answers Component Functional Tests', () => {
 
     // 'All' should always be first
     expect(panels[0]).toEqual({ _id: 'all', name: 'All' });
+  });
+});
+
+// Add tests for filter parsing functions
+describe('Filter Parsing Functions', () => {
+  describe('parseUsersIdsFilter', () => {
+    test('returns null for null or undefined input', () => {
+      expect(parseUsersIdsFilter(null)).toBeNull();
+      expect(parseUsersIdsFilter(undefined)).toBeNull();
+    });
+
+    test('returns null for non-object input', () => {
+      expect(parseUsersIdsFilter('string')).toBeNull();
+      expect(parseUsersIdsFilter(123)).toBeNull();
+      expect(parseUsersIdsFilter(true)).toBeNull();
+      expect(parseUsersIdsFilter([])).toBeNull();
+    });
+
+    test('returns null when addedByIds is not an array', () => {
+      expect(parseUsersIdsFilter({ addedByIds: 'not-array' })).toBeNull();
+      expect(parseUsersIdsFilter({ addedByIds: 123 })).toBeNull();
+      expect(parseUsersIdsFilter({ addedByIds: null })).toBeNull();
+    });
+
+    test('returns null when addedByIds array is empty', () => {
+      expect(parseUsersIdsFilter({ addedByIds: [] })).toBeNull();
+    });
+
+    test('returns correct object when addedByIds has values', () => {
+      const result = parseUsersIdsFilter({ addedByIds: ['user1', 'user2'] });
+      expect(result).toEqual({ addedByIds: ['user1', 'user2'] });
+    });
+
+    test('handles object with other properties', () => {
+      const result = parseUsersIdsFilter({
+        addedByIds: ['user1'],
+        otherProp: 'value',
+      });
+      expect(result).toEqual({ addedByIds: ['user1'] });
+    });
+  });
+
+  describe('parseCreatedDateFilter', () => {
+    test('returns null for non-array input', () => {
+      expect(parseCreatedDateFilter(123)).toBeNull();
+      expect(parseCreatedDateFilter({})).toBeNull();
+      expect(parseCreatedDateFilter(null)).toBeNull();
+    });
+
+    test('returns null for empty array', () => {
+      expect(parseCreatedDateFilter([])).toBeNull();
+    });
+
+    test('returns string value when input is string', () => {
+      expect(parseCreatedDateFilter('2024-01-01')).toBe('2024-01-01');
+    });
+
+    test('returns first element when first element is array', () => {
+      const result = parseCreatedDateFilter([['dateRange', '2024-01-01', '2024-01-31']]);
+      expect(result).toEqual(['dateRange', '2024-01-01', '2024-01-31']);
+    });
+
+    test('handles dateRange format correctly', () => {
+      const result = parseCreatedDateFilter(['dateRange', '2024-01-01', '2024-01-31']);
+      expect(result).toEqual(['dateRange', '2024-01-01', '2024-01-31']);
+    });
+
+    test('handles dateRange format with null end date', () => {
+      const result = parseCreatedDateFilter(['dateRange', '2024-01-01', null]);
+      expect(result).toEqual(['dateRange', '2024-01-01', null]);
+    });
+
+    test('handles dateRange format with undefined end date', () => {
+      const result = parseCreatedDateFilter(['dateRange', '2024-01-01', undefined]);
+      expect(result).toEqual(['dateRange', '2024-01-01', null]);
+    });
+
+    test('handles exactDate format correctly', () => {
+      const result = parseCreatedDateFilter(['exactDate', '2024-01-01']);
+      expect(result).toEqual(['exactDate', '2024-01-01', undefined]);
+    });
+
+    test('handles other filter formats', () => {
+      const result = parseCreatedDateFilter(['customFilter', '2024-01-01']);
+      expect(result).toEqual(['customFilter', '2024-01-01', undefined]);
+    });
+  });
+
+  describe('isValidFilterValue', () => {
+    test('returns false for null or undefined', () => {
+      expect(isValidFilterValue(null)).toBeFalsy();
+      expect(isValidFilterValue(undefined)).toBeFalsy();
+    });
+
+    test('returns false for empty array', () => {
+      expect(isValidFilterValue([])).toBeFalsy();
+    });
+
+    test('returns false for empty string', () => {
+      expect(isValidFilterValue('')).toBeFalsy();
+    });
+
+    test('returns false for 0', () => {
+      expect(isValidFilterValue(0)).toBeFalsy();
+    });
+
+    test('returns false for false', () => {
+      expect(isValidFilterValue(false)).toBeFalsy();
+    });
+
+    test('returns true for non-empty string', () => {
+      expect(isValidFilterValue('valid')).toBe(true);
+    });
+
+    test('returns true for non-zero number', () => {
+      expect(isValidFilterValue(123)).toBe(true);
+      expect(isValidFilterValue(-1)).toBe(true);
+    });
+
+    test('returns true for true', () => {
+      expect(isValidFilterValue(true)).toBe(true);
+    });
+
+    test('returns true for non-empty array', () => {
+      expect(isValidFilterValue(['item1', 'item2'])).toBe(true);
+      expect(isValidFilterValue([1, 2, 3])).toBe(true);
+    });
+
+    test('returns true for non-empty object', () => {
+      expect(isValidFilterValue({ key: 'value' })).toBe(true);
+    });
+
+    test('returns true for array with single item', () => {
+      expect(isValidFilterValue(['single'])).toBe(true);
+    });
+  });
+
+  describe('Filter Processing Integration', () => {
+    test('processes usersIds filter correctly', () => {
+      const filters = {
+        usersIds: { addedByIds: ['user1', 'user2'] },
+        otherFilter: 'value',
+      };
+
+      const result = Object.entries(filters).reduce((acc, [key, val]) => {
+        if (key === 'usersIds') {
+          const parsedUsersIds = parseUsersIdsFilter(val);
+          if (!parsedUsersIds) return acc;
+          return { ...acc, usersIds: parsedUsersIds };
+        }
+        if (!isValidFilterValue(val)) return acc;
+        return { ...acc, [key]: val };
+      }, {} as any);
+
+      expect(result).toEqual({
+        usersIds: { addedByIds: ['user1', 'user2'] },
+        otherFilter: 'value',
+      });
+    });
+
+    test('processes createdDate filter correctly', () => {
+      const filters = {
+        createdDate: ['dateRange', '2024-01-01', '2024-01-31'],
+        otherFilter: 'value',
+      };
+
+      const result = Object.entries(filters).reduce((acc, [key, val]) => {
+        if (key === 'createdDate') {
+          const parsedDate = parseCreatedDateFilter(val);
+          if (!parsedDate) return acc;
+          return { ...acc, [key]: parsedDate };
+        }
+        if (!isValidFilterValue(val)) return acc;
+        return { ...acc, [key]: val };
+      }, {} as any);
+
+      expect(result).toEqual({
+        createdDate: ['dateRange', '2024-01-01', '2024-01-31'],
+        otherFilter: 'value',
+      });
+    });
+
+    test('skips invalid filter values', () => {
+      const filters = {
+        validFilter: 'value',
+        emptyArray: [],
+        nullValue: null,
+        emptyString: '',
+      };
+
+      const result = Object.entries(filters).reduce((acc, [key, val]) => {
+        if (!isValidFilterValue(val)) return acc;
+        return { ...acc, [key]: val };
+      }, {} as any);
+
+      expect(result).toEqual({
+        validFilter: 'value',
+      });
+    });
+
+    test('handles mixed valid and invalid filters', () => {
+      const filters = {
+        usersIds: { addedByIds: ['user1'] },
+        createdDate: ['exactDate', '2024-01-01'],
+        validFilter: 'value',
+        emptyArray: [],
+        nullValue: null,
+      };
+
+      const result = Object.entries(filters).reduce((acc, [key, val]) => {
+        if (key === 'usersIds') {
+          const parsedUsersIds = parseUsersIdsFilter(val);
+          if (!parsedUsersIds) return acc;
+          return { ...acc, usersIds: parsedUsersIds };
+        }
+        if (key === 'createdDate') {
+          const parsedDate = parseCreatedDateFilter(val);
+          if (!parsedDate) return acc;
+          return { ...acc, [key]: parsedDate };
+        }
+        if (!isValidFilterValue(val)) return acc;
+        return { ...acc, [key]: val };
+      }, {} as any);
+
+      expect(result).toEqual({
+        usersIds: { addedByIds: ['user1'] },
+        createdDate: ['exactDate', '2024-01-01', undefined],
+        validFilter: 'value',
+      });
+    });
   });
 });

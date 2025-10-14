@@ -5,56 +5,65 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
+import { isValidFilterValue, parseDueDateFilter } from '../../pages/actions';
+
 // Mock the entire Actions component to avoid complex dependencies
-vi.mock('../../pages/actions', () => ({
-  default: () => (
-    <div data-id="001370" data-testid="actions-component">
-      <div data-id="001371" data-testid="filter-pills-000256">
-        <div data-id="001372">Selected Index: 0</div>
-        <div data-id="001373">Panel Padding: 0, 0</div>
-        <div data-id="001374">Panel Margin Left: 0, 0</div>
-        <div data-id="001375">Tab Margin: 0, 0</div>
-        <div data-id="001376">Tab List Props: {JSON.stringify({ px: [4, 8] })}</div>
-        <button data-id="001377" data-testid="pill-pending" type="button">
-          Pending
-        </button>
-        <button data-id="001378" data-testid="pill-in-progress" type="button">
-          In Progress
-        </button>
-        <button data-id="001379" data-testid="pill-completed" type="button">
-          Completed
-        </button>
-        <button data-id="001380" data-testid="pill-overdue" type="button">
-          Overdue
-        </button>
-        <div data-id="001381" data-testid="filter-pills-content">
-          FilterPills Content
+vi.mock('../../pages/actions', async () => {
+  const actual = await vi.importActual('../../pages/actions');
+  return {
+    ...actual,
+    default: () => (
+      <div data-id="001370" data-testid="actions-component">
+        <div data-id="001371" data-testid="filter-pills-000256">
+          <div data-id="001372">Selected Index: 0</div>
+          <div data-id="001373">Panel Padding: 0, 0</div>
+          <div data-id="001374">Panel Margin Left: 0, 0</div>
+          <div data-id="001375">Tab Margin: 0, 0</div>
+          <div data-id="001376">Tab List Props: {JSON.stringify({ px: [4, 8] })}</div>
+          <button data-id="001377" data-testid="pill-pending" type="button">
+            Pending
+          </button>
+          <button data-id="001378" data-testid="pill-in-progress" type="button">
+            In Progress
+          </button>
+          <button data-id="001379" data-testid="pill-completed" type="button">
+            Completed
+          </button>
+          <button data-id="001380" data-testid="pill-overdue" type="button">
+            Overdue
+          </button>
+          <div data-id="001381" data-testid="filter-pills-content">
+            FilterPills Content
+          </div>
+        </div>
+        <div data-id="001382" data-testid="header-000249">
+          <div data-id="001383">Breadcrumbs: Actions</div>
+        </div>
+        <div data-id="001384" data-testid="000261">
+          <div data-id="001385" data-testid="action-square-000262">
+            Action Square: Test Action
+          </div>
+        </div>
+        <div data-id="001386" data-testid="csv-link-000251">
+          <div data-id="001387">Filename: actions.csv</div>
+          <div data-id="001388">Data Count: 1</div>
+        </div>
+        <div data-id="001389" data-testid="sort-button-000255">
+          <div data-id="001390">Sort By: name</div>
+          <div data-id="001391">Sort Order: asc</div>
+          <div data-id="001392">Sort Type: string</div>
+        </div>
+        <div data-id="001393" data-testid="change-view-button-000250">
+          <div data-id="001394">Current View: grid</div>
+          <div data-id="001395">Available Views: grid, list</div>
         </div>
       </div>
-      <div data-id="001382" data-testid="header-000249">
-        <div data-id="001383">Breadcrumbs: Actions</div>
-      </div>
-      <div data-id="001384" data-testid="000261">
-        <div data-id="001385" data-testid="action-square-000262">
-          Action Square: Test Action
-        </div>
-      </div>
-      <div data-id="001386" data-testid="csv-link-000251">
-        <div data-id="001387">Filename: actions.csv</div>
-        <div data-id="001388">Data Count: 1</div>
-      </div>
-      <div data-id="001389" data-testid="sort-button-000255">
-        <div data-id="001390">Sort By: name</div>
-        <div data-id="001391">Sort Order: asc</div>
-        <div data-id="001392">Sort Type: string</div>
-      </div>
-      <div data-id="001393" data-testid="change-view-button-000250">
-        <div data-id="001394">Current View: grid</div>
-        <div data-id="001395">Available Views: grid, list</div>
-      </div>
-    </div>
-  ),
-}));
+    ),
+    // Include the exported functions for testing
+    parseDueDateFilter: actual.parseDueDateFilter,
+    isValidFilterValue: actual.isValidFilterValue,
+  };
+});
 
 // Mock theme
 const mockTheme = { colors: {} };
@@ -526,5 +535,221 @@ describe('Actions', () => {
     handlePillChange(2);
     expect(mockSetQuickFilter).toHaveBeenCalledWith('status', ['overdue']);
     expect(mockSetActiveTab).toHaveBeenCalledWith(2);
+  });
+});
+
+describe('Filter Parsing Functions', () => {
+  describe('parseDueDateFilter', () => {
+    test('returns null for null or undefined input', () => {
+      expect(parseDueDateFilter(null)).toBeNull();
+      expect(parseDueDateFilter(undefined)).toBeNull();
+    });
+
+    test('returns null for empty array', () => {
+      expect(parseDueDateFilter([])).toBeNull();
+    });
+
+    test('returns string value when input is string', () => {
+      expect(parseDueDateFilter('2024-01-01')).toBe('2024-01-01');
+    });
+
+    test('returns null for non-string non-array input', () => {
+      expect(parseDueDateFilter(123)).toBeNull();
+      expect(parseDueDateFilter({})).toBeNull();
+      expect(parseDueDateFilter(true)).toBeNull();
+    });
+
+    test('returns first element when first element is array', () => {
+      const nestedArray = [['dateRange', '2024-01-01', '2024-01-31']];
+      expect(parseDueDateFilter(nestedArray)).toEqual(['dateRange', '2024-01-01', '2024-01-31']);
+    });
+
+    test('handles dateRange format correctly', () => {
+      const dateRange = ['dateRange', '2024-01-01', '2024-01-31'];
+      expect(parseDueDateFilter(dateRange)).toEqual(['dateRange', '2024-01-01', '2024-01-31']);
+    });
+
+    test('handles dateRange format with null end date', () => {
+      const dateRange = ['dateRange', '2024-01-01', null];
+      expect(parseDueDateFilter(dateRange)).toEqual(['dateRange', '2024-01-01', null]);
+    });
+
+    test('handles dateRange format with undefined end date', () => {
+      const dateRange = ['dateRange', '2024-01-01', undefined];
+      expect(parseDueDateFilter(dateRange)).toEqual(['dateRange', '2024-01-01', null]);
+    });
+
+    test('handles exactDate format correctly', () => {
+      const exactDate = ['exactDate', '2024-01-01'];
+      expect(parseDueDateFilter(exactDate)).toEqual(['exactDate', '2024-01-01', undefined]);
+    });
+
+    test('handles other filter types correctly', () => {
+      const otherFilter = ['otherFilter', 'value'];
+      expect(parseDueDateFilter(otherFilter)).toEqual(['otherFilter', 'value', undefined]);
+    });
+
+    test('handles single element array', () => {
+      const singleElement = ['singleValue'];
+      expect(parseDueDateFilter(singleElement)).toEqual(['singleValue', undefined, undefined]);
+    });
+  });
+
+  describe('isValidFilterValue', () => {
+    test('returns false for null or undefined value', () => {
+      expect(isValidFilterValue(null, 'anyKey')).toBeFalsy();
+      expect(isValidFilterValue(undefined, 'anyKey')).toBeFalsy();
+    });
+
+    test('returns false for value without value property', () => {
+      expect(isValidFilterValue({}, 'anyKey')).toBeFalsy();
+      expect(isValidFilterValue({ other: 'value' }, 'anyKey')).toBeFalsy();
+    });
+
+    test('returns false for empty array value', () => {
+      expect(isValidFilterValue({ value: [] }, 'anyKey')).toBeFalsy();
+    });
+
+    test('returns true for valid string value', () => {
+      expect(isValidFilterValue({ value: 'test' }, 'anyKey')).toBeTruthy();
+    });
+
+    test('returns true for valid number value', () => {
+      expect(isValidFilterValue({ value: 123 }, 'anyKey')).toBeTruthy();
+    });
+
+    test('returns true for valid object value', () => {
+      expect(isValidFilterValue({ value: { key: 'value' } }, 'anyKey')).toBeTruthy();
+    });
+
+    test('returns true for valid array with elements', () => {
+      expect(isValidFilterValue({ value: ['item1', 'item2'] }, 'anyKey')).toBeTruthy();
+    });
+
+    test('returns false for usersIds with empty assigneesIds', () => {
+      const value = { value: { assigneesIds: [] } };
+      expect(isValidFilterValue(value, 'usersIds')).toBeFalsy();
+    });
+
+    test('returns false for usersIds with undefined assigneesIds', () => {
+      const value = { value: {} };
+      expect(isValidFilterValue(value, 'usersIds')).toBeFalsy();
+    });
+
+    test('returns true for usersIds with valid assigneesIds', () => {
+      const value = { value: { assigneesIds: ['user1', 'user2'] } };
+      expect(isValidFilterValue(value, 'usersIds')).toBeTruthy();
+    });
+
+    test('returns false for usersIds with other properties but no assigneesIds', () => {
+      const value = { value: { otherProperty: 'value' } };
+      expect(isValidFilterValue(value, 'usersIds')).toBeFalsy();
+    });
+
+    test('returns true for non-usersIds key with assigneesIds', () => {
+      const value = { value: { assigneesIds: [] } };
+      expect(isValidFilterValue(value, 'otherKey')).toBeTruthy();
+    });
+
+    test('handles edge cases correctly', () => {
+      expect(isValidFilterValue({ value: 0 }, 'anyKey')).toBeFalsy();
+      expect(isValidFilterValue({ value: false }, 'anyKey')).toBeFalsy();
+      expect(isValidFilterValue({ value: '' }, 'anyKey')).toBeFalsy();
+    });
+  });
+
+  describe('Filter Processing Integration', () => {
+    test('processes dueDate filter correctly', () => {
+      const filters = {
+        dueDate: { value: ['dateRange', '2024-01-01', '2024-01-31'] },
+        otherFilter: { value: 'value' },
+      };
+
+      const result = Object.entries(filters).reduce((acc, [key, val]) => {
+        if (key === 'dueDate') {
+          const parsedDate = parseDueDateFilter(val.value);
+          if (!parsedDate) return acc;
+          return { ...acc, [key]: parsedDate };
+        }
+        if (!isValidFilterValue(val, key)) return acc;
+        return { ...acc, [key]: val.value };
+      }, {} as any);
+
+      expect(result).toEqual({
+        dueDate: ['dateRange', '2024-01-01', '2024-01-31'],
+        otherFilter: 'value',
+      });
+    });
+
+    test('processes exactDate filter correctly', () => {
+      const filters = {
+        dueDate: { value: ['exactDate', '2024-01-01'] },
+        otherFilter: { value: 'value' },
+      };
+
+      const result = Object.entries(filters).reduce((acc, [key, val]) => {
+        if (key === 'dueDate') {
+          const parsedDate = parseDueDateFilter(val.value);
+          if (!parsedDate) return acc;
+          return { ...acc, [key]: parsedDate };
+        }
+        if (!isValidFilterValue(val, key)) return acc;
+        return { ...acc, [key]: val.value };
+      }, {} as any);
+
+      expect(result).toEqual({
+        dueDate: ['exactDate', '2024-01-01', undefined],
+        otherFilter: 'value',
+      });
+    });
+
+    test('filters out invalid values correctly', () => {
+      const filters = {
+        dueDate: { value: [] },
+        usersIds: { value: { assigneesIds: [] } },
+        validFilter: { value: 'value' },
+      };
+
+      const result = Object.entries(filters).reduce((acc, [key, val]) => {
+        if (key === 'dueDate') {
+          const parsedDate = parseDueDateFilter(val.value);
+          if (!parsedDate) return acc;
+          return { ...acc, [key]: parsedDate };
+        }
+        if (!isValidFilterValue(val, key)) return acc;
+        return { ...acc, [key]: val.value };
+      }, {} as any);
+
+      expect(result).toEqual({
+        validFilter: 'value',
+      });
+    });
+
+    test('handles mixed valid and invalid filters', () => {
+      const filters = {
+        dueDate: { value: ['dateRange', '2024-01-01', '2024-01-31'] },
+        usersIds: { value: { assigneesIds: ['user1'] } },
+        emptyArray: { value: [] },
+        nullValue: null,
+        validFilter: { value: 'value' },
+      };
+
+      const result = Object.entries(filters).reduce((acc, [key, val]) => {
+        if (!val) return acc;
+        if (key === 'dueDate') {
+          const parsedDate = parseDueDateFilter(val.value);
+          if (!parsedDate) return acc;
+          return { ...acc, [key]: parsedDate };
+        }
+        if (!isValidFilterValue(val, key)) return acc;
+        return { ...acc, [key]: val.value };
+      }, {} as any);
+
+      expect(result).toEqual({
+        dueDate: ['dateRange', '2024-01-01', '2024-01-31'],
+        usersIds: { assigneesIds: ['user1'] },
+        validFilter: 'value',
+      });
+    });
   });
 });

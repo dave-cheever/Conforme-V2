@@ -73,6 +73,9 @@ function ActionModal({
   const { adminModalState, setAdminModalState } = useAdminContext();
   const [isClosing, setIsClosing] = useState(false);
   const isViewMode = adminModalState === 'view';
+
+  // Set isClosing to true immediately when modal starts closing
+  const shouldHideButtons = isViewMode || isClosing || adminModalState === 'closed';
   const isUserPermittedToModify = isPermitted({
     user,
     action: 'actions.edit',
@@ -386,7 +389,7 @@ function ActionModal({
                 )}
               </Grid>
               <Stack data-id="000632">
-                {isUserPermittedToModify && (
+                {isUserPermittedToModify && !isViewMode && (
                   <>
                     <Text data-id="000633" fontSize="11px" fontWeight="700" mb={2}>
                       Add photos or files
@@ -418,7 +421,7 @@ function ActionModal({
             </Stack>
           </Stack>
         </ModalBody>
-        {!isViewMode && !isClosing && (
+        {!shouldHideButtons && (
           <ModalFooter data-id="000638" p={1}>
             <Flex data-id="000639" flexBasis="calc(40px + 1rem)" flexShrink={0} justify="space-between" w="full">
               {isPermitted({ user, action: 'actions.delete' }) ? (

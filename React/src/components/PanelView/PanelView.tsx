@@ -53,8 +53,8 @@ function FieldRenderer({
     case 'text': {
       return (
         <Text
-          data-id={dataId || '001402'}
           color={textColor || '#4A5568'}
+          data-id={dataId || '001402'}
           fontSize={fontSize || '14px'}
           fontWeight={fontWeight || 'normal'}
           noOfLines={noOfLines}
@@ -171,8 +171,8 @@ function MobileActionMenu({ config, item, index }: { readonly config: any; reado
   return (
     <Menu data-id="001517">
       <MenuButton
-        as={IconButton}
         aria-label="Actions"
+        as={IconButton}
         background="white"
         borderColor="#CBD5E0"
         borderWidth="1px"
@@ -246,9 +246,9 @@ function ActionRenderer({
   if (!config.actions.primary) return null;
 
   return isMobile ? (
-    <MobileActionMenu data-id="002176" config={config} item={item} index={index} />
+    <MobileActionMenu config={config} data-id="002176" index={index} item={item} />
   ) : (
-    <DesktopActionButton data-id="002177" config={config} item={item} index={index} />
+    <DesktopActionButton config={config} data-id="002177" index={index} item={item} />
   );
 }
 
@@ -264,10 +264,10 @@ function LinkedItemSection({ config, item, index }: { readonly config: any; read
           {config.linkedItem.label}
         </Text>
         <Box
-          data-id="001521"
           background={'#F7FAFC'}
           border="1px solid #E2E8F0"
           borderRadius={{ base: '4px', md: '6px' }}
+          data-id="001521"
           px={{ base: '10px', md: '12px' }}
           py={{ base: '6px', md: '8px' }}
         >
@@ -304,23 +304,9 @@ function PanelView({ items, config, containerProps = { bg: '#F7FAFC', p: '14px',
     >
       {items?.map((item, index) => (
         <Flex data-id={index + 2} display={'flex'} flexDirection={'column'} key={item._id || index}>
-          <PanelHeader data-id="002178" config={config} item={item} index={index} />
+          <PanelHeader config={config} data-id="002178" index={index} item={item} />
 
           <Box
-            bg="white"
-            borderColor="#C4D0DD"
-            borderRadius="12px"
-            borderWidth="1px"
-            boxShadow="0 2px 2px 0 rgba(26, 32, 44, 0.08)"
-            data-id={`panel-${index + 2}`}
-            display={'flex'}
-            flexDirection={'column'}
-            key={item._id || index}
-            marginTop={'-10px'}
-            zIndex={5}
-            cursor={config.actions.panelClick ? 'pointer' : 'default'}
-            onClick={config.actions.panelClick ? () => config.actions.panelClick?.onClick(item) : undefined}
-            transition={config.actions.panelClick ? 'all 300ms ease-out' : undefined}
             _hover={
               config.actions.panelClick
                 ? {
@@ -329,10 +315,24 @@ function PanelView({ items, config, containerProps = { bg: '#F7FAFC', p: '14px',
                   }
                 : undefined
             }
+            bg="white"
+            borderColor="#C4D0DD"
+            borderRadius="12px"
+            borderWidth="1px"
+            boxShadow="0 2px 2px 0 rgba(26, 32, 44, 0.08)"
+            cursor={config.actions.panelClick ? 'pointer' : 'default'}
+            data-id={`panel-${index + 2}`}
+            display={'flex'}
+            flexDirection={'column'}
+            key={item._id || index}
+            marginTop={'-10px'}
+            onClick={config.actions.panelClick ? () => config.actions.panelClick?.onClick(item) : undefined}
+            transition={config.actions.panelClick ? 'all 300ms ease-out' : undefined}
+            zIndex={5}
           >
             {/* Header with title and primary action */}
             <Box borderTopLeftRadius={'12px'} borderTopRightRadius={'12px'} data-id={`panel-header-${index + 2}`} p={4}>
-              <Flex data-id="001408" justify="space-between" w="full" mb={['10px', '0px', '0px']}>
+              <Flex data-id="001408" justify="space-between" mb={['10px', '0px', '0px']} w="full">
                 <Box data-id="001409">
                   <FieldRenderer
                     config={config.title.primary}
@@ -344,36 +344,36 @@ function PanelView({ items, config, containerProps = { bg: '#F7FAFC', p: '14px',
                     textColor="#4A5568"
                   />
                 </Box>
-                <ActionRenderer data-id="002179" config={config} item={item} index={index} isMobile={isMobile} />
+                <ActionRenderer config={config} data-id="002179" index={index} isMobile={isMobile} item={item} />
               </Flex>
 
               {/* Status section */}
               <Flex
-                data-id="001411"
                 alignItems="center"
-                justifyContent={['space-between', 'flex-start', 'flex-start']}
                 columnGap="10px"
+                data-id="001411"
+                justifyContent={['space-between', 'flex-start', 'flex-start']}
                 mb="8px"
               >
                 {config.title.secondary && (
-                  <Box data-id="001520" minW="0" maxW={['200px', 'none', 'none']}>
+                  <Box data-id="001520" maxW={['200px', 'none', 'none']} minW="0">
                     <FieldRenderer
-                      data-id="001412"
                       config={config.title.secondary}
+                      data-id="001412"
                       dataId={`title-secondary-${index + 2}`}
                       fontSize={['16px', '18px']}
                       fontWeight={600}
                       item={item}
-                      textColor="#1A202C"
                       noOfLines={[1, 0, 0]}
                       overflow={['hidden', 'undefined', 'undefined']}
+                      textColor="#1A202C"
                       textOverflow={['ellipsis', 'undefined', 'undefined']}
                       whiteSpace={['nowrap', 'undefined', 'undefined']}
                     />
                   </Box>
                 )}
 
-                <Box data-id="001413" alignItems="center" display="flex" mb={0} flexShrink={0}>
+                <Box alignItems="center" data-id="001413" display="flex" flexShrink={0} mb={0}>
                   <FieldRenderer config={config.status} data-id="001414" dataId={`status-${index + 2}`} item={item} />
                 </Box>
               </Flex>
@@ -408,7 +408,7 @@ function PanelView({ items, config, containerProps = { bg: '#F7FAFC', p: '14px',
               </Box>
             </Box>
 
-            <LinkedItemSection data-id="002180" config={config} item={item} index={index} />
+            <LinkedItemSection config={config} data-id="002180" index={index} item={item} />
           </Box>
         </Flex>
       ))}

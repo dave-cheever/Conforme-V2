@@ -19,13 +19,12 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
       fontSize="sm"
       h="40px"
       justify="space-between"
-      minW="120px"
       mr={insightsFilter ? undefined : [0, 0, 4]}
       onClick={() => setShowFiltersPanel(!showFiltersPanel)}
       px={4}
     >
       <Flex align="center" data-id="000268" gap="2">
-        <Filter data-id="000269" h="18px" mt={'7px'} />
+        <Filter data-id="000269" h="18px" mt={'2px'} />
         <Flex color="black" data-id="000270" fontSize="14px" fontWeight="semi_medium">
           Filters
         </Flex>

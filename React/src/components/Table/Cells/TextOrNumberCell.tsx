@@ -102,10 +102,10 @@ function TextOrNumberCell({
       })
     : null;
 
-  const greyCircle = icon ? <Box bg="gray.300" borderRadius="50%" data-id={`${dataId}-separator`} h="4px" w="4px" mr="2px" /> : null;
+  const greyCircle = icon ? <Box bg="gray.300" borderRadius="50%" data-id={`${dataId}-separator`} h="4px" mr="2px" w="4px" /> : null;
 
   const textContent = (
-    <Flex data-id="002181" align="center" flexDirection="row" gap={iconSpacing}>
+    <Flex align="center" data-id="002181" flexDirection="row" gap={iconSpacing}>
       {icon && iconPosition === 'before' && (
         <>
           {IconComponent}

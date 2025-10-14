@@ -115,7 +115,7 @@ describe('InsightsDetailedStats – FilterPills integration', () => {
   test('returns null on mobile', () => {
     DEVICE = 'mobile';
     const result = render(<InsightsDetailedStats data-id="001479" {...baseProps} insightsType="audits" />);
-    const container = result.container;
+    const {container} = result;
     expect(container.firstChild).toBeNull();
   });
 

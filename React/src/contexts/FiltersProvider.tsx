@@ -124,7 +124,12 @@ function FiltersProvider({ children }) {
   }>({});
   const numberOfSelectedFilters = Object.values(filtersValues).filter((filter) => {
     if (!filter?.value || filter?.hideFromPanel) return false;
-    if (Array.isArray(filter?.value)) return filter?.value.length > 0;
+    if (Array.isArray(filter?.value)) {
+      // Special handling for date filters - only count when there's actually a date selected
+      if (filter?.value.length >= 2 && (filter?.value[0] === 'exactDate' || filter?.value[0] === 'dateRange'))
+        return filter?.value[1] != null; // Only count if there's a start date
+      return filter?.value.length > 0;
+    }
     if (typeof filter?.value === 'object' && !Array.isArray(filter?.value) && filter?.value !== null)
       return Object.values(filter?.value).reduce((acc: number, curr) => acc + (curr as string[]).length, 0) > 0;
     return false;

@@ -117,13 +117,13 @@ function AuditLog() {
       const existing = merged.find((p) => p._id === newLog._id);
       if (existing) {
         for (const record of newLog.records) {
-          if (!existing.records.some((e) => e.metatags?.addedAt === record.metatags?.addedAt)) {
+          if (!existing.records.some((e) => e.metatags?.addedAt === record.metatags?.addedAt)) 
             existing.records.push(record);
-          }
+          
         }
-      } else {
+      } else 
         merged.push(newLog);
-      }
+      
     }
     return merged;
   };

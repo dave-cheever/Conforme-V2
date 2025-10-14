@@ -78,12 +78,11 @@ export interface FilterPresetItem {
 }
 
 export interface FilterPresetProps {
-  readonly presets?: readonly FilterPresetItem[];
   readonly placement?: 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
   readonly 'data-id'?: string;
 }
 
-function FilterPreset({ presets, placement = 'bottom-start', 'data-id': dataId = 'filter-preset' }: FilterPresetProps) {
+function FilterPreset({ placement = 'bottom-start', 'data-id': dataId = 'filter-preset' }: FilterPresetProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSaving, setIsSaving] = useState(false);
   const [presetName, setPresetName] = useState('');
@@ -119,6 +118,8 @@ function FilterPreset({ presets, placement = 'bottom-start', 'data-id': dataId =
     skip: !user?.userId || !module?._id,
     fetchPolicy: 'cache-and-network',
   });
+
+  const actualPresets = presetsData?.getFilterPresets ? [...presetsData.getFilterPresets] : [];
 
   const getCurrentFilterValues = () => {
     const currentFilters: Record<string, any> = {};
@@ -269,7 +270,6 @@ function FilterPreset({ presets, placement = 'bottom-start', 'data-id': dataId =
         setPresetName('');
         setIsSaving(false);
       } catch (error: any) {
-        console.error('Error saving filter preset:', error);
         toast({
           title: 'Failed to save preset',
           description: error.message || 'An error occurred while saving the filter preset',
@@ -336,7 +336,6 @@ function FilterPreset({ presets, placement = 'bottom-start', 'data-id': dataId =
       // Close the confirmation dialog
       setPresetToDelete(null);
     } catch (error: any) {
-      console.error('Error deleting filter preset:', error);
       toast({
         title: 'Failed to delete preset',
         description: error.message || 'An error occurred while deleting the filter preset',
@@ -387,8 +386,6 @@ function FilterPreset({ presets, placement = 'bottom-start', 'data-id': dataId =
     onClose();
   };
 
-  const actualPresets = presetsData?.getFilterPresets ? [...presetsData.getFilterPresets] : [];
-
   return (
     <>
       <Menu data-id={dataId} isOpen={isOpen} onClose={onClose} onOpen={onOpen} placement={placement}>
@@ -434,10 +431,10 @@ function FilterPreset({ presets, placement = 'bottom-start', 'data-id': dataId =
           }}
           p="0"
         >
-          <VStack data-id="002176" align="stretch" spacing={0}>
+          <VStack align="stretch" data-id="002176" spacing={0}>
             {/* Header */}
             <Box data-id="002177" px="16px" py="12px">
-              <Flex data-id="002178" align="center" justify="space-between">
+              <Flex align="center" data-id="002178" justify="space-between">
                 <Text color="#1A202C" data-id={`${dataId}-title`} fontSize="14px" fontWeight="500">
                   Filter presets
                 </Text>
@@ -450,7 +447,7 @@ function FilterPreset({ presets, placement = 'bottom-start', 'data-id': dataId =
                     fontSize="12px"
                     fontWeight="500"
                     h="auto"
-                    leftIcon={<PlusIcon data-id="002179" color="#4A5568" h="12px" w="12px" />}
+                    leftIcon={<PlusIcon color="#4A5568" data-id="002179" h="12px" w="12px" />}
                     onClick={(e) => {
                       e.stopPropagation();
                       setIsSaving(true);
@@ -462,12 +459,12 @@ function FilterPreset({ presets, placement = 'bottom-start', 'data-id': dataId =
                   </Button>
                 )}
               </Flex>
-              <Divider data-id="002180" borderColor="#E4E7EC" mt="8px" />
+              <Divider borderColor="#E4E7EC" data-id="002180" mt="8px" />
             </Box>
 
             {/* Save Preset Input Section */}
             {isSaving && (
-              <Box data-id="002230" borderBottom="1px solid #CBD5E0" pb="10px" px="16px">
+              <Box borderBottom="1px solid #CBD5E0" data-id="002230" pb="10px" px="16px">
                 <SavePresetForm
                   data-id="002231"
                   dataId={dataId}

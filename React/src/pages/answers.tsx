@@ -60,6 +60,30 @@ export const buildPanels = (auditTypes: AuditType[] | null | undefined) => {
   return [{ _id: 'all', name: 'All' }, ...Array.from(uniqueCategoriesMap.values())];
 };
 
+// Export filter parsing functions for testing
+export const parseUsersIdsFilter = (val: any) => {
+  if (!val || typeof val !== 'object') return null;
+  const addedByIds = Array.isArray(val.addedByIds) ? val.addedByIds : [];
+  if (addedByIds.length === 0) return null;
+  return { addedByIds };
+};
+
+export const parseCreatedDateFilter = (val: any) => {
+  if (!Array.isArray(val) || val.length === 0) return typeof val === 'string' ? val : null;
+
+  if (Array.isArray(val[0])) return val[0];
+
+  if (val[0] === 'dateRange') {
+    const [filter, start, end] = val;
+    return [filter, start, end ?? null];
+  }
+  // Exact date format: ['exactDate', date] -> [filter, date, undefined]
+  const [filter, date] = val;
+  return [filter, date, undefined];
+};
+
+export const isValidFilterValue = (val: any) => val && !(Array.isArray(val) && val.length === 0);
+
 export const categoryIdsForPanel = (
   panels: Category[],
   selectedPanelIndex: number,
@@ -419,13 +443,19 @@ function Answers() {
 
       // Normalize usersIds specifically for Answers API: only allow addedByIds
       if (key === 'usersIds') {
-        if (!val || typeof val !== 'object') return acc;
-        const addedByIds = Array.isArray(val.addedByIds) ? val.addedByIds : [];
-        if (addedByIds.length === 0) return acc;
-        return { ...acc, usersIds: { addedByIds } };
+        const parsedUsersIds = parseUsersIdsFilter(val);
+        if (!parsedUsersIds) return acc;
+        return { ...acc, usersIds: parsedUsersIds };
       }
 
-      if (!val || (Array.isArray(val) && val.length === 0)) return acc;
+      // Handle date filters properly
+      if (key === 'createdDate') {
+        const parsedDate = parseCreatedDateFilter(val);
+        if (!parsedDate) return acc;
+        return { ...acc, [key]: parsedDate };
+      }
+
+      if (!isValidFilterValue(val)) return acc;
       return { ...acc, [key]: val };
     }, {} as any);
 
