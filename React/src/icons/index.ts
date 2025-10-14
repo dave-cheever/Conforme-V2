@@ -136,6 +136,16 @@ export { default as AuditUpcomingIcon } from './AuditUpcomingIcon';
 export { default as IncidentIcon } from './IncidentIcon';
 export { default as RecordIcon } from './RecordIcon';
 export { default as AuditMissedIcon } from './AuditMissedIcon';
+export { default as LinkedItemLinkIcon } from './LinkedItemLinkIcon';
+export { default as EditIncidentIcon } from './EditIncidentIcon';
+export { default as EscalatedStatusIcon } from './EscalatedStatusIcon';
+export { default as HospitalIcon } from './HospitalIcon';
+export { default as IncidentTimestampIcon } from './IncidentTimestampIcon';
+export { default as InvestigationStatusIcon } from './InvestigationStatusIcon';
+export { default as LinkedIncidentIcon } from './LinkedIncidentIcon';
+export { default as PeopleAssignedIcon } from './PeopleAssignedIcon';
+export { default as WardLocationIcon } from './WardLocationIcon';
+export { default as ActionSeverityIcon } from './ActionSeverityIcon';
 
 export {
   Accidents,
@@ -265,3 +275,5 @@ export {
   WarningIcon,
   HelpSupportIcon,
 };
+
+export { default as ActionDetailDate } from './ActionDetailDate';

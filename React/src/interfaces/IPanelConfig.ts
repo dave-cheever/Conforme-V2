@@ -19,7 +19,16 @@ export interface PanelFieldConfig {
   };
   readonly dateFormat?: string;
   readonly fallback?: string; // Default value if data is missing
+  readonly userType?: string; // Text label for user count (e.g., "assigned", "members")
   readonly render?: (value: any, item: any) => React.ReactNode; // Custom render function
+  readonly textColorMap?: Record<string, string>; // Map values to custom text colors
+  readonly textStyle?: {
+    readonly color?: string;
+    readonly textDecoration?: string;
+    readonly cursor?: string;
+    readonly fontSize?: string;
+    readonly fontWeight?: number | string;
+  }; // Custom text styling
 }
 
 export interface PanelConfig {
@@ -32,11 +41,13 @@ export interface PanelConfig {
     readonly secondary?: PanelFieldConfig;
   };
   readonly status: PanelFieldConfig;
+  readonly description?: PanelFieldConfig;
   readonly details: readonly PanelFieldConfig[];
   readonly linkedItem?: {
     readonly show: boolean;
     readonly fieldKey: string; // Key to check for linked item existence
     readonly label: string; // Label to display
+    readonly icon?: React.ComponentType; // Icon to display next to label
     readonly render?: (value: any, item: any) => React.ReactNode; // Custom render function
   };
   readonly actions: {
@@ -52,6 +63,11 @@ export interface PanelConfig {
       readonly label: string;
       readonly onClick: (item: any) => void;
     };
+    readonly secondaryActions?: readonly {
+      readonly label: string;
+      readonly icon?: React.ComponentType;
+      readonly onClick: (item: any) => void;
+    }[];
   };
 }
 

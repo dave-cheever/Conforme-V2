@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { Box, Button, Flex, ModalContent } from '@chakra-ui/react';
+import { Box, Button, Flex, ModalContent, useToast } from '@chakra-ui/react';
 
 import { TrackerItemModalContext } from '../../contexts/TrackerItemModalProvider';
 import useTrackerItemModal from '../../hooks/useTrackerItemModal';
@@ -9,14 +9,21 @@ import { CrossIcon } from '../../icons';
 function DeleteTrackerItemModal({ refetch, onItemDeleted }) {
   const { trackerItem } = useContext(TrackerItemModalContext);
   const { deleteTrackerItem, closeModal } = useTrackerItemModal(refetch);
+  const toast = useToast();
 
   const handleDelete = async () => {
     try {
       await deleteTrackerItem(trackerItem);
       if (onItemDeleted) onItemDeleted();
       if (refetch) refetch();
-    } catch (error) {
-      console.error('Error deleting tracker item:', error);
+    } catch (error: any) {
+      toast({
+        title: 'Failed to delete tracker item',
+        description: 'An error occurred while deleting the tracker item',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 

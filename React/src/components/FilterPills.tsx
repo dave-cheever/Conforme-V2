@@ -190,15 +190,12 @@ function FilterPills({
 
         {showScrollIndicator && !isAtEnd && (
           <Box
-            data-id="002347"
             _hover={{
               bg: 'gray.100',
               borderRadius: '50%',
             }}
             alignItems="center"
-            cursor="pointer"
-            // Only show on mobile
-            display={['flex', 'none']}
+            data-id="002347"
             height="30px"
             justifyContent="center"
             onClick={scrollRight}
@@ -208,8 +205,11 @@ function FilterPills({
             transform="translateY(-50%)"
             transition="all 0.2s"
             width="30px"
-            zIndex="2">
-            <Icon data-id="002348" as={ChevronRightIcon} color="gray.600" h="18px" w="18px" />
+            zIndex="2"
+            cursor="pointer"
+            // Only show on mobile
+            display={['flex', 'none']}>
+            <Icon as={ChevronRightIcon} color="gray.600" data-id="002348" h="18px" w="18px" />
           </Box>
         )}
       </Box>

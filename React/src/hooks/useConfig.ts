@@ -102,7 +102,7 @@ const useConfig = () => {
       url: '/components',
       icon: GridIcon,
       permission: 'home.view',
-      hidden: runtimeEnv.enableComponentsPage() !== 'true'
+      hidden: runtimeEnv.enableComponentsPage() !== 'true',
     },
     {
       type: 'menuItem',
@@ -162,7 +162,7 @@ const useConfig = () => {
       url: '/components',
       icon: GridIcon,
       permission: 'home.view',
-      hidden: runtimeEnv.enableComponentsPage() !== 'true'
+      hidden: runtimeEnv.enableComponentsPage() !== 'true',
     },
     {
       type: 'menuItem',

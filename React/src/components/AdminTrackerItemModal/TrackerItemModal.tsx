@@ -138,8 +138,11 @@ function TrackerItemModal({ refetch, onItemAdded }) {
       await saveTrackerItem(trackerItem);
       if (onItemAdded) onItemAdded();
       reset();
-    } catch (error) {
-      console.error('Error saving tracker item:', error);
+    } catch (error: any) {
+      toast({
+        ...toastFailed,
+        description:'An error occurred while saving the tracker item',
+      });
     }
   };
 

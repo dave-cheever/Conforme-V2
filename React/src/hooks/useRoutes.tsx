@@ -25,6 +25,7 @@ import Assets from '../pages/assets';
 import Audit from '../pages/audit';
 import AuditHistory from '../pages/audit/history';
 import AuditParticipants from '../pages/audit/participants';
+import Components from '../pages/components';
 import Dashboard from '../pages/dashboard';
 import Help from '../pages/help';
 import Insights from '../pages/insights';
@@ -38,7 +39,6 @@ import TrackerItemAuditLog from '../pages/tracker-item/audit-log';
 import History from '../pages/tracker-item/history';
 import TrackerItemResponse from '../pages/tracker-item/index';
 import Team from '../pages/tracker-item/team';
-import Components from '../pages/components';
 import { runtimeEnv } from '../utils/runtime-env';
 
 // Routes visible for not signed in

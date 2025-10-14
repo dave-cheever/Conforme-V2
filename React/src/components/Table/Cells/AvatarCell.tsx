@@ -34,7 +34,6 @@ import { IUser } from '../../../interfaces/IUser';
  * <AvatarCell users={[]} noDataText="No assignees" />
  */
 
-
 // This component is used to display a stack of avatars in a table cell. If there is a single avatar it will display the avatar and also the users name.
 function AvatarCell({ 
         users, 

@@ -1,7 +1,7 @@
 const incidentsData = [
   {
-    id: 'INC-02102025-0629-001',
-    title: 'Safeguarding Concern - Safeguarding & Dignity ',
+    id: 'Safeguarding Concern - Safeguarding & Dignity ',
+    title: 'INC-02102025-0629-001',
     status: 'IN REVIEW',
     description:
       'Mrs. Sarah Smith raised concerns regarding the treatment of her 9-year-old autistic son, John Smith, who was placed in an isolation room overnight as a disciplinary action. She reports that he was left without welfare checks, causing significant distress, and is requesting a formal review and accountability.',
@@ -16,8 +16,8 @@ const incidentsData = [
     linked_item: 'ACT-20251002-001',
   },
   {
-    id: 'INC-02102025-0629-002',
-    title: 'Privacy & Documentation - Documentation or Charting Error',
+    id: 'Privacy & Documentation - Documentation or Charting Error',
+    title: 'INC-02102025-0629-002',
     status: 'Investigation',
     description:
       'During morning chart checks on the Pediatrics Ward, staff discovered an incorrect dosage recorded for a child’s antibiotic treatment. Fortunately, the error was identified before medication administration, and the correct dosage was given. A refresher training session on charting protocols has been scheduled for the nursing team.',
@@ -25,14 +25,14 @@ const incidentsData = [
     hospital_name: 'Frenhill Clinic',
     ward_location: 'General Ward 1',
     timestamp: '"2025-10-02T04:08:00Z"',
-    people_assigned: 'Johny Dae',
+    people_assigned: ['Johny Dae', 'Melissa Barnes'],
     severity: 'medium',
     criticality_level: 'medium',
     Closed_on_date: '2025-10-09T04:08:00Z',
   },
   {
-    id: 'INC-02102025-0629-003',
-    title: 'Clinical Safety - Patient Fall',
+    id: 'Clinical Safety - Patient Fall',
+    title: 'INC-02102025-0629-003',
     status: 'Escalated',
     description:
       'An elderly patient tripped over a loose section of carpet in the Orthopaedics Unit hallway. They landed on their left arm, resulting in a hairline fracture and soft‑tissue swelling. Maintenance has been tasked with immediate carpet repair and an environmental safety audit is underway.',

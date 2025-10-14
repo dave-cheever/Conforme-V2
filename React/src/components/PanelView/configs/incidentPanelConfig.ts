@@ -1,13 +1,27 @@
 import React from 'react';
 
-import { Building, CalendarIcon, CheckIcon, ComingUpIcon, DetailIcon, WarningIcon } from '../../../icons';
+import {
+  Building,
+  CheckIcon,
+  ComingUpIcon,
+  DetailIcon,
+  EditIncidentIcon,
+  EscalatedStatusIcon,
+  HospitalIcon,
+  IncidentTimestampIcon,
+  InvestigationStatusIcon,
+  LinkedIncidentIcon,
+  PeopleAssignedIcon,
+  WardLocationIcon,
+  WarningIcon,
+} from '../../../icons';
 import AuditDetailIcon from '../../../icons/AuditDetailIcon';
-import IncidentIcon from '../../../icons/IncidentIcon';
 import { PanelConfig } from '../../../interfaces/IPanelConfig';
+import LinkedIncidentRenderer from '../LinkedIncidentRenderer';
 
 const incidentPanelConfig: PanelConfig = {
   header: {
-    show: true,
+    show: false,
     fields: [
       {
         key: 'hospital_name',
@@ -83,21 +97,21 @@ const incidentPanelConfig: PanelConfig = {
       variant: 'solid',
       statusConfig: {
         'IN REVIEW': {
-          bg: '#3B82F6',
+          bg: '#F97316',
           color: 'white',
-          icon: DetailIcon,
+          icon: EditIncidentIcon,
           text: 'In Review',
         },
         Investigation: {
-          bg: '#F59E0B',
+          bg: '#0073E6',
           color: 'white',
-          icon: WarningIcon,
+          icon: InvestigationStatusIcon,
           text: 'Investigation',
         },
         Escalated: {
-          bg: '#EF4444',
+          bg: '#D0021B',
           color: 'white',
-          icon: WarningIcon,
+          icon: EscalatedStatusIcon,
           text: 'Escalated',
         },
         Closed: {
@@ -110,64 +124,73 @@ const incidentPanelConfig: PanelConfig = {
     },
     fallback: 'Unknown',
   },
+  description: {
+    key: 'description',
+    type: 'text',
+    fallback: 'No Description',
+  },
   details: [
-    {
-      key: 'description',
-      type: 'text',
-      icon: DetailIcon,
-      fallback: 'No Description',
-    },
     {
       key: 'owner',
       type: 'user',
-      icon: DetailIcon,
       fallback: 'Unassigned',
     },
     {
+      key: 'hospital_name',
+      type: 'text',
+      icon: HospitalIcon,
+      fallback: 'No Hospital',
+    },
+    {
+      key: 'ward_location',
+      type: 'text',
+      icon: WardLocationIcon,
+      fallback: 'No Location',
+    },
+    {
       key: 'people_assigned',
-      type: 'user',
-      icon: DetailIcon,
+      type: 'text',
+      icon: PeopleAssignedIcon,
       fallback: 'No one assigned',
+      textStyle: {
+        color: '#2D3748',
+        fontSize: '12px',
+        fontWeight: 600,
+      },
+      render: (value: any) => {
+        let text = 'No one assigned';
+
+        if (value) {
+          if (Array.isArray(value)) {
+            if (value.length === 0) text = 'No one assigned';
+            else if (value.length === 1) text = value[0];
+            else text = `${value.length} people`;
+          } else text = value;
+        }
+
+        return React.createElement(
+          'span',
+          {
+            style: {
+              color: '#2D3748',
+              fontSize: '12px',
+              fontWeight: 600,
+            },
+          },
+          text,
+        );
+      },
     },
     {
       key: 'timestamp',
       type: 'date',
       dateFormat: 'd MMM yyyy, h:mm a',
-      icon: CalendarIcon,
+      icon: IncidentTimestampIcon,
       fallback: 'No Date',
     },
     {
       key: 'criticality_level',
-      type: 'badge',
-      badgeConfig: {
-        variant: 'solid',
-        statusConfig: {
-          Critical: {
-            bg: '#DC2626',
-            color: 'white',
-            text: 'Critical',
-            icon: WarningIcon,
-          },
-          high: {
-            bg: '#EF4444',
-            color: 'white',
-            text: 'High',
-            icon: WarningIcon,
-          },
-          medium: {
-            bg: '#F59E0B',
-            color: 'white',
-            text: 'Medium',
-            icon: ComingUpIcon,
-          },
-          low: {
-            bg: '#10B981',
-            color: 'white',
-            text: 'Low',
-            icon: CheckIcon,
-          },
-        },
-      },
+      type: 'text',
       fallback: 'Unknown',
     },
   ],
@@ -175,37 +198,10 @@ const incidentPanelConfig: PanelConfig = {
     show: true,
     fieldKey: 'linked_item',
     label: 'Linked Action',
+    icon: LinkedIncidentIcon,
     render: (value: any) => {
       if (!value) return null;
-      return React.createElement(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 12px',
-            backgroundColor: '#F7FAFC',
-            borderRadius: '6px',
-            border: '1px solid #E2E8F0',
-          },
-        },
-        [
-          React.createElement(IncidentIcon, { key: 'icon' }),
-          React.createElement(
-            'span',
-            {
-              key: 'text',
-              style: {
-                fontSize: '14px',
-                fontWeight: '500',
-                color: '#3182CE',
-              },
-            },
-            `Linked Action: ${value}`,
-          ),
-        ],
-      );
+      return React.createElement(LinkedIncidentRenderer, { value: String(value) });
     },
   },
   actions: {
@@ -223,6 +219,29 @@ const incidentPanelConfig: PanelConfig = {
         // Edit handled by parent component
       },
     },
+    secondaryActions: [
+      {
+        label: 'Edit Incident',
+        icon: DetailIcon,
+        onClick: () => {
+          // Edit incident action
+        },
+      },
+      {
+        label: 'Assign to Me',
+        icon: PeopleAssignedIcon,
+        onClick: () => {
+          // Assign to me action
+        },
+      },
+      {
+        label: 'Close Incident',
+        icon: CheckIcon,
+        onClick: () => {
+          // Close incident action
+        },
+      },
+    ],
   },
 };
 

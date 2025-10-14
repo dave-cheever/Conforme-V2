@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ActionTypeIcon, CalendarIcon, CheckIcon, ComingUpIcon, DetailIcon, QuestionIcon, WarningIcon } from '../../../icons';
+import { ActionDetailDate, ActionSeverityIcon, ActionTypeIcon, AuditUpcomingIcon, CheckIcon, DetailIcon, WarningIcon } from '../../../icons';
 import AuditDetailIcon from '../../../icons/AuditDetailIcon';
 import IncidentIcon from '../../../icons/IncidentIcon';
 import RecordIcon from '../../../icons/RecordIcon';
@@ -77,7 +77,7 @@ const actionPanelConfig: PanelConfig = {
         'In Progress': {
           bg: '#3B82F6',
           color: 'white',
-          icon: ComingUpIcon,
+          icon: AuditUpcomingIcon,
           text: 'In Progress',
         },
         Completed: {
@@ -106,47 +106,28 @@ const actionPanelConfig: PanelConfig = {
     {
       key: 'action_assigned_to',
       type: 'user',
-      icon: DetailIcon,
       fallback: 'Unassigned',
     },
     {
       key: 'action_end_date_timestamp',
       type: 'date',
       dateFormat: 'd MMM yyyy',
-      icon: CalendarIcon,
+      icon: ActionDetailDate,
       fallback: 'No Due Date',
     },
     {
       key: 'action_SLA',
       type: 'text',
-      icon: QuestionIcon,
       fallback: 'No SLA',
     },
     {
       key: 'action_severity',
-      type: 'badge',
-      badgeConfig: {
-        variant: 'solid',
-        statusConfig: {
-          high: {
-            bg: '#EF4444',
-            color: 'white',
-            text: 'High',
-            icon: WarningIcon,
-          },
-          medium: {
-            bg: '#F59E0B',
-            color: 'white',
-            text: 'Medium',
-            icon: ComingUpIcon,
-          },
-          low: {
-            bg: '#10B981',
-            color: 'white',
-            text: 'Low',
-            icon: CheckIcon,
-          },
-        },
+      type: 'text',
+      icon: ActionSeverityIcon,
+      textColorMap: {
+        high: '#D0021B',
+        medium: '#E46105',
+        low: '#000000',
       },
       fallback: 'Unknown',
     },

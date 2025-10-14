@@ -71,11 +71,11 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
             w="30px">
             <Icon
               as={icon}
+              color="#fff"
               data-id="000562"
               fill="#ffffff"
               h="21px"
               stroke="#ffffff"
-              color="#fff"
               w="21px" />
           </Flex>
           {showFiltersPanel && getPath() !== "components" && (menuItem.subSections?.length > 0 || isPathActive(url, { exact: true })) && (
