@@ -69,42 +69,8 @@ jobs:
           fi
         displayName: Commit automation changes if any
 
-  - job: Execute_unit_tests
-    displayName: Execute unit tests
-    dependsOn: Insert_automation_IDs
-    steps:
-      - checkout: self
-
-      - task: NodeTool@0
-        displayName: Set Node Version
-        inputs:
-          versionSource: spec
-          versionSpec: 22.x
-          checkLatest: true
-
-      - task: Npm@1
-        displayName: Install dependencies
-        inputs:
-          command: install
-          workingDir: React
-
-      - task: Npm@1
-        displayName: Execute unit tests (with coverage)
-        inputs:
-          command: custom
-          workingDir: React
-          customCommand: run test:ci
-
-      - task: PublishBuildArtifacts@1
-        displayName: Publish coverage artifact
-        inputs:
-          PathtoPublish: React/coverage
-          ArtifactName: coverage
-        condition: succeededOrFailed()
-
   - job: SonarQube_Analysis
-    displayName: Run SonarCloud analysis
-    dependsOn: Execute_unit_tests
+    displayName: Execute tests & run SonarCloud analysis
     steps:
       - checkout: self
         fetchDepth: 0

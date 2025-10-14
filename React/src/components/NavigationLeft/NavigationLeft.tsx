@@ -57,11 +57,11 @@ function NavigationLeft() {
               key={`menu${i}`}
               // eslint-disable-next-line react/no-unstable-nested-components
               yes={() => {
-                if (device === 'desktop') return <NavigationLeftItem data-id="000550" menuItem={menuItem} />;
+                if (device === 'desktop') return menuItem.hidden ? <></> : <NavigationLeftItem data-id="000550" menuItem={menuItem} />;
 
                 if (device === 'tablet') {
                   return (
-                    <NavigationLeftItemTablet
+                    menuItem.hidden ? <></> : <NavigationLeftItemTablet
                         data-id="000551"
                         filtersOpen={filtersOpen}
                         menuItem={menuItem}

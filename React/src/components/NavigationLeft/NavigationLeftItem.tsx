@@ -15,7 +15,7 @@ import SubSection from './SubSection';
 function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
   const { module } = useAppContext();
   const isTrackerComponent = module?.type === "tracker";
-  const { navigateTo, isPathActive } = useNavigate();
+  const { getPath, navigateTo, isPathActive } = useNavigate();
   const { url, icon, label } = menuItem;
   const [menuOpen, setMenuOpen] = useState(true);
   const { showFiltersPanel, responsesStatusesCounts } = useFiltersContext();
@@ -75,9 +75,10 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
               fill="#ffffff"
               h="21px"
               stroke="#ffffff"
+              color="#fff"
               w="21px" />
           </Flex>
-          {showFiltersPanel && (menuItem.subSections?.length > 0 || isPathActive(url, { exact: true })) && (
+          {showFiltersPanel && getPath() !== "components" && (menuItem.subSections?.length > 0 || isPathActive(url, { exact: true })) && (
             <ArrowRight boxSize="10px" data-id="000563" ml={1} />
           )}
         </Flex>

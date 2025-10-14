@@ -9,6 +9,7 @@ import {
   CategoryIcon,
   CheckIcon,
   EditIcon,
+  GridIcon,
   HelpSupportIcon,
   Home,
   Insights,
@@ -22,6 +23,7 @@ import {
 import IFilters from '../interfaces/IFilters';
 import { INavItem } from '../interfaces/INavItem';
 import { ISearchCategory } from '../interfaces/ISearchCategory';
+import runtimeEnv from '../utils/runtime-env';
 
 const useConfig = () => {
   const auditSearchItems: ISearchCategory[] = [
@@ -96,6 +98,14 @@ const useConfig = () => {
     },
     {
       type: 'menuItem',
+      label: 'Components',
+      url: '/components',
+      icon: GridIcon,
+      permission: 'home.view',
+      hidden: runtimeEnv.enableComponentsPage() !== 'true'
+    },
+    {
+      type: 'menuItem',
       label: 'Help & Support',
       url: '/help',
       icon: HelpSupportIcon,
@@ -145,6 +155,14 @@ const useConfig = () => {
         { label: 'Audit log', url: '/admin/audit-log' },
         { label: 'Other settings', url: '/admin/settings' },
       ],
+    },
+    {
+      type: 'menuItem',
+      label: 'Components',
+      url: '/components',
+      icon: GridIcon,
+      permission: 'home.view',
+      hidden: runtimeEnv.enableComponentsPage() !== 'true'
     },
     {
       type: 'menuItem',

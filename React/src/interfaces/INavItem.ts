@@ -13,4 +13,5 @@ export interface INavItem {
   isActive?: boolean;
   subSections?: ISubSection[] | undefined;
   permission: string;
+  hidden?: boolean;
 }

@@ -38,6 +38,8 @@ import TrackerItemAuditLog from '../pages/tracker-item/audit-log';
 import History from '../pages/tracker-item/history';
 import TrackerItemResponse from '../pages/tracker-item/index';
 import Team from '../pages/tracker-item/team';
+import Components from '../pages/components';
+import { runtimeEnv } from '../utils/runtime-env';
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -301,6 +303,13 @@ const protectedRoutes: Array<IRoute> = [
     component: Help,
     layout: DefaultLayout,
   },
+  ...(runtimeEnv.enableComponentsPage() ? [{
+    path: '/components',
+    key: 'components',
+    exact: true,
+    component: Components,
+    layout: DefaultLayout,
+  }] : []),
 ];
 
 const useRoutes = () => {

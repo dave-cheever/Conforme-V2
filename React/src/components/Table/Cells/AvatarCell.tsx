@@ -4,6 +4,37 @@ import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
 
 import { IUser } from '../../../interfaces/IUser';
 
+/**
+ * AvatarCell Component
+ * 
+ * A reusable component that displays user avatars in a table cell format.
+ * 
+ * Features:
+ * - Displays up to 3 visible avatars in a stacked layout
+ * - Shows user count when multiple users are present
+ * - Displays user name for single user scenarios
+ * - Handles empty states with customizable text
+ * - Supports partial user data with filtering
+ * 
+ * @param users - Array of user objects (can be partial IUser objects)
+ * @param userType - Text label shown next to count when multiple users (default: "assigned")
+ * @param noDataText - Text shown when no users are provided (default: "Unassigned")
+ * 
+ * @example
+ * // Single user with name display
+ * <AvatarCell users={[{_id: '1', displayName: 'John Doe', imgUrl: 'avatar.jpg'}]} />
+ * 
+ * // Multiple users with count
+ * <AvatarCell 
+ *   users={[user1, user2, user3, user4]} 
+ *   userType="members" 
+ * />
+ * 
+ * // Empty state
+ * <AvatarCell users={[]} noDataText="No assignees" />
+ */
+
+
 // This component is used to display a stack of avatars in a table cell. If there is a single avatar it will display the avatar and also the users name.
 function AvatarCell({ 
         users, 

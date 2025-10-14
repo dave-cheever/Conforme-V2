@@ -5,6 +5,7 @@ type RuntimeEnv = {
   VITE_API_URL?: string;
   VITE_CLIENT_URL?: string;
   VITE_MARKER_IO_PROJECT_ID?: string;
+  VITE_COMPONENTS_PAGE_ENABLED?: string;
   [key: string]: string | undefined;
 };
 
@@ -44,6 +45,9 @@ export const runtimeEnv = {
   },
   markerIoProjectId(): string {
     return getEnvVar('VITE_MARKER_IO_PROJECT_ID', '') || '';
+  },
+  enableComponentsPage(): string {
+    return getEnvVar('VITE_COMPONENTS_PAGE_ENABLED', '') || '';
   },
 };
 
