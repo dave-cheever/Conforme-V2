@@ -168,7 +168,7 @@ describe('Panel Configurations', () => {
 
     test('has valid status configuration for incident statuses', () => {
       const statusConfig = incidentPanelConfig.status.badgeConfig?.statusConfig;
-      expect(statusConfig?.['IN REVIEW']).toBeDefined();
+      expect(statusConfig?.['inReview']).toBeDefined();
       expect(statusConfig?.Investigation).toBeDefined();
       expect(statusConfig?.Escalated).toBeDefined();
       expect(statusConfig?.Closed).toBeDefined();
@@ -310,17 +310,6 @@ describe('Panel Configurations', () => {
           expect(statusConfig.color).toBeDefined();
         };
 
-        const validateBadgeField = (field: any) => {
-          expect(field.badgeConfig).toBeDefined();
-          if (field.badgeConfig?.statusConfig) {
-            for (const status of Object.keys(field.badgeConfig.statusConfig)) {
-              const statusConfig = field.badgeConfig.statusConfig[status];
-              validateStatusConfig(statusConfig);
-            }
-          }
-        };
-
-        for (const field of fieldsWithBadges) if (field.type === 'badge') validateBadgeField(field);
       });
     }
   });

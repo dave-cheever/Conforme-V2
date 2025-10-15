@@ -96,11 +96,11 @@ const incidentPanelConfig: PanelConfig = {
     badgeConfig: {
       variant: 'solid',
       statusConfig: {
-        'IN REVIEW': {
+        'inReview': {
           bg: '#F97316',
           color: 'white',
           icon: EditIncidentIcon,
-          text: 'In Review',
+          text: 'inReview',
         },
         Investigation: {
           bg: '#0073E6',

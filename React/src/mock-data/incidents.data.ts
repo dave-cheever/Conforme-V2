@@ -2,7 +2,7 @@ const incidentsData = [
   {
     id: 'Safeguarding Concern - Safeguarding & Dignity ',
     title: 'INC-02102025-0629-001',
-    status: 'IN REVIEW',
+    status: 'inReview',
     description:
       'Mrs. Sarah Smith raised concerns regarding the treatment of her 9-year-old autistic son, John Smith, who was placed in an isolation room overnight as a disciplinary action. She reports that he was left without welfare checks, causing significant distress, and is requesting a formal review and accountability.',
     owner: 'Priya Agate',

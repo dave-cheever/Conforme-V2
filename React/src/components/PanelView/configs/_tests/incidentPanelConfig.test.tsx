@@ -82,7 +82,7 @@ describe('IncidentPanelConfig', () => {
       </TestWrapper>,
     );
 
-    // Check IN REVIEW status
+    // Check inReview status
     const inReviewBadge = screen.getByText('In Review');
     expect(inReviewBadge).toBeInTheDocument();
 
@@ -167,7 +167,7 @@ describe('IncidentPanelConfig', () => {
     const incompleteIncident = {
       id: 'Test ID',
       title: 'Test Title',
-      status: 'IN REVIEW',
+      status: 'inReview',
       // Missing other required fields
     };
 

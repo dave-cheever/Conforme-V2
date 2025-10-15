@@ -22,7 +22,7 @@ describe('Incidents Mock Data', () => {
   });
 
   test('has correct status values', () => {
-    expect(incidentsData[0].status).toBe('IN REVIEW');
+    expect(incidentsData[0].status).toBe('inReview');
     expect(incidentsData[1].status).toBe('Investigation');
     expect(incidentsData[2].status).toBe('Escalated');
   });
@@ -106,7 +106,7 @@ describe('Incidents Mock Data', () => {
   });
 
   test('has valid status values', () => {
-    const validStatuses = ['IN REVIEW', 'Investigation', 'Escalated', 'Closed'];
+    const validStatuses = ['inReview', 'Investigation', 'Escalated', 'Closed'];
     incidentsData.forEach((incident) => {
       expect(validStatuses).toContain(incident.status);
     });

@@ -1,13 +1,13 @@
 import React from 'react';
-
-import { Badge, Box, Button, Divider, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { get } from 'lodash';
 
-import useDevice from '../../hooks/useDevice';
+import AvatarCell from '../Table/Cells/AvatarCell';
 import { EllipsisIcon } from '../../icons';
 import { PanelFieldConfig, PanelViewProps } from '../../interfaces/IPanelConfig';
-import AvatarCell from '../Table/Cells/AvatarCell';
+import StatusCell from '../Table/Cells/StatusCell';
+import useDevice from '../../hooks/useDevice';
 
 // Utility function to get nested object values
 const getNestedValue = (obj: any, path: string): any => get(obj, path, null);
@@ -69,31 +69,7 @@ function FieldRenderer({
     }
 
     case 'badge': {
-      const statusConfig = config.badgeConfig?.statusConfig?.[value];
-      const displayValue = statusConfig?.text || config.badgeConfig?.valueMap?.[value] || value || config.fallback || 'Unknown';
-      const colorScheme = statusConfig?.colorScheme || config.badgeConfig?.colorScheme;
-      const bg = statusConfig?.bg;
-      const badgeColor = statusConfig?.color || 'white';
-      const IconComponent = statusConfig?.icon;
-
-      return (
-        <Badge
-          alignItems="center"
-          bg={bg}
-          color={badgeColor}
-          colorScheme={colorScheme}
-          data-id={dataId}
-          display="flex"
-          fontSize={['10px', '12px']}
-          gap={1}
-          padding={'5px 12px'}
-          rounded={'50px'}
-          variant={config.badgeConfig?.variant || 'solid'}
-        >
-          {displayValue}
-          {IconComponent && <IconComponent data-id="001403" />}
-        </Badge>
-      );
+      return (<StatusCell data-id="002484" status={value} fallback={config.fallback} />);
     }
 
     case 'date': {
@@ -408,7 +384,7 @@ function PanelView({ items, config, containerProps = { bg: '#F7FAFC', p: '14px',
                     >
                         {/* Header with title and primary action */}
                         <Box borderTopLeftRadius={'12px'} borderTopRightRadius={'12px'} data-id={`panel-header-${index + 2}`} pt={4} px={4}>
-                            <Flex data-id="001408" justify="space-between" mb={['10px', '0px', '0px']} w="full">
+                            <Flex data-id="001408" justify="space-between" pb={2} w="full">
                                 <Box data-id="001409">
                                     <FieldRenderer
                                         config={config.title.primary}

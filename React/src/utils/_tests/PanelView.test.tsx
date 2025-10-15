@@ -54,7 +54,7 @@ const mockIncidentData = [
   {
     id: 'INC-001',
     title: 'Safety Incident',
-    status: 'IN REVIEW',
+    status: 'inReview',
     description: 'Worker injury on site',
     linked_item: 'ACT-20251002-001',
     hospital_name: 'Test Hospital',

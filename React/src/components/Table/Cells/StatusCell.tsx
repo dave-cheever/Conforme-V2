@@ -1,14 +1,15 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
-import { CircleTick, HourGlassIcon, InProgress } from '../../../icons';
+import { CircleTick, HourGlassIcon, InProgress, UpcomingIcon } from '../../../icons';
 import InReviewIcon from '../../../icons/inReviewIcon';
 
 interface StatusCellProps {
-  status: string;
-  size?: 'sm' | 'md' | 'lg';
+  readonly fallback?: string;
+  readonly size?: 'sm' | 'md' | 'lg';
+  readonly status: string;
 }
 
-function StatusCell({ status, size = 'md' }: StatusCellProps) {
+function StatusCell({ status, size = 'md', fallback = 'Unknown' }: StatusCellProps) {
   const getStatusConfig = (status: string) => {
     switch (status) {
         case 'actionPlan':
@@ -53,9 +54,9 @@ function StatusCell({ status, size = 'md' }: StatusCellProps) {
         return {
           label: 'Upcoming',
           colorScheme: 'yellow',
-          bg: 'yellow.500',
+          bg: '#F97316',
           color: 'white',
-          icon: null,
+          icon: <UpcomingIcon data-id="002485" boxSize="14px" data-testid="upcoming-icon" />,
         };
       case 'inProgress':
         return {
@@ -111,7 +112,7 @@ function StatusCell({ status, size = 'md' }: StatusCellProps) {
         lineHeight="normal"
         textTransform="uppercase"
         whiteSpace="nowrap">
-        {config.label}
+        {config.label || fallback}
       </Text>
       {config.icon && (
         <Flex color={config.color} data-id="001315">

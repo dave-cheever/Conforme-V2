@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ActionDetailDate, ActionSeverityIcon, ActionTypeIcon, AuditUpcomingIcon, CheckIcon, DetailIcon, WarningIcon } from '../../../icons';
+import { ActionDetailDate, ActionSeverityIcon, ActionTypeIcon, DetailIcon } from '../../../icons';
 import AuditDetailIcon from '../../../icons/AuditDetailIcon';
 import IncidentIcon from '../../../icons/IncidentIcon';
 import RecordIcon from '../../../icons/RecordIcon';
@@ -75,21 +75,18 @@ const actionPanelConfig: PanelConfig = {
       variant: 'solid',
       statusConfig: {
         'In Progress': {
-          bg: '#3B82F6',
+          bg: '#0073E6',
           color: 'white',
-          icon: AuditUpcomingIcon,
           text: 'In Progress',
         },
         Completed: {
           bg: '#10B981',
           color: 'white',
-          icon: CheckIcon,
           text: 'Completed',
         },
         Pending: {
           bg: '#F59E0B',
           color: 'white',
-          icon: WarningIcon,
           text: 'Pending',
         },
       },

@@ -6,7 +6,7 @@ const actionsData = [
     hospital_name: 'Riverside General Hospital',
     action_id: 'ACT-20251002-001',
     action_title: 'Double‑Check Protocol Refresher',
-    status: 'In Progress',
+    status: 'inProgress',
     description:
       'Develop and deliver a mandatory refresher session for all nursing staff on the double‑check protocol for high‑risk medications, including role‑play scenarios and assessments.',
     action_type: 'Training',
@@ -23,7 +23,7 @@ const actionsData = [
     hospital_name: 'Fernhill Clinic',
     action_id: 'ACT-20251002-002',
     action_title: 'E‑MAR Guide Enhancement',
-    status: 'In Progress',
+    status: 'inProgress',
     description:
       'Revise the E‑MAR user guide to emphasize the transcription step; add annotated screenshots, step‑by‑step checklists, and distribute both digital and printed copies to every nursing station.',
     action_type: 'Documentation',
@@ -40,7 +40,7 @@ const actionsData = [
     hospital_name: 'Fernhill Clinic',
     action_id: 'ACT-20251002-003',
     action_title: 'Develop eMAR Interface Training Module',
-    status: 'In Progress',
+    status: 'inProgress',
     description:
       'Design and implement a comprehensive training program for all clinical staff that covers the use of the updated eMAR interface. The module should include an online self-paced segment with interactive simulations, a knowledge-check quiz, and an in-person hands-on session led by the Nurse Educator. Key topics include locating patient profiles, entering dosages correctly, performing the double-check, and documenting exceptions. Training completion must be tracked, with automatic reminders sent to staff who are overdue.',
     action_type: 'Process Change',

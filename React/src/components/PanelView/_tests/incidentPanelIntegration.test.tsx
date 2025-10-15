@@ -31,7 +31,7 @@ describe('Incident Panel Integration Tests', () => {
       </TestWrapper>,
     );
 
-    // Check IN REVIEW status with new icon and color
+    // Check inReview status with new icon and color
     const inReviewBadge = screen.getByText('In Review');
     expect(inReviewBadge).toBeInTheDocument();
     
@@ -157,7 +157,7 @@ describe('Incident Panel Integration Tests', () => {
     const edgeCaseIncident = {
       id: 'Test ID',
       title: 'Test Title',
-      status: 'IN REVIEW',
+      status: 'inReview',
       description: 'Test description',
       owner: 'Test Owner',
       hospital_name: 'Test Hospital',

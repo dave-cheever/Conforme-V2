@@ -105,7 +105,7 @@ function TextOrNumberCell({
   const greyCircle = icon ? <Box bg="gray.300" borderRadius="50%" data-id={`${dataId}-separator`} h="4px" mr="2px" w="4px" /> : null;
 
   const textContent = (
-    <Flex align="center" data-id="002181" flexDirection="row" gap={iconSpacing}>
+    <Flex align="center" data-id="002181" flexDirection="row" gap={iconSpacing} maxW="100%" minW="0">
       {icon && iconPosition === 'before' && (
         <>
           {IconComponent}
@@ -124,6 +124,8 @@ function TextOrNumberCell({
         overflow="hidden"
         textOverflow="ellipsis"
         whiteSpace="nowrap"
+        maxW="100%"
+        minW="0"
       >
         {text || fallbackText}
       </Flex>

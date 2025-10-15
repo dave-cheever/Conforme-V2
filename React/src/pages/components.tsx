@@ -4,7 +4,12 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 
 import { actionPanelConfig, auditPanelConfig, incidentPanelConfig, trackerPanelConfig } from '../components/PanelView/configs';
 import PanelView from '../components/PanelView/PanelView';
+import { CheckIcon, GridIcon } from '../icons';
+
 import AvatarCell from '../components/Table/Cells/AvatarCell';
+import DateTimeCell from '../components/Table/Cells/DateTimeCell';
+import StatusCell from '../components/Table/Cells/StatusCell';
+import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
 import actionsData from '../mock-data/actions.data';
 import incidentsData from '../mock-data/incidents.data';
 
@@ -132,6 +137,227 @@ const componentSections: ComponentSection[] = [
     ],
   },
   {
+    groupTitle: 'Status Cell',
+    description: 'StatusCell Component - A compact status badge with optional icon and three sizes. Features: maps known status strings to label, color and icon; supports sizes sm, md, lg; falls back to generic styling for unknown statuses.',
+    sections: [
+      {
+        title: 'Completed (md)',
+        description: 'Green completed status with check icon at medium size',
+        props: {
+          status: 'completed',
+          size: 'md',
+        },
+        get component() { return <StatusCell data-id="002461" {...this.props} />; },
+      },
+      {
+        title: 'inReview (md)',
+        description: 'Orange in-review status with dedicated icon',
+        props: {
+          status: 'inReview',
+          size: 'md',
+        },
+        get component() { return <StatusCell data-id="002462" {...this.props} />; },
+      },
+      {
+        title: 'In Progress (lg)',
+        description: 'Blue in-progress status with spinner icon at large size',
+        props: {
+          status: 'inProgress',
+          size: 'lg',
+        },
+        get component() { return <StatusCell data-id="002463" {...this.props} />; },
+      },
+      {
+        title: 'Not started (sm)',
+        description: 'Grey not-started status with hourglass icon at small size',
+        props: {
+          status: 'notStarted',
+          size: 'sm',
+        },
+        get component() { return <StatusCell data-id="002464" {...this.props} />; },
+      },
+      {
+        title: 'Upcoming (md)',
+        description: 'Yellow upcoming status without icon',
+        props: {
+          status: 'upcoming',
+          size: 'md',
+        },
+        get component() { return <StatusCell data-id="002465" {...this.props} />; },
+      },
+      {
+        title: 'Missed (md)',
+        description: 'Red missed status without icon',
+        props: {
+          status: 'missed',
+          size: 'md',
+        },
+        get component() { return <StatusCell data-id="002466" {...this.props} />; },
+      },
+      {
+        title: 'Action Plan (md)',
+        description: 'Purple action plan status with check icon',
+        props: {
+          status: 'actionPlan',
+          size: 'md',
+        },
+        get component() { return <StatusCell data-id="002467" {...this.props} />; },
+      },
+      {
+        title: 'Open (md)',
+        description: 'Open status example',
+        props: {
+          status: 'open',
+          size: 'md',
+        },
+        get component() { return <StatusCell data-id="002468" {...this.props} />; },
+      },
+      {
+        title: 'Unknown/custom (fallback)',
+        description: 'Demonstrates fallback styling for an unrecognized status value',
+        props: {
+          status: 'pending',
+          size: 'md',
+        },
+        get component() { return <StatusCell data-id="002469" {...this.props} />; },
+      },
+    ],
+  },
+  {
+    groupTitle: 'Date Time Cell',
+    description: 'DateTimeCell Component - A reusable table cell component for displaying formatted date and time values. Features: Formats dates with or without time based on the showTime prop, displays fallback text when no date is provided, supports optional bracketed text (e.g., "60 days") with custom styling, responsive text overflow handling with ellipsis, and consistent styling for table display. Props: date (string or Date), fallbackText (default: "-"), showTime (boolean), bracketsText (optional string).',
+    sections: [
+      {
+        title: 'Date only',
+        description: 'Displays date without time using default format (d MMM yyyy)',
+        props: {
+          date: '2025-01-15T14:30:00Z',
+          showTime: false,
+        },
+        get component() { return <DateTimeCell data-id="002470" {...this.props} />; },
+      },
+      {
+        title: 'Date with time',
+        description: 'Displays date and time using format (d MMM yyyy HH:mm)',
+        props: {
+          date: '2025-01-15T14:30:00Z',
+          showTime: true,
+        },
+        get component() { return <DateTimeCell data-id="002471" {...this.props} />; },
+      },
+      {
+        title: 'With brackets text',
+        description: 'Date with additional bracketed text (e.g., showing days remaining)',
+        props: {
+          date: '2025-02-20T09:15:00Z',
+          showTime: true,
+          bracketsText: '60 days',
+        },
+        get component() { return <DateTimeCell data-id="002472" {...this.props} />; },
+      },
+      {
+        title: 'Custom fallback text',
+        description: 'Shows custom fallback text when no date is provided',
+        props: {
+          date: null,
+          showTime: false,
+          fallbackText: 'No date set',
+        },
+        get component() { return <DateTimeCell data-id="002473" {...this.props} />; },
+      },
+      {
+        title: 'Default fallback (dash)',
+        description: 'Shows default fallback text "-" when no date is provided and no custom fallbackText is set',
+        props: {
+          showTime: false,
+        },
+        get component() { return <DateTimeCell data-id="002474" {...this.props} />; },
+      },
+    ],
+  },
+  {
+    groupTitle: 'Text or Number Cell',
+    description: 'TextOrNumberCell Component - A flexible table cell component for displaying text or numeric values with optional icons and tooltips. Features: Dynamic color styling based on values, optional tooltips for truncated content, icon support positioned before or after text with grey circle separators, customizable typography (fontSize, fontWeight, lineHeight), text truncation with ellipsis, and fallback text when content is empty. Props: text (string|number), color, fallbackText (default: "-"), fontSize (default: "14px"), fontWeight (default: "500"), tooltip, icon, iconPosition ("before"|"after"), iconSize (default: "16px"), iconSpacing (default: "4px").',
+    sections: [
+      {
+        title: 'Basic text display',
+        description: 'Simple text display with default styling',
+        props: {
+          text: 'Sample Text',
+        },
+        get component() { return <TextOrNumberCell data-id="002475" {...this.props} />; },
+      },
+      {
+        title: 'Number display',
+        description: 'Displaying numeric values',
+        props: {
+          text: 42,
+        },
+        get component() { return <TextOrNumberCell data-id="002476" {...this.props} />; },
+      },
+      {
+        title: 'Custom color',
+        description: 'Text with custom color styling (green for success)',
+        props: {
+          text: 'Completed',
+          color: 'green.500',
+        },
+        get component() { return <TextOrNumberCell data-id="002477" {...this.props} />; },
+      },
+      {
+        title: 'With tooltip',
+        description: 'Text with tooltip for additional information on hover',
+        props: {
+          text: 'Long text that might be truncated. Long text that might be truncated. Long text that might be truncated. Long text that might be truncated. Long text that might be truncated.',
+          tooltip: 'This is a tooltip showing additional information about the text',
+        },
+        get component() { return <TextOrNumberCell data-id="002478" {...this.props} />; },
+      },
+      {
+        title: 'Icon after text',
+        description: 'Icon positioned after text with custom spacing',
+        props: {
+          text: 'Caution',
+          icon: GridIcon,
+          iconPosition: 'after',
+          iconSpacing: '6px',
+          color: 'orange.500',
+        },
+        get component() { return <TextOrNumberCell data-id="002480" {...this.props} />; },
+      },
+      {
+        title: 'Custom styling',
+        description: 'Custom font size, weight, and color for emphasis',
+        props: {
+          text: 'Important',
+          fontSize: '16px',
+          fontWeight: 'bold',
+          color: 'blue.600',
+        },
+        get component() { return <TextOrNumberCell data-id="002481" {...this.props} />; },
+      },
+      {
+        title: 'Fallback text',
+        description: 'Shows fallback text when no content is provided',
+        props: {
+          text: null,
+          fallbackText: 'No data',
+        },
+        get component() { return <TextOrNumberCell data-id="002482" {...this.props} />; },
+      },
+      {
+        title: 'Icon before text',
+        description: 'Icon before text with gray color',
+        props: {
+          text: 'Information',
+          icon: GridIcon,
+          color: 'gray.800',
+        },
+        get component() { return <TextOrNumberCell data-id="002483" {...this.props} />; },
+      },
+    ],
+  },
+  {
     groupTitle: 'Panel View Components',
     description: 'PanelView Component - A flexible and reusable component for displaying data in card-like panels. Features: Configurable layouts with title, status, details, and actions sections, support for different field types (text, badge, date, user, custom), responsive design with mobile/desktop layouts, hover effects and click handlers, linked item sections, and customizable styling. Perfect for displaying lists of audits, actions, incidents, and tracker items.',
     sections: [
@@ -255,7 +481,7 @@ function Components() {
                             </Text>
                         ))}
                         </Box>  
-                        <Flex bg="white" data-id="002460">{subsection.component}</Flex>
+                        <Flex bg="white" data-id="002460" overflow="hidden" w="fit-content" maxW="100%">{subsection.component}</Flex>
                     </Box>
               </Box>
             ))}
