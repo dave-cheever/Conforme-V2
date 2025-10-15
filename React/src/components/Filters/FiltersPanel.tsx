@@ -117,7 +117,7 @@ function FiltersPanel() {
           fontSize="14px"
           fontWeight="500"
           h="35px"
-          leftIcon={<FilterWhite data-id="001523" h="16px" w="16px" />}
+          leftIcon={<FilterWhite data-id="001523" h="18px" mt="5px" w="18px" />}
           onClick={() => {
             applyFilters();
             setShowFiltersPanel(false);

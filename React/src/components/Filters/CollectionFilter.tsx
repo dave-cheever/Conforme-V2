@@ -10,18 +10,18 @@ function CollectionFilter() {
   const value = useMemo(() => filtersValues.collections?.value, [filtersValues]) as string[];
 
   return (
-    <CheckboxGroup
-        data-id="000106"
-        onChange={(newValue) => setFilters({ collections: newValue })}
-        value={value}>
+    <CheckboxGroup data-id="000106" onChange={(newValue) => setFilters({ collections: newValue })} value={value}>
       <Stack data-id="000107" direction="column" ml="4">
         {Object.entries(collections).map(([key, label]) => (
           <Checkbox
             css={{
               '.chakra-checkbox__control': {
-                borderRadius: '50%',
-                width: '21px',
-                height: '21px',
+                borderRadius: '4px', // Square corners for checkboxes
+                width: '16px',
+                height: '16px',
+                borderWidth: '2px',
+                borderColor: '#A0AEC0',
+                background: 'transparent',
                 '&[data-checked]': {
                   background: '#1C8586',
                   borderColor: '#1C8586',
@@ -31,10 +31,18 @@ function CollectionFilter() {
                   },
                 },
               },
+              '.chakra-checkbox__icon': {
+                color: 'white !important',
+                fontSize: '12px !important',
+                fontWeight: 'bold !important',
+                display: 'block !important',
+                opacity: '1 !important',
+              },
             }}
             data-id="000108"
             key={key}
-            value={key}>
+            value={key}
+          >
             <Text data-id="000109">{label as string}</Text>
           </Checkbox>
         ))}

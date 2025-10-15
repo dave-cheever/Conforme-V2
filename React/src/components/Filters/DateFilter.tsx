@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { useLocation } from 'react-router-dom';
 
@@ -18,7 +18,6 @@ function DateFilter({ filterName }: { filterName: string }) {
   const location = useLocation();
   const { getPath } = useNavigate();
 
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [showCalendar, setShowCalendar] = useState<boolean>(true);
 
   const auditsUsedFilters = useMemo(() => {
@@ -47,24 +46,28 @@ function DateFilter({ filterName }: { filterName: string }) {
   const [filterValue, startDate, endDate] = isArray(value) ? value : [];
   const selectedKey = isArray(value) ? value[0] : null;
 
-  // Update currentMonth when there's a selected date to show the correct month
-  useEffect(() => {
-    if (startDate && (filterValue === 'exactDate' || filterValue === 'dateRange')) setCurrentMonth(new Date(startDate));
-  }, [startDate, filterValue]);
-
   const onChange = (e, key) => {
-    const newValue = e.target.checked ? [key] : null;
-    if (user && module) {
-      updateLocalStorageFilter(
-        module?.type,
-        filterKey,
-        filterKey === 'dueDate' ? 'Expires on' : 'Created on',
-        newValue,
-        user?.userId,
-        setFilters,
-      );
-      // Show calendar when selecting a date filter option
-      if (e.target.checked && (key === 'exactDate' || key === 'dateRange')) setShowCalendar(true);
+    // For date filters, treat as radio buttons - only allow selection, not deselection
+    // Deselection should only happen via the close icon
+    if (e.target.checked) {
+      const newValue = [key];
+      if (user && module) {
+        updateLocalStorageFilter(
+          module?.type,
+          filterKey,
+          filterKey === 'dueDate' ? 'Expires on' : 'Created on',
+          newValue,
+          user?.userId,
+          setFilters,
+        );
+        // Show calendar when selecting a date filter option
+        if (key === 'exactDate' || key === 'dateRange') setShowCalendar(true);
+      }
+    }
+    // If user clicks on already selected option, keep it selected and show calendar
+    else if (selectedKey === key) {
+      // Keep the current selection and show calendar
+      if (key === 'exactDate' || key === 'dateRange') setShowCalendar(true);
     }
   };
 
@@ -79,8 +82,8 @@ function DateFilter({ filterName }: { filterName: string }) {
         user?.userId,
         setFilters,
       );
-      // Close calendar after selecting exact date
-      setShowCalendar(false);
+      // Keep calendar open so user can change date if needed
+      setShowCalendar(true);
     }
   };
 
@@ -99,17 +102,37 @@ function DateFilter({ filterName }: { filterName: string }) {
           user?.userId,
           setFilters,
         );
-        // Close calendar when range is complete (both start and end selected)
-        if (end) setShowCalendar(false);
+        // Keep calendar open so user can modify the range if needed
+        setShowCalendar(true);
       }
     }
   };
 
-  const isSameMonthAndYear = (date1: Date, date2: Date) =>
-    date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth();
-
   return (
     <Box data-id="000110" w="full">
+      <style data-id="002461">{`
+        .react-datepicker__year-dropdown {
+          max-height: 200px !important;
+          overflow-y: auto !important;
+        }
+        .react-datepicker__month-dropdown {
+          max-height: 200px !important;
+          overflow-y: auto !important;
+        }
+        .react-datepicker__year-select {
+          max-height: 200px !important;
+          overflow-y: auto !important;
+        }
+        .react-datepicker__month-select {
+          max-height: 200px !important;
+          overflow-y: auto !important;
+        }
+        .react-datepicker__month-read-view--down-arrow, .react-datepicker__year-read-view--down-arrow{
+          margin-top:5px;
+          width:8px;
+          height:8px;
+          }
+      `}</style>
       <Stack data-id="000111" direction="column" mb={5}>
         {Object.entries(module?.type === 'tracker' ? trackerFilterDates : auditsUsedFilters).map(([key, label]) => (
           <Checkbox
@@ -129,6 +152,12 @@ function DateFilter({ filterName }: { filterName: string }) {
                   borderWidth: '5px',
                   background: 'transparent',
                 },
+                // Prevent unchecking by clicking on already selected radio button
+                '&[data-checked]:hover': {
+                  borderColor: '#005C96',
+                  borderWidth: '5px',
+                  background: 'transparent',
+                },
               },
             }}
             data-id="000112"
@@ -136,6 +165,14 @@ function DateFilter({ filterName }: { filterName: string }) {
             isChecked={selectedKey === key}
             key={key}
             onChange={(e) => onChange(e, key)}
+            // Prevent unchecking by clicking on the control
+            onClick={(e) => {
+              if (selectedKey === key) {
+                e.preventDefault();
+                // Show calendar when clicking on already selected option
+                if (key === 'exactDate' || key === 'dateRange') setShowCalendar(true);
+              }
+            }}
           >
             <Text color="filterPanel.checkboxLabelColor" data-id="000114" fontSize="14px">
               {label}
@@ -143,32 +180,38 @@ function DateFilter({ filterName }: { filterName: string }) {
           </Checkbox>
         ))}
       </Stack>
-
       {filterValue === 'exactDate' && showCalendar && (
-        <DatePicker
-          data-id="000115"
-          disabledKeyboardNavigation
-          inline
-          onChange={handleExactDateChange}
-          onMonthChange={(date) => setCurrentMonth(date)}
-          onYearChange={(date) => setCurrentMonth(date)}
-          selected={startDate && currentMonth && isSameMonthAndYear(currentMonth, new Date(startDate)) ? startDate : null}
-        />
+        <Box data-id="002462">
+          <DatePicker
+            data-id="000115"
+            disabledKeyboardNavigation
+            inline
+            onChange={handleExactDateChange}
+            selected={startDate ? new Date(startDate) : null}
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="scroll"
+            yearDropdownItemNumber={100}
+          />
+        </Box>
       )}
-
       {filterValue === 'dateRange' && showCalendar && (
-        <DatePicker
-          data-id="000116"
-          disabledKeyboardNavigation
-          endDate={endDate || null}
-          inline
-          onChange={handleRangeChange}
-          onMonthChange={(date) => setCurrentMonth(date)}
-          onYearChange={(date) => setCurrentMonth(date)}
-          selected={startDate && currentMonth && isSameMonthAndYear(currentMonth, new Date(startDate)) ? startDate : null}
-          selectsRange
-          startDate={startDate || null}
-        />
+        <Box data-id="002463">
+          <DatePicker
+            data-id="000116"
+            disabledKeyboardNavigation
+            endDate={endDate ? new Date(endDate) : null}
+            inline
+            onChange={handleRangeChange}
+            selected={startDate ? new Date(startDate) : null}
+            selectsRange
+            showMonthDropdown
+            showYearDropdown
+            startDate={startDate ? new Date(startDate) : null}
+            dropdownMode="scroll"
+            yearDropdownItemNumber={100}
+          />
+        </Box>
       )}
     </Box>
   );

@@ -5,7 +5,7 @@ function FilterCheckBox({ value, label }) {
     <Checkbox
       css={{
         '.chakra-checkbox__control': {
-          borderRadius: '50%',
+          borderRadius: '4px', // Square corners for checkboxes
           width: '16px',
           height: '16px',
           borderWidth: '2px',
@@ -16,13 +16,23 @@ function FilterCheckBox({ value, label }) {
           position: 'relative',
           '&[data-checked]': {
             borderColor: '#005C96',
-            borderWidth: '5px',
-            background: 'transparent',
+            borderWidth: '2px', // Keep normal border width for checkboxes
+            background: '#005C96', // Solid background for checked state
+            '&[data-hover]': {
+              background: '#005C96',
+              borderColor: '#005C96',
+            },
           },
+        },
+        '.chakra-checkbox__icon': {
+          color: 'white !important',
+          fontSize: '12px !important',
+          fontWeight: 'bold !important',
+          display: 'block !important',
+          opacity: '1 !important',
         },
       }}
       data-id="000143"
-      icon={<span data-id="001525" />}
       value={value}
     >
       <Text color="#2D3748" data-id="000145" fontSize="16px" fontWeight="medium" marginLeft="3px">

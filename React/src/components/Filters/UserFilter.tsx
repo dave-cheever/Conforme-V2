@@ -7,7 +7,7 @@ import { actionUserRoles, auditUserRoles, questionsUserRoles, userRoles } from '
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useNavigate from '../../hooks/useNavigate';
-import { ArrowDownIcon, CrossIcon, Magnifier } from '../../icons';
+import { ArrowDownSmall, CrossIcon, Magnifier } from '../../icons';
 import { IActionUserFilter, IAnswerUserFilter, IAuditUserFilter, IUserFilter } from '../../interfaces/IFilters';
 import { IUser } from '../../interfaces/IUser';
 import updateLocalStorageFilter from '../../utils/filterStorage';
@@ -341,7 +341,7 @@ function UserFilter() {
         data-id="000193"
         fontSize="smm"
         h="42px"
-        icon={<ArrowDownIcon data-id="000194" />}
+        icon={<ArrowDownSmall data-id="000194" />}
         iconColor="usersSelector.roles.selector.iconDown"
         iconSize="15px"
         onChange={(value) => {

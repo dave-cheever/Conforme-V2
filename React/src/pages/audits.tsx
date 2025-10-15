@@ -166,6 +166,7 @@ function Audits() {
     { label: 'Status', key: 'status' },
     { label: 'Walk type', key: 'walkType' },
     { label: 'Auditor', key: 'auditor.displayName' },
+    { label: 'Reference', key: 'reference' },
     { label: 'Date submitted', key: 'completedDate' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');

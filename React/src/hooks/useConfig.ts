@@ -23,7 +23,7 @@ import {
 import IFilters from '../interfaces/IFilters';
 import { INavItem } from '../interfaces/INavItem';
 import { ISearchCategory } from '../interfaces/ISearchCategory';
-import runtimeEnv from '../utils/runtime-env';
+import { runtimeEnv } from '../utils/runtime-env';
 
 const useConfig = () => {
   const auditSearchItems: ISearchCategory[] = [
@@ -230,7 +230,12 @@ const useConfig = () => {
     { label: capitalize(t('location')), url: '/admin/locations', permission: 'adminPanel.view', icon: SiteIcon },
     { label: capitalize(t('business unit')), url: '/admin/business-units', permission: 'adminPanel.view', icon: LocationIcon },
     { label: capitalize(t('question')), url: '/admin/questions', permission: 'adminPanel.questions', icon: QuestionOutlineIcon },
-    { label: `${capitalize(t('question'))} set`, url: '/admin/questions-categories', permission: 'adminPanel.questionsCategories', icon: CategoryIcon },
+    {
+      label: `${capitalize(t('question'))} set`,
+      url: '/admin/questions-categories',
+      permission: 'adminPanel.questionsCategories',
+      icon: CategoryIcon,
+    },
     { label: 'Audit type', url: '/admin/audit-types', permission: 'adminPanel.auditTypes', icon: ListIcon },
     { label: 'Category', url: '/admin/categories', permission: 'adminPanel.categories', icon: ListIcon },
   ];
