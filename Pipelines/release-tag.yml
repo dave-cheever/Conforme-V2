@@ -1,0 +1,61 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: 'Create_Release_Tag'
+  displayName: 'Create Release Tag'
+  jobs:
+  - job: Tag_Release
+    displayName: 'Compute next release version and create tag'
+    steps:
+    - checkout: self
+      persistCredentials: true
+      clean: true
+      fetchDepth: 0
+    - task: Bash@3
+      displayName: 'Compute next version, create and push tag'
+      inputs:
+        targetType: 'inline'
+        script: |
+          set -euo pipefail
+
+          # Ensure tags are available
+          git fetch --tags --force
+
+          # Find the latest SemVer tag (e.g., 3.0.1). Start from 0.0.0 if none exists.
+          LAST_TAG=$(git describe --tags --abbrev=0 --match "[0-9]*.[0-9]*.[0-9]*" 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            LAST_TAG="0.0.0"
+          fi
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$LAST_TAG"
+          PATCH=$((PATCH+1))
+          NEW_TAG="$MAJOR.$MINOR.$PATCH"
+
+          echo "Previous tag: $LAST_TAG"
+          echo "New tag: $NEW_TAG"
+
+          # Configure git identity for tagging
+          git config user.email "build@azuredevops"
+          git config user.name "Azure DevOps"
+
+          # Re-validate tag uniqueness just before creation
+          git fetch --tags --force
+          if git rev-parse "$NEW_TAG" >/dev/null 2>&1; then
+            echo "Tag $NEW_TAG already exists; nothing to do."
+          else
+            git tag -a "$NEW_TAG" -m "Release $NEW_TAG" $(Build.SourceVersion)
+            git push origin "$NEW_TAG"
+          fi
+
+          # Set run name to the release number
+          echo "##vso[build.updatebuildnumber]$NEW_TAG"
+
+
