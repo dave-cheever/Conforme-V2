@@ -73,21 +73,24 @@ export const insightsCardsDotsPosition = {
 
 export const userMenus = [
   {
+    label: 'Notification settings',
+    url: '/notification-settings',
+    icon: 'NotificationIcon',
+  },
+  {
     label: 'Terms and conditions',
     url: '/terms-and-conditions',
+    icon: 'DocumentIcon',
   },
   {
     label: 'Privacy policy',
     url: '/privacy-policy',
+    icon: 'ShieldIcon',
   },
   {
-    label: 'Help',
+    label: 'Help & support',
     url: '/help',
-  },
-  {
-    label: 'Settings',
-    url: '/admin/settings',
-    permission: 'adminPanel.view',
+    icon: 'HelpSupportIcon',
   },
 ];
 
@@ -312,15 +315,18 @@ export const priorities = [
 
 export const availableOptions: (enableSafetyWalk: boolean) => IAuditOption[] = (enableSafetyWalk) => {
   if (enableSafetyWalk) {
-    return [{
-      type: 'notification',
-      name: 'Inform Health Safety Environment',
-      setting: 'HSENotification',
-    }, {
-      type: 'notification',
-      name: 'Inform Estates',
-      setting: 'estatesNotification',
-    }];
-  } 
-  return []
-} 
+    return [
+      {
+        type: 'notification',
+        name: 'Inform Health Safety Environment',
+        setting: 'HSENotification',
+      },
+      {
+        type: 'notification',
+        name: 'Inform Estates',
+        setting: 'estatesNotification',
+      },
+    ];
+  }
+  return [];
+};

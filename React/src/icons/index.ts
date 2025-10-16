@@ -1,3 +1,4 @@
+// Main icon exports
 export { default as Accidents } from './Accidents';
 export { default as ActionsIcon } from './ActionsIcon';
 export { default as AddIcon } from './AddIcon';
@@ -42,6 +43,7 @@ export { default as CrossIcon } from './CrossIcon';
 export { default as DangerIcon } from './DangerIcon';
 export { default as Dashboard } from './Dashboard';
 export { default as DetailIcon } from './DetailIcon';
+export { default as DocumentIcon } from './DocumentIcon';
 export { default as DownloadIcon } from './DownloadIcon';
 export { default as EditIcon } from './EditIcon';
 export { default as EllipsisIcon } from './EllipsisIcon';
@@ -71,6 +73,7 @@ export { default as LicensesIcon } from './LicensesIcon';
 export { default as LicensesWhiteIcon } from './LicensesWhiteIcon';
 export { default as ListIcon } from './ListIcon';
 export { default as LocationIcon } from './LocationIcon';
+export { default as LogoutIcon } from './LogoutIcon';
 export { default as Magnifier } from './Magnifier';
 export { default as Mentions } from './Mentions';
 export { default as MenuIcon } from './MenuIcon';
@@ -106,6 +109,7 @@ export { default as Save } from './Save';
 export { default as SaveIcon } from './SaveIcon';
 export { default as SearchIcon } from './SearchIcon';
 export { default as SendMessageIcon } from './SendMessageIcon';
+export { default as ShieldIcon } from './ShieldIcon';
 export { default as Share } from './Share';
 export { default as ShareIcon } from './ShareIcon';
 export { default as SignInButton } from './SignInButton';

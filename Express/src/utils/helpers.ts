@@ -198,8 +198,8 @@ export const redirectAfterLogin = async (req, res, errorMessage, organization) =
   if (errorMessage) redirectUrl += `/login?errorMessage=${errorMessage}`;
 
   // update the last Login of user
-  if (session?.user && session.user.id) {
-    await Users.updateOne({ id: session.user.id }, { ...session.user, lastLogin: Date.now() });
+  if (session?.user?.userId) {
+    await Users.updateOne({ userId: session.user.userId }, { ...session.user, lastLogin: Date.now() });
   }
 
   return res.redirect(redirectUrl);

@@ -28,10 +28,11 @@ function extractDomainFromUrl(url: string): string {
 // Helper function to get client URL with fallbacks
 function getClientUrl(ctx: any): string {
   // Try multiple sources for client URL
-  const clientUrl = ctx?.getCookie('clientUrl') || 
-                   ctx?.request?.headers?.referer || 
-                   ctx?.request?.headers?.origin ||
-                   `${getProtocol()}${process.env.CLIENT_URL}`;
+  const clientUrl =
+    ctx?.getCookie('clientUrl') ||
+    ctx?.request?.headers?.referer ||
+    ctx?.request?.headers?.origin ||
+    `${getProtocol()}${process.env.CLIENT_URL}`;
 
   return clientUrl;
 }
@@ -51,15 +52,47 @@ export const auth = betterAuth({
       try {
         const clientUrl = getClientUrl(context);
         const domain = extractDomainFromUrl(clientUrl);
-        
+
         const organization = await Organizations.customFindByDomain(domain);
         if (!organization) {
           console.warn('No organization found for domain:', domain);
         }
-        
+
         const dbUser = await Users.findById(user.id);
+        // Extract only the actual user data, excluding Mongoose properties
+        const userData = dbUser
+          ? {
+              _id: dbUser._id,
+              userId: dbUser.userId,
+              firstName: dbUser.firstName,
+              lastName: dbUser.lastName,
+              displayName: dbUser.displayName,
+              jobTitle: dbUser.jobTitle,
+              email: dbUser.email,
+              imgUrl: dbUser.imgUrl,
+              role: dbUser.role,
+              organizationsIds: dbUser.organizationsIds,
+              defaultPage: dbUser.defaultPage,
+              managerId: dbUser.managerId,
+              lastLogin: dbUser.lastLogin,
+              userCreated: dbUser.userCreated,
+              filtersPreset: dbUser.filtersPreset,
+              organizationId: organization?._id || '',
+              metatags: dbUser.metatags || {
+                addedBy: dbUser.userId || '',
+                addedAt: new Date(),
+              },
+            }
+          : {
+              organizationId: organization?._id || '',
+              metatags: {
+                addedBy: user.id || '',
+                addedAt: new Date(),
+              },
+            };
+
         return {
-          user: { ...user, ...dbUser },
+          user: { ...user, ...userData } as IUser,
           session,
           organization,
         };
@@ -67,7 +100,18 @@ export const auth = betterAuth({
         console.error('Error in customSession:', error);
         // Return basic session if organization lookup fails
         return {
-          user,
+          user: {
+            ...user,
+            _id: user.id,
+            userId: user.id,
+            displayName: user.name || user.email,
+            role: 'user',
+            organizationId: '',
+            metatags: {
+              addedBy: user.id,
+              addedAt: new Date(),
+            },
+          } as IUser,
           session,
           organization: null,
         };
@@ -122,17 +166,17 @@ export const auth = betterAuth({
         before: async (user, ctx) => {
           try {
             console.log('User creation before hook started for:', user.email);
-            
+
             // Get client URL with better error handling
             const clientUrl = getClientUrl(ctx);
             const domain = extractDomainFromUrl(clientUrl);
             console.log('Before hook - Domain resolved to:', domain);
-            
+
             // Get Microsoft provider tenant ID
             const microsoftProvider = ctx?.context?.socialProviders?.find((p) => p.id === 'microsoft');
             const tenantId = (microsoftProvider?.options as any)?.tenantId;
             console.log('Tenant ID:', tenantId);
-            
+
             // Find organization by domain
             const organization = await Organizations.customFindByDomain(domain);
             if (!organization) {
@@ -140,35 +184,34 @@ export const auth = betterAuth({
                 message: `No organization found for domain: ${domain}`,
               });
             }
-            
+
             // Check organization licence
             if (isBefore(new Date(organization.licenceExpirationDate), new Date())) {
               throw new APIError('BAD_REQUEST', {
                 message: "Organization's licence expired",
               });
             }
-            
+
             // Get user data from Microsoft Graph
-            const graphUser = await GraphService.getUserDataByEmail({ 
-              userEmail: user.email, 
-              organization 
+            const graphUser = await GraphService.getUserDataByEmail({
+              userEmail: user.email,
+              organization,
             });
             const graphId = graphUser?.value?.[0]?.id;
-            
+
             if (!graphId) {
               throw new APIError('BAD_REQUEST', {
                 message: 'User not found in Microsoft Graph',
               });
             }
-            
+
             // Check if logged user is from allowed tenant or organization is open to all tenants
-            if (!organization.allowedTenantsIds.includes('all') && 
-                !organization.allowedTenantsIds.includes(tenantId)) {
+            if (!organization.allowedTenantsIds.includes('all') && !organization.allowedTenantsIds.includes(tenantId)) {
               throw new APIError('BAD_REQUEST', {
                 message: 'User from this tenant is not allowed',
               });
             }
-            
+
             // Check if logged user belong to access group (if configured)
             if (organization.accessGroupId) {
               const groups: any = await GraphService.checkMemberGroups({
@@ -185,31 +228,33 @@ export const auth = betterAuth({
                 });
               }
             }
-            
+
             // Find existing user
             let existingDbUser: Partial<IUser> = {};
             try {
               existingDbUser =
-                (await Users.customFindWithDetails({ 
-                  selector: { email: user.email }, 
-                  organization, 
-                  caseInsensitive: true 
-                }))[0] || {};
+                (
+                  await Users.customFindWithDetails({
+                    selector: { email: user.email },
+                    organization,
+                    caseInsensitive: true,
+                  })
+                )[0] || {};
             } catch (error) {
               console.log('Error finding existing user:', error);
             }
-            
+
             // Update organization IDs
             const updatedOrganisationIds = (existingDbUser.organizationsIds || []).includes(organization._id)
               ? existingDbUser.organizationsIds
               : ([...(existingDbUser.organizationsIds || []), organization._id] as any);
-            
+
             const userId = existingDbUser?._id || graphId;
-            
+
             // Get additional user details from Graph
             const userDetails = await GraphService.getUserData({ userId, organization });
             const managerId = await GraphService.getLineManagerId({ userId, organization });
-            
+
             const enrichedUser = {
               ...user,
               imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${userId}`,
@@ -222,7 +267,7 @@ export const auth = betterAuth({
               userId,
               managerId,
             };
-            
+
             return { data: enrichedUser };
           } catch (error) {
             console.error('Error in user creation before hook:', error);
