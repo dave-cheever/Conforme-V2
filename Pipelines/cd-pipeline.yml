@@ -30,9 +30,48 @@ stages:
   - job: Set_Run_Name
     displayName: 'Set pipeline run name to release number'
     steps:
-    - script: |
-        echo "##vso[build.updatebuildnumber]Release - $(Build.BuildNumber)"
-      displayName: 'Update run name'
+    - checkout: self
+      persistCredentials: true
+      clean: true
+      fetchDepth: 0
+    - task: Bash@3
+      displayName: 'Compute next release version, tag commit, update run name'
+      inputs:
+        targetType: 'inline'
+        script: |
+          set -euo pipefail
+
+          # Ensure tags are available
+          git fetch --tags --force
+
+          # Find the latest SemVer tag reachable from this commit (e.g., 3.0.1)
+          LAST_TAG=$(git describe --tags --abbrev=0 --match "[0-9]*.[0-9]*.[0-9]*" 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            LAST_TAG="0.0.0"
+          fi
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$LAST_TAG"
+          PATCH=$((PATCH+1))
+          NEW_TAG="$MAJOR.$MINOR.$PATCH"
+
+          echo "Previous tag: $LAST_TAG"
+          echo "New tag: $NEW_TAG"
+
+          # Configure git identity for tagging
+          git config user.email "build@azuredevops"
+          git config user.name "Azure DevOps"
+
+          # Create the tag if it doesn't already exist
+          if git rev-parse "$NEW_TAG" >/dev/null 2>&1; then
+            echo "Tag $NEW_TAG already exists; skipping creation."
+          else
+            git tag -a "$NEW_TAG" -m "Release $NEW_TAG"
+            git push origin "$NEW_TAG"
+          fi
+
+          # Expose the version to later jobs and update run name
+          echo "##vso[task.setvariable variable=VERSION]$NEW_TAG"
+          echo "##vso[build.updatebuildnumber]$NEW_TAG"
 
   - job: Build_React
     displayName: 'Build React App'
