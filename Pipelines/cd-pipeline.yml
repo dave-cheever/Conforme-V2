@@ -5,8 +5,8 @@ trigger:
 
 pr: none
 
-name: $(Date:yyyyMMdd).$(Rev:r)
-appendCommitMessageToRunName: false
+# name: $(Date:yyyyMMdd).$(Rev:r)
+# appendCommitMessageToRunName: false
 
 variables:
   - group: Conforme SIT
