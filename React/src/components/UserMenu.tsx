@@ -55,7 +55,7 @@ function UserMenu() {
               src={user?.imgUrl}
               w="40px"
             />
-            <Box data-id="000523" minW="0" textAlign={'start'}>
+            <Box data-id="000523" display={['none', 'block']} minW="0" textAlign={'start'}>
               <Text color={'black'} data-id="000524" fontSize={['12px', '14px']} fontWeight="600" isTruncated>
                 {user?.displayName}
               </Text>
@@ -63,7 +63,7 @@ function UserMenu() {
                 {user?.jobTitle ? user.jobTitle.charAt(0).toUpperCase() + user.jobTitle.slice(1) : ''}
               </Text>
             </Box>
-            <Icon as={ChevronDownIcon} boxSize={5} color="gray.500" data-id="000526" m={4} />
+            <Icon as={ChevronDownIcon} boxSize={5} color="gray.500" data-id="000526" m={[0, 4]} />
           </Flex>
         </Flex>
       </MenuButton>
@@ -75,18 +75,14 @@ function UserMenu() {
         data-id="000527"
         minW="280px"
         mr={3}
+        mt="-10px"
         p="16px"
         textAlign="left"
       >
         {/* User Information Section */}
         <Box data-id="002486" mb="12px">
           <Flex data-id="002487" display={['flex', 'none']} flexDirection="column">
-            <Text
-              data-id="002488"
-              fontSize="16px"
-              fontWeight="600"
-              color="gray.800"
-              mb="4px">
+            <Text data-id="002488" fontSize="16px" fontWeight="600" color="gray.800" mb="4px">
               {user?.displayName}
             </Text>
             <Text data-id="002489" fontSize="14px" color="#718096" mb="8px">
@@ -103,7 +99,8 @@ function UserMenu() {
                 fontSize="12px"
                 color="#1458EA"
                 fontWeight="500"
-                mb={index < (organizationConfig?.modules?.length || 0) - 1 ? '4px' : '0'}>
+                mb={index < (organizationConfig?.modules?.length || 0) - 1 ? '4px' : '0'}
+              >
                 {module.name} - Admin
               </Text>
             ))}
@@ -133,12 +130,7 @@ function UserMenu() {
                   py="8px"
                 >
                   <Flex data-id="002494" align="center" w="full">
-                    {IconComponent && <Icon
-                      data-id="002495"
-                      as={IconComponent}
-                      boxSize="16px"
-                      color="#4A5568"
-                      mr="12px" />}
+                    {IconComponent && <Icon data-id="002495" as={IconComponent} boxSize="16px" color="#4A5568" mr="12px" />}
                     <Text data-id="002496" color="#2D3748" fontSize="16px" fontWeight="500">
                       {label}
                     </Text>

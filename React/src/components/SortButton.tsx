@@ -32,7 +32,7 @@ function SortButton({
               fontSize="14px"
               fontWeight="700"
               h="40px"
-              leftIcon={<UpAndDownIcon color="sortButton.rightIcon" data-id="000477" h="12px" mt="3px" w="12px" />}
+              leftIcon={<UpAndDownIcon color="sortButton.rightIcon" data-id="000477" h="11px" mt="0px" w="12px" />}
               ml={['15px', '0']}
               rounded="10px"
             >
