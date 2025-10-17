@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
@@ -170,7 +170,7 @@ function Audits() {
     { label: 'Date submitted', key: 'completedDate' },
   ];
   const [viewMode, setViewMode] = useState<TViewMode>('grid');
-  const columns: ColumnConfig[] = [
+  const columns: ColumnConfig[] = useMemo(() => [
     {
       label: 'Due date',
       sortKey: 'dueDate',
@@ -243,7 +243,7 @@ function Audits() {
         </Button>
       ),
     },
-  ];
+  ], [t, module?.featureFlags?.enableSafetyWalk, navigateTo]);
   const handleAssignedToMeToggle = (isChecked: boolean) => {
     setAssignedToMe(isChecked);
 
@@ -261,6 +261,10 @@ function Audits() {
     filters.push('status', 'locationsIds', 'businessUnitsIds', 'usersIds', 'createdDate', 'dueDate', 'showArchived');
     return filters;
   }, [module]);
+
+  const handleRowClick = useCallback((row: IAudit) => {
+    navigateTo(`/audits/${row._id}`);
+  }, [navigateTo]);
 
   useEffect(() => {
     if (!user || usedFilters.length === 0) return;
@@ -493,7 +497,7 @@ function Audits() {
           data={sortedAudits}
           data-id="000201"
           dataType="audits"
-          onRowClick={(row: IAudit) => navigateTo(`/audits/${row._id}`)}
+          onRowClick={handleRowClick}
           setSortOrder={setSortOrder}
           setSortType={setSortType}
           sortOrder={sortOrder}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -224,10 +224,10 @@ function Answers() {
   const [filteredAnswers, setFilteredAnswers] = useState<IAnswer[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<IAnswer>();
 
-  const handleOpenModal = (answer: IAnswer) => {
+  const handleOpenModal = useCallback((answer: IAnswer) => {
     setSelectedAnswer(answer);
     setAdminModalState('edit');
-  };
+  }, [setSelectedAnswer, setAdminModalState]);
 
   const {
     sortedData: sortedAnswers,
@@ -247,7 +247,7 @@ function Answers() {
     { label: 'Date added', key: 'metatags.addedAt' },
   ];
 
-  const columns: ColumnConfig[] = [
+  const columns: ColumnConfig[] = useMemo(() => [
     {
       label: 'Type',
       sortKey: 'question.questionsCategory.name',
@@ -382,8 +382,8 @@ function Answers() {
         </Flex>
       ),
     },
-  ];
-  const [viewMode, setViewMode] = useState<TViewMode>('grid');
+  ], [t, handleOpenModal, handleDeleteQuestionModalOpen, setSelectedAnswer]);
+  const [viewMode, setViewMode] = useState<TViewMode>('list');
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -470,10 +470,10 @@ function Answers() {
     }
   }, [appliedFilters]);
 
-  const handleViewModal = (answer: IAnswer) => {
+  const handleViewModal = useCallback((answer: IAnswer) => {
     setSelectedAnswer(answer);
     setAdminModalState('view');
-  };
+  }, [setSelectedAnswer, setAdminModalState]);
 
   useEffect(() => {
     if (data && data?.answers && !error) {

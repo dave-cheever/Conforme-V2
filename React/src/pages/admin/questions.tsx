@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
@@ -147,7 +147,7 @@ function Questions() {
   }, [questionsCategories]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openQuestionModal = (action: 'edit' | 'delete', question: IQuestion<TQuestionValue>) => {
+  const openQuestionModal = useCallback((action: 'edit' | 'delete', question: IQuestion<TQuestionValue>) => {
     setAdminModalState(action);
     reset({
       _id: question?._id,
@@ -159,7 +159,7 @@ function Questions() {
       negativeValue: question?.negativeValue,
       scope: question?.scope,
     });
-  };
+  }, [setAdminModalState, reset]);
 
   const handleAddQuestion = async () => {
     if (isLoading) return;
@@ -305,7 +305,11 @@ function Questions() {
     }
   };
 
-  const columns: ColumnConfig[] = [
+  const handleRowClick = useCallback((row: IQuestion<TQuestionValue>) => {
+    openQuestionModal('edit', row);
+  }, [openQuestionModal]);
+
+  const columns: ColumnConfig[] = useMemo(() => [
     {
       label: 'Question',
       sortKey: 'question',
@@ -313,7 +317,7 @@ function Questions() {
       dataId: '000497',
       render: (q: IQuestion<TQuestionValue>) => <TextOrNumberCell data-id="002097" text={q.question} />,
     },
-  ];
+  ], []);
 
   return (
     <>
@@ -376,7 +380,7 @@ function Questions() {
               data={questions}
               data-id="000444"
               dataType="questions"
-              onRowClick={(row: IQuestion<TQuestionValue>) => openQuestionModal('edit', row)}
+              onRowClick={handleRowClick}
               setSortOrder={setSortOrder}
               setSortType={setSortType}
               sortOrder={sortOrder}

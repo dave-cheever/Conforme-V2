@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { ChevronDownIcon, InfoOutlineIcon } from '@chakra-ui/icons';
@@ -67,16 +67,16 @@ function Users() {
   const [loadingUsers, setLoadingUsers] = useState<string[]>([]);
   const { sortedData: users, sortOrder, sortType, setSortOrder, setSortType } = useSort(data?.users ?? [], 'displayName');
 
-  const onHomePageChange = async (e, userId) => {
+  const onHomePageChange = useCallback(async (e, userId) => {
     setLoadingUsers((currentLoadingUsers) => [...currentLoadingUsers, userId]);
     await updateFunction({
       variables: { values: { _id: userId, defaultPage: [{ name: module?.name, path: e.target.value }] } },
     });
     await refetch();
     setLoadingUsers((currentLoadingUsers) => currentLoadingUsers.filter((id) => id !== userId));
-  };
+  }, [updateFunction, refetch, module?.name, setLoadingUsers]);
 
-  const getDefaultPages = (userId) => {
+  const getDefaultPages = useCallback((userId) => {
     const pages = [
       {
         name: 'Home Page',
@@ -91,10 +91,10 @@ function Users() {
       });
     }
     return pages;
-  };
+  }, [users, module?.type, module?.path]);
 
   // Define columns for ListView
-  const columns: ColumnConfig[] = [
+  const columns: ColumnConfig[] = useMemo(() => [
     {
       label: 'Name',
       sortKey: 'displayName',
@@ -336,7 +336,7 @@ function Users() {
         />
       ),
     },
-  ];
+  ], [t, pluralize, device, module?.type, module?.name, users, onHomePageChange, getDefaultPages, loadingUsers, navigateTo]);
 
   return (
     <>

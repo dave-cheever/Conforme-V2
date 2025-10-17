@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
@@ -135,7 +135,7 @@ function BusinessUnits() {
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openBusinessUnitModal = (action: 'edit' | 'delete', businessUnit: IBusinessUnit) => {
+  const openBusinessUnitModal = useCallback((action: 'edit' | 'delete', businessUnit: IBusinessUnit) => {
     setAdminModalState(action);
     setCurrentBusinessUnitName(businessUnit?.name);
     reset({
@@ -143,7 +143,11 @@ function BusinessUnits() {
       name: businessUnit?.name,
       ownerId: businessUnit?.ownerId,
     });
-  };
+  }, [setAdminModalState, setCurrentBusinessUnitName, reset]);
+
+  const handleRowClick = useCallback((row: IBusinessUnit) => {
+    openBusinessUnitModal('edit', row);
+  }, [openBusinessUnitModal]);
 
   const handleAddBusinessUnit = async () => {
     try {
@@ -242,7 +246,7 @@ function BusinessUnits() {
     }
   };
 
-  const columns: ColumnConfig[] = [
+  const columns: ColumnConfig[] = useMemo(() => [
     {
       label: `${capitalize(t('business unit'))} name`,
       sortKey: 'name',
@@ -342,7 +346,7 @@ function BusinessUnits() {
             ),
           },
         ]),
-  ];
+  ], [t, device, module?.type, setResponseFiltersValue, setAnswerFiltersValue, setAuditFiltersValue, navigateTo]);
 
   return (
     <>
@@ -389,7 +393,7 @@ function BusinessUnits() {
               data={businessUnits}
               data-id="000444"
               dataType="business units"
-              onRowClick={(row: IBusinessUnit) => openBusinessUnitModal('edit', row)}
+              onRowClick={handleRowClick}
               setSortOrder={setSortOrder}
               setSortType={setSortType}
               sortOrder={sortOrder}

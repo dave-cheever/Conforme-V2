@@ -37,7 +37,7 @@ function Login() {
         h="100vh"
         w="full"
         position="relative">
-      <CompanyLogo isMobile={device === 'mobile'} />
+      <CompanyLogo data-id="002524" isMobile={device === 'mobile'} />
       {user ? (
         <Flex
           align="center"
@@ -60,6 +60,7 @@ function Login() {
               {organizationConfig?.name}
             </Flex>
             <UserAvatar
+              data-id="002525"
               user={user}
               borderColor="loginPage.avatarBorderColor"
               dataId="000211" />
@@ -138,11 +139,7 @@ function Login() {
         order={[1, 1, 2]}
         w={['full', 'full', '70%']}>
          <Box data-id="000223" h={['30vh', '40vh', '95vh']} overflow="hidden">
-           <BackgroundImage 
-             dataId="000224"
-             maxW="1000px"
-             fit="contain"
-           />
+           <BackgroundImage data-id="002526" dataId="000224" maxW="1000px" fit="contain" />
          </Box>
       </Flex>
     </Flex>

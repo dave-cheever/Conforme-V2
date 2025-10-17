@@ -187,7 +187,7 @@ function AuditTypes() {
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openAuditTypeModal = (action: 'edit' | 'delete', auditType: IAuditType) => {
+  const openAuditTypeModal = useCallback((action: 'edit' | 'delete', auditType: IAuditType) => {
     setAdminModalState(action);
     reset({
       _id: auditType?._id,
@@ -199,7 +199,11 @@ function AuditTypes() {
       recurring: auditType.recurring ? 'yes' : 'no',
       businessUnitScope: auditType.businessUnitScope,
     });
-  };
+  }, [setAdminModalState, reset]);
+
+  const handleRowClick = useCallback((row: IAuditType) => {
+    openAuditTypeModal('edit', row);
+  }, [openAuditTypeModal]);
 
   const handleAddAuditType = async () => {
     try {
@@ -560,7 +564,7 @@ function AuditTypes() {
               data={auditTypes}
               data-id="000389"
               dataType="audit types"
-              onRowClick={(row: IAuditType) => openAuditTypeModal('edit', row)}
+              onRowClick={handleRowClick}
               setSortOrder={setSortOrder}
               setSortType={setSortType}
               sortOrder={sortOrder}

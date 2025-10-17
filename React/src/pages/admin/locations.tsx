@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
@@ -130,7 +130,7 @@ function Locations() {
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openLocationModal = (action: 'edit' | 'delete', location: ILocation) => {
+  const openLocationModal = useCallback((action: 'edit' | 'delete', location: ILocation) => {
     setAdminModalState(action);
     setCurrentLocationName(location.name);
     reset({
@@ -139,7 +139,7 @@ function Locations() {
       ownerId: location.ownerId,
       notes: location.notes,
     });
-  };
+  }, [setAdminModalState, setCurrentLocationName, reset]);
 
   const handleAddLocation = async () => {
     try {
@@ -238,7 +238,11 @@ function Locations() {
     }
   };
 
-  const columns: ColumnConfig[] = [
+  const handleRowClick = useCallback((row: ILocation) => {
+    openLocationModal('edit', row);
+  }, [openLocationModal]);
+
+  const columns: ColumnConfig[] = useMemo(() => [
     {
       label: `${capitalize(t('location'))} name`,
       sortKey: 'name',
@@ -288,7 +292,7 @@ function Locations() {
         </Flex>
       ),
     },
-  ];
+  ], [t, device, module?.type, setResponseFiltersValue, setAuditFiltersValue, navigateTo]);
 
   return (
     <>
@@ -342,7 +346,7 @@ function Locations() {
               data={locations}
               data-id="000444"
               dataType="locations"
-              onRowClick={(row: ILocation) => openLocationModal('edit', row)}
+              onRowClick={handleRowClick}
               setSortOrder={setSortOrder}
               setSortType={setSortType}
               sortOrder={sortOrder}

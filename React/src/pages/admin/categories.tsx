@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
@@ -107,14 +107,18 @@ function Categories() {
   }, [reset, adminModalState]);
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openCategoryModal = (action: 'edit' | 'delete', category: IBaseWithName) => {
+  const openCategoryModal = useCallback((action: 'edit' | 'delete', category: IBaseWithName) => {
     setAdminModalState(action);
     setCurrentCategoryName(category.name);
     reset({
       _id: category._id,
       name: category.name,
     });
-  };
+  }, [setAdminModalState, setCurrentCategoryName, reset]);
+
+  const handleRowClick = useCallback((row: IBaseWithName) => {
+    openCategoryModal('edit', row);
+  }, [openCategoryModal]);
 
   const handleAddCategory = async () => {
     try {
@@ -214,7 +218,7 @@ function Categories() {
     }
   };
 
-  const columns: ColumnConfig[] = [
+  const columns: ColumnConfig[] = useMemo(() => [
     {
       label: 'Category',
       sortKey: 'name',
@@ -248,7 +252,7 @@ function Categories() {
           },
         ]
       : []),
-  ];
+  ], [module?.type]);
 
   return (
     <>
@@ -289,7 +293,7 @@ function Categories() {
               data={categories}
               data-id="000344"
               dataType="categories"
-              onRowClick={(row: IBaseWithName) => openCategoryModal('edit', row)}
+              onRowClick={handleRowClick}
               setSortOrder={setSortOrder}
               setSortType={setSortType}
               sortOrder={sortOrder}

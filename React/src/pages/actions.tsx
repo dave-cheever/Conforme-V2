@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -192,15 +192,15 @@ function Actions() {
   const [selectedAction, setSelectedAction] = useState<IAction>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const handleOpenModal = (action: IAction) => {
+  const handleOpenModal = useCallback((action: IAction) => {
     setSelectedAction(action);
     setAdminModalState('view');
-  };
+  }, [setSelectedAction, setAdminModalState]);
 
-  const handleDeleteAction = (action: IAction) => {
+  const handleDeleteAction = useCallback((action: IAction) => {
     setSelectedAction(action);
     setIsDeleteModalOpen(true);
-  };
+  }, [setSelectedAction, setIsDeleteModalOpen]);
 
   const handleConfirmDelete = async () => {
     if (!selectedAction) return;
@@ -218,7 +218,7 @@ function Actions() {
     }
   };
 
-  const columns: ColumnConfig[] = [
+  const columns: ColumnConfig[] = useMemo(() => [
     {
       label: 'Title',
       sortKey: 'title',
@@ -325,7 +325,7 @@ function Actions() {
         </Flex>
       ),
     },
-  ];
+  ], [t, handleOpenModal, handleDeleteAction]);
 
   const allowedFilters = useMemo(() => ['status', 'priority', 'locationsIds', 'businessUnitsIds', 'usersIds', 'dueDate'], []);
 

@@ -29,7 +29,12 @@ vi.mock('../../utils/runtime-env', () => ({
 vi.mock('../../icons/SignInButton', () => ({
   __esModule: true,
   default: ({ onClick, ...props }: any) => (
-    <button type="button" data-testid="sign-in-button" onClick={onClick} {...props}>
+    <button
+      data-id="002545"
+      type="button"
+      data-testid="sign-in-button"
+      onClick={onClick}
+      {...props}>
       Sign In
     </button>
   ),
@@ -50,7 +55,7 @@ import useDevice from '../../hooks/useDevice';
 
 // Test wrapper component
 function TestWrapper({ children }: { readonly children: React.ReactNode }) {
-  return <ChakraProvider>{children}</ChakraProvider>;
+  return <ChakraProvider data-id="002546">{children}</ChakraProvider>;
 }
 
 // Mock data
@@ -107,8 +112,8 @@ describe('Login Component', () => {
   describe('Basic Rendering', () => {
     test('renders login page with organization name', () => {
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002547">
+          <Login data-id="002548" />
         </TestWrapper>
       );
 
@@ -117,8 +122,8 @@ describe('Login Component', () => {
 
     test('renders company logo', () => {
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002549">
+          <Login data-id="002550" />
         </TestWrapper>
       );
 
@@ -128,8 +133,8 @@ describe('Login Component', () => {
 
     test('renders background image', () => {
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002551">
+          <Login data-id="002552" />
         </TestWrapper>
       );
 
@@ -139,8 +144,8 @@ describe('Login Component', () => {
 
     test('renders sign in button when user is not logged in', () => {
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002553">
+          <Login data-id="002554" />
         </TestWrapper>
       );
 
@@ -156,8 +161,8 @@ describe('Login Component', () => {
       });
 
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002555">
+          <Login data-id="002556" />
         </TestWrapper>
       );
 
@@ -172,8 +177,8 @@ describe('Login Component', () => {
       });
 
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002557">
+          <Login data-id="002558" />
         </TestWrapper>
       );
 
@@ -188,8 +193,8 @@ describe('Login Component', () => {
       });
 
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002559">
+          <Login data-id="002560" />
         </TestWrapper>
       );
 
@@ -200,8 +205,8 @@ describe('Login Component', () => {
   describe('Component Structure', () => {
     test('has proper data-id attributes', () => {
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002561">
+          <Login data-id="002562" />
         </TestWrapper>
       );
 
@@ -215,8 +220,8 @@ describe('Login Component', () => {
   describe('Image Fallbacks', () => {
     test('uses fallback logo when organization logo fails to load', () => {
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002563">
+          <Login data-id="002564" />
         </TestWrapper>
       );
 
@@ -226,8 +231,8 @@ describe('Login Component', () => {
 
     test('uses fallback background when organization background fails to load', () => {
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002565">
+          <Login data-id="002566" />
         </TestWrapper>
       );
 
@@ -241,8 +246,8 @@ describe('Login Component', () => {
       vi.mocked(useDevice).mockReturnValue('mobile');
 
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002567">
+          <Login data-id="002568" />
         </TestWrapper>
       );
 
@@ -254,8 +259,8 @@ describe('Login Component', () => {
       vi.mocked(useDevice).mockReturnValue('desktop');
 
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002569">
+          <Login data-id="002570" />
         </TestWrapper>
       );
 
@@ -273,8 +278,8 @@ describe('Login Component', () => {
       });
 
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002571">
+          <Login data-id="002572" />
         </TestWrapper>
       );
 
@@ -289,8 +294,8 @@ describe('Login Component', () => {
       });
 
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002573">
+          <Login data-id="002574" />
         </TestWrapper>
       );
 
@@ -312,8 +317,8 @@ describe('Login Component', () => {
       });
 
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002575">
+          <Login data-id="002576" />
         </TestWrapper>
       );
 
@@ -332,8 +337,8 @@ describe('Login Component', () => {
       });
 
       render(
-        <TestWrapper>
-          <Login />
+        <TestWrapper data-id="002577">
+          <Login data-id="002578" />
         </TestWrapper>
       );
 

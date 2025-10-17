@@ -58,7 +58,7 @@ function Logout() {
         h="100vh"
         w="full"
         position="relative">
-      <CompanyLogo isMobile={device === 'mobile'} />
+      <CompanyLogo data-id="002527" isMobile={device === 'mobile'} />
       <Flex
         align="center"
         data-id="000227"
@@ -80,6 +80,7 @@ function Logout() {
             {organizationConfig?.name}
           </Flex>
           <UserAvatar
+            data-id="002528"
             user={user}
             borderColor="logoutPage.avatarBorderColor"
             dataId="000230" />
@@ -133,10 +134,7 @@ function Logout() {
         order={[1, 1, 2]}
         w={['full', 'full', '70%']}>
          <Box data-id="000240" h={['30vh', '40vh', '95vh']} overflow="hidden">
-           <BackgroundImage 
-             dataId="000241"
-             maxW="max-content"
-           />
+           <BackgroundImage data-id="002529" dataId="000241" maxW="max-content" />
          </Box>
       </Flex>
     </Flex>

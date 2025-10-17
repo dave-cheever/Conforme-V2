@@ -47,7 +47,7 @@ import useDevice from '../../hooks/useDevice';
 
 // Test wrapper component
 function TestWrapper({ children }: { readonly children: React.ReactNode }) {
-  return <ChakraProvider>{children}</ChakraProvider>;
+  return <ChakraProvider data-id="002530">{children}</ChakraProvider>;
 }
 
 // Mock data
@@ -109,8 +109,8 @@ describe('auth-pages-common', () => {
       });
 
       render(
-        <TestWrapper>
-          <CompanyLogo />
+        <TestWrapper data-id="002531">
+          <CompanyLogo data-id="002532" />
         </TestWrapper>
       );
 
@@ -128,8 +128,8 @@ describe('auth-pages-common', () => {
       });
 
       render(
-        <TestWrapper>
-          <CompanyLogo />
+        <TestWrapper data-id="002533">
+          <CompanyLogo data-id="002534" />
         </TestWrapper>
       );
 
@@ -139,8 +139,8 @@ describe('auth-pages-common', () => {
 
     test('applies mobile styles when isMobile is true', () => {
       render(
-        <TestWrapper>
-          <CompanyLogo isMobile />
+        <TestWrapper data-id="002535">
+          <CompanyLogo data-id="002536" isMobile />
         </TestWrapper>
       );
 
@@ -156,8 +156,8 @@ describe('auth-pages-common', () => {
 
     test('applies desktop styles when isMobile is false', () => {
       render(
-        <TestWrapper>
-          <CompanyLogo isMobile={false} />
+        <TestWrapper data-id="002537">
+          <CompanyLogo data-id="002538" isMobile={false} />
         </TestWrapper>
       );
 
@@ -179,8 +179,8 @@ describe('auth-pages-common', () => {
       });
 
       render(
-        <TestWrapper>
-          <BackgroundImage dataId="test-bg" maxW="800px" />
+        <TestWrapper data-id="002539">
+          <BackgroundImage data-id="002540" dataId="test-bg" maxW="800px" />
         </TestWrapper>
       );
 
@@ -196,8 +196,8 @@ describe('auth-pages-common', () => {
       vi.mocked(useDevice).mockReturnValue('mobile');
 
       render(
-        <TestWrapper>
-          <BackgroundImage dataId="test-bg" maxW="800px" />
+        <TestWrapper data-id="002541">
+          <BackgroundImage data-id="002542" dataId="test-bg" maxW="800px" />
         </TestWrapper>
       );
 
@@ -207,8 +207,8 @@ describe('auth-pages-common', () => {
 
     test('renders with custom dataId', () => {
       render(
-        <TestWrapper>
-          <BackgroundImage dataId="custom-bg" maxW="800px" />
+        <TestWrapper data-id="002543">
+          <BackgroundImage data-id="002544" dataId="custom-bg" maxW="800px" />
         </TestWrapper>
       );
 

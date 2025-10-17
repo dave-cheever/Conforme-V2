@@ -45,7 +45,7 @@ import useDevice from '../../hooks/useDevice';
 
 // Test wrapper component
 function TestWrapper({ children }: { readonly children: React.ReactNode }) {
-  return <ChakraProvider>{children}</ChakraProvider>;
+  return <ChakraProvider data-id="002579">{children}</ChakraProvider>;
 }
 
 // Mock data
@@ -102,8 +102,8 @@ describe('Logout Component', () => {
   describe('Basic Rendering', () => {
     test('renders logout page with organization name', () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002580">
+          <Logout data-id="002581" />
         </TestWrapper>
       );
 
@@ -114,8 +114,8 @@ describe('Logout Component', () => {
 
     test('renders company logo', () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002582">
+          <Logout data-id="002583" />
         </TestWrapper>
       );
 
@@ -125,8 +125,8 @@ describe('Logout Component', () => {
 
     test('renders background image', () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002584">
+          <Logout data-id="002585" />
         </TestWrapper>
       );
 
@@ -136,8 +136,8 @@ describe('Logout Component', () => {
 
     test('renders user avatar', () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002586">
+          <Logout data-id="002587" />
         </TestWrapper>
       );
 
@@ -149,8 +149,8 @@ describe('Logout Component', () => {
   describe('User Information Display', () => {
     test('displays user name when user is logged in', () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002588">
+          <Logout data-id="002589" />
         </TestWrapper>
       );
 
@@ -160,8 +160,8 @@ describe('Logout Component', () => {
 
     test('displays logout confirmation message', () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002590">
+          <Logout data-id="002591" />
         </TestWrapper>
       );
 
@@ -171,8 +171,8 @@ describe('Logout Component', () => {
 
     test('renders logout button', () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002592">
+          <Logout data-id="002593" />
         </TestWrapper>
       );
 
@@ -181,8 +181,8 @@ describe('Logout Component', () => {
 
     test('renders login as someone else button', () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002594">
+          <Logout data-id="002595" />
         </TestWrapper>
       );
 
@@ -193,8 +193,8 @@ describe('Logout Component', () => {
   describe('Component Structure', () => {
     test('has proper data-id attributes', () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002596">
+          <Logout data-id="002597" />
         </TestWrapper>
       );
 
@@ -219,8 +219,8 @@ describe('Logout Component', () => {
   describe('Image Fallbacks', () => {
     test('uses fallback logo when organization logo fails to load', () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002598">
+          <Logout data-id="002599" />
         </TestWrapper>
       );
 
@@ -230,8 +230,8 @@ describe('Logout Component', () => {
 
     test('uses fallback background when organization background fails to load', () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002600">
+          <Logout data-id="002601" />
         </TestWrapper>
       );
 
@@ -245,8 +245,8 @@ describe('Logout Component', () => {
       vi.mocked(useDevice).mockReturnValue('mobile');
 
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002602">
+          <Logout data-id="002603" />
         </TestWrapper>
       );
 
@@ -258,8 +258,8 @@ describe('Logout Component', () => {
       vi.mocked(useDevice).mockReturnValue('desktop');
 
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002604">
+          <Logout data-id="002605" />
         </TestWrapper>
       );
 
@@ -276,8 +276,8 @@ describe('Logout Component', () => {
       });
 
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002606">
+          <Logout data-id="002607" />
         </TestWrapper>
       );
 
@@ -292,8 +292,8 @@ describe('Logout Component', () => {
       });
 
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002608">
+          <Logout data-id="002609" />
         </TestWrapper>
       );
 
@@ -315,8 +315,8 @@ describe('Logout Component', () => {
       });
 
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002610">
+          <Logout data-id="002611" />
         </TestWrapper>
       );
 
@@ -335,8 +335,8 @@ describe('Logout Component', () => {
       });
 
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002612">
+          <Logout data-id="002613" />
         </TestWrapper>
       );
 
@@ -347,8 +347,8 @@ describe('Logout Component', () => {
   describe('User Interactions', () => {
     test('handles logout button click', async () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002614">
+          <Logout data-id="002615" />
         </TestWrapper>
       );
 
@@ -361,8 +361,8 @@ describe('Logout Component', () => {
 
     test('handles login as someone else button click', async () => {
       render(
-        <TestWrapper>
-          <Logout />
+        <TestWrapper data-id="002616">
+          <Logout data-id="002617" />
         </TestWrapper>
       );
 

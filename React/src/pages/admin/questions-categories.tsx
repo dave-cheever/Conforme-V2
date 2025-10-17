@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
@@ -145,7 +145,7 @@ function QuestionsCategories() {
   };
 
   // If modal opened in edit or delete mode, reset the form and set values of edited element
-  const openQuestionsCategoryModal = (action: 'edit' | 'delete', questionsCategory: IQuestionsCategory) => {
+  const openQuestionsCategoryModal = useCallback((action: 'edit' | 'delete', questionsCategory: IQuestionsCategory) => {
     setAdminModalState(action);
     reset({
       _id: questionsCategory?._id,
@@ -161,7 +161,7 @@ function QuestionsCategories() {
       options: (questionsCategory?.options || []).map(({ name, setting, type }) => ({ name, setting, type })),
       scope: questionsCategory?.scope,
     });
-  };
+  }, [setAdminModalState, reset]);
 
   const handleAddQuestionsCategory = async () => {
     try {
@@ -303,7 +303,11 @@ function QuestionsCategories() {
     }
   };
 
-  const columns: ColumnConfig[] = [
+  const handleRowClick = useCallback((row: IQuestionsCategory) => {
+    openQuestionsCategoryModal('edit', row);
+  }, [openQuestionsCategoryModal]);
+
+  const columns: ColumnConfig[] = useMemo(() => [
     {
       label: `${capitalize(t('question'))} sets`,
       sortKey: 'name',
@@ -311,7 +315,7 @@ function QuestionsCategories() {
       dataId: '000478',
       render: (qc: IQuestionsCategory) => <TextOrNumberCell data-id="002096" text={qc.name} />,
     },
-  ];
+  ], [t]);
 
   return (
     <>
@@ -483,7 +487,7 @@ function QuestionsCategories() {
               data={questionsCategories}
               data-id="000479"
               dataType={`${t('question')} sets`}
-              onRowClick={(row: IQuestionsCategory) => openQuestionsCategoryModal('edit', row)}
+              onRowClick={handleRowClick}
               setSortOrder={setSortOrder}
               setSortType={setSortType}
               sortOrder={sortOrder}
