@@ -1,12 +1,13 @@
+import React, { memo, useCallback } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 
 import { ColumnConfig } from '../ListView';
 
-function ListViewRow({ row, columns, onRowClick, 'data-testid': dataTestId }: { readonly row: any; readonly columns: ColumnConfig[]; readonly onRowClick: (row: any) => void; readonly 'data-testid'?: string }) {
-  const handleClick = () => {
+function ListViewRowComponent({ row, columns, onRowClick, 'data-testid': dataTestId }: { readonly row: any; readonly columns: ColumnConfig[]; readonly onRowClick: (row: any) => void; readonly 'data-testid'?: string }) {
+  const handleClick = useCallback(() => {
     if (row?.metatags?.removedBy) return;
     onRowClick(row);
-  };
+  }, [row, onRowClick]);
 
   return (
     <Box
@@ -34,4 +35,16 @@ function ListViewRow({ row, columns, onRowClick, 'data-testid': dataTestId }: { 
   );
 }
 
-export default ListViewRow;
+const areEqual = (
+  prev: Readonly<{ row: any; columns: ColumnConfig[]; onRowClick: (row: any) => void; 'data-testid'?: string }>,
+  next: Readonly<{ row: any; columns: ColumnConfig[]; onRowClick: (row: any) => void; 'data-testid'?: string }>,
+) => {
+  return (
+    prev.row === next.row &&
+    prev.columns === next.columns &&
+    prev.onRowClick === next.onRowClick &&
+    prev['data-testid'] === next['data-testid']
+  );
+};
+
+export default memo(ListViewRowComponent, areEqual);

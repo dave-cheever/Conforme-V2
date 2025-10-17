@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react';
+import React, { ComponentType, memo } from 'react';
 
 import { Box, Flex, Tooltip } from '@chakra-ui/react';
 
@@ -156,4 +156,4 @@ function TextOrNumberCell({
   return textContent;
 }
 
-export default TextOrNumberCell;
+export default memo(TextOrNumberCell);

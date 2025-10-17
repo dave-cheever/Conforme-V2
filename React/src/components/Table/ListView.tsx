@@ -1,3 +1,4 @@
+import React, { useCallback } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 
 import TableHeader from './Header/TableHeader';
@@ -36,10 +37,10 @@ function ListView({
   readonly dataType: string;
   readonly onRowClick: (row: any) => void;
 }) {
-  const handleSort = (sortKey: string) => {
+  const handleSort = useCallback((sortKey: string) => {
     setSortType(sortKey);
     setSortOrder(sortOrder === 'asc' && sortType === sortKey ? 'desc' : 'asc');
-  };
+  }, [setSortType, setSortOrder, sortOrder, sortType]);
 
   // Helper function to render empty state
   if (data?.length === 0) {
