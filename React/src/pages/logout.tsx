@@ -1,33 +1,25 @@
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Avatar, Box, Button, Flex, Image, useToast, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, VStack } from '@chakra-ui/react';
 
-import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
-import authClient from '../utils/auth-client';
-import { runtimeEnv } from '../utils/runtime-env';
+import {
+  CompanyLogo,
+  BackgroundImage,
+  UserAvatar,
+  useAuthErrorHandling,
+  useAuthLogin
+} from '../utils/auth-pages-common';
 
 function Logout() {
-  const toast = useToast();
-  const params = window.location.search.split('&');
   const { organizationConfig } = useAppContext();
   const device = useDevice();
   const navigate = useNavigate();
 
-  // const redirectUrl = params.find((str) => str.includes('redirectUrl'))?.split('=')[1];
-  const errorMessage = params.find((str) => str.includes('errorMessage'))?.split('=')[1];
-
-  useEffect(() => {
-    if (errorMessage) {
-      toast({
-        ...toastFailed,
-        title: "Couldn't sign in",
-        description: decodeURI(errorMessage),
-      });
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // Use shared hooks
+  useAuthErrorHandling();
 
   const redirectToLogin = () => {
     localStorage.removeItem('logOutUser');
@@ -55,23 +47,8 @@ function Logout() {
     if (user === null && user !== undefined) return redirectToLogin();
   }, [user]);
 
-  const login = async () => {
-    const loginOptions = {
-      onRequest: () => {},
-      onSuccess: () => {},
-      onError: (ctx) => { toast({ 
-        status: 'error',
-        title: 'Error',
-        description: ctx.message,
-      }) },
-    }
+  const { login } = useAuthLogin();
 
-    authClient.signIn.social({
-      provider: "microsoft",
-      callbackURL: runtimeEnv.clientUrl(),
-    }, loginOptions)
-
-  }
 
   return (
     <Flex
@@ -79,14 +56,16 @@ function Logout() {
         data-id="000226"
         flexDir={['column', 'column', 'row']}
         h="100vh"
-        w="full">
+        w="full"
+        position="relative">
+      <CompanyLogo isMobile={device === 'mobile'} />
       <Flex
         align="center"
         data-id="000227"
         h="full"
-        justify={['center', 'center', 'flex-end']}
+        justify="center"
         order={[2, 2, 1]}
-        w={['full', 'full', '30%']}>
+        w={['full', 'full', '45%']}>
         <VStack align="center" data-id="000228" spacing={5} textAlign="center">
           <Flex
             color="logoutPage.organizationNameColor"
@@ -100,21 +79,10 @@ function Logout() {
             w="240px">
             {organizationConfig?.name}
           </Flex>
-          <Flex
-            bg="white"
+          <UserAvatar
+            user={user}
             borderColor="logoutPage.avatarBorderColor"
-            borderWidth="10px"
-            data-id="000230"
-            rounded="full">
-            <Avatar
-              borderColor="white"
-              borderWidth="4px"
-              data-id="000231"
-              h="75px"
-              name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
-              src={user?.imgUrl}
-              w="75px" />
-          </Flex>
+            dataId="000230" />
           <Flex align="center" data-id="000232" flexDir="column">
             <Flex data-id="000233" fontSize="16px" fontWeight="700">
               You have logged out.
@@ -164,13 +132,12 @@ function Logout() {
         justify={['center', 'center', 'flex-end']}
         order={[1, 1, 2]}
         w={['full', 'full', '70%']}>
-        <Box data-id="000240" h={['30vh', '40vh', '95vh']} overflow="hidden">
-          <Image
-            data-id="000241"
-            h="full"
-            maxW="max-content"
-            src={device === 'desktop' ? organizationConfig?.bgImageUrl : organizationConfig?.bgImageTabletUrl} />
-        </Box>
+         <Box data-id="000240" h={['30vh', '40vh', '95vh']} overflow="hidden">
+           <BackgroundImage 
+             dataId="000241"
+             maxW="max-content"
+           />
+         </Box>
       </Flex>
     </Flex>
   );

@@ -1,51 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { Avatar, Box, Button, Flex, Image, Text, useToast, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, VStack } from '@chakra-ui/react';
 
-import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
 import SignInButton from '../icons/SignInButton';
-import authClient from '../utils/auth-client';
-import { runtimeEnv } from '../utils/runtime-env';
+import {
+  CompanyLogo,
+  BackgroundImage,
+  UserAvatar,
+  useAuthErrorHandling,
+  useAuthLogin
+} from '../utils/auth-pages-common';
 
 function Login() {
-  const toast = useToast();
-  const params = window.location.search.split('&');
   const { organizationConfig, user } = useAppContext();
   const device = useDevice();
   const [refresh, setRefresh] = useState(false);
 
-  // const redirectUrl = params.find((str) => str.includes('redirectUrl'))?.split('=')[1];
-  const errorMessage = params.find((str) => str.includes('errorMessage'))?.split('=')[1];
-
-  useEffect(() => {
-    if (errorMessage) {
-      toast({
-        ...toastFailed,
-        title: "Couldn't sign in",
-        description: decodeURI(errorMessage),
-      });
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const login = async () => {
-    const loginOptions = {
-      onRequest: () => {},
-      onSuccess: () => {},
-      onError: (ctx) => { toast({ 
-        status: 'error',
-        title: 'Error',
-        description: ctx.message,
-      }) },
-    }
-
-    authClient.signIn.social({
-      provider: "microsoft",
-      callbackURL: runtimeEnv.clientUrl(),
-    }, loginOptions)
-
-  }
+  // Use shared hooks
+  useAuthErrorHandling();
+  const { login } = useAuthLogin();
 
   const removeUser = () => {
     window.open(`https://login.microsoftonline.com/common/oauth2/v2.0/logout`, '_blank');
@@ -53,13 +28,16 @@ function Login() {
     setRefresh(!refresh);
   };
 
+
   return (
     <Flex
         bg="loginPage.bg"
         data-id="000207"
         flexDir={['column', 'column', 'row']}
         h="100vh"
-        w="full">
+        w="full"
+        position="relative">
+      <CompanyLogo isMobile={device === 'mobile'} />
       {user ? (
         <Flex
           align="center"
@@ -81,21 +59,10 @@ function Login() {
             >
               {organizationConfig?.name}
             </Flex>
-            <Flex
-              bg="white"
+            <UserAvatar
+              user={user}
               borderColor="loginPage.avatarBorderColor"
-              borderWidth="10px"
-              data-id="000211"
-              rounded="full">
-              <Avatar
-                borderColor="white"
-                borderWidth="4px"
-                data-id="000212"
-                h="75px"
-                name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')} 
-                src={user?.imgUrl}
-                w="75px" />
-            </Flex>
+              dataId="000211" />
             <Button
               _hover={{ bg: 'loginPage.hoverColor' }}
               bg="loginPage.button.bg"
@@ -170,14 +137,13 @@ function Login() {
         justify={['center', 'center', 'flex-end']}
         order={[1, 1, 2]}
         w={['full', 'full', '70%']}>
-        <Box data-id="000223" h={['30vh', '40vh', '95vh']} overflow="hidden">
-          <Image
-            data-id="000224"
-            fit="contain"
-            h="full"
-            maxW="1000px"
-            src={device === 'desktop' ? organizationConfig?.bgImageUrl : organizationConfig?.bgImageTabletUrl} />
-        </Box>
+         <Box data-id="000223" h={['30vh', '40vh', '95vh']} overflow="hidden">
+           <BackgroundImage 
+             dataId="000224"
+             maxW="1000px"
+             fit="contain"
+           />
+         </Box>
       </Flex>
     </Flex>
   );

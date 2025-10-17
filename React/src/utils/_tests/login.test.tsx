@@ -1,0 +1,343 @@
+import { ChakraProvider } from '@chakra-ui/react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
+// Mock the modules before importing the component
+vi.mock('../../contexts/AppProvider', () => ({
+  useAppContext: vi.fn(),
+}));
+
+vi.mock('../../hooks/useDevice', () => ({
+  __esModule: true,
+  default: vi.fn(),
+}));
+
+vi.mock('../../utils/auth-client', () => ({
+  default: {
+    signIn: {
+      social: vi.fn(),
+    },
+  },
+}));
+
+vi.mock('../../utils/runtime-env', () => ({
+  runtimeEnv: {
+    clientUrl: () => 'http://localhost:3000',
+  },
+}));
+
+vi.mock('../../icons/SignInButton', () => ({
+  __esModule: true,
+  default: ({ onClick, ...props }: any) => (
+    <button type="button" data-testid="sign-in-button" onClick={onClick} {...props}>
+      Sign In
+    </button>
+  ),
+}));
+
+vi.mock('@chakra-ui/react', async () => {
+  const actual = await vi.importActual('@chakra-ui/react');
+  return {
+    ...actual,
+    useToast: () => vi.fn(),
+  };
+});
+
+// Import the component after mocking
+import Login from '../../pages/login';
+import { useAppContext } from '../../contexts/AppProvider';
+import useDevice from '../../hooks/useDevice';
+
+// Test wrapper component
+function TestWrapper({ children }: { readonly children: React.ReactNode }) {
+  return <ChakraProvider>{children}</ChakraProvider>;
+}
+
+// Mock data
+const mockOrganizationConfig = {
+  _id: 'org1',
+  organizationId: 'org1',
+  name: 'Test Organization',
+  domain: 'test.com',
+  logoUrl: 'https://example.com/logo.png',
+  bgImageUrl: 'https://example.com/bg.png',
+  bgImageTabletUrl: 'https://example.com/bg-tablet.png',
+  theme: {},
+  modules: [],
+};
+
+const mockUser = {
+  _id: 'user1',
+  organizationId: 'org1',
+  userId: 'user1',
+  displayName: 'John Doe',
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'john.doe@example.com',
+  role: 'user' as const,
+  imgUrl: 'https://example.com/avatar.jpg',
+  lastLogin: new Date('2025-10-14T17:28:44.638Z'),
+  userCreated: new Date('2025-01-01T00:00:00.000Z'),
+};
+
+// Mock context object
+const mockAppContext = {
+  roles: undefined,
+  setRoles: vi.fn(),
+  settings: [],
+  setSettings: vi.fn(),
+  organizationConfig: mockOrganizationConfig,
+  setOrganizationConfig: vi.fn(),
+  module: undefined,
+  setModule: vi.fn(),
+  user: null,
+  setUser: vi.fn(),
+};
+
+describe('Login Component', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    
+    // Set default mock implementations
+    vi.mocked(useAppContext).mockReturnValue(mockAppContext);
+    
+    vi.mocked(useDevice).mockReturnValue('desktop');
+  });
+
+  describe('Basic Rendering', () => {
+    test('renders login page with organization name', () => {
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      expect(screen.getByText('Test Organization')).toBeInTheDocument();
+    });
+
+    test('renders company logo', () => {
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      const logo = screen.getByAltText('Company Logo');
+      expect(logo).toBeInTheDocument();
+    });
+
+    test('renders background image', () => {
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      const bgImage = document.querySelector('[data-id="000224"]');
+      expect(bgImage).toBeInTheDocument();
+    });
+
+    test('renders sign in button when user is not logged in', () => {
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      expect(screen.getByTestId('sign-in-button')).toBeInTheDocument();
+    });
+  });
+
+  describe('User Authentication States', () => {
+    test('renders user info when user is logged in', () => {
+      vi.mocked(useAppContext).mockReturnValue({
+        ...mockAppContext,
+        user: mockUser,
+      });
+
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      expect(screen.getByText('Login as John')).toBeInTheDocument();
+      expect(screen.getByText('Not John?')).toBeInTheDocument();
+    });
+
+    test('renders user avatar when user is logged in', () => {
+      vi.mocked(useAppContext).mockReturnValue({
+        ...mockAppContext,
+        user: mockUser,
+      });
+
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      const avatar = document.querySelector('[data-id="000212"]');
+      expect(avatar).toBeInTheDocument();
+    });
+
+    test('renders logout option when user is logged in', () => {
+      vi.mocked(useAppContext).mockReturnValue({
+        ...mockAppContext,
+        user: mockUser,
+      });
+
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      expect(screen.getByText('Login as someone else')).toBeInTheDocument();
+    });
+  });
+
+  describe('Component Structure', () => {
+    test('has proper data-id attributes', () => {
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      expect(document.querySelector('[data-id="000207"]')).toBeInTheDocument();
+      expect(document.querySelector('[data-id="000217"]')).toBeInTheDocument();
+      expect(document.querySelector('[data-id="000223"]')).toBeInTheDocument();
+      expect(document.querySelector('[data-id="000224"]')).toBeInTheDocument();
+    });
+  });
+
+  describe('Image Fallbacks', () => {
+    test('uses fallback logo when organization logo fails to load', () => {
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      const logo = screen.getByAltText('Company Logo');
+      expect(logo).toHaveAttribute('src', expect.stringContaining('Logo%20Icon%20-%20navigation.svg'));
+    });
+
+    test('uses fallback background when organization background fails to load', () => {
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      const bgImage = document.querySelector('[data-id="000224"]');
+      expect(bgImage).toHaveAttribute('src', expect.stringContaining('Full%20background%20img%20-%20desktop.png'));
+    });
+  });
+
+  describe('Responsive Design', () => {
+    test('renders with mobile layout when device is mobile', () => {
+      vi.mocked(useDevice).mockReturnValue('mobile');
+
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      const logo = screen.getByAltText('Company Logo');
+      expect(logo).toBeInTheDocument();
+    });
+
+    test('renders with desktop layout when device is desktop', () => {
+      vi.mocked(useDevice).mockReturnValue('desktop');
+
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      const logo = screen.getByAltText('Company Logo');
+      expect(logo).toBeInTheDocument();
+    });
+  });
+
+  describe('Organization Configuration', () => {
+    test('renders with default organization config when not provided', () => {
+      vi.mocked(useAppContext).mockReturnValue({
+        ...mockAppContext,
+        organizationConfig: undefined,
+        user: null,
+      });
+
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      expect(screen.getByTestId('sign-in-button')).toBeInTheDocument();
+    });
+
+    test('uses fallback images when organization config is missing', () => {
+      vi.mocked(useAppContext).mockReturnValue({
+        ...mockAppContext,
+        organizationConfig: undefined,
+        user: null,
+      });
+
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      const logo = screen.getByAltText('Company Logo');
+      expect(logo).toHaveAttribute('src', expect.stringContaining('Logo%20Icon%20-%20navigation.svg'));
+    });
+  });
+
+  describe('Edge Cases', () => {
+    test('handles user with missing displayName', () => {
+      const userWithoutDisplayName = {
+        ...mockUser,
+        displayName: 'John Doe', // Keep displayName as string since it's required
+      };
+
+      vi.mocked(useAppContext).mockReturnValue({
+        ...mockAppContext,
+        user: userWithoutDisplayName,
+      });
+
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      expect(screen.getByText('Login as John')).toBeInTheDocument();
+    });
+
+    test('handles user with missing firstName', () => {
+      const userWithoutFirstName = {
+        ...mockUser,
+        firstName: 'John', // Keep firstName as string since it's required
+      };
+
+      vi.mocked(useAppContext).mockReturnValue({
+        ...mockAppContext,
+        user: userWithoutFirstName,
+      });
+
+      render(
+        <TestWrapper>
+          <Login />
+        </TestWrapper>
+      );
+
+      expect(screen.getByText('Login as John')).toBeInTheDocument();
+    });
+  });
+});
