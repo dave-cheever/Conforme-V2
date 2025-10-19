@@ -119,13 +119,13 @@ function TextOrNumberCell({
         fontSize={fontSize}
         fontWeight={fontWeight}
         lineHeight={lineHeight}
+        maxW="100%"
+        minW="0"
         noOfLines={noOfLines}
         opacity="1"
         overflow="hidden"
         textOverflow="ellipsis"
         whiteSpace="nowrap"
-        maxW="100%"
-        minW="0"
       >
         {text || fallbackText}
       </Flex>

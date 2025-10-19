@@ -2,14 +2,14 @@ import React from 'react';
 
 import { Box, Flex, Text } from '@chakra-ui/react';
 
+import NoRecordsFound from '../components/NoRecordsFound';
 import { actionPanelConfig, auditPanelConfig, incidentPanelConfig, trackerPanelConfig } from '../components/PanelView/configs';
 import PanelView from '../components/PanelView/PanelView';
-import { GridIcon } from '../icons';
-
 import AvatarCell from '../components/Table/Cells/AvatarCell';
 import DateTimeCell from '../components/Table/Cells/DateTimeCell';
 import StatusCell from '../components/Table/Cells/StatusCell';
 import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
+import { GridIcon } from '../icons';
 import actionsData from '../mock-data/actions.data';
 import incidentsData from '../mock-data/incidents.data';
 
@@ -550,9 +550,7 @@ const componentSections: ComponentSection[] = [
           config: 'auditPanelConfig',
           items: 'mockAuditData (2 items)',
         },
-        get component() {
-          return <PanelView config={auditPanelConfig} data-id="002441" items={mockAuditData} />;
-        },
+        get component() { return <PanelView config={auditPanelConfig} data-id="002441" dataSourceName="audits" items={mockAuditData} />; },
       },
       {
         title: 'Action Panels',
@@ -561,9 +559,7 @@ const componentSections: ComponentSection[] = [
           config: 'actionPanelConfig',
           items: 'actionsData (from mock-data)',
         },
-        get component() {
-          return <PanelView config={actionPanelConfig} data-id="002442" items={actionsData} />;
-        },
+        get component() { return <PanelView config={actionPanelConfig} data-id="002442" dataSourceName="actions" items={actionsData} />; },
       },
       {
         title: 'Incident Panels',
@@ -572,9 +568,7 @@ const componentSections: ComponentSection[] = [
           config: 'incidentPanelConfig',
           items: 'incidentsData (from mock-data)',
         },
-        get component() {
-          return <PanelView config={incidentPanelConfig} data-id="002443" items={incidentsData} />;
-        },
+        get component() { return <PanelView config={incidentPanelConfig} data-id="002443" dataSourceName="incidents" items={incidentsData} />; },
       },
       {
         title: 'Tracker Panels',
@@ -583,9 +577,73 @@ const componentSections: ComponentSection[] = [
           config: 'trackerPanelConfig',
           items: 'mockTrackerData (3 items)',
         },
-        get component() {
-          return <PanelView config={trackerPanelConfig} data-id="002444" items={mockTrackerData} />;
+        get component() { return <PanelView config={trackerPanelConfig} data-id="002444" dataSourceName="tracker items" items={mockTrackerData} />; },
+      },
+      {
+        title: 'Empty State',
+        description: 'Shows the empty state when there are no items to display',
+        props: {
+          config: 'auditPanelConfig',
+          items: '[] (empty array)',
         },
+        get component() { return <PanelView config={auditPanelConfig} data-id="002445" dataSourceName="audits" items={[]} />; },
+      },
+      {
+        title: 'Error State',
+        description: 'Shows the error state when there is an error loading data',
+        props: {
+          config: 'auditPanelConfig',
+          items: '[] (empty array)',
+          error: 'true',
+        },
+        get component() { return <PanelView config={auditPanelConfig} data-id="002446" dataSourceName="audits" error="Failed to load audits. Please try again." items={[]} />; },
+      },
+    ],
+  },
+  {
+    groupTitle: 'No Records Found',
+    description: 'NoRecordsFound Component - A reusable component for displaying "No records found" messages with customizable data source names and full height containers. Features: Dynamic message generation based on data source name, customizable height and styling, consistent error messaging across the application, and support for custom messages when needed. Props: dataSourceName (string), message (optional custom message), height (defaults to "100%"), containerProps (optional styling overrides).',
+    sections: [
+      {
+        title: 'Default Audits Message',
+        description: 'Shows default message for audits with standard styling',
+        props: {
+          dataSourceName: 'audits',
+          height: '100%',
+        },
+        get component() { return <NoRecordsFound data-id="002485" {...this.props} />; },
+      },
+      {
+        title: 'Tracker Items Message',
+        description: 'Shows default message for tracker items',
+        props: {
+          dataSourceName: 'tracker items',
+          height: '100%',
+        },
+        get component() { return <NoRecordsFound data-id="002486" {...this.props} />; },
+      },
+      {
+        title: 'Custom Message',
+        description: 'Shows custom message instead of the default generated one',
+        props: {
+          dataSourceName: 'actions',
+          message: 'No action items available at this time.',
+          height: '100%',
+        },
+        get component() { return <NoRecordsFound data-id="002487" {...this.props} />; },
+      },
+      {
+        title: 'Full Height Container',
+        description: 'Shows the component with full height to cover the entire page',
+        props: {
+          dataSourceName: 'incidents',
+          height: '100%',
+          containerProps: {
+            bg: '#F7FAFC',
+            p: '40px',
+          },
+        },
+        get component() { return <NoRecordsFound data-id="002488" {...this.props} />; },
       },
     ],
   },
@@ -639,35 +697,35 @@ function Components() {
             {/* Subsections within the group */}
             {section.sections.map((subsection) => (
               <Box bg="gray.100" data-id="002452" key={subsection.title} mb={8}>
-                <Box
-                  _hover={{ shadow: 'md', borderColor: 'brand.primary' }}
-                  border="2px"
-                  borderColor="gray.200"
-                  borderRadius="md"
-                  data-id="002453"
-                  p={4}
-                  transition="all 0.2s"
-                >
-                  <Text color="gray.700" data-id="002454" fontSize="lg" fontWeight="semibold" mb={4}>
-                    {subsection.title}
-                  </Text>
-                  <Text color="gray.600" data-id="002455" fontSize="md" mb={4}>
-                    {subsection.description}
-                  </Text>
-                  <Box data-id="002456" mb={4}>
-                    <Text color="gray.600" data-id="002457" fontSize="md" fontWeight="bold" mb={2}>
-                      Props:
-                    </Text>
-                    {Object.entries(subsection.props).map(([key, value]) => (
-                      <Text color="gray.600" data-id="002458" fontSize="md" key={key}>
-                        <strong data-id="002459">{key}:</strong> {JSON.stringify(value)}
-                      </Text>
-                    ))}
-                  </Box>
-                  <Flex bg="white" data-id="002460" overflow="hidden" w="fit-content" maxW="100%">
-                    {subsection.component}
-                  </Flex>
-                </Box>
+                    <Box
+                      _hover={{ shadow: 'md', borderColor: 'brand.primary' }}
+                      border="2px"
+                      borderColor="gray.200"
+                      borderRadius="md"
+                      data-id="002453"
+                      p={4}
+                      transition="all 0.2s">
+                        <Text
+                          color="gray.700"
+                          data-id="002454"
+                          fontSize="lg"
+                          fontWeight="semibold"
+                          mb={4}>
+                            {subsection.title}
+                        </Text>
+                        <Text color="gray.600" data-id="002455" fontSize="md" mb={4}>
+                            {subsection.description}
+                        </Text>
+                        <Box data-id="002456" mb={4}>
+                        <Text color="gray.600" data-id="002457" fontSize="md" fontWeight="bold" mb={2}>Props:</Text>
+                        {Object.entries(subsection.props).map(([key, value]) => (
+                            <Text color="gray.600" data-id="002458" fontSize="md" key={key}>
+                            <strong data-id="002459">{key}:</strong> {JSON.stringify(value)}
+                            </Text>
+                        ))}
+                        </Box>  
+                        <Flex bg="white" data-id="002460" overflow="hidden" w="100%">{subsection.component}</Flex>
+                    </Box>
               </Box>
             ))}
           </Box>

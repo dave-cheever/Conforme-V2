@@ -19,7 +19,7 @@ function SortButton({
 }) {
   return (
     <Box data-id="000474" ml={ml ?? '10px'} position="relative" zIndex={9999}>
-      <Menu autoSelect={false} data-id="000475" strategy="fixed" placement="bottom-end">
+      <Menu autoSelect={false} data-id="000475" placement="bottom-end" strategy="fixed">
         {({ onClose }) => (
           <>
             <MenuButton

@@ -1,6 +1,7 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import { ChakraProvider } from '@chakra-ui/react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
 import UserMenu from '../../components/UserMenu';

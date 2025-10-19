@@ -6,11 +6,11 @@ import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
 import SignInButton from '../icons/SignInButton';
 import {
-  CompanyLogo,
   BackgroundImage,
-  UserAvatar,
+  CompanyLogo,
   useAuthErrorHandling,
-  useAuthLogin
+  useAuthLogin,
+  UserAvatar,
 } from '../utils/auth-pages-common';
 
 function Login() {
@@ -27,7 +27,6 @@ function Login() {
     localStorage.removeItem('logOutUser');
     setRefresh(!refresh);
   };
-
 
   return (
     <Flex
@@ -61,9 +60,9 @@ function Login() {
             </Flex>
             <UserAvatar
               data-id="002525"
-              user={user}
               borderColor="loginPage.avatarBorderColor"
-              dataId="000211" />
+              dataId="000211"
+              user={user} />
             <Button
               _hover={{ bg: 'loginPage.hoverColor' }}
               bg="loginPage.button.bg"

@@ -2,6 +2,17 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
+// Import the components after mocking
+import { useAppContext } from '../../contexts/AppProvider';
+import useDevice from '../../hooks/useDevice';
+import {
+  BackgroundImage,
+  CompanyLogo,
+  FALLBACK_BG_DESKTOP_URL,
+  FALLBACK_BG_MOBILE_URL,
+  FALLBACK_COMPANY_LOGO_URL,
+} from '../auth-pages-common';
+
 // Mock the modules before importing the component
 vi.mock('../../contexts/AppProvider', () => ({
   useAppContext: vi.fn(),
@@ -33,17 +44,6 @@ vi.mock('@chakra-ui/react', async () => {
     useToast: () => vi.fn(),
   };
 });
-
-// Import the components after mocking
-import {
-  CompanyLogo,
-  BackgroundImage,
-  FALLBACK_BG_DESKTOP_URL,
-  FALLBACK_BG_MOBILE_URL,
-  FALLBACK_COMPANY_LOGO_URL,
-} from '../auth-pages-common';
-import { useAppContext } from '../../contexts/AppProvider';
-import useDevice from '../../hooks/useDevice';
 
 // Test wrapper component
 function TestWrapper({ children }: { readonly children: React.ReactNode }) {

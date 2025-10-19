@@ -1,13 +1,15 @@
 import React from 'react';
+
 import { Box, Button, Divider, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { get } from 'lodash';
 
-import AvatarCell from '../Table/Cells/AvatarCell';
+import useDevice from '../../hooks/useDevice';
 import { EllipsisIcon } from '../../icons';
 import { PanelFieldConfig, PanelViewProps } from '../../interfaces/IPanelConfig';
+import NoRecordsFound from '../NoRecordsFound';
+import AvatarCell from '../Table/Cells/AvatarCell';
 import StatusCell from '../Table/Cells/StatusCell';
-import useDevice from '../../hooks/useDevice';
 
 // Utility function to get nested object values
 const getNestedValue = (obj: any, path: string): any => get(obj, path, null);
@@ -69,7 +71,7 @@ function FieldRenderer({
     }
 
     case 'badge': {
-      return (<StatusCell data-id="002484" status={value} fallback={config.fallback} />);
+      return (<StatusCell data-id="002484" fallback={config.fallback} status={value} />);
     }
 
     case 'date': {
@@ -341,9 +343,86 @@ function LinkedItemSection({ config, item, index }: { readonly config: any; read
 }
 
 // Main PanelView component
-function PanelView({ items, config, containerProps = { bg: '#F7FAFC', p: '14px', gap: '24px' } }: Readonly<PanelViewProps>) {
+function PanelView({ 
+  items, 
+  config, 
+  containerProps = { bg: '#F7FAFC', p: '14px', gap: '24px' },
+  error,
+  emptyStateMessage = 'No items found',
+  dataSourceName,
+}: Readonly<PanelViewProps>) {
     const device = useDevice();
     const isMobile = device === 'mobile';
+
+    // Handle error state
+    if (error) {
+        return (
+            <Box
+                alignItems="center"
+                as="main"
+                bg={containerProps.bg}
+                data-id="1"
+                display="flex"
+                flexDirection="column"
+                h="200px"
+                justifyContent="center"
+                minW="100%"
+                p={containerProps.p}
+                w="100%"
+            >
+                <Text
+                    color="red.500"
+                    data-id="002524"
+                    fontSize="lg"
+                    fontWeight="medium"
+                    textAlign="center">
+                    {error}
+                </Text>
+            </Box>
+        );
+    }
+
+    // Handle empty state
+    if (!items || items.length === 0) {
+        if (dataSourceName) {
+            return (
+                <NoRecordsFound
+                    containerProps={{
+                        bg: containerProps.bg,
+                        p: containerProps.p,
+                    }}
+                    data-id="panel-empty-state"
+                    dataSourceName={dataSourceName}
+                    height="100%"
+                />
+            );
+        }
+        
+        return (
+            <Box
+                alignItems="center"
+                as="main"
+                bg={containerProps.bg}
+                data-id="1"
+                display="flex"
+                flexDirection="column"
+                h="200px"
+                justifyContent="center"
+                minW="100%"
+                p={containerProps.p}
+                w="100%"
+            >
+                <Text
+                    color="gray.500"
+                    data-id="002525"
+                    fontSize="lg"
+                    fontWeight="medium"
+                    textAlign="center">
+                    {emptyStateMessage}
+                </Text>
+            </Box>
+        );
+    }
 
     return (
         <Box
@@ -354,6 +433,7 @@ function PanelView({ items, config, containerProps = { bg: '#F7FAFC', p: '14px',
             flexDirection="column"
             gap={containerProps.gap}
             h="100%"
+            minW="100%"
             p={containerProps.p}
             w="100%"
         >

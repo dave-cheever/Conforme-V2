@@ -185,12 +185,12 @@ function DateFilter({ filterName }: { filterName: string }) {
           <DatePicker
             data-id="000115"
             disabledKeyboardNavigation
+            dropdownMode="scroll"
             inline
             onChange={handleExactDateChange}
             selected={startDate ? new Date(startDate) : null}
             showMonthDropdown
             showYearDropdown
-            dropdownMode="scroll"
             yearDropdownItemNumber={100}
           />
         </Box>
@@ -200,6 +200,7 @@ function DateFilter({ filterName }: { filterName: string }) {
           <DatePicker
             data-id="000116"
             disabledKeyboardNavigation
+            dropdownMode="scroll"
             endDate={endDate ? new Date(endDate) : null}
             inline
             onChange={handleRangeChange}
@@ -208,7 +209,6 @@ function DateFilter({ filterName }: { filterName: string }) {
             showMonthDropdown
             showYearDropdown
             startDate={startDate ? new Date(startDate) : null}
-            dropdownMode="scroll"
             yearDropdownItemNumber={100}
           />
         </Box>

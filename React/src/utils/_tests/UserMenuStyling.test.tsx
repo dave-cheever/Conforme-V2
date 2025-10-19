@@ -1,6 +1,7 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import { ChakraProvider } from '@chakra-ui/react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
 import UserMenu, { userMenuStyles } from '../../components/UserMenu';
@@ -152,8 +153,8 @@ describe('UserMenu Styling', () => {
 
       fireEvent.click(screen.getByRole('button'));
 
-      // Check if the parent container has the correct background
-      const parentDiv = document.querySelector('[role="menu"] .css-12i8z8w');
+      // Check if the parent container has the correct background using data-id
+      const parentDiv = document.querySelector('[data-id="002490"]');
       expect(parentDiv).toHaveStyle({
         'background-color': 'rgb(237, 242, 247)', // #EDF2F7
         'border-radius': '8px',
@@ -166,7 +167,8 @@ describe('UserMenu Styling', () => {
 
       fireEvent.click(screen.getByRole('button'));
 
-      const moduleText = document.querySelector('[role="menu"] .css-1dga5xa');
+      // Find the module role text using the data-id attribute
+      const moduleText = document.querySelector('[data-id="002491"]');
       expect(moduleText).toHaveStyle({
         'font-size': '12px',
         color: 'rgb(20, 88, 234)', // #1458EA
@@ -283,8 +285,8 @@ describe('UserMenu Styling', () => {
 
       fireEvent.click(screen.getByRole('button'));
 
-      // Check that user info has responsive display properties
-      const userInfoContainer = document.querySelector('[role="menu"] .css-4wm6nw');
+      // Check that user info has responsive display properties using data-id
+      const userInfoContainer = document.querySelector('[data-id="002487"]');
       expect(userInfoContainer).toHaveStyle({
         display: 'flex',
       });

@@ -79,4 +79,7 @@ export interface PanelViewProps {
     readonly p?: string | number;
     readonly gap?: string | number;
   };
+  readonly error?: string;
+  readonly emptyStateMessage?: string;
+  readonly dataSourceName?: string;
 }

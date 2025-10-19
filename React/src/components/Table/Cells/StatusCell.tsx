@@ -56,7 +56,7 @@ function StatusCell({ status, size = 'md', fallback = 'Unknown' }: StatusCellPro
           colorScheme: 'yellow',
           bg: '#F97316',
           color: 'white',
-          icon: <UpcomingIcon data-id="002485" boxSize="14px" data-testid="upcoming-icon" />,
+          icon: <UpcomingIcon boxSize="14px" data-id="002485" data-testid="upcoming-icon" />,
         };
       case 'inProgress':
         return {

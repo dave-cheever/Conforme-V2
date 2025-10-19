@@ -72,6 +72,12 @@ const trackerPanelConfig: PanelConfig = {
         // Navigate handled by parent component
       },
     },
+    panelClick: {
+      onClick: () => {
+        // This will be set by the parent component
+        // Navigate to detail page handled by parent component
+      },
+    },
     secondary: {
       label: 'Edit Response',
       onClick: () => {

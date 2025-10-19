@@ -1,12 +1,12 @@
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { Avatar, Box, Flex, Icon, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure, Divider } from '@chakra-ui/react';
+import { Avatar, Box, Divider, Flex, Icon, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure } from '@chakra-ui/react';
 
 import { userMenus } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useLogout from '../hooks/useLogout';
 import useNavigate from '../hooks/useNavigate';
+import { DocumentIcon, HelpSupportIcon, LogoutIcon, NotificationIcon, ShieldIcon } from '../icons';
 import { isPermitted } from './can';
-import { DocumentIcon, HelpSupportIcon, LogoutIcon, NotificationIcon, ShieldIcon,  } from '../icons';
 
 function UserMenu() {
   const { user, organizationConfig } = useAppContext();
@@ -82,23 +82,23 @@ function UserMenu() {
         {/* User Information Section */}
         <Box data-id="002486" mb="12px">
           <Flex data-id="002487" display={['flex', 'none']} flexDirection="column">
-            <Text data-id="002488" fontSize="16px" fontWeight="600" color="gray.800" mb="4px">
+            <Text color="gray.800" data-id="002488" fontSize="16px" fontWeight="600" mb="4px">
               {user?.displayName}
             </Text>
-            <Text data-id="002489" fontSize="14px" color="#718096" mb="8px">
+            <Text color="#718096" data-id="002489" fontSize="14px" mb="8px">
               {user?.jobTitle}
             </Text>
           </Flex>
 
           {/* Module Roles Box */}
-          <Box data-id="002490" bg="#EDF2F7" borderRadius="8px" p="12px" mb="8px">
+          <Box bg="#EDF2F7" borderRadius="8px" data-id="002490" mb="8px" p="12px">
             {organizationConfig?.modules?.map((module, index) => (
               <Text
-                data-id="002491"
-                key={module._id}
-                fontSize="12px"
                 color="#1458EA"
+                data-id="002491"
+                fontSize="12px"
                 fontWeight="500"
+                key={module._id}
                 mb={index < (organizationConfig?.modules?.length || 0) - 1 ? '4px' : '0'}
               >
                 {module.name} - Admin
@@ -115,7 +115,7 @@ function UserMenu() {
 
             return (
               <Box data-id="002492" key={label}>
-                {isFirstItem && <Divider data-id="002493" borderColor="#CBD5E0" mx="4px" mb="2px" />}
+                {isFirstItem && <Divider borderColor="#CBD5E0" data-id="002493" mb="2px" mx="4px" />}
                 <MenuItem
                   _hover={{ bg: 'gray.50' }}
                   bg="transparent"
@@ -129,19 +129,19 @@ function UserMenu() {
                   px="4px"
                   py="8px"
                 >
-                  <Flex data-id="002494" align="center" w="full">
-                    {IconComponent && <Icon data-id="002495" as={IconComponent} boxSize="16px" color="#4A5568" mr="12px" />}
-                    <Text data-id="002496" color="#2D3748" fontSize="16px" fontWeight="500">
+                  <Flex align="center" data-id="002494" w="full">
+                    {IconComponent && <Icon as={IconComponent} boxSize="16px" color="#4A5568" data-id="002495" mr="12px" />}
+                    <Text color="#2D3748" data-id="002496" fontSize="16px" fontWeight="500">
                       {label}
                     </Text>
                   </Flex>
                 </MenuItem>
-                {isFirstItem && <Divider data-id="002497" borderColor="#CBD5E0" mx="4px" mb="4px" />}
+                {isFirstItem && <Divider borderColor="#CBD5E0" data-id="002497" mb="4px" mx="4px" />}
               </Box>
             );
           })}
 
-        <Divider data-id="002498" borderColor="#CBD5E0" mx="2px" my="4px" />
+        <Divider borderColor="#CBD5E0" data-id="002498" mx="2px" my="4px" />
 
         <MenuItem
           _hover={{ bg: 'red.50' }}
@@ -156,9 +156,9 @@ function UserMenu() {
           px="4px"
           py="8px"
         >
-          <Flex data-id="002499" align="center" w="full">
-            <Icon data-id="002500" as={LogoutIcon} boxSize="16px" color="red.500" mr="12px" />
-            <Text data-id="002501" color="red.500" fontSize="14px" fontWeight="500">
+          <Flex align="center" data-id="002499" w="full">
+            <Icon as={LogoutIcon} boxSize="16px" color="red.500" data-id="002500" mr="12px" />
+            <Text color="red.500" data-id="002501" fontSize="14px" fontWeight="500">
               Logout
             </Text>
           </Flex>

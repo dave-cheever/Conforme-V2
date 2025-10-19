@@ -14,6 +14,7 @@ import ChangeViewButton from '../components/ChangeViewButton';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
+import NoRecordsFound from '../components/NoRecordsFound';
 import { auditPanelConfig, PanelView } from '../components/PanelView';
 import SortButton from '../components/SortButton';
 import AvatarCell from '../components/Table/Cells/AvatarCell';
@@ -434,9 +435,11 @@ function Audits() {
 
   // Helper function to render empty state
   const renderEmptyState = (dataId: string) => (
-    <Flex alignItems="center" data-id={dataId} fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
-      No audits found. Try adjusting the filters.
-    </Flex>
+    <NoRecordsFound
+      data-id={dataId}
+      dataSourceName="audits"
+      height="100%"
+    />
   );
 
   // Helper function to render grid view
@@ -476,12 +479,15 @@ function Audits() {
           },
         }}
         data-id="002176"
+        dataSourceName="audits"
         items={sortedAudits}
       />
     ) : (
-      <Flex alignItems="center" data-id="000202" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
-        No audits found. Try adjusting the filters.
-      </Flex>
+      <NoRecordsFound
+        data-id="000202"
+        dataSourceName="audits"
+        height="100%"
+      />
     );
 
   // Helper function to render main content

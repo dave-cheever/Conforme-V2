@@ -9,6 +9,8 @@ import pluralize from 'pluralize';
 import ChangeViewButton from '../components/ChangeViewButton';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
 import Header from '../components/Header';
+import Loader from '../components/Loader';
+import NoRecordsFound from '../components/NoRecordsFound';
 import { PanelView, trackerPanelConfig } from '../components/PanelView';
 import SortButton from '../components/SortButton';
 import TrackerItemsList from '../components/TrackerItem/TrackerItemsList';
@@ -174,6 +176,7 @@ function TrackerItems() {
     { label: 'Responsible', key: 'responsible.displayName' },
     { label: capitalize(t('business unit')), key: 'businessUnit.name' },
   ];
+
   const [viewMode, setViewMode] = useState<TViewMode>('panel');
   const [total, setTotal] = useState(1);
 
@@ -344,6 +347,72 @@ function TrackerItems() {
     else setAssignedToMe(false);
   }, [filtersValues.usersIds, user?.userId]);
 
+  // Helper function to render main content with loading state
+  const renderMainContent = () => {
+    if (loading) return <Loader center data-id="000197" />;
+
+    if (viewMode === 'list') {
+      return (
+        <TrackerItemsList
+          data-id="000299"
+          loading={loading}
+          loadResponses={loadResponses}
+          responses={responses}
+          setSortOrder={setSortOrder}
+          setSortType={setSortType}
+          sortOrder={sortOrder}
+          sortType={sortType}
+          total={total}
+        />
+      );
+    }
+
+    if (viewMode === 'panel') {
+      return (
+        <PanelView
+          config={{
+            ...trackerPanelConfig,
+            actions: {
+              ...trackerPanelConfig.actions,
+              primary: {
+                ...trackerPanelConfig.actions.primary!,
+                onClick: (response: IResponse) => navigateTo(`/tracker-item/${response._id}`),
+              },
+              panelClick: {
+                onClick: (response: IResponse) => navigateTo(`/tracker-item/${response._id}`),
+              },
+            },
+          }}
+          data-id="000207"
+          dataSourceName="tracker items"
+          items={responses}
+        />
+      );
+    }
+
+    // Default to panel view
+    return (
+      <PanelView
+        config={{
+          ...trackerPanelConfig,
+          actions: {
+            ...trackerPanelConfig.actions,
+            primary: {
+              ...trackerPanelConfig.actions.primary!,
+              onClick: (response: IResponse) => navigateTo(`/tracker-item/${response._id}`),
+            },
+            panelClick: {
+              onClick: (response: IResponse) => navigateTo(`/tracker-item/${response._id}`),
+            },
+          },
+        }}
+        data-id="000207"
+        dataSourceName="tracker items"
+        items={responses}
+      />
+    );
+  };
+
   return (
     <>
       <Header
@@ -370,44 +439,15 @@ function TrackerItems() {
           )}
         </Flex>
       </Header>
-      <Flex data-id="000292" direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4} zIndex={-1}>
+      <Flex data-id="000292" direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4} zIndex={1}>
         {error ? (
-          <Flex alignItems="center" data-id="000293" fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
-            No Tracker Items found, try adjusting the filters.
-          </Flex>
+          <NoRecordsFound
+            data-id="000293"
+            dataSourceName="tracker items"
+            height="100%"
+          />
         ) : (
-          <>
-            {' '}
-            {viewMode === 'list' && (
-              <TrackerItemsList
-                data-id="000299"
-                loading={loading}
-                loadResponses={loadResponses}
-                responses={responses}
-                setSortOrder={setSortOrder}
-                setSortType={setSortType}
-                sortOrder={sortOrder}
-                sortType={sortType}
-                total={total}
-              />
-            )}
-            {viewMode === 'panel' && (
-              <PanelView
-                config={{
-                  ...trackerPanelConfig,
-                  actions: {
-                    ...trackerPanelConfig.actions,
-                    primary: {
-                      ...trackerPanelConfig.actions.primary!,
-                      onClick: (response: IResponse) => navigateTo(`/responses/${response._id}`),
-                    },
-                  },
-                }}
-                data-id="000207"
-                items={responses}
-              />
-            )}
-          </>
+          renderMainContent()
         )}
       </Flex>
     </>

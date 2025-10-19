@@ -6,11 +6,11 @@ import { Box, Button, Flex, VStack } from '@chakra-ui/react';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
 import {
-  CompanyLogo,
   BackgroundImage,
-  UserAvatar,
+  CompanyLogo,
   useAuthErrorHandling,
-  useAuthLogin
+  useAuthLogin,
+  UserAvatar,
 } from '../utils/auth-pages-common';
 
 function Logout() {
@@ -49,7 +49,6 @@ function Logout() {
 
   const { login } = useAuthLogin();
 
-
   return (
     <Flex
         bg="logoutPage.bg"
@@ -83,7 +82,8 @@ function Logout() {
             data-id="002528"
             user={user}
             borderColor="logoutPage.avatarBorderColor"
-            dataId="000230" />
+            dataId="000230"
+         />
           <Flex align="center" data-id="000232" flexDir="column">
             <Flex data-id="000233" fontSize="16px" fontWeight="700">
               You have logged out.
