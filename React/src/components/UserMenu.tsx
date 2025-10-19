@@ -1,12 +1,12 @@
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { Avatar, Box, Flex, Icon, Menu, MenuButton, MenuList, MenuItem, Text, useDisclosure, Divider } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Icon, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure, Divider } from '@chakra-ui/react';
 
 import { userMenus } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useLogout from '../hooks/useLogout';
 import useNavigate from '../hooks/useNavigate';
 import { isPermitted } from './can';
-import { NotificationIcon, DocumentIcon, ShieldIcon, HelpSupportIcon, LogoutIcon } from '../icons';
+import { DocumentIcon, HelpSupportIcon, LogoutIcon, NotificationIcon, ShieldIcon,  } from '../icons';
 
 function UserMenu() {
   const { user, organizationConfig } = useAppContext();

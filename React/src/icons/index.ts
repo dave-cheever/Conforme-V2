@@ -153,3 +153,5 @@ export { default as LinkedIncidentIcon } from './LinkedIncidentIcon';
 export { default as PeopleAssignedIcon } from './PeopleAssignedIcon';
 export { default as WardLocationIcon } from './WardLocationIcon';
 export { default as ActionSeverityIcon } from './ActionSeverityIcon';
+export { default as BackArrowIcon } from './BackArrowIcon';
+export { default as CloseDrawerIcon } from './CloseDrawerIcon';

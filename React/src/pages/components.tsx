@@ -4,7 +4,7 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 
 import { actionPanelConfig, auditPanelConfig, incidentPanelConfig, trackerPanelConfig } from '../components/PanelView/configs';
 import PanelView from '../components/PanelView/PanelView';
-import { CheckIcon, GridIcon } from '../icons';
+import { GridIcon } from '../icons';
 
 import AvatarCell from '../components/Table/Cells/AvatarCell';
 import DateTimeCell from '../components/Table/Cells/DateTimeCell';

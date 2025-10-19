@@ -56,7 +56,7 @@ function AuditLayout({ component: Component }: { component: any }) {
               alignItems="center"
               aria-label="Message"
               bg="responseLayout.iconBg"
-              bottom={['75px', '22px']}
+              bottom={['108px', '22px']}
               color="white"
               data-id="000198"
               flexShrink={0}

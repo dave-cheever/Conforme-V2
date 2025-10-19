@@ -59,7 +59,6 @@ function AuditLeftNavigationTablet() {
             <AuditLeftTabItem
               data-id="000200"
               icon={icon}
-              isDesktop={false}
               key={url}
               label={label}
               url={url} />

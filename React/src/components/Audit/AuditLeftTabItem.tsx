@@ -1,13 +1,21 @@
 import { useMemo } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import { Flex, Icon } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text } from '@chakra-ui/react';
 
 import useNavigate from '../../hooks/useNavigate';
 
-function AuditLeftTabItem({ label, icon, url, isDesktop = true, isMobile = false }) {
+function AuditLeftTabItem({ 
+  label, 
+  icon, 
+  url,
+}: {
+  readonly label: string;
+  readonly icon: any;
+  readonly url: string;
+}) {
   const location = useLocation();
-  const { isPathActive, navigateTo } = useNavigate();
+  const { isPathActive, navigateTo } = useNavigate(); 
   const { id } = useParams();
   const active = useMemo(() => isPathActive(`/audits/${id}${url}`, { exact: true }), [id, url]);
 
@@ -16,43 +24,48 @@ function AuditLeftTabItem({ label, icon, url, isDesktop = true, isMobile = false
   };
 
   return (
-    <Flex
-      align="center"
-      bg={isDesktop && active ? 'auditLeftTabItem.activeIconBg' : ""}
-      borderRadius={'4px'}
-      cursor="pointer"
+    <Box
       data-id="000203"
-      mb={[0, 3]}
-      mx={[3, 0]}
+      display="flex"
+      width="85.8px"
+      height="56px"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      gap="6px"
       onClick={redirectPage}
-      padding={isDesktop ? '3px' : '2px 0'}>
+      cursor="pointer"
+      pos="relative">
       <Flex
         align="center"
-        bg={active ? 'auditLeftTabItem.activeIconBg' : ''}
+        bg={active ? '#0068A3' : 'none'}
         borderRadius="8px"
         data-id="000204"
         h="30px"
         justify="center"
-        pl={2}
         w="30px">
         <Icon
           as={icon}
           data-id="000205"
-          h="19px"
-          stroke="#ffffff"
-          w="19px" />
+          fill={active ? '#ffffff' : '#4A5568'}
+          color={active ? '#ffffff' : '#4A5568'}
+          h="18px"
+          stroke={active ? '#ffffff' : '#4A5568'}
+          w="18px" />
       </Flex>
-      {(isDesktop || (isMobile && active)) && (
-        <Flex
-          color="#ffffff"
-          data-id="000206"
-          flexGrow={1}
-          fontSize={['11px', '14px']}
-          ml={3}>
-          {label}
-        </Flex>
-      )}
-    </Flex>
+      <Text 
+        color="#4A5568"
+        data-id="000206" 
+        fontSize="12px"
+        fontWeight={active ? "600" : "400"}
+        textAlign="center"
+        textOverflow="ellipsis"
+        overflow="hidden"
+        whiteSpace="nowrap"
+        width="85%">
+        {label}
+      </Text>
+    </Box>
   );
 }
 
@@ -62,7 +75,7 @@ export const auditLeftTabItemStyles = {
   auditLeftTabItem: {
     iconBg: '#DDDDDD',
     activeIconBg: '#462AC4',
-    activeTextColor: '#ffffff',
+    activeTextColor: '#462AC4',
     textColor: '#818197',
     activeIconColor: 'white',
     iconColor: '#818197',

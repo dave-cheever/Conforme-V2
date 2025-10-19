@@ -1,8 +1,8 @@
-import { Divider, Flex } from '@chakra-ui/react';
+import { Box, Divider, Flex, Text } from '@chakra-ui/react';
 
 import useConfig from '../../hooks/useConfig';
 import useNavigate from '../../hooks/useNavigate';
-import { Home } from '../../icons';
+import { BackArrowIcon } from '../../icons';
 import AuditLeftTabItem from './AuditLeftTabItem';
 
 function AuditLeftNavigationMobile() {
@@ -11,21 +11,28 @@ function AuditLeftNavigationMobile() {
 
   return (
     <Flex
-        align="center"
-        bg="#110b30"
-        bottom="0px"
-        boxShadow="0px 0px 80px rgba(49, 50, 51, 0.15)"
-        color="auditLeftNavigation.color"
-        data-id="000207"
-        direction="column"
-        display={['block', 'none', 'none']}
-        fontWeight="400"
-        h="60px"
-        justifyContent="space-between"
-        p="10px"
-        position="fixed"
-        w="full"
-        zIndex={12}>
+      align="center"
+      bg="navigationBottomMobile.bg"
+      bottom="0px"
+      boxShadow="simple"
+      color="auditLeftNavigation.color"
+      data-id="000207"
+      direction="column"
+      display={['block', 'none', 'none']}
+      fontWeight="400"
+      h="fit-content"
+      justifyContent="space-between"
+      p="16px 16px"
+      position="fixed"
+      w="full"
+      zIndex={12}
+      sx={{
+        '&::-webkit-scrollbar': {
+          display: 'none',
+        },
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
+      }}>
       <Flex align="center" data-id="000208" flexDirection="row" h="full">
         <Flex
           align="center"
@@ -36,16 +43,40 @@ function AuditLeftNavigationMobile() {
           h="30px"
           mr={3}
           onClick={() => navigateTo('/audits')}>
-          <Flex
-            align="center"
-            borderRadius="8px"
-            data-id="000210"
-            h="30px"
-            justify="center"
-            w="30px">
-            <Home data-id="000211" stroke="#ffffff" />
-          </Flex>
-          <Divider data-id="000212" ml={3} orientation="vertical" />
+          <Box
+            data-id="002488"
+            borderRadius="7px"
+            display="flex"
+            width="56px"
+            height="56px"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            gap="0px"
+            bg="#E2E8F0">
+            <Flex
+              align="center"
+              borderRadius="8px"
+              data-id="000210"
+              h="30px"
+              justify="center"
+              w="30px">
+              <BackArrowIcon data-id="002489" dataId="000211" width={18} height={18} />
+            </Flex>
+            <Text
+              color="#4A5568"
+              data-id="000211"
+              fontSize="12px"
+              fontWeight="400"
+              textAlign="center"
+              textOverflow="ellipsis"
+              overflow="hidden"
+              whiteSpace="nowrap"
+              width="85%">
+              Back
+            </Text>
+          </Box>
+          <Divider data-id="000212" ml={4} orientation="vertical" />
         </Flex>
         <Flex data-id="000213" w="full">
           <Flex data-id="000214" justify="space-between" w="full">
@@ -53,8 +84,6 @@ function AuditLeftNavigationMobile() {
               <AuditLeftTabItem
                 data-id="000215"
                 icon={icon}
-                isDesktop={false}
-                isMobile
                 key={url}
                 label={label}
                 url={url} />

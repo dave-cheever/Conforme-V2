@@ -1,4 +1,4 @@
-import { Box, Button, Flex, HStack, Menu, MenuButton, MenuList, Spacer, Text, Portal } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Menu, MenuButton, MenuList, Portal, Spacer, Text } from '@chakra-ui/react';
 
 import { ChevronRight, UpAndDownIcon } from '../icons';
 

@@ -174,7 +174,7 @@ function NavigationTop() {
                  aria-label="Add"
                 bg="white"
                 border={"1px solid #CBD5E0"}
-                bottom={['75px', '0']}
+                bottom={['107px', '0']}
                 boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
                 color="white"
                 display={['/admin/users', '/admin/settings', '/admin/audit-log'].includes(location.pathname) ? 'none' : 'block'}
@@ -196,7 +196,7 @@ function NavigationTop() {
                 mr={['4', '0']}
                 onClick={isOpen ? onClose : onOpen}
                 position={['fixed', 'relative']}
-                right={['15px', '0']}
+                right={['0', '0']}
                 rounded={['20px', '8px']}
                 w={['52px', '40px']}  
                 zIndex={5} />
