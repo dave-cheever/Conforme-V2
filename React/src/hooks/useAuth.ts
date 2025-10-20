@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useAppContext } from '../contexts/AppProvider';
 import authClient from '../utils/auth-client';
@@ -11,6 +11,7 @@ const useAuth = () => {
   } = authClient.useSession();
   const { setUser } = useAppContext();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (isPending) return;
@@ -18,9 +19,8 @@ const useAuth = () => {
     else {
       setUser(null);
       authClient.signOut();
-      navigate('/logout');
     }
-  }, [session, isPending]);
+  }, [session, isPending, location.pathname]);
 
   return isPending;
 };

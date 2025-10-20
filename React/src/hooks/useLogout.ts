@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import addHours from 'date-fns/addHours';
 
-import { useAppContext } from "../contexts/AppProvider";
+import { useAppContext } from '../contexts/AppProvider';
 import authClient from '../utils/auth-client';
 
 const useLogout = () => {
@@ -10,7 +10,7 @@ const useLogout = () => {
   const { user, setUser } = useAppContext();
 
   const logout = async () => {
-    authClient.signOut()
+    authClient.signOut();
 
     // logOut user is expired after 24 hours
     const logOutUser = {
@@ -21,7 +21,6 @@ const useLogout = () => {
     };
     localStorage.setItem('logOutUser', JSON.stringify(logOutUser));
     setUser(null);
-    navigate('/logout');
   };
 
   return logout;

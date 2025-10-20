@@ -133,12 +133,14 @@ function Datepicker({
                   name={name}
                   onCalendarClose={onBlur}
                   onChange={(date) => {
-                      onChange(date);
-                      setTimeout(() => {
-                        if (datePickerRef.current) 
-                          (datePickerRef.current as any).setOpen(false);
-                      }, 0);
-                    }}
+                    // Create a date that represents the local date without timezone conversion
+                    // This prevents the date from shifting when serialized to JSON
+                    const localDate = date ? new Date(date.getFullYear(), date.getMonth(), date.getDate()) : null;
+                    onChange(localDate);
+                    setTimeout(() => {
+                      if (datePickerRef.current) (datePickerRef.current as any).setOpen(false);
+                    }, 0);
+                  }}
                   placeholderText={placeholder}
                   ref={datePickerRef}
                   selected={value ? new Date(value) : null}

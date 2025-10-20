@@ -72,7 +72,10 @@ function DateFilter({ filterName }: { filterName: string }) {
   };
 
   const handleExactDateChange = (date: Date) => {
-    const newVal = ['exactDate', date];
+    // Create a date that represents the local date without timezone conversion
+    // This prevents the date from shifting when serialized to JSON
+    const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const newVal = ['exactDate', localDate];
     if (module && user) {
       updateLocalStorageFilter(
         module._id,
@@ -91,7 +94,10 @@ function DateFilter({ filterName }: { filterName: string }) {
     const [start, end] = date;
 
     if (start) {
-      const newVal = ['dateRange', start, end || null];
+      // Create dates that represent the local dates without timezone conversion
+      const localStartDate = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+      const localEndDate = end ? new Date(end.getFullYear(), end.getMonth(), end.getDate()) : null;
+      const newVal = ['dateRange', localStartDate, localEndDate];
 
       if (module && user) {
         updateLocalStorageFilter(
