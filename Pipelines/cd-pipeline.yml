@@ -195,11 +195,29 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)/functions'
         ArtifactName: 'function-app'
         publishLocation: 'Container'
-  
-- stage: Deploy_SIT
-  displayName: 'SIT'
-  dependsOn: Build_Artifacts 
-  condition: succeeded()
+
+- stage: Deploy_SIT_Current
+  displayName: 'SIT V2'
+  dependsOn: Build_Artifacts
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranchName'], '2'))
+  jobs:
+    - template: templates/deploy-environment.yml
+      parameters:
+        adoEnvironment: 'Conforme - SIT'
+        variableGroup: 'Conforme SIT V2'
+        variableFunctionGroup: 'Conforme Functions SIT'
+        azureSubscription: '$(APP_SERVICE_CONNECTION)'
+        reactAppName: 'conforme-sit'
+        expressAppName: 'conforme-api-sit'
+        functionAppName: 'conforme-functions-sit'
+        resourceGroupName: 'rg-conforme-web-sit'
+        runtimeStack: 'NODE|22-lts'
+        location: 'uksouth'
+ 
+- stage: Deploy_SIT_Next
+  displayName: 'SIT V3'
+  dependsOn: Build_Artifacts
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranchName'], '3'))
   jobs:
     - template: templates/deploy-environment.yml
       parameters:
@@ -212,11 +230,30 @@ stages:
         functionAppName: 'conforme-functions-sit'
         resourceGroupName: 'rg-conforme-web-sit'
         runtimeStack: 'NODE|22-lts'
+        location: 'uksouth'
 
-- stage: Deploy_SAT
-  displayName: 'SAT'
-  dependsOn: Deploy_SIT
-  condition: succeeded()
+- stage: Deploy_SAT_Current
+  displayName: 'SAT V2'
+  dependsOn: Deploy_SIT_Current
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranchName'], '2'))
+  jobs:
+    - template: templates/deploy-environment.yml
+      parameters:
+        adoEnvironment: 'Conforme - SAT'
+        variableGroup: 'Conforme SAT V2'
+        variableFunctionGroup: 'Conforme Functions SAT'
+        azureSubscription: '$(APP_SERVICE_CONNECTION)'
+        reactAppName: 'conforme-sat'
+        expressAppName: 'conforme-api-sat'
+        functionAppName: 'conforme-functions-sat'
+        resourceGroupName: 'rg-conforme-web-sat'
+        runtimeStack: 'NODE|22-lts'
+        location: 'uksouth'
+
+- stage: Deploy_SAT_Next
+  displayName: 'SAT V3'
+  dependsOn: Deploy_SIT_Next
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranchName'], '3'))
   jobs:
     - template: templates/deploy-environment.yml
       parameters:
@@ -229,11 +266,14 @@ stages:
         functionAppName: 'conforme-functions-sat'
         resourceGroupName: 'rg-conforme-web-sat'
         runtimeStack: 'NODE|22-lts'
+        location: 'uksouth'
 
 - stage: Deploy_UAT_Doc_Control
   displayName: 'UAT Doc Control'
-  dependsOn: Deploy_SAT
-  condition: succeeded()
+  dependsOn:
+    - Deploy_SAT_Current
+    - Deploy_SAT_Next
+  condition: or(eq(dependencies.Deploy_SAT_Current.result, 'Succeeded'), eq(dependencies.Deploy_SAT_Next.result, 'Succeeded'))
   jobs:
     - template: templates/deploy-environment.yml
       parameters:
@@ -246,11 +286,14 @@ stages:
         functionAppName: 'functions-bre-qms-sat'
         resourceGroupName: 'rg-bre-qms-sat'
         runtimeStack: 'NODE|22-lts'
+        location: 'uksouth'
 
 - stage: Deploy_UAT_Safety_Walk
   displayName: 'UAT Safety Walk'
-  dependsOn: Deploy_SAT
-  condition: succeeded()
+  dependsOn:
+    - Deploy_SAT_Current
+    - Deploy_SAT_Next
+  condition: or(eq(dependencies.Deploy_SAT_Current.result, 'Succeeded'), eq(dependencies.Deploy_SAT_Next.result, 'Succeeded'))
   jobs:
     - template: templates/deploy-environment.yml
       parameters:
@@ -263,6 +306,7 @@ stages:
         functionAppName: 'functions-bre-safetywalk-sat'
         resourceGroupName: 'rg-bre-safetywalk-sat'
         runtimeStack: 'NODE|22-lts'
+        location: 'uksouth'
    
 - stage: Deploy_PROD_Doc_Control
   displayName: 'PROD Doc Control'
@@ -280,6 +324,7 @@ stages:
         functionAppName: 'functions-bre-qms-sat'
         resourceGroupName: 'rg-bre-qms-sat'
         runtimeStack: 'NODE|22-lts'
+        location: 'uksouth'
 
 - stage: Deploy_PROD_Safety_Walk
   displayName: 'PROD Safety Walk'
@@ -297,3 +342,4 @@ stages:
         functionAppName: 'functions-bre-safetywalk-sat'
         resourceGroupName: 'rg-bre-safetywalk-sat'
         runtimeStack: 'NODE|22-lts'
+        location: 'uksouth'

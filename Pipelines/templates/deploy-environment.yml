@@ -18,10 +18,33 @@ parameters:
   - name: runtimeStack
     type: string
     default: 'NODE|22-lts'
+  - name: location
+    type: string
+    default: 'uksouth'
+  - name: bicepPath
+    type: string
+    default: 'Azure Deployment/bicep/main.bicep'
+  - name: parametersFile
+    type: string
+    default: 'Azure Deployment/bicep/main.parameters.json'
 
 jobs:
+- template: deploy-infra.yml
+  parameters:
+    adoEnvironment: '${{ parameters.adoEnvironment }}'
+    variableGroup: '${{ parameters.variableGroup }}'
+    variableFunctionGroup: '${{ parameters.variableFunctionGroup }}'
+    azureSubscription: '${{ parameters.azureSubscription }}'
+    reactAppName: '${{ parameters.reactAppName }}'
+    expressAppName: '${{ parameters.expressAppName }}'
+    functionAppName: '${{ parameters.functionAppName }}'
+    resourceGroupName: '${{ parameters.resourceGroupName }}'
+    location: '${{ parameters.location }}'
+    bicepPath: '${{ parameters.bicepPath }}'
+    parametersFile: '${{ parameters.parametersFile }}'
 - deployment: Deploy
   displayName: '${{ parameters.adoEnvironment }} Deployment'
+  dependsOn: Provision_Infrastructure
   variables:
     - group: ${{ parameters.variableGroup }}
     - group: ${{ parameters.variableFunctionGroup }}
