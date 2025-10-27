@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { compareAsc, parseISO } from 'date-fns';
 import { get } from 'lodash';
 
@@ -10,9 +11,8 @@ const useSort = (data: any[], initialSortType = 'name', initialSortOrder: 'asc' 
 
   useEffect(() => {
     const sort = (a, b) => {
-      if (sortType === 'priority') {
+      if (sortType === 'priority')
         return priorities.indexOf(get(a, sortType)) - priorities.indexOf(get(b, sortType));
-      }
 
       const aValue = get(a, sortType);
       const bValue = get(b, sortType);

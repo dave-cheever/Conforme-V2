@@ -1,4 +1,5 @@
 import React, { memo, useCallback } from 'react';
+
 import { Box, Flex } from '@chakra-ui/react';
 
 import { ColumnConfig } from '../ListView';
@@ -38,13 +39,11 @@ function ListViewRowComponent({ row, columns, onRowClick, 'data-testid': dataTes
 const areEqual = (
   prev: Readonly<{ row: any; columns: ColumnConfig[]; onRowClick: (row: any) => void; 'data-testid'?: string }>,
   next: Readonly<{ row: any; columns: ColumnConfig[]; onRowClick: (row: any) => void; 'data-testid'?: string }>,
-) => {
-  return (
-    prev.row === next.row &&
-    prev.columns === next.columns &&
-    prev.onRowClick === next.onRowClick &&
-    prev['data-testid'] === next['data-testid']
-  );
-};
+) => (
+  prev.row === next.row &&
+  prev.columns === next.columns &&
+  prev.onRowClick === next.onRowClick &&
+  prev['data-testid'] === next['data-testid']
+);
 
 export default memo(ListViewRowComponent, areEqual);

@@ -66,7 +66,7 @@ const openRoutes: Array<IRoute> = [
         key="not-allowed"
         replace
         state={{ redirectUrl: `${window.location.pathname}${window.location.search}` }}
-        to="/login"
+        to="/logout"
       />
     ),
     layout: PureLayout,

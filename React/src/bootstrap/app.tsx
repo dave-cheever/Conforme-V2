@@ -31,7 +31,8 @@ function App() {
  
   useEffect(() => {
     const isFromLogin = location.pathname === '/login';
-    if (user && isFromLogin && Array.isArray(user.defaultPage) && user.defaultPage.length > 0) {
+    const isOnLogout = location.pathname === '/logout';
+    if (user && isFromLogin && !isOnLogout && Array.isArray(user.defaultPage) && user.defaultPage.length > 0) {
       const defaultPage = user.defaultPage.find((value) => value.name === module?.name);
       const defaultPath = defaultPage?.path;
       if (defaultPath === '/') navigate(defaultPath);
