@@ -248,7 +248,7 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
         {
           name: 'AzureWebJobsStorage'
           value: storageConnectionString
-        },
+        }
         {
           name: 'MONGO_CONNECTION_STRING'
           value: cosmosConnectionString
