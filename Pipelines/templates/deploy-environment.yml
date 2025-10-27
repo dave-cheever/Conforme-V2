@@ -62,6 +62,7 @@ jobs:
     appServicePlanName: '${{ parameters.appServicePlanName }}'
     storageAccountName: '${{ parameters.storageAccountName }}'
     tags: '${{ parameters.tags }}'
+    appServiceConnection: '${{ parameters.appServiceConnection }}'
 - deployment: Deploy
   displayName: '${{ parameters.adoEnvironment }} Deployment'
   dependsOn: Provision_Infrastructure
