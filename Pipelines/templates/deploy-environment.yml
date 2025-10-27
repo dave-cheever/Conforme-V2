@@ -5,8 +5,6 @@ parameters:
     type: string
   - name: variableFunctionGroup
     type: string
-  - name: azureSubscription
-    type: string
   - name: reactAppName
     type: string
   - name: expressAppName
@@ -18,15 +16,33 @@ parameters:
   - name: runtimeStack
     type: string
     default: 'NODE|22-lts'
+  - name: bicepPath
+    type: string
+    default: 'Pipelines/bicep/main.bicep'
+  - name: parametersFile
+    type: string
+    default: 'Pipelines/bicep/main.parameters.json'
+  - name: cosmosAccountName
+    type: string
+    default: ''
+  - name: cosmosDbName
+    type: string
+    default: ''
+  - name: appServicePlanName
+    type: string
+    default: ''
+  - name: storageAccountName
+    type: string
+    default: ''
+  - name: tags
+    type: string
+    default: '{"Product":"Conforme"}'
   - name: location
     type: string
     default: 'uksouth'
-  - name: bicepPath
+  - name: appServiceConnection
     type: string
-    default: 'Azure Deployment/bicep/main.bicep'
-  - name: parametersFile
-    type: string
-    default: 'Azure Deployment/bicep/main.parameters.json'
+    default: 'Not provided'
 
 jobs:
 - template: deploy-infra.yml
@@ -34,7 +50,6 @@ jobs:
     adoEnvironment: '${{ parameters.adoEnvironment }}'
     variableGroup: '${{ parameters.variableGroup }}'
     variableFunctionGroup: '${{ parameters.variableFunctionGroup }}'
-    azureSubscription: '${{ parameters.azureSubscription }}'
     reactAppName: '${{ parameters.reactAppName }}'
     expressAppName: '${{ parameters.expressAppName }}'
     functionAppName: '${{ parameters.functionAppName }}'
@@ -42,6 +57,11 @@ jobs:
     location: '${{ parameters.location }}'
     bicepPath: '${{ parameters.bicepPath }}'
     parametersFile: '${{ parameters.parametersFile }}'
+    cosmosAccountName: '${{ parameters.cosmosAccountName }}'
+    cosmosDbName: '${{ parameters.cosmosDbName }}'
+    appServicePlanName: '${{ parameters.appServicePlanName }}'
+    storageAccountName: '${{ parameters.storageAccountName }}'
+    tags: '${{ parameters.tags }}'
 - deployment: Deploy
   displayName: '${{ parameters.adoEnvironment }} Deployment'
   dependsOn: Provision_Infrastructure
@@ -130,7 +150,7 @@ jobs:
         - task: AzureWebApp@1
           displayName: 'Deploy React to ${{ parameters.adoEnvironment }} App Service'
           inputs:
-            azureSubscription: '${{ parameters.azureSubscription }}'
+            azureSubscription: '${{ parameters.appServiceConnection }}'
             appType: 'webAppLinux'
             appName: '${{ parameters.reactAppName }}'
             resourceGroupName: '${{ parameters.resourceGroupName }}'
@@ -139,10 +159,10 @@ jobs:
         - task: AzureWebApp@1
           displayName: 'Deploy Express to ${{ parameters.adoEnvironment }} App Service'
           inputs:
-            azureSubscription: '${{ parameters.azureSubscription }}'
+            azureSubscription: '${{ parameters.appServiceConnection }}'
             appType: 'webAppLinux'
             appName: '${{ parameters.expressAppName }}'
-            AppSettings: '-ALLOWED_DOMAINS "$(ALLOWED_DOMAINS)" -API_URL "$(API_URL)" -AZURE_AD_CLIENT_ID "$(AZURE_AD_CLIENT_ID)" -DB_CONNECTION_STRING "$(DB_CONNECTION_STRING)" -GRAPH_URL "$(GRAPH_URL)" -NODE_ENV "$(NODE_ENV)" -PORT "$(PORT)" -SESS_LIFETIME_IN_MINUTES "$(SESS_LIFETIME_IN_MINUTES)" -SESS_NAME "$(SESS_NAME)" -SESS_SECRET "$(SESS_SECRET)" -VERSION "$(VERSION)" -FUNCTION_URL "$(FUNCTION_URL)" -CLIENT_URL "$(CLIENT_URL)" -AZURE_AD_CLIENT_ID "$(AZURE_AD_CLIENT_ID)" -AZURE_AD_CLIENT_SECRET "$(AZURE_AD_CLIENT_SECRET)" -AZURE_AD_TENANT_ID "$(AZURE_AD_TENANT_ID)"'
+            AppSettings: '-ALLOWED_DOMAINS "$(ALLOWED_DOMAINS)" -API_URL "$(API_URL)" -AZURE_AD_CLIENT_ID "$(AZURE_AD_CLIENT_ID)" -GRAPH_URL "$(GRAPH_URL)" -NODE_ENV "$(NODE_ENV)" -PORT "$(PORT)" -SESS_LIFETIME_IN_MINUTES "$(SESS_LIFETIME_IN_MINUTES)" -SESS_NAME "$(SESS_NAME)" -SESS_SECRET "$(SESS_SECRET)" -VERSION "$(VERSION)" -FUNCTION_URL "$(FUNCTION_URL)" -CLIENT_URL "$(CLIENT_URL)" -AZURE_AD_CLIENT_ID "$(AZURE_AD_CLIENT_ID)" -AZURE_AD_CLIENT_SECRET "$(AZURE_AD_CLIENT_SECRET)" -AZURE_AD_TENANT_ID "$(AZURE_AD_TENANT_ID)"'
             resourceGroupName: '${{ parameters.resourceGroupName }}'
             package: '$(Pipeline.Workspace)/express-app/express-app.zip'
             runtimeStack: '${{ parameters.runtimeStack }}'
@@ -150,9 +170,9 @@ jobs:
         - task: AzureFunctionApp@2
           displayName: 'Deploy to ${{ parameters.adoEnvironment }} Function App'
           inputs:
-            azureSubscription: '${{ parameters.azureSubscription }}'
+            azureSubscription: '${{ parameters.appServiceConnection }}'
             appName: '${{ parameters.functionAppName }}'
-            AppSettings: '-ENV "$(ENV)" -DEBUG "$(DEBUG)" -MS_GRAPH_URL "$(MS_GRAPH_URL)" -MONGO_CONNECTION_STRING "$(MONGO_CONNECTION_STRING)" -EMAIL_SENDER "$(EMAIL_SENDER)" -CONFORME_ORGANIZATION_ID "$(CONFORME_ORGANIZATION_ID)" -SCHEDULED_NOTIFICATIONS_START_HOUR "$(SCHEDULED_NOTIFICATIONS_START_HOUR)" -SCHEDULED_NOTIFICATIONS_END_HOUR "$(SCHEDULED_NOTIFICATIONS_END_HOUR)" -SCHEDULED_NOTIFICATIONS_FREQUENCY "$(SCHEDULED_NOTIFICATIONS_FREQUENCY)" -EMAIL_HANDLER "$(EMAIL_HANDLER)" -SEND_GRID_API_KEY "$(SEND_GRID_API_KEY)"'
+            AppSettings: '-ENV "$(ENV)" -DEBUG "$(DEBUG)" -MS_GRAPH_URL "$(MS_GRAPH_URL)" -EMAIL_SENDER "$(EMAIL_SENDER)" -CONFORME_ORGANIZATION_ID "$(CONFORME_ORGANIZATION_ID)" -SCHEDULED_NOTIFICATIONS_START_HOUR "$(SCHEDULED_NOTIFICATIONS_START_HOUR)" -SCHEDULED_NOTIFICATIONS_END_HOUR "$(SCHEDULED_NOTIFICATIONS_END_HOUR)" -SCHEDULED_NOTIFICATIONS_FREQUENCY "$(SCHEDULED_NOTIFICATIONS_FREQUENCY)" -EMAIL_HANDLER "$(EMAIL_HANDLER)" -SEND_GRID_API_KEY "$(SEND_GRID_API_KEY)"'
             resourceGroupName: '${{ parameters.resourceGroupName }}'
             package: '$(Pipeline.Workspace)/function-app/function-app.zip'
 

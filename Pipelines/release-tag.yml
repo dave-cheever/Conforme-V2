@@ -3,7 +3,7 @@ trigger:
     include:
       - main
       - releases/*
-
+      
 pr: none
 
 pool:

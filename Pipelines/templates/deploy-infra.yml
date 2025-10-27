@@ -5,8 +5,6 @@ parameters:
     type: string
   - name: variableFunctionGroup
     type: string
-  - name: azureSubscription
-    type: string
   - name: reactAppName
     type: string
   - name: expressAppName
@@ -20,10 +18,27 @@ parameters:
     default: 'uksouth'
   - name: bicepPath
     type: string
-    default: 'Azure Deployment/bicep/main.bicep'
+    default: 'Pipelines/bicep/main.bicep'
   - name: parametersFile
     type: string
-    default: 'Azure Deployment/bicep/main.parameters.json'
+    default: 'Pipelines/bicep/main.parameters.json'
+  - name: cosmosAccountName
+    type: string
+    default: ''
+  - name: cosmosDbName
+    type: string
+    default: ''
+  - name: appServicePlanName
+    type: string
+    default: ''
+  - name: storageAccountName
+    type: string
+    default: ''
+  - name: tags
+    type: string
+    default: '{"Product":"Conforme"}'
+  - name: appServiceConnection
+    type: string
 
 jobs:
 - deployment: Provision_Infrastructure
@@ -36,66 +51,18 @@ jobs:
     runOnce:
       deploy:
         steps:
-        - task: AzureCLI@2
-          displayName: 'Check if infrastructure already exists'
-          inputs:
-            azureSubscription: '${{ parameters.azureSubscription }}'
-            scriptType: 'bash'
-            scriptLocation: 'inlineScript'
-            inlineScript: |
-              set -euo pipefail
-
-              RG='${{ parameters.resourceGroupName }}'
-              LOCATION='${{ parameters.location }}'
-              REACT_APP='${{ parameters.reactAppName }}'
-              API_APP='${{ parameters.expressAppName }}'
-              FUNC_APP='${{ parameters.functionAppName }}'
-
-              # Default to needing provisioning
-              NEEDS_PROVISION="true"
-
-              if az group exists -n "$RG" | grep -qi true; then
-                echo "Resource group exists: $RG"
-                # Check a set of marker resources
-                WEB1_OK=$(az webapp show -g "$RG" -n "$REACT_APP" --query "name" -o tsv 2>/dev/null || true)
-                WEB2_OK=$(az webapp show -g "$RG" -n "$API_APP" --query "name" -o tsv 2>/dev/null || true)
-                FUNC_OK=$(az functionapp show -g "$RG" -n "$FUNC_APP" --query "name" -o tsv 2>/dev/null || true)
-
-                # Optional checks if names are provided via variable groups
-                COSMOS_NAME="${COSMOS_ACCOUNT_NAME:-}"
-                STORAGE_NAME="${STORAGE_ACCOUNT_NAME:-}"
-                COSMOS_OK=""
-                STORAGE_OK=""
-                if [ -n "$COSMOS_NAME" ]; then
-                  COSMOS_OK=$(az cosmosdb show -g "$RG" -n "$COSMOS_NAME" --query "name" -o tsv 2>/dev/null || true)
-                fi
-                if [ -n "$STORAGE_NAME" ]; then
-                  STORAGE_OK=$(az storage account show -g "$RG" -n "$STORAGE_NAME" --query "name" -o tsv 2>/dev/null || true)
-                fi
-
-                # If required core apps exist, assume infra provisioned
-                if [ -n "$WEB1_OK" ] && [ -n "$WEB2_OK" ] && [ -n "$FUNC_OK" ]; then
-                  # If optional resources specified, ensure they exist too
-                  if { [ -z "$COSMOS_NAME" ] || [ -n "$COSMOS_OK" ]; } && { [ -z "$STORAGE_NAME" ] || [ -n "$STORAGE_OK" ]; }; then
-                    NEEDS_PROVISION="false"
-                  fi
-                fi
-              else
-                echo "Resource group does not exist: $RG"
-              fi
-
-              echo "Provision needed: $NEEDS_PROVISION"
-              echo "##vso[task.setvariable variable=provisionNeeded]$NEEDS_PROVISION"
-
+        - checkout: self
+          persistCredentials: true
+          clean: true
         - task: AzureCLI@2
           displayName: 'Deploy Bicep to ${{ parameters.resourceGroupName }}'
-          condition: and(succeeded(), eq(variables.provisionNeeded, 'true'))
           inputs:
-            azureSubscription: '${{ parameters.azureSubscription }}'
+            azureSubscription: '${{ parameters.appServiceConnection }}'
+            workingDirectory: '$(Build.SourcesDirectory)'
             scriptType: 'bash'
             scriptLocation: 'inlineScript'
             inlineScript: |
-              set -euo pipefail
+              set -eo pipefail
 
               # Create/ensure resource group
               az group create -n "${{ parameters.resourceGroupName }}" -l "${{ parameters.location }}"
@@ -107,57 +74,27 @@ jobs:
               echo "Client App: ${{ parameters.reactAppName }}"
               echo "API App: ${{ parameters.expressAppName }}"
               echo "Func App: ${{ parameters.functionAppName }}"
+              echo "Cosmos Account: ${{ parameters.cosmosAccountName }}"
+              echo "Storage Account: ${{ parameters.storageAccountName }}"
 
-              # Optional parameters pulled from variable groups; ensure they are set there
-              #   COSMOS_ACCOUNT_NAME, COSMOS_DB_NAME, STORAGE_ACCOUNT_NAME,
-              #   APP_SERVICE_PLAN_NAME, APP_SERVICE_PLAN_SKU,
-              #   CLIENT_URL, API_URL,
-              #   AZURE_AD_TENANT_ID, AZURE_AD_CLIENT_ID, AZURE_AD_CLIENT_SECRET, TOKEN_ENDPOINT,
-              #   MS_GRAPH_URL, MS_GRAPH_SCOPE, ALLOWED_DOMAINS,
-              #   SEND_GRID_API_KEY, EMAIL_SENDER, EMAIL_HANDLER,
-              #   SCHEDULED_NOTIFICATIONS_START_HOUR, SCHEDULED_NOTIFICATIONS_END_HOUR, SCHEDULED_NOTIFICATIONS_FREQUENCY,
-              #   CONFORME_ORGANIZATION_ID, ENV
+              # (App/runtime parameters removed; no validation needed here)
 
               # Deploy group-scoped template
               az deployment group create \
                 -g "${{ parameters.resourceGroupName }}" \
                 -f "${{ parameters.bicepPath }}" \
-                -p "${{ parameters.parametersFile }}" \
+                -p @"${{ parameters.parametersFile }}" \
                 -p \
                   location="${{ parameters.location }}" \
-                  appServicePlanName="${APP_SERVICE_PLAN_NAME:-asp-${{ parameters.adoEnvironment }}}" \
+                  tags='${{ parameters.tags }}' \
+                  appServicePlanName='${{ parameters.appServicePlanName }}' \
                   appServicePlanSku="${APP_SERVICE_PLAN_SKU:-B1}" \
                   webAppNameClient="${{ parameters.reactAppName }}" \
                   webAppNameAPI="${{ parameters.expressAppName }}" \
                   functionAppName="${{ parameters.functionAppName }}" \
-                  cosmosAccountName="${COSMOS_ACCOUNT_NAME}" \
-                  cosmosDbName="${COSMOS_DB_NAME:-db-conforme}" \
-                  storageAccountName="${STORAGE_ACCOUNT_NAME}" \
-                  appEnv="${ENV:-production}" \
-                  allowedDomains="${ALLOWED_DOMAINS:-login.microsoftonline.com}" \
-                  clientUrl="${CLIENT_URL}" \
-                  apiUrl="${API_URL}" \
-                  azureAdTenantId="${AZURE_AD_TENANT_ID}" \
-                  azureAdClientId="${AZURE_AD_CLIENT_ID}" \
-                  azureAdClientSecret="${AZURE_AD_CLIENT_SECRET}" \
-                  tokenEndpoint="${TOKEN_ENDPOINT}" \
-                  msGraphUrl="${MS_GRAPH_URL:-https://graph.microsoft.com/v1.0}" \
-                  msGraphScope="${MS_GRAPH_SCOPE:-https://graph.microsoft.com/.default}" \
-                  sendGridApiKey="${SEND_GRID_API_KEY:-}" \
-                  emailSender="${EMAIL_SENDER:-}" \
-                  emailHandler="${EMAIL_HANDLER:-sendgrid}" \
-                  scheduledStartHour=${SCHEDULED_NOTIFICATIONS_START_HOUR:-7} \
-                  scheduledEndHour=${SCHEDULED_NOTIFICATIONS_END_HOUR:-20} \
-                  scheduledFrequencyHours=${SCHEDULED_NOTIFICATIONS_FREQUENCY:-3} \
-                  conformeOrganizationId="${CONFORME_ORGANIZATION_ID:-}" \
-                  createFunctionAppInsights=true
-
-        - task: Bash@3
-          displayName: 'Infra already provisioned – skipping Bicep'
-          condition: and(succeeded(), eq(variables.provisionNeeded, 'false'))
-          inputs:
-            targetType: 'inline'
-            script: |
-              echo "Environment ${{ parameters.adoEnvironment }} already provisioned. Skipping infra deployment."
-
+                  cosmosAccountName='${{ parameters.cosmosAccountName }}' \
+                  cosmosDbName='${{ parameters.cosmosDbName }}' \
+                  storageAccountName='${{ parameters.storageAccountName }}' \
+                  createFunctionAppInsights=true \
+                --verbose --debug
 

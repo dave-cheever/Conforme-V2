@@ -12,7 +12,6 @@ name: $(Build.SourceBranchName)
 # appendCommitMessageToRunName: false
 
 variables:
-  - group: Conforme SIT
   - name: Node_Version
     value: '22.x'
   - name: React_WorkingDir
@@ -203,16 +202,21 @@ stages:
   jobs:
     - template: templates/deploy-environment.yml
       parameters:
-        adoEnvironment: 'Conforme - SIT'
+        adoEnvironment: 'Conforme - SIT Current'
         variableGroup: 'Conforme SIT V2'
         variableFunctionGroup: 'Conforme Functions SIT'
-        azureSubscription: '$(APP_SERVICE_CONNECTION)'
-        reactAppName: 'conforme-sit'
-        expressAppName: 'conforme-api-sit'
-        functionAppName: 'conforme-functions-sit'
-        resourceGroupName: 'rg-conforme-web-sit'
+        reactAppName: 'conforme-sit-current'
+        expressAppName: 'conforme-api-sit-current'
+        functionAppName: 'conforme-functions-sit-current'
+        resourceGroupName: 'rg-conforme-web-sit-current'
         runtimeStack: 'NODE|22-lts'
+        cosmosAccountName: 'db-conforme-sit-current'
+        cosmosDbName: 'db-conforme-sit-current'
+        appServicePlanName: 'asp-conforme-sit-current'
+        storageAccountName: 'storconformesitcurrent'
         location: 'uksouth'
+        tags: '{"Application Name":"Conforme", "Business Owner":"charlie.lee@cielocosta.com", "Application Version":"v2", "Client":"Internal"}'
+        appServiceConnection: 'conforme-sit-current'
  
 - stage: Deploy_SIT_Next
   displayName: 'SIT V3'
@@ -221,16 +225,21 @@ stages:
   jobs:
     - template: templates/deploy-environment.yml
       parameters:
-        adoEnvironment: 'Conforme - SIT'
+        adoEnvironment: 'Conforme - SIT Latest'
         variableGroup: 'Conforme SIT'
         variableFunctionGroup: 'Conforme Functions SIT'
-        azureSubscription: '$(APP_SERVICE_CONNECTION)'
         reactAppName: 'conforme-sit'
         expressAppName: 'conforme-api-sit'
         functionAppName: 'conforme-functions-sit'
         resourceGroupName: 'rg-conforme-web-sit'
         runtimeStack: 'NODE|22-lts'
+        cosmosAccountName: 'db-conforme-sit'
+        cosmosDbName: 'db-conforme-sit'
+        appServicePlanName: 'asp-conforme-sit'
+        storageAccountName: 'storconformesit'
         location: 'uksouth'
+        tags: '{"Application Name":"Conforme", "Business Owner":"charlie.lee@cielocosta.com", "Application Version":"v3", "Client":"Internal"}'
+        appServiceConnection: 'conforme-sit-current'
 
 - stage: Deploy_SAT_Current
   displayName: 'SAT V2'
@@ -242,13 +251,18 @@ stages:
         adoEnvironment: 'Conforme - SAT'
         variableGroup: 'Conforme SAT V2'
         variableFunctionGroup: 'Conforme Functions SAT'
-        azureSubscription: '$(APP_SERVICE_CONNECTION)'
         reactAppName: 'conforme-sat'
         expressAppName: 'conforme-api-sat'
         functionAppName: 'conforme-functions-sat'
         resourceGroupName: 'rg-conforme-web-sat'
         runtimeStack: 'NODE|22-lts'
+        cosmosAccountName: '$(COSMOS_ACCOUNT_NAME)'
+        cosmosDbName: '$(COSMOS_DB_NAME)'
+        appServicePlanName: '$(APP_SERVICE_PLAN_NAME)'
+        storageAccountName: '$(STORAGE_ACCOUNT_NAME)'
         location: 'uksouth'
+        tags: '{"Application Name":"Conforme", "Business Owner":"charlie.lee@cielocosta.com", "Application Version":"v2", "Client":"Internal"}'
+        appServiceConnection: 'x'
 
 - stage: Deploy_SAT_Next
   displayName: 'SAT V3'
@@ -260,14 +274,19 @@ stages:
         adoEnvironment: 'Conforme - SAT'
         variableGroup: 'Conforme SAT'
         variableFunctionGroup: 'Conforme Functions SAT'
-        azureSubscription: '$(APP_SERVICE_CONNECTION)'
         reactAppName: 'conforme-sat'
         expressAppName: 'conforme-api-sat'
         functionAppName: 'conforme-functions-sat'
         resourceGroupName: 'rg-conforme-web-sat'
         runtimeStack: 'NODE|22-lts'
+        cosmosAccountName: '$(COSMOS_ACCOUNT_NAME)'
+        cosmosDbName: '$(COSMOS_DB_NAME)'
+        appServicePlanName: '$(APP_SERVICE_PLAN_NAME)'
+        storageAccountName: '$(STORAGE_ACCOUNT_NAME)'
         location: 'uksouth'
-
+        tags: '{"Application Name":"Conforme", "Business Owner":"charlie.lee@cielocosta.com", "Application Version":"v3", "Client":"Internal"}'
+        appServiceConnection: 'x'
+        
 - stage: Deploy_UAT_Doc_Control
   displayName: 'UAT Doc Control'
   dependsOn:
@@ -280,13 +299,18 @@ stages:
         adoEnvironment: 'Conforme - Document Control UAT'
         variableGroup: 'Conforme - Document Control UAT'
         variableFunctionGroup: 'Conforme - Document Control Functions UAT'
-        azureSubscription: '$(APP_SERVICE_CONNECTION)'
         reactAppName: 'bre-qms-sat'
         expressAppName: 'bre-qms-api-sat'
         functionAppName: 'functions-bre-qms-sat'
         resourceGroupName: 'rg-bre-qms-sat'
         runtimeStack: 'NODE|22-lts'
+        cosmosAccountName: '$(COSMOS_ACCOUNT_NAME)'
+        cosmosDbName: '$(COSMOS_DB_NAME)'
+        appServicePlanName: '$(APP_SERVICE_PLAN_NAME)'
+        storageAccountName: '$(STORAGE_ACCOUNT_NAME)'
         location: 'uksouth'
+        tags: '{"Application Name":"Conforme", "Business Owner":"charlie.lee@cielocosta.com", "Application Version":"v2", "Client":"Internal"}'
+        appServiceConnection: 'x'
 
 - stage: Deploy_UAT_Safety_Walk
   displayName: 'UAT Safety Walk'
@@ -300,14 +324,19 @@ stages:
         adoEnvironment: 'Conforme - Safety Walk UAT'
         variableGroup: 'Conforme - Safety Walk UAT'
         variableFunctionGroup: 'Conforme - Safety Walk Functions UAT'
-        azureSubscription: '$(APP_SERVICE_CONNECTION)'
         reactAppName: 'bre-safetywalk-sat'
         expressAppName: 'bre-safetywalk-api-sat'
         functionAppName: 'functions-bre-safetywalk-sat'
         resourceGroupName: 'rg-bre-safetywalk-sat'
         runtimeStack: 'NODE|22-lts'
+        cosmosAccountName: '$(COSMOS_ACCOUNT_NAME)'
+        cosmosDbName: '$(COSMOS_DB_NAME)'
+        appServicePlanName: '$(APP_SERVICE_PLAN_NAME)'
+        storageAccountName: '$(STORAGE_ACCOUNT_NAME)'
         location: 'uksouth'
-   
+        tags: '{"Application Name":"Conforme", "Business Owner":"charlie.lee@cielocosta.com", "Application Version":"v2", "Client":"Internal"}'
+        appServiceConnection: 'x'
+
 - stage: Deploy_PROD_Doc_Control
   displayName: 'PROD Doc Control'
   dependsOn: Deploy_UAT_Doc_Control
@@ -318,14 +347,19 @@ stages:
         adoEnvironment: 'Conforme - Document Control UAT'
         variableGroup: 'Conforme - Document Control UAT'
         variableFunctionGroup: 'Conforme - Document Control Functions UAT'
-        azureSubscription: '$(APP_SERVICE_CONNECTION)'
         reactAppName: 'bre-qms-sat'
         expressAppName: 'bre-qms-api-sat'
         functionAppName: 'functions-bre-qms-sat'
         resourceGroupName: 'rg-bre-qms-sat'
         runtimeStack: 'NODE|22-lts'
+        cosmosAccountName: '$(COSMOS_ACCOUNT_NAME)'
+        cosmosDbName: '$(COSMOS_DB_NAME)'
+        appServicePlanName: '$(APP_SERVICE_PLAN_NAME)'
+        storageAccountName: '$(STORAGE_ACCOUNT_NAME)'
         location: 'uksouth'
-
+        tags: '{"Application Name":"Conforme", "Business Owner":"charlie.lee@cielocosta.com", "Application Version":"v2", "Client":"Internal"}'
+        appServiceConnection: 'x'
+        
 - stage: Deploy_PROD_Safety_Walk
   displayName: 'PROD Safety Walk'
   dependsOn: Deploy_UAT_Safety_Walk
@@ -336,10 +370,15 @@ stages:
         adoEnvironment: 'Conforme - Safety Walk UAT'
         variableGroup: 'Conforme - Safety Walk UAT'
         variableFunctionGroup: 'Conforme - Safety Walk Functions UAT'
-        azureSubscription: '$(APP_SERVICE_CONNECTION)'
         reactAppName: 'bre-safetywalk-sat'
         expressAppName: 'bre-safetywalk-api-sat'
         functionAppName: 'functions-bre-safetywalk-sat'
         resourceGroupName: 'rg-bre-safetywalk-sat'
         runtimeStack: 'NODE|22-lts'
+        cosmosAccountName: '$(COSMOS_ACCOUNT_NAME)'
+        cosmosDbName: '$(COSMOS_DB_NAME)'
+        appServicePlanName: '$(APP_SERVICE_PLAN_NAME)'
+        storageAccountName: '$(STORAGE_ACCOUNT_NAME)'
         location: 'uksouth'
+        tags: '{"Application Name":"Conforme", "Business Owner":"charlie.lee@cielocosta.com", "Application Version":"v3", "Client":"Internal"}'
+        appServiceConnection: 'x'
