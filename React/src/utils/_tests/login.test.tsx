@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 // Import the component after mocking
@@ -99,9 +99,27 @@ const mockAppContext = {
   setUser: vi.fn(),
 };
 
+// Mock Image loading
+const mockSuccessfulImageLoad = () => {
+  const originalCreateElement = document.createElement.bind(document);
+  vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
+    const element = originalCreateElement(tagName);
+    if (tagName === 'img') {
+      setTimeout(() => {
+        element.dispatchEvent(new Event('load'));
+      }, 0);
+    }
+    return element;
+  });
+};
+
 describe('Login Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.restoreAllMocks();
+    
+    // Mock image loading by default
+    mockSuccessfulImageLoad();
     
     // Set default mock implementations
     vi.mocked(useAppContext).mockReturnValue(mockAppContext);
@@ -120,26 +138,30 @@ describe('Login Component', () => {
       expect(screen.getByText('Test Organization')).toBeInTheDocument();
     });
 
-    test('renders company logo', () => {
+    test('renders company logo', async () => {
       render(
         <TestWrapper data-id="002549">
           <Login data-id="002550" />
         </TestWrapper>
       );
 
-      const logo = screen.getByAltText('Company Logo');
-      expect(logo).toBeInTheDocument();
+      await waitFor(() => {
+        const logo = document.querySelector('[data-id="company-logo"]');
+        expect(logo).toBeInTheDocument();
+      });
     });
 
-    test('renders background image', () => {
+    test('renders background image', async () => {
       render(
         <TestWrapper data-id="002551">
           <Login data-id="002552" />
         </TestWrapper>
       );
 
-      const bgImage = document.querySelector('[data-id="000224"]');
-      expect(bgImage).toBeInTheDocument();
+      await waitFor(() => {
+        const bgImage = document.querySelector('[data-id="000224"]');
+        expect(bgImage).toBeInTheDocument();
+      });
     });
 
     test('renders sign in button when user is not logged in', () => {
@@ -203,7 +225,7 @@ describe('Login Component', () => {
   });
 
   describe('Component Structure', () => {
-    test('has proper data-id attributes', () => {
+    test('has proper data-id attributes', async () => {
       render(
         <TestWrapper data-id="002561">
           <Login data-id="002562" />
@@ -213,36 +235,44 @@ describe('Login Component', () => {
       expect(document.querySelector('[data-id="000207"]')).toBeInTheDocument();
       expect(document.querySelector('[data-id="000217"]')).toBeInTheDocument();
       expect(document.querySelector('[data-id="000223"]')).toBeInTheDocument();
-      expect(document.querySelector('[data-id="000224"]')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(document.querySelector('[data-id="000224"]')).toBeInTheDocument();
+      });
     });
   });
 
   describe('Image Fallbacks', () => {
-    test('uses fallback logo when organization logo fails to load', () => {
+    test('renders organization logo when it loads successfully', async () => {
       render(
         <TestWrapper data-id="002563">
           <Login data-id="002564" />
         </TestWrapper>
       );
 
-      const logo = screen.getByAltText('Company Logo');
-      expect(logo).toHaveAttribute('src', expect.stringContaining('Logo%20Icon%20-%20navigation.svg'));
+      await waitFor(() => {
+        const logo = document.querySelector('[data-id="company-logo"]');
+        expect(logo).toBeInTheDocument();
+        expect(logo).toHaveAttribute('src', mockOrganizationConfig.logoUrl);
+      });
     });
 
-    test('uses fallback background when organization background fails to load', () => {
+    test('renders organization background when it loads successfully', async () => {
       render(
         <TestWrapper data-id="002565">
           <Login data-id="002566" />
         </TestWrapper>
       );
 
-      const bgImage = document.querySelector('[data-id="000224"]');
-      expect(bgImage).toHaveAttribute('src', expect.stringContaining('Full%20background%20img%20-%20desktop.png'));
+      await waitFor(() => {
+        const bgImage = document.querySelector('[data-id="000224"]');
+        expect(bgImage).toBeInTheDocument();
+        expect(bgImage).toHaveAttribute('src', mockOrganizationConfig.bgImageUrl);
+      });
     });
   });
 
   describe('Responsive Design', () => {
-    test('renders with mobile layout when device is mobile', () => {
+    test('renders with mobile layout when device is mobile', async () => {
       vi.mocked(useDevice).mockReturnValue('mobile');
 
       render(
@@ -251,11 +281,13 @@ describe('Login Component', () => {
         </TestWrapper>
       );
 
-      const logo = screen.getByAltText('Company Logo');
-      expect(logo).toBeInTheDocument();
+      await waitFor(() => {
+        const logo = document.querySelector('[data-id="company-logo"]');
+        expect(logo).toBeInTheDocument();
+      });
     });
 
-    test('renders with desktop layout when device is desktop', () => {
+    test('renders with desktop layout when device is desktop', async () => {
       vi.mocked(useDevice).mockReturnValue('desktop');
 
       render(
@@ -264,8 +296,10 @@ describe('Login Component', () => {
         </TestWrapper>
       );
 
-      const logo = screen.getByAltText('Company Logo');
-      expect(logo).toBeInTheDocument();
+      await waitFor(() => {
+        const logo = document.querySelector('[data-id="company-logo"]');
+        expect(logo).toBeInTheDocument();
+      });
     });
   });
 
@@ -286,7 +320,7 @@ describe('Login Component', () => {
       expect(screen.getByTestId('sign-in-button')).toBeInTheDocument();
     });
 
-    test('uses fallback images when organization config is missing', () => {
+    test('uses fallback images when organization config is missing', async () => {
       vi.mocked(useAppContext).mockReturnValue({
         ...mockAppContext,
         organizationConfig: undefined,
@@ -299,8 +333,11 @@ describe('Login Component', () => {
         </TestWrapper>
       );
 
-      const logo = screen.getByAltText('Company Logo');
-      expect(logo).toHaveAttribute('src', expect.stringContaining('Logo%20Icon%20-%20navigation.svg'));
+      await waitFor(() => {
+        const logo = document.querySelector('[data-id="company-logo"]');
+        expect(logo).toBeInTheDocument();
+        expect(logo).toHaveAttribute('src', expect.stringContaining('Logo%20Icon%20-%20navigation.svg'));
+      });
     });
   });
 

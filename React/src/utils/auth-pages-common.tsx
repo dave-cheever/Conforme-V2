@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Avatar, Flex, Image, useToast } from '@chakra-ui/react';
+import { Avatar, Flex, Image, Text, useToast } from '@chakra-ui/react';
 
 import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
@@ -58,34 +58,148 @@ export const useAuthLogin = () => {
   return { login };
 };
 
-// Common CompanyLogo component
-export function CompanyLogo({ isMobile = false }: { readonly isMobile?: boolean }) {
-  const { organizationConfig } = useAppContext();
+// Helper function to test if an image loads successfully
+const testImageLoad = (url: string): Promise<boolean> => new Promise((resolve) => {
+  const img = document.createElement('img');
+  img.onload = () => resolve(true);
+  img.onerror = () => resolve(false);
+  img.src = url;
+});
 
+// Separate component for logo positioning/styling
+function LogoContainer({ 
+  isMobile, 
+  children 
+}: { 
+  readonly isMobile: boolean; 
+  readonly children: React.ReactNode;
+}) {
   return (
-    <Image
-      alt="Company Logo"
-      data-id="company-logo"
-      fallbackSrc={FALLBACK_COMPANY_LOGO_URL}
-      h={isMobile ? "48px" : "50px"}
-      left={isMobile ? "50%" : "-20px"}
-      maxH={isMobile ? "48px" : "50px"}
-      maxW={isMobile ? "180px" : "200px"}
-      objectFit="contain"
-      onError={() => {
-        console.log('Company logo failed to load, using fallback');
-      }}
+    <Flex
+      data-id="002725"
       position="absolute"
-      src={organizationConfig?.logoUrl || FALLBACK_COMPANY_LOGO_URL}
       top={isMobile ? "16px" : "40px"}
+      left={isMobile ? "50%" : "20px"}
       transform={isMobile ? "translateX(-50%)" : "none"}
-      w={isMobile ? "180px" : "200px"}
-      zIndex="10"
-    />
+      zIndex={10}
+      h={isMobile ? "48px" : "50px"}
+      maxW={isMobile ? "180px" : "200px"}
+      align="center"
+      justify="center">
+      {children}
+    </Flex>
   );
 }
 
-// Common background image component
+// Separate component for text fallback
+function CompanyLogoTextFallback({ isMobile }: { readonly isMobile: boolean }) {
+  return (
+    <LogoContainer data-id="002726" isMobile={isMobile}>
+      <Flex
+        align="center"
+        bg="white"
+        borderRadius="md"
+        data-id="company-logo-text-fallback"
+        h="full"
+        justify="center"
+        px={4}
+      >
+        <Text
+          data-id="002727"
+          color="#462AC4"
+          fontWeight="bold"
+          fontSize={isMobile ? "16px" : "18px"}
+          whiteSpace="nowrap">
+          CompanyLogo
+        </Text>
+      </Flex>
+    </LogoContainer>
+  );
+}
+
+// Main CompanyLogo component
+export function CompanyLogo({ isMobile = false }: { readonly isMobile?: boolean }) {
+  const { organizationConfig } = useAppContext();
+  const [logoSrc, setLogoSrc] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadLogo = async () => {
+      setIsLoading(true);
+      
+      // Test primary logo first (if exists)
+      if (organizationConfig?.logoUrl) {
+        const primaryLoaded = await testImageLoad(organizationConfig.logoUrl);
+        if (primaryLoaded) {
+          setLogoSrc(organizationConfig.logoUrl);
+          setIsLoading(false);
+          return;
+        }
+      }
+      
+      // Test fallback logo
+      const fallbackLoaded = await testImageLoad(FALLBACK_COMPANY_LOGO_URL);
+      if (fallbackLoaded) {
+        setLogoSrc(FALLBACK_COMPANY_LOGO_URL);
+      } else {
+        setLogoSrc(null); // Show text fallback
+      }
+      
+      setIsLoading(false);
+    };
+
+    loadLogo();
+  }, [organizationConfig?.logoUrl]);
+
+  // Show loading state (empty for now, could add spinner)
+  if (isLoading) {
+    return null;
+  }
+
+  // Show text fallback if no logo loaded
+  if (!logoSrc) {
+    return <CompanyLogoTextFallback data-id="002728" isMobile={isMobile} />;
+  }
+
+  // Show the logo image
+  return (
+    <LogoContainer data-id="002729" isMobile={isMobile}>
+      <Image
+        alt=""
+        data-id="company-logo"
+        h="full"
+        maxH="full"
+        maxW="full"
+        objectFit="contain"
+        src={logoSrc}
+        w="full"
+      />
+    </LogoContainer>
+  );
+}
+
+// Separate component for background image positioning/styling
+function BackgroundImageContainer({ 
+  maxW,
+  children 
+}: { 
+  readonly maxW: string;
+  readonly children: React.ReactNode;
+}) {
+  return (
+    <Flex
+      data-id="002730"
+      h="full"
+      maxW={maxW}
+      align="center"
+      justify="center"
+      zIndex={1}>
+      {children}
+    </Flex>
+  );
+}
+
+// Main BackgroundImage component
 export function BackgroundImage({ 
   dataId, 
   maxW = "max-content",
@@ -97,19 +211,100 @@ export function BackgroundImage({
 }) {
   const { organizationConfig } = useAppContext();
   const device = useDevice();
+  const [backgroundSrc, setBackgroundSrc] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    const loadBackground = async () => {
+      setIsLoading(true);
+      
+      const customBgUrl = device === 'desktop' ? organizationConfig?.bgImageUrl : organizationConfig?.bgImageTabletUrl;
+      const fallbackUrl = device === 'desktop' ? FALLBACK_BG_DESKTOP_URL : FALLBACK_BG_MOBILE_URL;
+      
+      // Test primary background first (if exists)
+      if (customBgUrl) {
+        const primaryLoaded = await testImageLoad(customBgUrl);
+        if (primaryLoaded) {
+          setBackgroundSrc(customBgUrl);
+          setIsLoading(false);
+          return;
+        }
+      }
+      
+      // Test fallback background
+      const fallbackLoaded = await testImageLoad(fallbackUrl);
+      if (fallbackLoaded) {
+        setBackgroundSrc(fallbackUrl);
+      } else {
+        setBackgroundSrc(null); // Show text fallback
+      }
+      
+      setIsLoading(false);
+    };
+
+    loadBackground();
+  }, [organizationConfig?.bgImageUrl, organizationConfig?.bgImageTabletUrl, device]);
+
+  // Show loading state (empty for now, could add spinner)
+  if (isLoading) {
+    return null;
+  }
+
+  // Show text fallback if no background loaded
+  // On desktop: fixed positioning to fill right side (70%)
+  // On mobile/tablet: fills parent container (respects column layout)
+  if (!backgroundSrc) {
+    return (
+      <Flex
+        position={['relative', 'relative', 'fixed']}
+        right={['auto', 'auto', '0']}
+        top={['auto', 'auto', '0']}
+        bottom={['auto', 'auto', '0']}
+        h={['full', 'full', 'auto']}
+        w={['full', 'full', '70%']}
+        align="center"
+        justify="center"
+        bg="#f5f5f5"
+        data-id="background-image-text-fallback-wrapper"
+        zIndex={1}
+      >
+        <Flex
+          data-id="002731"
+          align="center"
+          bg="white"
+          borderRadius="lg"
+          boxShadow="md"
+          justify="center"
+          px={8}
+          py={6}>
+          <Text
+            data-id="002732"
+            color="#462AC4"
+            fontWeight="bold"
+            fontSize="28px"
+            textAlign="center">
+            Background Image
+          </Text>
+        </Flex>
+      </Flex>
+    );
+  }
+
+  // Show the background image
   return (
-    <Image
-      data-id={dataId}
-      fallbackSrc={device === 'desktop' ? FALLBACK_BG_DESKTOP_URL : FALLBACK_BG_MOBILE_URL}
-      fit={fit}
-      h="full"
-      maxW={maxW}
-      onError={() => {
-        console.log('Background image failed to load, using fallback');
-      }}
-      src={device === 'desktop' ? (organizationConfig?.bgImageUrl || FALLBACK_BG_DESKTOP_URL) : (organizationConfig?.bgImageTabletUrl || FALLBACK_BG_MOBILE_URL)} 
-    />
+    <BackgroundImageContainer data-id="002733" maxW={maxW}>
+      <Image
+        alt=""
+        data-id={dataId}
+        fit={fit}
+        h="full"
+        w="full"
+        maxW="100%"
+        maxH="100%"
+        objectFit="contain"
+        src={backgroundSrc}
+      />
+    </BackgroundImageContainer>
   );
 }
 

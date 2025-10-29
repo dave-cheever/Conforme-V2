@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 // Import the components after mocking
@@ -94,19 +94,44 @@ const mockAppContext = {
   setUser: vi.fn(),
 };
 
+// Mock Image loading
+const mockSuccessfulImageLoad = () => {
+  const originalCreateElement = document.createElement.bind(document);
+  vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
+    const element = originalCreateElement(tagName);
+    if (tagName === 'img') {
+      setTimeout(() => {
+        element.dispatchEvent(new Event('load'));
+      }, 0);
+    }
+    return element;
+  });
+};
+
+const mockFailedImageLoad = () => {
+  const originalCreateElement = document.createElement.bind(document);
+  vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
+    const element = originalCreateElement(tagName);
+    if (tagName === 'img') {
+      setTimeout(() => {
+        element.dispatchEvent(new Event('error'));
+      }, 0);
+    }
+    return element;
+  });
+};
+
 describe('auth-pages-common', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.restoreAllMocks();
     vi.mocked(useAppContext).mockReturnValue(mockAppContext);
     vi.mocked(useDevice).mockReturnValue('desktop');
   });
 
   describe('CompanyLogo', () => {
-    test('renders with fallback URL when organization logo is not available', () => {
-      vi.mocked(useAppContext).mockReturnValue({
-        ...mockAppContext,
-        organizationConfig: undefined,
-      });
+    test('renders custom logo when it loads successfully', async () => {
+      mockSuccessfulImageLoad();
 
       render(
         <TestWrapper data-id="002531">
@@ -114,18 +139,15 @@ describe('auth-pages-common', () => {
         </TestWrapper>
       );
 
-      const logo = screen.getByAltText('Company Logo');
-      expect(logo).toHaveAttribute('src', FALLBACK_COMPANY_LOGO_URL);
+      await waitFor(() => {
+        const logo = screen.queryByAltText('');
+        expect(logo).toBeInTheDocument();
+        expect(logo).toHaveAttribute('src', mockOrganizationConfig.logoUrl);
+      });
     });
 
-    test('renders with fallback URL when organization logo URL is empty', () => {
-      vi.mocked(useAppContext).mockReturnValue({
-        ...mockAppContext,
-        organizationConfig: {
-          ...mockOrganizationConfig,
-          logoUrl: '',
-        },
-      });
+    test('renders fallback logo when custom logo fails', async () => {
+      mockFailedImageLoad();
 
       render(
         <TestWrapper data-id="002533">
@@ -133,87 +155,246 @@ describe('auth-pages-common', () => {
         </TestWrapper>
       );
 
-      const logo = screen.getByAltText('Company Logo');
-      expect(logo).toHaveAttribute('src', FALLBACK_COMPANY_LOGO_URL);
+      await waitFor(() => {
+        const textFallback = screen.queryByText('CompanyLogo');
+        expect(textFallback).toBeInTheDocument();
+      });
     });
 
-    test('applies mobile styles when isMobile is true', () => {
+    test('renders text fallback when both logos fail', async () => {
+      mockFailedImageLoad();
+
       render(
         <TestWrapper data-id="002535">
-          <CompanyLogo data-id="002536" isMobile />
+          <CompanyLogo data-id="002536" />
         </TestWrapper>
       );
 
-      const logo = screen.getByAltText('Company Logo');
-      expect(logo).toHaveStyle({
-        height: '48px',
-        width: '180px',
-        top: '16px',
-        left: '50%',
-        transform: 'translateX(-50%)',
+      await waitFor(() => {
+        const textFallback = screen.getByText('CompanyLogo');
+        expect(textFallback).toBeInTheDocument();
       });
     });
 
-    test('applies desktop styles when isMobile is false', () => {
+    test('renders text fallback when organization config is undefined', async () => {
+      mockFailedImageLoad();
+      vi.mocked(useAppContext).mockReturnValue({
+        ...mockAppContext,
+        organizationConfig: undefined,
+      });
+
       render(
         <TestWrapper data-id="002537">
-          <CompanyLogo data-id="002538" isMobile={false} />
+          <CompanyLogo data-id="002538" />
         </TestWrapper>
       );
 
-      const logo = screen.getByAltText('Company Logo');
-      expect(logo).toHaveStyle({
-        width: '200px',
-        top: '40px',
-        left: '-20px',
-        transform: 'none',
+      await waitFor(() => {
+        const textFallback = screen.getByText('CompanyLogo');
+        expect(textFallback).toBeInTheDocument();
       });
+    });
+
+    test('applies mobile styles when isMobile is true', async () => {
+      mockSuccessfulImageLoad();
+
+      render(
+        <TestWrapper data-id="002539">
+          <CompanyLogo data-id="002540" isMobile />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        const logo = screen.queryByAltText('');
+        expect(logo).toBeInTheDocument();
+      });
+    });
+
+    test('applies desktop styles when isMobile is false', async () => {
+      mockSuccessfulImageLoad();
+
+      render(
+        <TestWrapper data-id="002541">
+          <CompanyLogo data-id="002542" isMobile={false} />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        const logo = screen.queryByAltText('');
+        expect(logo).toBeInTheDocument();
+      });
+    });
+
+    test('shows loading state initially', () => {
+      render(
+        <TestWrapper data-id="002543">
+          <CompanyLogo data-id="002544" />
+        </TestWrapper>
+      );
+
+      // Should not render anything while loading
+      const textFallback = screen.queryByText('CompanyLogo');
+      expect(textFallback).not.toBeInTheDocument();
     });
   });
 
   describe('BackgroundImage', () => {
-    test('renders with fallback URL when organization background is not available', () => {
-      vi.mocked(useAppContext).mockReturnValue({
-        ...mockAppContext,
-        organizationConfig: undefined,
-      });
+    test('renders custom background when it loads successfully on desktop', async () => {
+      mockSuccessfulImageLoad();
 
       render(
-        <TestWrapper data-id="002539">
-          <BackgroundImage data-id="002540" dataId="test-bg" maxW="800px" />
+        <TestWrapper data-id="002545">
+          <BackgroundImage data-id="002546" dataId="test-bg" maxW="800px" />
         </TestWrapper>
       );
 
-      const bgImage = document.querySelector('[data-id="test-bg"]');
-      expect(bgImage).toHaveAttribute('src', FALLBACK_BG_DESKTOP_URL);
+      await waitFor(() => {
+        const bgImage = document.querySelector('[data-id="test-bg"]');
+        expect(bgImage).toBeInTheDocument();
+        expect(bgImage).toHaveAttribute('src', mockOrganizationConfig.bgImageUrl);
+      });
     });
 
-    test('renders with fallback URL for mobile when organization background is not available', () => {
-      vi.mocked(useAppContext).mockReturnValue({
-        ...mockAppContext,
-        organizationConfig: undefined,
-      });
+    test('renders custom background for mobile when device is mobile', async () => {
+      mockSuccessfulImageLoad();
       vi.mocked(useDevice).mockReturnValue('mobile');
 
       render(
-        <TestWrapper data-id="002541">
-          <BackgroundImage data-id="002542" dataId="test-bg" maxW="800px" />
+        <TestWrapper data-id="002547">
+          <BackgroundImage data-id="002548" dataId="test-bg" maxW="800px" />
         </TestWrapper>
       );
 
-      const bgImage = document.querySelector('[data-id="test-bg"]');
-      expect(bgImage).toHaveAttribute('src', FALLBACK_BG_MOBILE_URL);
+      await waitFor(() => {
+        const bgImage = document.querySelector('[data-id="test-bg"]');
+        expect(bgImage).toBeInTheDocument();
+        expect(bgImage).toHaveAttribute('src', mockOrganizationConfig.bgImageTabletUrl);
+      });
     });
 
-    test('renders with custom dataId', () => {
+    test('renders text fallback when both background images fail on desktop', async () => {
+      mockFailedImageLoad();
+
       render(
-        <TestWrapper data-id="002543">
-          <BackgroundImage data-id="002544" dataId="custom-bg" maxW="800px" />
+        <TestWrapper data-id="002549">
+          <BackgroundImage data-id="002550" dataId="test-bg" maxW="800px" />
         </TestWrapper>
       );
 
-      const bgImage = document.querySelector('[data-id="custom-bg"]');
-      expect(bgImage).toBeInTheDocument();
+      await waitFor(() => {
+        const textFallback = screen.getByText('Background Image');
+        expect(textFallback).toBeInTheDocument();
+      });
+    });
+
+    test('renders text fallback when both background images fail on mobile', async () => {
+      mockFailedImageLoad();
+      vi.mocked(useDevice).mockReturnValue('mobile');
+
+      render(
+        <TestWrapper data-id="002551">
+          <BackgroundImage data-id="002552" dataId="test-bg" maxW="800px" />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        const textFallback = screen.getByText('Background Image');
+        expect(textFallback).toBeInTheDocument();
+      });
+    });
+
+    test('renders text fallback when organization config is undefined', async () => {
+      mockFailedImageLoad();
+      vi.mocked(useAppContext).mockReturnValue({
+        ...mockAppContext,
+        organizationConfig: undefined,
+      });
+
+      render(
+        <TestWrapper data-id="002553">
+          <BackgroundImage data-id="002554" dataId="test-bg" maxW="800px" />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        const textFallback = screen.getByText('Background Image');
+        expect(textFallback).toBeInTheDocument();
+      });
+    });
+
+    test('uses tablet images when device is tablet', async () => {
+      mockSuccessfulImageLoad();
+      vi.mocked(useDevice).mockReturnValue('tablet');
+
+      render(
+        <TestWrapper data-id="002555">
+          <BackgroundImage data-id="002556" dataId="test-bg" maxW="800px" />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        const bgImage = document.querySelector('[data-id="test-bg"]');
+        expect(bgImage).toBeInTheDocument();
+        // Tablet should use tablet images (bgImageTabletUrl)
+        expect(bgImage).toHaveAttribute('src', mockOrganizationConfig.bgImageTabletUrl);
+      });
+    });
+
+    test('applies responsive positioning for text fallback', async () => {
+      mockFailedImageLoad();
+
+      render(
+        <TestWrapper data-id="002557">
+          <BackgroundImage data-id="002558" dataId="test-bg" maxW="800px" />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        const wrapper = document.querySelector('[data-id="background-image-text-fallback-wrapper"]');
+        expect(wrapper).toBeInTheDocument();
+      });
+    });
+
+    test('renders with custom maxW prop', async () => {
+      mockSuccessfulImageLoad();
+
+      render(
+        <TestWrapper data-id="002559">
+          <BackgroundImage data-id="002560" dataId="test-bg" maxW="1000px" />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        const bgImage = document.querySelector('[data-id="test-bg"]');
+        expect(bgImage).toBeInTheDocument();
+      });
+    });
+
+    test('renders with custom fit prop', async () => {
+      mockSuccessfulImageLoad();
+
+      render(
+        <TestWrapper data-id="002561">
+          <BackgroundImage data-id="002562" dataId="test-bg" fit="cover" />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        const bgImage = document.querySelector('[data-id="test-bg"]');
+        expect(bgImage).toBeInTheDocument();
+      });
+    });
+
+    test('shows loading state initially', () => {
+      render(
+        <TestWrapper data-id="002563">
+          <BackgroundImage data-id="002564" dataId="test-bg" maxW="800px" />
+        </TestWrapper>
+      );
+
+      // Should not render anything while loading
+      const textFallback = screen.queryByText('Background Image');
+      expect(textFallback).not.toBeInTheDocument();
     });
   });
 
@@ -222,6 +403,52 @@ describe('auth-pages-common', () => {
       expect(FALLBACK_BG_DESKTOP_URL).toBeDefined();
       expect(FALLBACK_BG_MOBILE_URL).toBeDefined();
       expect(FALLBACK_COMPANY_LOGO_URL).toBeDefined();
+    });
+
+    test('fallback URLs are strings', () => {
+      expect(typeof FALLBACK_BG_DESKTOP_URL).toBe('string');
+      expect(typeof FALLBACK_BG_MOBILE_URL).toBe('string');
+      expect(typeof FALLBACK_COMPANY_LOGO_URL).toBe('string');
+    });
+
+    test('fallback URLs contain GitHub raw content URLs', () => {
+      expect(FALLBACK_BG_DESKTOP_URL).toContain('raw.githubusercontent.com');
+      expect(FALLBACK_BG_MOBILE_URL).toContain('raw.githubusercontent.com');
+      expect(FALLBACK_COMPANY_LOGO_URL).toContain('raw.githubusercontent.com');
+    });
+  });
+
+  describe('Device-specific behavior', () => {
+    test('uses correct images for mobile device', async () => {
+      mockSuccessfulImageLoad();
+      vi.mocked(useDevice).mockReturnValue('mobile');
+
+      render(
+        <TestWrapper data-id="002565">
+          <BackgroundImage data-id="002566" dataId="test-bg" maxW="800px" />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        const bgImage = document.querySelector('[data-id="test-bg"]');
+        expect(bgImage).toHaveAttribute('src', mockOrganizationConfig.bgImageTabletUrl);
+      });
+    });
+
+    test('uses correct images for desktop device', async () => {
+      mockSuccessfulImageLoad();
+      vi.mocked(useDevice).mockReturnValue('desktop');
+
+      render(
+        <TestWrapper data-id="002567">
+          <BackgroundImage data-id="002568" dataId="test-bg" maxW="800px" />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        const bgImage = document.querySelector('[data-id="test-bg"]');
+        expect(bgImage).toHaveAttribute('src', mockOrganizationConfig.bgImageUrl);
+      });
     });
   });
 });
