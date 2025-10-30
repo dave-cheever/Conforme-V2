@@ -55,8 +55,8 @@ function Logout() {
         data-id="000226"
         flexDir={['column', 'column', 'row']}
         h="100vh"
-        w="full"
-        position="relative">
+        position="relative"
+        w="full">
       <CompanyLogo data-id="002527" isMobile={device === 'mobile'} />
       <Flex
         align="center"
@@ -79,10 +79,10 @@ function Logout() {
             {organizationConfig?.name}
           </Flex>
           <UserAvatar
-            data-id="002528"
-            user={user}
             borderColor="logoutPage.avatarBorderColor"
+            data-id="002528"
             dataId="000230"
+            user={user}
          />
           <Flex align="center" data-id="000232" flexDir="column">
             <Flex data-id="000233" fontSize="16px" fontWeight="700">

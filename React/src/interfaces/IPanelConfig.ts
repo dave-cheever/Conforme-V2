@@ -77,6 +77,7 @@ export interface PanelViewProps {
   readonly containerProps?: {
     readonly bg?: string;
     readonly p?: string | number;
+    readonly pt?: string | number;
     readonly gap?: string | number;
   };
   readonly error?: string;

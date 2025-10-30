@@ -23,6 +23,8 @@ import { IResponse } from '../interfaces/IResponse';
 import { TViewMode } from '../interfaces/TViewMode';
 import updateLocalStorageFilter from '../utils/filterStorage';
 import { removeEmptyArraysAndObjects } from '../utils/helpers';
+import FilterButton from '../components/FilterButton';
+import isAuditPage from '../utils/isAuditPage';
 
 const GET_RESPONSES_TOTALS = gql`
   query ResponsesTotals($responsesQuery: Any) {
@@ -167,7 +169,7 @@ function TrackerItems() {
   useEffect(() => {
     if (!isApplyingFromContext.current) setSortingState({ sortType, sortOrder });
   }, [sortType, sortOrder, setSortingState]);
-  const { navigateTo } = useNavigate();
+  const { isPathActive, navigateTo } = useNavigate();
   const sortBy = [
     { label: 'Item name', key: 'trackerItem.name' },
     { label: 'Due for renewal', key: 'dueDate' },
@@ -413,6 +415,8 @@ function TrackerItems() {
     );
   };
 
+  const isAuditPageValue = isAuditPage(isPathActive);
+
   return (
     <>
       <Header
@@ -421,12 +425,18 @@ function TrackerItems() {
         mobileBreadcrumbs={[pluralize(t('tracker item'))]}
         pageLabel={capitalize(t('tracker item'))}
       >
-        <Flex data-id="001521" direction="row" justifyContent="space-between" pl="6" w="full">
+        <Flex data-id="001521" direction="row" justifyContent="space-between" pl={[0, 0, "6"]} w="full">
           <AssignedToMeFilter data-id="001205" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
-          {device !== 'mobile' && (
-            <Flex data-id="001522" direction="row">
-              <ChangeViewButton data-id="000289" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group', 'panel']} />
-              <Divider borderColor="gray.300" data-id="000290" height="30px" mt={1} mx={4} orientation="vertical" />
+          <Flex data-id="001522" direction="row">
+
+            {device !== 'mobile' && (
+              <Flex data-id="001524" direction="row">
+                <ChangeViewButton data-id="000289" setViewMode={setViewMode} viewMode={viewMode} views={['list', 'panel']} />
+                <Divider borderColor="gray.300" data-id="000290" height="30px" mt={1} mx={4} orientation="vertical" />
+              </Flex>
+            )}
+
+            <Flex gap={2} data-id="001523" direction="row">
               <SortButton
                 data-id="000291"
                 setSortOrder={setSortOrder}
@@ -435,11 +445,12 @@ function TrackerItems() {
                 sortOrder={sortOrder}
                 sortType={sortType}
               />
+              {device !== 'desktop' && usedFilters && isAuditPageValue && usedFilters.length > 0 && <FilterButton data-id="000279" />}
             </Flex>
-          )}
+          </Flex>
         </Flex>
       </Header>
-      <Flex data-id="000292" direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4} zIndex={1}>
+      <Flex data-id="000292" mb={['90px', 0, 0]} direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4} zIndex={1}>
         {error ? (
           <NoRecordsFound
             data-id="000293"

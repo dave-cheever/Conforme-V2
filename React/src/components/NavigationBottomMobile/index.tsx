@@ -33,20 +33,20 @@ function NavigationBottomMobile() {
         p="18px 16px"
         position="fixed"
         ref={ref}
-        w="full"
-        zIndex={10}
         sx={{
           '&::-webkit-scrollbar': {
             display: 'none',
           },
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
-        }}>
+        }}
+        w="full"
+        zIndex={10}>
       <Flex
         data-id="002500"
         gap="0px"
-        minW={hasMoreThanFiveItems ? "fit-content" : "100%"}
         justifyContent={hasMoreThanFiveItems ? "flex-start" : "space-between"}
+        minW={hasMoreThanFiveItems ? "fit-content" : "100%"}
         width={hasMoreThanFiveItems ? "fit-content" : "100%"}>
         {menuItems.map((menuItem: any, i) => (
           <Can

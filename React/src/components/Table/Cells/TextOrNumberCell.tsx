@@ -141,12 +141,12 @@ function TextOrNumberCell({
   if (tooltip?.trim()) {
     return (
       <Tooltip 
-        data-id="002148" 
+        closeDelay={0} 
+        data-id="002148"
+        hasArrow
         label={tooltip}
         openDelay={300}
-        closeDelay={0}
         placement="top"
-        hasArrow
       >
         {textContent}
       </Tooltip>

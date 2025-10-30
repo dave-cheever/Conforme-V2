@@ -79,7 +79,7 @@ describe('NoRecordsFound Component', () => {
       };
       
       const { container } = render(
-        <NoRecordsFound data-id="002713" dataSourceName="audits" containerProps={customProps} />
+        <NoRecordsFound containerProps={customProps} data-id="002713" dataSourceName="audits" />,
       );
       const flexContainer = container.firstChild as HTMLElement;
       
@@ -110,7 +110,7 @@ describe('NoRecordsFound Component', () => {
       };
       
       render(
-        <NoRecordsFound data-id="002715" dataSourceName="audits" containerProps={customProps} />
+        <NoRecordsFound containerProps={customProps} data-id="002715" dataSourceName="audits" />,
       );
       const textElement = screen.getByText('No audits found. Try adjusting the filters.');
       
@@ -132,14 +132,14 @@ describe('NoRecordsFound Component', () => {
     });
 
     it('applies custom data-id when provided', () => {
-      const { container } = render(<NoRecordsFound dataSourceName="audits" data-id="custom-id" />);
+      const { container } = render(<NoRecordsFound data-id="custom-id" dataSourceName="audits" />);
       const flexContainer = container.firstChild as HTMLElement;
       
       expect(flexContainer).toHaveAttribute('data-id', 'custom-id');
     });
 
     it('applies data-id to text element', () => {
-      render(<NoRecordsFound dataSourceName="audits" data-id="custom-id" />);
+      render(<NoRecordsFound data-id="custom-id" dataSourceName="audits" />);
       const textElement = screen.getByText('No audits found. Try adjusting the filters.');
       
       expect(textElement).toHaveAttribute('data-id', 'custom-id-text');

@@ -21,19 +21,9 @@ vi.mock('../../hooks/useDevice', () => ({
 
 // Mock icons
 vi.mock('../../icons', () => ({
-  GridIcon: () => (
-    <div data-id="001523" data-testid="grid-icon">
-      Grid
-    </div>
-  ),
   ListIcon: () => (
     <div data-id="001524" data-testid="list-icon">
       List
-    </div>
-  ),
-  GroupIcon: () => (
-    <div data-id="001525" data-testid="group-icon">
-      Group
     </div>
   ),
 }));
@@ -66,7 +56,7 @@ describe('ChangeViewButton', () => {
   const defaultProps = {
     viewMode: 'list' as TViewMode,
     setViewMode: mockSetViewMode,
-    views: ['grid', 'list', 'group', 'panel'] as TViewMode[],
+    views: ['list', 'panel'] as TViewMode[],
   };
 
   beforeEach(() => {
@@ -82,23 +72,19 @@ describe('ChangeViewButton', () => {
         </TestWrapper>,
       );
 
-      expect(screen.getByTestId('grid-icon')).toBeInTheDocument();
       expect(screen.getByTestId('list-icon')).toBeInTheDocument();
-      expect(screen.getByTestId('group-icon')).toBeInTheDocument();
       expect(screen.getByTestId('panel-icon')).toBeInTheDocument();
     });
 
     test('renders only specified views', () => {
-      const limitedViews = ['grid', 'list'] as TViewMode[];
+      const limitedViews = ['list'] as TViewMode[];
       render(
         <TestWrapper data-id="001530">
           <ChangeViewButton data-id="001531" {...defaultProps} views={limitedViews} />
         </TestWrapper>,
       );
 
-      expect(screen.getByTestId('grid-icon')).toBeInTheDocument();
       expect(screen.getByTestId('list-icon')).toBeInTheDocument();
-      expect(screen.queryByTestId('group-icon')).not.toBeInTheDocument();
       expect(screen.queryByTestId('panel-icon')).not.toBeInTheDocument();
     });
 
@@ -111,7 +97,7 @@ describe('ChangeViewButton', () => {
       );
 
       // Check that the component renders without errors
-      expect(screen.getByTestId('grid-icon')).toBeInTheDocument();
+      expect(screen.getByTestId('list-icon')).toBeInTheDocument();
     });
   });
 
@@ -119,13 +105,13 @@ describe('ChangeViewButton', () => {
     test('highlights the current view mode', () => {
       render(
         <TestWrapper data-id="001534">
-          <ChangeViewButton data-id="001535" {...defaultProps} viewMode="grid" />
+          <ChangeViewButton data-id="001535" {...defaultProps} viewMode="panel" />
         </TestWrapper>,
       );
 
-      const gridButton = screen.getByTestId('grid-icon').closest('button');
+      const panelButton = screen.getByTestId('panel-icon').closest('button');
       // The actual background color might be different due to Chakra UI styling
-      expect(gridButton).toBeInTheDocument();
+      expect(panelButton).toBeInTheDocument();
     });
 
     test('calls setViewMode when a view button is clicked', async () => {
@@ -136,10 +122,10 @@ describe('ChangeViewButton', () => {
         </TestWrapper>,
       );
 
-      const gridButton = screen.getByTestId('grid-icon').closest('button');
-      await user.click(gridButton!);
+      const panelButton = screen.getByTestId('panel-icon').closest('button');
+      await user.click(panelButton!);
 
-      expect(mockSetViewMode).toHaveBeenCalledWith('grid');
+      expect(mockSetViewMode).toHaveBeenCalledWith('panel');
     });
 
     test('saves view mode to localStorage when changed', async () => {
@@ -150,10 +136,10 @@ describe('ChangeViewButton', () => {
         </TestWrapper>,
       );
 
-      const gridButton = screen.getByTestId('grid-icon').closest('button');
-      await user.click(gridButton!);
+      const panelButton = screen.getByTestId('panel-icon').closest('button');
+      await user.click(panelButton!);
 
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('viewMode', 'grid');
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('viewMode', 'panel');
     });
   });
 
@@ -166,16 +152,14 @@ describe('ChangeViewButton', () => {
       );
 
       // Tooltips might not be visible in test environment, so we check for aria-label instead
-      expect(screen.getByLabelText('grid')).toBeInTheDocument();
       expect(screen.getByLabelText('list')).toBeInTheDocument();
-      expect(screen.getByLabelText('group')).toBeInTheDocument();
       expect(screen.getByLabelText('panel')).toBeInTheDocument();
     });
   });
 
   describe('Local Storage Integration', () => {
     test('loads saved view mode from localStorage on mount', () => {
-      mockLocalStorage.getItem.mockReturnValue('grid');
+      mockLocalStorage.getItem.mockReturnValue('panel');
 
       render(
         <TestWrapper data-id="001542">
@@ -202,7 +186,7 @@ describe('ChangeViewButton', () => {
 
     test('ignores saved view mode not in available views', () => {
       mockLocalStorage.getItem.mockReturnValue('panel');
-      const limitedViews = ['grid', 'list'] as TViewMode[];
+      const limitedViews = ['list'] as TViewMode[];
 
       render(
         <TestWrapper data-id="001546">
@@ -230,17 +214,17 @@ describe('ChangeViewButton', () => {
       // This test is simplified to avoid complex mocking issues
       render(
         <TestWrapper data-id="001550">
-          <ChangeViewButton data-id="001551" {...defaultProps} viewMode="grid" />
+          <ChangeViewButton data-id="001551" {...defaultProps} viewMode="list" />
         </TestWrapper>,
       );
 
       // Check that the component renders without errors
-      expect(screen.getByTestId('grid-icon')).toBeInTheDocument();
+      expect(screen.getByTestId('list-icon')).toBeInTheDocument();
     });
   });
 
   describe('Device Responsiveness', () => {
-    test('sets view mode to grid on mobile device', () => {
+    test('sets view mode to list on mobile device', () => {
       // This test is simplified to avoid complex mocking issues
       render(
         <TestWrapper data-id="001552">
@@ -249,7 +233,7 @@ describe('ChangeViewButton', () => {
       );
 
       // Check that the component renders without errors
-      expect(screen.getByTestId('grid-icon')).toBeInTheDocument();
+      expect(screen.getByTestId('list-icon')).toBeInTheDocument();
     });
 
     test('does not change view mode on desktop device', () => {
@@ -273,9 +257,7 @@ describe('ChangeViewButton', () => {
         </TestWrapper>,
       );
 
-      expect(screen.getByLabelText('grid')).toBeInTheDocument();
       expect(screen.getByLabelText('list')).toBeInTheDocument();
-      expect(screen.getByLabelText('group')).toBeInTheDocument();
       expect(screen.getByLabelText('panel')).toBeInTheDocument();
     });
 
@@ -287,8 +269,8 @@ describe('ChangeViewButton', () => {
       );
 
       // Check that buttons have data-id attributes
-      const gridButton = screen.getByTestId('grid-icon').closest('button');
-      expect(gridButton).toHaveAttribute('data-id');
+      const listButton = screen.getByTestId('list-icon').closest('button');
+      expect(listButton).toHaveAttribute('data-id');
     });
   });
 
@@ -300,19 +282,19 @@ describe('ChangeViewButton', () => {
         </TestWrapper>,
       );
 
-      expect(screen.queryByTestId('grid-icon')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('list-icon')).not.toBeInTheDocument();
     });
 
     test('handles undefined user', () => {
       // This test is simplified to avoid complex mocking issues
       render(
         <TestWrapper data-id="001562">
-          <ChangeViewButton data-id="001563" {...defaultProps} viewMode="grid" />
+          <ChangeViewButton data-id="001563" {...defaultProps} viewMode="list" />
         </TestWrapper>,
       );
 
       // Check that the component renders without errors
-      expect(screen.getByTestId('grid-icon')).toBeInTheDocument();
+      expect(screen.getByTestId('list-icon')).toBeInTheDocument();
     });
   });
 });

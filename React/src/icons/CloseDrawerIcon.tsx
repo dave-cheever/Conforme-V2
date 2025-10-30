@@ -15,8 +15,8 @@ function CloseDrawerIcon({ dataId, width = 24, height = 25, fill = '#2D3748' }: 
       width={width}
       xmlns="http://www.w3.org/2000/svg">
       <path
-        data-id="002487"
         d="M17.2502 5.5L11.9994 10.75L6.74984 5.5L5 7.25L10.2495 12.5L5 17.75L6.74984 19.5L11.9994 14.25L17.2502 19.5L19 17.75L13.7505 12.5L19 7.25L17.2502 5.5Z"
+        data-id="002487"
         fill={fill} />
     </svg>
   );

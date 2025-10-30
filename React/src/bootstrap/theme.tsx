@@ -103,9 +103,7 @@ import { shareModalStyles } from '../components/ShareModal';
 import { sortButtonStyles } from '../components/SortButton';
 import { statusSelectorStyles } from '../components/StatusSelector';
 import { listViewStyles } from '../components/Table/ListView';
-import { trackerGroupItemsStyles } from '../components/TrackerItem/TrackerItemsGroup';
 import { trackerListItemsStyles } from '../components/TrackerItem/TrackerItemsList';
-import { trackerItemsSquareStyles } from '../components/TrackerItem/TrackerItemSquare';
 import { userMenuStyles } from '../components/UserMenu';
 import { userSelectorStyles } from '../components/UsersSelector';
 import { responseLayoutStyles } from '../layouts/ResponseLayout';
@@ -213,12 +211,10 @@ const getTheme = (organizationTheme?: any) => {
         ...chatStyles,
         ...chatMentionStyles,
         ...cloneTrackerItemModalStyles,
-        ...trackerGroupItemsStyles,
         ...trackerItemModalStyles,
         ...trackerItemsAdminWithContextStyles,
         ...trackerItemResponseStyles,
         ...trackerItemStyles,
-        ...trackerItemsSquareStyles,
         ...trackerListItemsStyles,
         ...customRadioButtonStyles,
         ...datepickerStyles,

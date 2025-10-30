@@ -27,14 +27,13 @@ function NavigationBottomItem({
 
   return (
     <Box
+        alignItems="center"
         data-id="000527"
         display="flex"
-        width='85.8px'
-        height="fit-content"
         flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
         gap="2px"
+        height="fit-content"
+        justifyContent="center"
         onClick={() => {
           if (menuItem.url === '/') {
             setFiltersOpen(!filtersOpen);
@@ -45,19 +44,20 @@ function NavigationBottomItem({
             setFiltersOpen(false);
           } else navigateTo(url);
         }}
-        pos="relative">
+        pos="relative"
+        width='85.8px'>
       {/* Indicator line for items with submenus */}
       {menuItem.subSections && (
         <Box
-          data-id="002490"
-          width="14px"
-          height="2px"
-          borderRadius="32px"
           bg="#CBD5E0"
+          borderRadius="32px"
+          data-id="002490"
+          height="2px"
+          left="50%"
           position="absolute"
           top="-0px"
-          left="50%"
           transform="translateX(-50%)"
+          width="14px"
           zIndex="1" />
       )}
       <Flex
@@ -70,8 +70,8 @@ function NavigationBottomItem({
         })()}
         data-id="000528"
         h="30px"
-        paddingX={'15px'}
         justifyContent="center"
+        paddingX={'15px'}
         rounded="8px"
         w="fit-content">
         <Icon
@@ -102,9 +102,9 @@ function NavigationBottomItem({
             : isPathActive(url, { exact: true });
           return isActive ? "600" : "400";
         })()}
+        overflow="hidden"
         textAlign="center"
         textOverflow="ellipsis"
-        overflow="hidden"
         whiteSpace="nowrap"
         width="85%">
         {label}
@@ -138,32 +138,32 @@ function NavigationBottomItem({
       )}
       <Drawer data-id="002491" isOpen={isOpen} onClose={onClose} placement="bottom">
         <DrawerOverlay data-id="002492" />
-        <DrawerContent data-id="002493" borderTopRadius="20px">
+        <DrawerContent borderTopRadius="20px" data-id="002493">
            <DrawerHeader
+             borderBottomColor="#E2E8F0"
+             borderBottomWidth="1px"
              data-id="002494"
              display={'flex'}
              flexDirection={'row'}
-             justifyContent={'space-between'}
-             borderBottomWidth="1px"
-             borderBottomColor="#E2E8F0">
+             justifyContent={'space-between'}>
              <Text data-id="002495">{label}</Text>
-             <Box alignItems={'center'} justifyContent={'center'} onClick={onClose} cursor="pointer" data-id="close-drawer">
+             <Box alignItems={'center'} cursor="pointer" data-id="close-drawer" justifyContent={'center'} onClick={onClose}>
                <CloseDrawerIcon data-id="002496" dataId="close-drawer-icon" />
              </Box>
            </DrawerHeader>
           <DrawerBody data-id="002497" p={0}>
             {menuItem.subSections?.map((subSection) => (
               <Box
+                _hover={{ bg: 'gray.50' }}
+                cursor="pointer"
                 data-id="002498"
                 key={subSection.label}
-                px={'16px'}
-                py="16px"
                 onClick={() => {
                   navigateTo(subSection.url);
                   onClose();
                 }}
-                cursor="pointer"
-                _hover={{ bg: 'gray.50' }}>
+                px={'16px'}
+                py="16px">
                 <Text data-id="002499" fontSize="md" fontWeight="medium">
                   {subSection.label}
                 </Text>

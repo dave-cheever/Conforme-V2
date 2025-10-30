@@ -12,6 +12,7 @@ import useNavigate from '../hooks/useNavigate';
 import { AddIcon, ArrowRight } from '../icons';
 import Can from './can';
 import FilterButton from './FilterButton';
+import isAuditPage from '../utils/isAuditPage';
 
 interface IHeader {
   breadcrumbs: string[];
@@ -27,12 +28,7 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
   const { trackerAddItems, auditAddItems } = useConfig();
   const { module } = useAppContext();
 
-  const isAuditPage =
-    isPathActive('/audits') ||
-    isPathActive('/actions') ||
-    isPathActive('/answers') ||
-    isPathActive('/dashboard') ||
-    isPathActive('/tracker-items');
+  const isAuditPageValue = isAuditPage(isPathActive);
 
   function isPathAllowed() {
     const disallowedSuffixes = [
@@ -77,16 +73,16 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
   );
 
   return (
-    <Flex align="center" background="#ffffff" data-id="000275" h={['60px', '90px']} pb="10px" position="relative" zIndex="2">
-      <Flex data-id="000276" flexDirection="column" justify="space-between" pb="5" w="full">
-        <Flex data-id="000277" display="flex" flexShrink={0} ml="5" pt="10">
+    <Flex align="center" background="#ffffff" data-id="000275" h={'fit-content'} pb="10px" position="relative" px={['14px', '14px', '0']} zIndex="2"  borderBottom={'1px solid #CBD5E0'}>
+      <Flex data-id="000276" flexDirection="column" justify="space-between" pb="1" rowGap={[4, 0, 0]} w="full">
+        <Flex data-id="000277" display="flex" flexShrink={0} ml={[0, 0, "5"]} pt={[1, 4, 4]}>
           {breadCrumbs.map(renderBreadcrumb)}
         </Flex>
-        <Flex data-id="001518" direction="row">
+        <Flex data-id="001518" direction={["column", "column", "row"]} rowGap={['10px', '10px', '0']}>
           <Flex data-id="000278" justify="flex-end" mr="15px" w="full">
             {children}
           </Flex>
-          {usedFilters && isAuditPage && usedFilters.length > 0 && <FilterButton data-id="000279" />}
+          {device === 'desktop' && usedFilters && isAuditPageValue && usedFilters.length > 0 && <FilterButton data-id="000279" />}
 
           {isPathAllowed() && (
             <Can
@@ -94,11 +90,11 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
               data-id="000280"
               yes={() => (
                 <>
-                  {usedFilters && isAuditPage && usedFilters.length > 0 && (
+                  {usedFilters && isAuditPageValue && usedFilters.length > 0 && (
                     <Divider
                       borderColor="gray.300"
                       data-id="000281"
-                      display={['none', 'block']}
+                      display={['none', 'none', 'block']}
                       height="30px"
                       ml={0}
                       mr={5}
@@ -121,15 +117,14 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
                     fontWeight={'500'}
                     h={['42px', '40px']}
                     leftIcon={<AddIcon data-id="000283" h={['10px', '17px']} stroke="navigationTop.addIcon" w={['10px', '17px']} />}
-                    ml={['0', '4']}
-                    mr={['6rem', '0']}
+                    ml={['0', '0', '4']}
                     onClick={() => {
                       const targetUrl = item?.url === '/dashboards' ? '/admin/tracker-items' : item?.url;
                       navigateTo(targetUrl || '');
                       setAdminModalState('add');
                     }}
                     position={['fixed', 'relative']}
-                    right={['0', usedFilters.length > 0 ? '15' : '25']}
+                    right={['0', '0', usedFilters.length > 0 ? '15' : '25']}
                     rounded={['10px', '8px']}
                     w={['auto']}
                     zIndex={5}

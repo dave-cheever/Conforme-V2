@@ -3,12 +3,11 @@ import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Flex, Grid, Modal, ModalOverlay, Text } from '@chakra-ui/react';
+import { Button, Divider, Flex, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
 
-import AuditSquare from '../components/Audit/AuditSquare';
 import AuditModal from '../components/AuditModal/AuditModal';
 import ChangeViewButton from '../components/ChangeViewButton';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
@@ -34,6 +33,8 @@ import { ExportIcon, LocationIcon } from '../icons';
 import { IAudit } from '../interfaces/IAudit';
 import { TViewMode } from '../interfaces/TViewMode';
 import updateLocalStorageFilter from '../utils/filterStorage';
+import FilterButton from '../components/FilterButton';
+import isAuditPage from '../utils/isAuditPage';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -119,7 +120,7 @@ function Audits() {
     setSortingState,
   } = useFiltersContext();
   const device = useDevice();
-  const { navigateTo } = useNavigate();
+  const { navigateTo, isPathActive } = useNavigate();
   const { user, module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { audit, reset, trigger } = useAuditModalContext();
@@ -170,7 +171,7 @@ function Audits() {
     { label: 'Reference', key: 'reference' },
     { label: 'Date submitted', key: 'completedDate' },
   ];
-  const [viewMode, setViewMode] = useState<TViewMode>('grid');
+  const [viewMode, setViewMode] = useState<TViewMode>('list');
   const columns: ColumnConfig[] = useMemo(() => [
     {
       label: 'Due date',
@@ -433,35 +434,6 @@ function Audits() {
     [JSON.stringify(filteredAudits)],
   );
 
-  // Helper function to render empty state
-  const renderEmptyState = (dataId: string) => (
-    <NoRecordsFound
-      data-id={dataId}
-      dataSourceName="audits"
-      height="100%"
-    />
-  );
-
-  // Helper function to render grid view
-  const renderGridView = () => (
-    <Grid
-      data-id="000198"
-      display={['grid', 'grid', 'flex']}
-      flexWrap="wrap"
-      gap={[4, 4, 6]}
-      h="fit-content"
-      pb={[14, 8]}
-      pt="3"
-      px={[4, 8]}
-      templateColumns={['repeat(auto-fill, minmax(250px, 1fr))', '']}
-      w="full"
-    >
-      {sortedAudits.length > 0
-        ? sortedAudits.map((audit) => <AuditSquare audit={audit} data-id="000199" key={audit._id} />)
-        : renderEmptyState('000200')}
-    </Grid>
-  );
-
   const renderPanelView = () =>
     sortedAudits?.length > 0 ? (
       <PanelView
@@ -494,8 +466,6 @@ function Audits() {
   const renderMainContent = () => {
     if (loading) return <Loader center data-id="000197" />;
 
-    if (viewMode === 'grid') return renderGridView();
-
     if (viewMode === 'list') {
       return (
         <ListView
@@ -518,6 +488,8 @@ function Audits() {
     return renderPanelView();
   };
 
+  const isAuditPageValue = isAuditPage(isPathActive);
+
   return (
     <>
       <Modal
@@ -532,47 +504,55 @@ function Audits() {
         <AuditModal data-id="000188" refetch={refetch} />
       </Modal>
       <Header breadcrumbs={[pluralize(t('audit'))]} data-id="000189" mobileBreadcrumbs={[pluralize(t('audit'))]}>
-        <Flex data-id="001519" direction="row" justifyContent="space-between" pl="6" w="full">
+        <Flex data-id="001519" direction="row" justifyContent="space-between" pl={[0, 0, "6"]} w="full">
           <AssignedToMeFilter data-id="001204" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
 
           <Flex data-id="001520" direction="row">
-            <ChangeViewButton data-id="000190" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list', 'group', 'panel']} />
+            <ChangeViewButton data-id="000190" setViewMode={setViewMode} viewMode={viewMode} views={['list', 'panel']} />
 
             {device !== 'mobile' && (
-              <CSVLinkComponent data={csvData} data-id="000191" filename="audits.csv" headers={csvHeaders} target="_blank">
-                <Button
-                  _hover={{
-                    bg: 'reasponseHeader.buttonLightBgHover',
-                    color: 'reasponseHeader.buttonLightColorHover',
-                    cursor: 'pointer',
-                    '&:hover svg path': { stroke: 'white' },
-                  }}
-                  bg="white"
-                  borderRadius="10px"
-                  data-id="000192"
-                  display="none"
-                  ml="15px"
-                  rightIcon={<ExportIcon data-id="000193" height="15px" width="15px" />}
-                >
-                  <Text data-id="000194" fontSize="smm" fontWeight="bold">
-                    Export
-                  </Text>
-                </Button>
-              </CSVLinkComponent>
+              <>
+                <CSVLinkComponent data={csvData} data-id="000191" filename="audits.csv" headers={csvHeaders} target="_blank">
+                  <Button
+                    _hover={{
+                      bg: 'reasponseHeader.buttonLightBgHover',
+                      color: 'reasponseHeader.buttonLightColorHover',
+                      cursor: 'pointer',
+                      '&:hover svg path': { stroke: 'white' },
+                    }}
+                    bg="white"
+                    borderRadius="10px"
+                    data-id="000192"
+                    display="none"
+                    ml="15px"
+                    rightIcon={<ExportIcon data-id="000193" height="15px" width="15px" />}
+                  >
+                    <Text data-id="000194" fontSize="smm" fontWeight="bold">
+                      Export
+                    </Text>
+                  </Button>
+                </CSVLinkComponent>
+
+                <Divider borderColor="gray.300" data-id="000290" height="30px" mt={1} mx={4} orientation="vertical" />
+              </>
             )}
 
-            <SortButton
-              data-id="000195"
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortBy={sortBy}
-              sortOrder={sortOrder}
-              sortType={sortType}
-            />
+            <Flex gap={1} data-id="001523" direction="row">
+              <SortButton
+                data-id="000195"
+                setSortOrder={setSortOrder}
+                setSortType={setSortType}
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                sortType={sortType}
+              />
+              {device !== 'desktop' && usedFilters && isAuditPageValue && usedFilters.length > 0 && <FilterButton data-id="000279" />}
+            </Flex>
+
           </Flex>
         </Flex>
       </Header>
-      <Flex data-id="000196" h={['calc(100vh - 80px)', 'full']} overflow="auto" pb={[4, 0]}>
+      <Flex data-id="000196" h={['calc(100vh - 80px)', 'full']} overflow="auto" pb={[4, 0]} mb='92px'>
         {renderMainContent()}
       </Flex>
     </>

@@ -69,26 +69,15 @@ describe('SortButton', () => {
       expect(screen.getByText('Status')).toBeInTheDocument();
     });
 
-    test('applies custom margin left when provided', () => {
+    test('renders sort button successfully', () => {
       render(
         <TestWrapper data-id="001624">
-          <SortButton data-id="001625" {...defaultProps} ml="20px" />
+          <SortButton data-id="001625" {...defaultProps} />
         </TestWrapper>,
       );
 
       const container = screen.getByTestId('up-down-icon').closest('[data-id="000474"]');
-      expect(container).toHaveStyle('margin-left: 20px');
-    });
-
-    test('uses default margin left when not provided', () => {
-      render(
-        <TestWrapper data-id="001626">
-          <SortButton data-id="001627" {...defaultProps} />
-        </TestWrapper>,
-      );
-
-      const container = screen.getByTestId('up-down-icon').closest('[data-id="000474"]');
-      expect(container).toHaveStyle('margin-left: 10px');
+      expect(container).toBeInTheDocument();
     });
   });
 

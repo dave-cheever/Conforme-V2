@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, expect, test, vi, beforeEach } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import AuditLeftNavigationMobile from '../../components/Audit/AuditLeftNavigationMobile';
 
@@ -71,7 +71,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002535">
         <AuditLeftNavigationMobile data-id="002536" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(screen.getByTestId('back-arrow-icon')).toBeInTheDocument();
@@ -82,7 +82,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002537">
         <AuditLeftNavigationMobile data-id="002538" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const backButton = screen.getByText('Back').parentElement;
@@ -99,7 +99,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002539">
         <AuditLeftNavigationMobile data-id="002540" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const backButton = screen.getByText('Back').parentElement;
@@ -113,7 +113,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002541">
         <AuditLeftNavigationMobile data-id="002542" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const backText = screen.getByText('Back');
@@ -130,7 +130,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002543">
         <AuditLeftNavigationMobile data-id="002544" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const backButton = screen.getByText('Back').parentElement;
@@ -143,7 +143,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002545">
         <AuditLeftNavigationMobile data-id="002546" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(screen.getByTestId('audit-tab-overview')).toBeInTheDocument();
@@ -157,7 +157,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002547">
         <AuditLeftNavigationMobile data-id="002548" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(screen.getByTestId('overview-label')).toHaveTextContent('Overview');
@@ -171,7 +171,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002549">
         <AuditLeftNavigationMobile data-id="002550" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(screen.getByTestId('overview-url')).toHaveTextContent('');
@@ -185,7 +185,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002551">
         <AuditLeftNavigationMobile data-id="002552" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Check that the component renders without errors
@@ -196,7 +196,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002553">
         <AuditLeftNavigationMobile data-id="002554" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Check that the component renders without errors
@@ -207,7 +207,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002555">
         <AuditLeftNavigationMobile data-id="002556" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Check that the component renders without errors
@@ -218,7 +218,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002557">
         <AuditLeftNavigationMobile data-id="002558" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Check that the component renders without errors
@@ -229,7 +229,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002559">
         <AuditLeftNavigationMobile data-id="002560" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const backIcon = screen.getByTestId('back-arrow-icon');
@@ -240,7 +240,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002561">
         <AuditLeftNavigationMobile data-id="002562" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const overviewTab = screen.getByTestId('audit-tab-overview');
@@ -254,7 +254,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002563">
         <AuditLeftNavigationMobile data-id="002564" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Check that all tabs are rendered with correct structure
@@ -263,7 +263,7 @@ describe('AuditLeftNavigationMobile', () => {
       'questions', 
       'actions',
       'responses',
-      'participants'
+      'participants',
     ];
 
     tabs.forEach(tab => {
@@ -278,7 +278,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002565">
         <AuditLeftNavigationMobile data-id="002566" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const backButton = screen.getByText('Back').parentElement;
@@ -292,7 +292,7 @@ describe('AuditLeftNavigationMobile', () => {
     render(
       <TestWrapper data-id="002567">
         <AuditLeftNavigationMobile data-id="002568" />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Check that the component renders without errors

@@ -18,7 +18,7 @@ const GET_USERS_BY_ID = gql`
   }
 `;
 
-function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isGroupView?: boolean }) {
+function TrackerItemSquare({ response }: { readonly response: IResponse }) {
   const { navigateTo } = useNavigate();
     const { isEvidenceUploaded } = useResponseUtils();
   // const { getCustomQuestionsInDashboard } = useResponseUtils();
@@ -65,7 +65,7 @@ function TrackerItemSquare({ response, isGroupView }: { response: IResponse, isG
                   fontWeight="600"
                   isTruncated
                   lineHeight="1.4"
-                  maxW={isGroupView ? { base: "100%", md: "220px" } : { base: "100%", md: "180px" }}
+                  maxW={{ base: "100%", md: "180px" }}
                   overflow="hidden"
                   textOverflow="ellipsis"
                   whiteSpace="nowrap">

@@ -54,8 +54,8 @@ vi.mock('../../pages/actions', async () => {
           <div data-id="001392">Sort Type: string</div>
         </div>
         <div data-id="001393" data-testid="change-view-button-000250">
-          <div data-id="001394">Current View: grid</div>
-          <div data-id="001395">Available Views: grid, list</div>
+          <div data-id="001394">Current View: list</div>
+          <div data-id="001395">Available Views: list, panel</div>
         </div>
       </div>
     ),
@@ -159,7 +159,7 @@ describe('Actions', () => {
     expect(screen.getByTestId('pill-overdue')).toBeInTheDocument();
   });
 
-  test('renders grid view by default', () => {
+  test('renders list view by default', () => {
     render(
       <TestWrapper data-id="001419">
         <div data-id="001420" data-testid="000261">
@@ -218,8 +218,8 @@ describe('Actions', () => {
     render(
       <TestWrapper data-id="001434">
         <div data-id="001435" data-testid="change-view-button-000250">
-          <div data-id="001436">Current View: grid</div>
-          <div data-id="001437">Available Views: grid, list</div>
+          <div data-id="001436">Current View: list</div>
+          <div data-id="001437">Available Views: list, panel</div>
         </div>
       </TestWrapper>,
     );
@@ -290,7 +290,7 @@ describe('Actions', () => {
     expect(screen.getByTestId('filter-pills-content')).toBeInTheDocument();
   });
 
-  test('renders multiple actions in grid view', () => {
+  test('renders multiple actions in list view', () => {
     render(
       <TestWrapper data-id="001450">
         <div data-id="001451" data-testid="000261">
@@ -345,8 +345,8 @@ describe('Actions', () => {
     render(
       <TestWrapper data-id="001464">
         <div data-id="001465" data-testid="change-view-button-000250">
-          <div data-id="001466">Current View: grid</div>
-          <div data-id="001467">Available Views: grid, list</div>
+          <div data-id="001466">Current View: list</div>
+          <div data-id="001467">Available Views: list, panel</div>
         </div>
       </TestWrapper>,
     );
@@ -358,13 +358,13 @@ describe('Actions', () => {
     render(
       <TestWrapper data-id="001468">
         <div data-id="001469" data-testid="000261">
-          <div data-id="001470">Grid View Content</div>
+          <div data-id="001470">List View Content</div>
         </div>
       </TestWrapper>,
     );
 
     expect(screen.getByTestId('000261')).toBeInTheDocument();
-    expect(screen.getByText('Grid View Content')).toBeInTheDocument();
+    expect(screen.getByText('List View Content')).toBeInTheDocument();
   });
 
   test('handles action click events', () => {

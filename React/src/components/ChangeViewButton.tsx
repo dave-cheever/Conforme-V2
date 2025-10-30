@@ -4,7 +4,7 @@ import { IconButton, Stack, Tooltip } from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
-import { GridIcon, GroupIcon, ListIcon } from '../icons';
+import { ListIcon } from '../icons';
 import PanelIcon from '../icons/PanelIcon';
 import { TViewMode } from '../interfaces/TViewMode';
 
@@ -48,8 +48,6 @@ function ChangeViewButton({
 
   const viewIcon = useMemo(
     () => ({
-      grid: GridIcon,
-      group: GroupIcon,
       list: ListIcon,
       panel: PanelIcon,
     }),

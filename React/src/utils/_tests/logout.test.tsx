@@ -122,7 +122,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002580">
           <Logout data-id="002581" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const orgName = document.querySelector('[data-id="000229"]');
@@ -134,7 +134,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002582">
           <Logout data-id="002583" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -147,7 +147,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002584">
           <Logout data-id="002585" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -160,7 +160,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002586">
           <Logout data-id="002587" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const avatar = document.querySelector('[data-id="000231"]');
@@ -173,7 +173,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002588">
           <Logout data-id="002589" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText('You have logged out.')).toBeInTheDocument();
@@ -184,7 +184,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002590">
           <Logout data-id="002591" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText('You have logged out.')).toBeInTheDocument();
@@ -195,7 +195,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002592">
           <Logout data-id="002593" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText('Log back in')).toBeInTheDocument();
@@ -205,7 +205,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002594">
           <Logout data-id="002595" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText('Log back in')).toBeInTheDocument();
@@ -217,7 +217,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002596">
           <Logout data-id="002597" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(document.querySelector('[data-id="000227"]')).toBeInTheDocument();
@@ -245,7 +245,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002598">
           <Logout data-id="002599" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -259,7 +259,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002600">
           <Logout data-id="002601" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -277,7 +277,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002602">
           <Logout data-id="002603" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -292,7 +292,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002604">
           <Logout data-id="002605" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -312,7 +312,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002606">
           <Logout data-id="002607" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const orgName = document.querySelector('[data-id="000229"]');
@@ -328,7 +328,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002608">
           <Logout data-id="002609" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -354,7 +354,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002610">
           <Logout data-id="002611" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText('Log back in')).toBeInTheDocument();
@@ -374,7 +374,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002612">
           <Logout data-id="002613" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText('Log back in')).toBeInTheDocument();
@@ -386,7 +386,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002614">
           <Logout data-id="002615" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const logoutButton = screen.getByText('Log back in');
@@ -400,7 +400,7 @@ describe('Logout Component', () => {
       render(
         <TestWrapper data-id="002616">
           <Logout data-id="002617" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const loginButton = screen.getByText('Log back in');

@@ -188,7 +188,7 @@ function Actions() {
     { label: capitalize(t('location')), key: 'answer.audit.location.name' },
     { label: capitalize(t('business unit')), key: 'answer.businessUnit.name' },
   ];
-  const [viewMode, setViewMode] = useState<TViewMode>('grid');
+  const [viewMode, setViewMode] = useState<TViewMode>('list');
   const [selectedAction, setSelectedAction] = useState<IAction>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -504,7 +504,7 @@ function Actions() {
         </ModalContent>
       </Modal>
       <Header breadcrumbs={['Actions']} data-id="000249" mobileBreadcrumbs={['Actions']}>
-        <ChangeViewButton data-id="000250" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
+        <ChangeViewButton data-id="000250" setViewMode={setViewMode} viewMode={viewMode} views={['list', 'panel']} />
         {device !== 'mobile' && (
           <CSVLinkComponent data={csvData} data-id="000251" filename="actions.csv" headers={csvHeaders} target="_blank">
             <Button
@@ -556,7 +556,7 @@ function Actions() {
 
           return (
             <>
-              {viewMode === 'grid' && (
+              {viewMode === 'list' && (
                 <Grid
                   data-id="000261"
                   display={['grid', 'grid', 'flex']}

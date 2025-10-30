@@ -8,17 +8,15 @@ function SortButton({
   sortType,
   setSortType,
   setSortOrder,
-  ml,
 }: {
   sortBy: { label: string; key: string }[];
   sortOrder: 'asc' | 'desc';
   sortType: string;
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
-  ml?: number | string | {};
 }) {
   return (
-    <Box data-id="000474" ml={ml ?? '10px'} position="relative" zIndex={9999}>
+    <Box data-id="000474" position="relative" zIndex={9999}>
       <Menu autoSelect={false} data-id="000475" placement="bottom-end" strategy="fixed">
         {({ onClose }) => (
           <>

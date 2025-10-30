@@ -532,7 +532,7 @@ function Answers() {
         />
       </Modal>
       <Header breadcrumbs={[capitalize(pluralize(t('answer')))]} data-id="000269" mobileBreadcrumbs={[capitalize(pluralize(t('answer')))]}>
-        <ChangeViewButton data-id="000270" setViewMode={setViewMode} viewMode={viewMode} views={['grid', 'list']} />
+        <ChangeViewButton data-id="000270" setViewMode={setViewMode} viewMode={viewMode} views={['list', 'panel']} />
         {device !== 'mobile' && (
           <CSVLinkComponent data={csvData} data-id="000271" filename="answers.csv" headers={csvHeaders} target="_blank">
             <Button
@@ -557,7 +557,6 @@ function Answers() {
         )}
         <SortButton
           data-id="000275"
-          ml={[0, '15px']}
           setSortOrder={setSortOrder}
           setSortType={setSortType}
           sortBy={sortBy}
@@ -582,7 +581,7 @@ function Answers() {
             >
               {(panel) => (
                 <>
-                  {viewMode === 'grid' && (
+                  {viewMode === 'list' && (
                     <Grid
                       data-id="000284"
                       display={['grid', 'grid', 'flex']}

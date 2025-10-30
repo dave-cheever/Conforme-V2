@@ -136,7 +136,7 @@ describe('auth-pages-common', () => {
       render(
         <TestWrapper data-id="002531">
           <CompanyLogo data-id="002532" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -152,7 +152,7 @@ describe('auth-pages-common', () => {
       render(
         <TestWrapper data-id="002533">
           <CompanyLogo data-id="002534" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {

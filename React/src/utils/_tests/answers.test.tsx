@@ -201,7 +201,7 @@ describe('Answers', () => {
     });
   });
 
-  test('renders grid view by default', async () => {
+  test('renders list view by default', async () => {
     const mocks = [
       {
         request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
@@ -358,7 +358,7 @@ describe('Answers', () => {
     });
   });
 
-  test('handles multiple answers in grid view', async () => {
+  test('handles multiple answers in list view', async () => {
     const mocks = [
       {
         request: { query: GET_ANSWERS, variables: { answerQuery: {} } },

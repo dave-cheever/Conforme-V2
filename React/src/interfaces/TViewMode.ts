@@ -1,1 +1,1 @@
-export type TViewMode = 'grid' | 'list' | 'group' | 'panel';
+export type TViewMode = 'list' | 'panel';

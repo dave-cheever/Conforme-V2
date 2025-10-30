@@ -34,8 +34,8 @@ function Login() {
         data-id="000207"
         flexDir={['column', 'column', 'row']}
         h="100vh"
-        w="full"
-        position="relative">
+        position="relative"
+        w="full">
       <CompanyLogo data-id="002524" isMobile={device === 'mobile'} />
       {user ? (
         <Flex
@@ -59,8 +59,8 @@ function Login() {
               {organizationConfig?.name}
             </Flex>
             <UserAvatar
-              data-id="002525"
               borderColor="loginPage.avatarBorderColor"
+              data-id="002525"
               dataId="000211"
               user={user} />
             <Button
@@ -138,7 +138,7 @@ function Login() {
         order={[1, 1, 2]}
         w={['full', 'full', '70%']}>
          <Box data-id="000223" h={['30vh', '40vh', '95vh']} overflow="hidden">
-           <BackgroundImage data-id="002526" dataId="000224" maxW="1000px" fit="contain" />
+           <BackgroundImage data-id="002526" dataId="000224" fit="contain" maxW="1000px" />
          </Box>
       </Flex>
     </Flex>

@@ -32,12 +32,12 @@ function TableHeaderElement({
       w={w}
     >
       <Tooltip
+        closeDelay={0}
         data-id="000339"
         hasArrow
         isDisabled={tooltip === ''}
         label={tooltip}
         openDelay={300}
-        closeDelay={0}
         placement="top">
         <Text color="listView.header.fontColor" data-id="000340" fontSize={"14px"} fontWeight="600">{label}</Text>
       </Tooltip>

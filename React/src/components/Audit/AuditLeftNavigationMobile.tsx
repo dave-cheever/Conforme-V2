@@ -24,15 +24,15 @@ function AuditLeftNavigationMobile() {
       justifyContent="space-between"
       p="16px 16px"
       position="fixed"
-      w="full"
-      zIndex={12}
       sx={{
         '&::-webkit-scrollbar': {
           display: 'none',
         },
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
-      }}>
+      }}
+      w="full"
+      zIndex={12}>
       <Flex align="center" data-id="000208" flexDirection="row" h="full">
         <Flex
           align="center"
@@ -44,16 +44,16 @@ function AuditLeftNavigationMobile() {
           mr={3}
           onClick={() => navigateTo('/audits')}>
           <Box
-            data-id="002488"
-            borderRadius="7px"
-            display="flex"
-            width="56px"
-            height="56px"
-            flexDirection="column"
-            justifyContent="center"
             alignItems="center"
+            bg="#E2E8F0"
+            borderRadius="7px"
+            data-id="002488"
+            display="flex"
+            flexDirection="column"
             gap="0px"
-            bg="#E2E8F0">
+            height="56px"
+            justifyContent="center"
+            width="56px">
             <Flex
               align="center"
               borderRadius="8px"
@@ -68,9 +68,9 @@ function AuditLeftNavigationMobile() {
               data-id="000211"
               fontSize="12px"
               fontWeight="400"
+              overflow="hidden"
               textAlign="center"
               textOverflow="ellipsis"
-              overflow="hidden"
               whiteSpace="nowrap"
               width="85%">
               Back

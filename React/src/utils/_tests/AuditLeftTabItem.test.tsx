@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, expect, test, vi, beforeEach } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import AuditLeftTabItem from '../../components/Audit/AuditLeftTabItem';
 
@@ -68,7 +68,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002572">
         <AuditLeftTabItem data-id="002573" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(screen.getByTestId('overview-icon')).toBeInTheDocument();
@@ -79,7 +79,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002574">
         <AuditLeftTabItem data-id="002575" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // In desktop view (with our mock), layout will be horizontal
@@ -92,7 +92,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002576">
         <AuditLeftTabItem data-id="002577" {...mockPropsWithSubsections} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Check that the component renders without errors
@@ -103,7 +103,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002578">
         <AuditLeftTabItem data-id="002579" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const container = screen.getByText('Overview').parentElement;
@@ -117,7 +117,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002580">
         <AuditLeftTabItem data-id="002581" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // In desktop view, icon container has transparent background
@@ -132,7 +132,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002582">
         <AuditLeftTabItem data-id="002583" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const iconContainer = screen.getByTestId('overview-icon').parentElement;
@@ -147,7 +147,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002584">
         <AuditLeftTabItem data-id="002585" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const icon = screen.getByTestId('overview-icon');
@@ -158,7 +158,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002586">
         <AuditLeftTabItem data-id="002587" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const label = screen.getByText('Overview');
@@ -173,7 +173,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002588">
         <AuditLeftTabItem data-id="002589" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const label = screen.getByText('Overview');
@@ -188,7 +188,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002590">
         <AuditLeftTabItem data-id="002591" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const label = screen.getByText('Overview');
@@ -200,7 +200,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002592">
         <AuditLeftTabItem data-id="002593" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const container = screen.getByText('Overview').parentElement;
@@ -213,7 +213,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002594">
         <AuditLeftTabItem data-id="002595" {...mockPropsWithSubsections} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const container = screen.getByText('Questions').parentElement;
@@ -226,7 +226,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002596">
         <AuditLeftTabItem data-id="002597" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const iconContainer = screen.getByTestId('overview-icon').parentElement;
@@ -243,7 +243,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002598">
         <AuditLeftTabItem data-id="002599" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const icon = screen.getByTestId('overview-icon');
@@ -254,7 +254,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002600">
         <AuditLeftTabItem data-id="002601" {...mockPropsWithSubsections} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Check that the component renders without errors
@@ -265,7 +265,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002602">
         <AuditLeftTabItem data-id="002603" {...mockPropsWithSubsections} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Check that the component renders without errors
@@ -276,7 +276,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002604">
         <AuditLeftTabItem data-id="002605" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const container = screen.getByText('Overview').parentElement;
@@ -288,7 +288,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002606">
         <AuditLeftTabItem data-id="002607" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const container = screen.getByText('Overview').closest('[data-id="000203"]');
@@ -300,7 +300,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002608">
         <AuditLeftTabItem data-id="002609" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const container = screen.getByText('Overview').parentElement;
@@ -313,7 +313,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002610">
         <AuditLeftTabItem data-id="002611" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const label = screen.getByText('Overview');
@@ -328,7 +328,7 @@ describe('AuditLeftTabItem', () => {
     render(
       <TestWrapper data-id="002612">
         <AuditLeftTabItem data-id="002613" {...mockProps} />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // Check that the component renders without errors

@@ -132,7 +132,7 @@ function NavigationTop() {
                 aria-label="Add"
                 bg="white"
                 border={"1px solid #CBD5E0"}
-                bottom={['75px', '0']}
+                bottom={['108px', '0']}
                 boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
                 color="white"
                 display={

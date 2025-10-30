@@ -24,6 +24,18 @@ const formatDate = (date: any, formatString: string = 'd MMM yyyy'): string => {
   }
 };
 
+// Utility function to normalize user values to array format
+const normalizeUsers = (value: any): any[] => {
+  if (Array.isArray(value)) {
+    return value;
+  }
+  if (typeof value === 'string') {
+    // Legacy support: strings are converted to user objects (ideally should be removed)
+    return [{ _id: '1', displayName: value }];
+  }
+  return [value || []].flat();
+};
+
 // Component to render individual field values
 function FieldRenderer({
     config,
@@ -84,46 +96,13 @@ function FieldRenderer({
     }
 
     case 'user': {
-      // Handle user objects with displayName property using AvatarCell
-      if (Array.isArray(value)) {
-        // If value is an array of users, use AvatarCell directly
-        return (
-          <AvatarCell 
-            data-id={dataId}
-            noDataText={config.fallback || 'Unassigned'}
-            users={value}
-            userType={config.userType || 'assigned'}
-          />
-        );
-      }
-      if (value && typeof value === 'object' && value.displayName) {
-        // If value is a single user object, wrap it in an array for AvatarCell
-        return (
-          <AvatarCell 
-            data-id={dataId}
-            noDataText={config.fallback || 'Unassigned'}
-            users={[value]}
-            userType={config.userType || 'assigned'}
-          />
-        );
-      }
-      if (typeof value === 'string') {
-        // If value is a string (legacy support), create a user object
-        return (
-          <AvatarCell 
-            data-id={dataId}
-            noDataText={config.fallback || 'Unassigned'}
-            users={[{ _id: '1', displayName: value }]}
-            userType={config.userType || 'assigned'}
-          />
-        );
-      }
-      // Fallback for empty/null values
+      const normalizedUsers = normalizeUsers(value);
+
       return (
         <AvatarCell 
           data-id={dataId}
           noDataText={config.fallback || 'Unassigned'}
-          users={[]}
+          users={normalizedUsers}
           userType={config.userType || 'assigned'}
         />
       );
@@ -196,6 +175,7 @@ function MobileActionMenu({ config, item, index }: { readonly config: any; reado
                 data-id={`action-dropdown-${index + 2}`}
                 height="28px"
                 icon={<EllipsisIcon data-id="001518" />}
+                onClick={(e) => e.stopPropagation()}
                 variant="outline"
             />
             <MenuList data-id="001519">
@@ -245,6 +225,7 @@ function DesktopActionButton({ config, item, index }: { readonly config: any; re
                             data-id={`secondary-actions-button-${index + 2}`}
                             height="28px"
                             icon={<EllipsisIcon data-id="secondary-ellipsis" />}
+                            onClick={(e) => e.stopPropagation()}
                             variant="outline"
                         />
                         <MenuList data-id="secondary-actions-menu-list">
@@ -346,7 +327,7 @@ function LinkedItemSection({ config, item, index }: { readonly config: any; read
 function PanelView({ 
   items, 
   config, 
-  containerProps = { bg: '#F7FAFC', p: '14px', gap: '24px' },
+  containerProps = { bg: '#F7FAFC', p: '14px', pt: '24px', gap: '24px' },
   error,
   emptyStateMessage = 'No items found',
   dataSourceName,
@@ -410,6 +391,7 @@ function PanelView({
                 justifyContent="center"
                 minW="100%"
                 p={containerProps.p}
+                pt={containerProps.pt}
                 w="100%"
             >
                 <Text
@@ -435,6 +417,7 @@ function PanelView({
             h="100%"
             minW="100%"
             p={containerProps.p}
+            pt={containerProps.pt}
             w="100%"
         >
             {items?.map((item, index) => (

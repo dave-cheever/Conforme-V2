@@ -36,9 +36,9 @@ vi.mock('../../icons/SignInButton', () => ({
   default: ({ onClick, ...props }: any) => (
     <button
       data-id="002545"
-      type="button"
       data-testid="sign-in-button"
       onClick={onClick}
+      type="button"
       {...props}>
       Sign In
     </button>
@@ -132,7 +132,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002547">
           <Login data-id="002548" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText('Test Organization')).toBeInTheDocument();
@@ -142,7 +142,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002549">
           <Login data-id="002550" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -155,7 +155,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002551">
           <Login data-id="002552" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -168,7 +168,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002553">
           <Login data-id="002554" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByTestId('sign-in-button')).toBeInTheDocument();
@@ -185,7 +185,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002555">
           <Login data-id="002556" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText('Login as John')).toBeInTheDocument();
@@ -201,7 +201,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002557">
           <Login data-id="002558" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const avatar = document.querySelector('[data-id="000212"]');
@@ -217,7 +217,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002559">
           <Login data-id="002560" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText('Login as someone else')).toBeInTheDocument();
@@ -229,7 +229,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002561">
           <Login data-id="002562" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(document.querySelector('[data-id="000207"]')).toBeInTheDocument();
@@ -246,7 +246,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002563">
           <Login data-id="002564" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -260,7 +260,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002565">
           <Login data-id="002566" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -278,7 +278,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002567">
           <Login data-id="002568" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -293,7 +293,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002569">
           <Login data-id="002570" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -314,7 +314,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002571">
           <Login data-id="002572" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByTestId('sign-in-button')).toBeInTheDocument();
@@ -330,7 +330,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002573">
           <Login data-id="002574" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       await waitFor(() => {
@@ -356,7 +356,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002575">
           <Login data-id="002576" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText('Login as John')).toBeInTheDocument();
@@ -376,7 +376,7 @@ describe('Login Component', () => {
       render(
         <TestWrapper data-id="002577">
           <Login data-id="002578" />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText('Login as John')).toBeInTheDocument();

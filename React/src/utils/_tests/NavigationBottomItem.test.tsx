@@ -65,12 +65,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002619">
         <NavigationBottomItem
           data-id="002620"
-          menuItem={mockMenuItem}
           filtersOpen={false}
+          menuItem={mockMenuItem}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     expect(screen.getByTestId('menu-icon')).toBeInTheDocument();
@@ -82,12 +82,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002621">
         <NavigationBottomItem
           data-id="002622"
-          menuItem={mockMenuItem}
           filtersOpen={false}
+          menuItem={mockMenuItem}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     const container = screen.getByText('Dashboard').parentElement;
@@ -96,9 +96,8 @@ describe('NavigationBottomItem', () => {
       width: '85.8px',
       height: 'fit-content',
       gap: '2px',
+      'flex-direction': 'column',
     });
-    // Check for flexDirection: column class
-    expect(container).toHaveClass('css-jctq21');
   });
 
   test('shows submenu indicator line for items with subSections', () => {
@@ -106,12 +105,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002623">
         <NavigationBottomItem
           data-id="002624"
-          menuItem={mockMenuItemWithSubsections}
           filtersOpen={false}
+          menuItem={mockMenuItemWithSubsections}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     // Check that the component renders without errors
@@ -123,12 +122,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002625">
         <NavigationBottomItem
           data-id="002626"
-          menuItem={mockMenuItem}
           filtersOpen={false}
+          menuItem={mockMenuItem}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     const container = screen.getByText('Dashboard').parentElement;
@@ -143,12 +142,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002627">
         <NavigationBottomItem
           data-id="002628"
-          menuItem={mockMenuItem}
           filtersOpen={false}
+          menuItem={mockMenuItem}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     const iconContainer = screen.getByTestId('menu-icon').parentElement;
@@ -164,12 +163,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002629">
         <NavigationBottomItem
           data-id="002630"
-          menuItem={mockMenuItem}
           filtersOpen={false}
+          menuItem={mockMenuItem}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     const iconContainer = screen.getByTestId('menu-icon').parentElement;
@@ -185,12 +184,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002631">
         <NavigationBottomItem
           data-id="002632"
-          menuItem={mockMenuItem}
           filtersOpen={false}
+          menuItem={mockMenuItem}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     const icon = screen.getByTestId('menu-icon');
@@ -203,12 +202,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002633">
         <NavigationBottomItem
           data-id="002634"
-          menuItem={mockMenuItem}
           filtersOpen={false}
+          menuItem={mockMenuItem}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     const label = screen.getByText('Dashboard');
@@ -227,12 +226,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002635">
         <NavigationBottomItem
           data-id="002636"
-          menuItem={mockMenuItem}
           filtersOpen={false}
+          menuItem={mockMenuItem}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     const label = screen.getByText('Dashboard');
@@ -248,12 +247,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002637">
         <NavigationBottomItem
           data-id="002638"
-          menuItem={mockMenuItem}
           filtersOpen={false}
+          menuItem={mockMenuItem}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     const label = screen.getByText('Dashboard');
@@ -269,12 +268,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002639">
         <NavigationBottomItem
           data-id="002640"
-          menuItem={mockMenuItemWithSubsections}
           filtersOpen={false}
+          menuItem={mockMenuItemWithSubsections}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={mockSetSubsectionOpen} />
-      </TestWrapper>
+          setSubsectionOpen={mockSetSubsectionOpen}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     const container = screen.getByText('Admin').parentElement;
@@ -289,12 +288,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002641">
         <NavigationBottomItem
           data-id="002642"
-          menuItem={mockMenuItem}
           filtersOpen={false}
+          menuItem={mockMenuItem}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     const container = screen.getByText('Dashboard').parentElement;
@@ -311,12 +310,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002643">
         <NavigationBottomItem
           data-id="002644"
-          menuItem={rootMenuItem}
           filtersOpen={false}
+          menuItem={rootMenuItem}
           setFiltersOpen={mockSetFiltersOpen}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     const container = screen.getByText('Dashboard').parentElement;
@@ -330,12 +329,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002645">
         <NavigationBottomItem
           data-id="002646"
-          menuItem={mockMenuItemWithSubsections}
           filtersOpen={false}
+          menuItem={mockMenuItemWithSubsections}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     // Check that the component renders without errors
@@ -347,12 +346,12 @@ describe('NavigationBottomItem', () => {
       <TestWrapper data-id="002647">
         <NavigationBottomItem
           data-id="002648"
-          menuItem={mockMenuItemWithSubsections}
           filtersOpen={false}
+          menuItem={mockMenuItemWithSubsections}
           setFiltersOpen={vi.fn()}
-          subsectionOpen={false}
-          setSubsectionOpen={vi.fn()} />
-      </TestWrapper>
+          setSubsectionOpen={vi.fn()}
+          subsectionOpen={false} />
+      </TestWrapper>,
     );
 
     // Check that the component renders without errors

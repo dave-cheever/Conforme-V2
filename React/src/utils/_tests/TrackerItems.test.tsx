@@ -134,7 +134,6 @@ vi.mock('../../components/Header', () => ({
 vi.mock('../../components/SortButton', () => ({ default: () => <div data-id="001342" data-testid="sort" /> }));
 vi.mock('../../components/TrackerItem/TrackerItemsList', () => ({ default: () => <div data-id="001343" data-testid="list" /> }));
 vi.mock('../../components/TrackerItem/TrackerItemSquare', () => ({ default: () => <div data-id="001344" data-testid="square" /> }));
-vi.mock('../../components/TrackerItem/TrackerItemsGroup', () => ({ default: () => <div data-id="001345" data-testid="group" /> }));
 vi.mock('../../components/Loader', () => ({ default: () => <div data-id="001346" data-testid="loader" /> }));
 vi.mock('react-infinite-scroller', () => ({
   default: ({ children }: any) => (
