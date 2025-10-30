@@ -28,6 +28,9 @@ parameters:
   - name: cosmosDbName
     type: string
     default: ''
+  - name: cosmosAccountIsExisting
+    type: boolean
+    default: false
   - name: appServicePlanName
     type: string
     default: ''
@@ -79,6 +82,13 @@ jobs:
 
               # (App/runtime parameters removed; no validation needed here)
 
+              # Detect if Cosmos account already exists in the target RG
+              COSMOS_EXISTS=false
+              if az cosmosdb show -g "${{ parameters.resourceGroupName }}" -n "${{ parameters.cosmosAccountName }}" --only-show-errors >/dev/null 2>&1; then
+                COSMOS_EXISTS=true
+              fi
+              echo "Cosmos exists: ${COSMOS_EXISTS}"
+
               # Deploy group-scoped template
               az deployment group create \
                 -g "${{ parameters.resourceGroupName }}" \
@@ -93,6 +103,7 @@ jobs:
                   webAppNameAPI="${{ parameters.expressAppName }}" \
                   functionAppName="${{ parameters.functionAppName }}" \
                   cosmosAccountName='${{ parameters.cosmosAccountName }}' \
+                  cosmosAccountIsExisting=${COSMOS_EXISTS} \
                   cosmosDbName='${{ parameters.cosmosDbName }}' \
                   storageAccountName='${{ parameters.storageAccountName }}' \
                   createFunctionAppInsights=true \

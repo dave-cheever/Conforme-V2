@@ -28,6 +28,9 @@ parameters:
   - name: cosmosDbName
     type: string
     default: ''
+  - name: cosmosAccountIsExisting
+    type: boolean
+    default: false
   - name: appServicePlanName
     type: string
     default: ''
@@ -59,6 +62,7 @@ jobs:
     parametersFile: '${{ parameters.parametersFile }}'
     cosmosAccountName: '${{ parameters.cosmosAccountName }}'
     cosmosDbName: '${{ parameters.cosmosDbName }}'
+    cosmosAccountIsExisting: ${{ parameters.cosmosAccountIsExisting }}
     appServicePlanName: '${{ parameters.appServicePlanName }}'
     storageAccountName: '${{ parameters.storageAccountName }}'
     tags: '${{ parameters.tags }}'
