@@ -160,8 +160,8 @@ var csQIndex = indexOf(cosmosAccountConnectionString, '?')
 var csBase = substring(cosmosAccountConnectionString, 0, csQIndex)
 var csQuery = substring(cosmosAccountConnectionString, csQIndex, length(cosmosAccountConnectionString) - csQIndex)
 // Ensure we don't end up with a double slash before the database name
-var csBaseLastChar = substring(csBase, sub(length(csBase), 1), 1)
-var csBaseTrimmed = csBaseLastChar == '/' ? substring(csBase, 0, sub(length(csBase), 1)) : csBase
+var csBaseLastChar = substring(csBase, length(csBase) - 1, 1)
+var csBaseTrimmed = csBaseLastChar == '/' ? substring(csBase, 0, length(csBase) - 1) : csBase
 var cosmosConnectionString = '${csBaseTrimmed}/${cosmosDbName}${csQuery}'
 
 // Client Web App (Linux)
