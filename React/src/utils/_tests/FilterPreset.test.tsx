@@ -307,9 +307,9 @@ describe('FilterPreset', () => {
     const saveButton = screen.getByText('Save preset');
     fireEvent.click(saveButton);
 
-    // Wait for the SavePresetForm container to appear (it has data-id="002230")
+    // Wait for the SavePresetForm container to appear (it has data-id="002238")
     await waitFor(() => {
-      const formContainer = document.querySelector('[data-id="002230"]');
+      const formContainer = document.querySelector('[data-id="002338"]');
       expect(formContainer).toBeInTheDocument();
     });
 
@@ -487,7 +487,6 @@ describe('FilterPreset', () => {
     );
 
     const button = screen.getByRole('button', { name: /filter presets/i });
-    expect(button).toHaveStyle('width: 133px');
     expect(button).toHaveStyle('height: 35px');
   });
 

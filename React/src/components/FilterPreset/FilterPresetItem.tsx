@@ -32,7 +32,7 @@ function FilterPresetItem({ preset, index, onPresetClick, onDeletePreset, dataId
       px="0"
       py="8px"
     >
-      <Text color="#344054" data-id="002321" flex="1" fontSize="14px" fontWeight="500">
+      <Text color="#344054" data-id="002321" flex="1" fontSize="14px" fontWeight="500" pl={2}>
         {preset.name}
       </Text>
       <Button

@@ -12,7 +12,7 @@ import DeletePresetModal from './DeletePresetModal';
 import FilterPresetList from './FilterPresetList';
 import SavePresetForm from './SavePresetForm';
 
-const SAVE_FILTER_PRESET = gql`
+export const SAVE_FILTER_PRESET = gql`
   mutation SaveFilterPreset($saveFilterPresetInput: SaveFilterPresetInput!) {
     saveFilterPreset(saveFilterPresetInput: $saveFilterPresetInput) {
       _id
@@ -37,7 +37,7 @@ const SAVE_FILTER_PRESET = gql`
   }
 `;
 
-const DELETE_FILTER_PRESET = gql`
+export const DELETE_FILTER_PRESET = gql`
   mutation DeleteFilterPreset($deleteFilterPresetInput: DeleteFilterPresetInput!) {
     deleteFilterPreset(deleteFilterPresetInput: $deleteFilterPresetInput) {
       _id
@@ -46,7 +46,7 @@ const DELETE_FILTER_PRESET = gql`
   }
 `;
 
-const GET_FILTER_PRESETS = gql`
+export const GET_FILTER_PRESETS = gql`
   query GetFilterPresets($getFilterPresetsInput: GetFilterPresetsInput!) {
     getFilterPresets(getFilterPresetsInput: $getFilterPresetsInput) {
       _id
@@ -417,7 +417,6 @@ function FilterPreset({ placement = 'bottom-start', 'data-id': dataId = 'filter-
             e.stopPropagation();
           }}
           variant="outline"
-          w="133px"
         >
           Filter presets
         </MenuButton>

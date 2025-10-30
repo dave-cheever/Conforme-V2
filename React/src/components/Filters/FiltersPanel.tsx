@@ -7,7 +7,7 @@ import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
 import { CrossIcon, FilterWhite, ResetIcon } from '../../icons';
 import { isPermitted } from '../can';
-import FilterPreset from '../FilterPreset';
+import FilterPreset from '../FilterPreset/FilterPreset';
 import FiltersPanelItem from './FiltersPanelItem';
 
 function FiltersPanel() {

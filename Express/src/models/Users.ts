@@ -6,19 +6,6 @@ import { Organizations, Users } from 'app-models';
 import { GraphService } from 'app-services';
 import { genMetatags, getProtocol } from 'app-utils';
 
-// Helper function to handle mixed _id types (String or ObjectId)
-const createIdQuery = (id: string | Types.ObjectId) => {
-  const idString = id.toString();
-  // Try to convert to ObjectId, if it fails, treat as string
-  try {
-    const objectId = new Types.ObjectId(idString);
-    return { $or: [{ _id: objectId }, { _id: idString }] };
-  } catch {
-    // If it's not a valid ObjectId format, just search as string
-    return { _id: idString };
-  }
-};
-
 const userSchema = new Schema<IUser, IUserModel>({
   _id: String,
   firstName: String,
@@ -98,7 +85,7 @@ userSchema.statics.customFind = async function ({ organization }): Promise<IUser
 };
 
 userSchema.statics.customFindById = async function (userId: string): Promise<IUser | null> {
-  const user = await this.findOne(createIdQuery(userId)).lean();
+  const user = await this.findOne({ userId }).lean();
   return user;
 };
 
@@ -150,7 +137,7 @@ userSchema.statics.customFindWithDetails = async function ({
     processedSelector._id = { $in: idValues };
   } else if (processedSelector._id && typeof processedSelector._id === 'string') {
     // For single _id queries, use createIdQuery helper
-    processedSelector = { ...processedSelector, ...createIdQuery(processedSelector._id) };
+    processedSelector = { ...processedSelector, _id: processedSelector._id };
     delete processedSelector._id;
   }
 
@@ -205,7 +192,7 @@ userSchema.statics.customFindWithDetails = async function ({
           },
         };
         const { _id, ...userWithoutId } = updatedUser;
-        await Users.updateOne(createIdQuery(user._id), userWithoutId);
+        await Users.updateOne({ userId: user.userId }, userWithoutId);
         return updatedUser;
       } else {
         // User not found in Entra ID, do NOT overwrite fields

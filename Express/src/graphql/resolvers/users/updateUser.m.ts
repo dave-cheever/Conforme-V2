@@ -14,7 +14,7 @@ const updateUser = async (
       throw new Error('User is not permitted');
 
     const updateUser = await Users.customFindById(
-      updateUserModifyInput._id,
+      updateUserModifyInput.userId,
       organization._id,
     );
     if (!updateUser) throw new Error("User doesn't exist");
