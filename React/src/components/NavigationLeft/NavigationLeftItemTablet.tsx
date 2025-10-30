@@ -42,6 +42,18 @@ function NavigationLeftItemTablet({
     document.removeEventListener("mousedown", handleClickOutside);
   };
   }, [filtersOpen, subsectionOpen, setFiltersOpen, setSubsectionOpen]);
+
+  // Determine background color based on menu item state and path
+  const getBackgroundColor = () => {
+    const hasSubSections = !!menuItem.subSections;
+    const isActive = hasSubSections 
+      ? isPathActive(url)
+      : isPathActive(url, { exact: true });
+    
+    return isActive
+      ? 'navigationLeftItemTablet.selectedMenuItemBg'
+      : 'navigationLeftItemTablet.unselectedMenuItemBg';
+  };
   
   return (
     <Box
@@ -61,17 +73,9 @@ function NavigationLeftItemTablet({
       <Flex align="center" data-id="000578" h="100%">
         <Flex
           align="center"
-          bg={
-            menuItem.subSections
-              ? isPathActive(url)
-                ? 'navigationLeftItemTablet.selectedLabelBg'
-                : 'navigationLeftItemTablet.unselectedLabelBg'
-              : isPathActive(url, { exact: true })
-                ? 'navigationLeftItemTablet.selectedLabelBg'
-                : 'navigationLeftItemTablet.unselectedLabelBg'
-          }
+          bg={getBackgroundColor()}
           data-id="000579"
-          h="30px"
+          h={["30px", "42px", "30px"]}
           justifyContent="center"
           ml="0px"
           onClick={() => {
@@ -88,14 +92,16 @@ function NavigationLeftItemTablet({
             }
           }}
           rounded="8px"
-          w="30px">
+          w={["30px", "42px", "30px"]}
+          >
           <Icon
             as={icon}
             data-id="000580"
+            color="#ffffff"
             fill="#ffffff"
-            h="15px"
+            h={["15px", '18px', '15px']}
             stroke="#ffffff"
-            w="15px" />
+            w={["15px", '18px', '15px']} />
         </Flex>
       </Flex>
       {filtersOpen && menuItem.url === '/' && (
@@ -165,6 +171,8 @@ export const navigationLeftItemTabletStyles = {
     unselectedMenuItem: '#818197',
     selectedLabelBg: '#462AC4',
     unselectedLabelBg: '#DDDDDD',
+    selectedMenuItemBg: '#0068A3',
+    unselectedMenuItemBg: '#01173E',
     selectedIconStroke: '#ffffff',
     unselectedIconStroke: '#818197',
   },

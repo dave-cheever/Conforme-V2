@@ -61,7 +61,7 @@ function AuditLeftNavigationMobile() {
               h="30px"
               justify="center"
               w="30px">
-              <BackArrowIcon data-id="002489" dataId="000211" width={18} height={18} />
+              <BackArrowIcon data-id="002489" dataId="000211" width="18px" height="18px" />
             </Flex>
             <Text
               color="#4A5568"

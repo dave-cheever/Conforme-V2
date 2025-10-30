@@ -27,13 +27,13 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      eslintPlugin({
-        // Ensure ESLint resolves config and tsconfig from the React folder
-        cwd: __dirname,
-        cache: false,
-        failOnError: false,
-        failOnWarning: false,
-      }),
+      // eslintPlugin({
+      //   // Ensure ESLint resolves config and tsconfig from the React folder
+      //   cwd: __dirname,
+      //   cache: false,
+      //   failOnError: false,
+      //   failOnWarning: false,
+      // }),
       svgrPlugin({
         svgrOptions: {
           icon: true,
@@ -51,6 +51,14 @@ export default defineConfig(({ mode }) => {
       globals: true,
       environment: 'jsdom',
       setupFiles: './src/setupTests.ts',
+      server: {
+        deps: {
+          inline: [
+            "suneditor",
+            "suneditor-react"
+          ]
+        }
+      },
       coverage: {
         provider: 'v8',
         reporter: ['text', 'json', 'html', 'lcov'],

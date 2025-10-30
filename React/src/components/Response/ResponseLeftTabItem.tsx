@@ -1,11 +1,18 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import { Flex, Icon } from '@chakra-ui/react';
+import { Box, Flex, Icon } from '@chakra-ui/react';
 
 import useNavigate from '../../hooks/useNavigate';
 
-function ResponseLeftTabItem({ label, icon, url, isDesktop = true, isMobile = false }) {
+function ResponseLeftTabItem({ label, icon, url, isDesktop = true, isMobile = false, enforceDesktop }: {
+  readonly label: string;
+  readonly icon: any;
+  readonly url: string;
+  readonly isDesktop?: boolean;
+  readonly isMobile?: boolean;
+  readonly enforceDesktop?: boolean;
+}) {
   const location = useLocation();
   const { navigateTo, isPathActive } = useNavigate();
   const { id } = useParams();
@@ -17,45 +24,79 @@ function ResponseLeftTabItem({ label, icon, url, isDesktop = true, isMobile = fa
   };
 
   return (
-    <Flex
-        align="center"
-        bg={isDesktop && active ? 'responseLeftTabItem.activeIconBg' : ""}
-        borderRadius={'4px'}
-        cursor="pointer"
-        data-id="000299"
-        mb={[0, 3]}
-        mx={[3, 0]}
-        onClick={redirectPage}
-        padding={isDesktop ? '3px' : '2px 0'}
-        w={active ? 'full' : 'fit-content'}>
-      <Flex
-        align="center"
-        bg={active ? 'responseLeftTabItem.activeIconBg' : ''}
-        borderRadius="8px"
-        data-id="000300"
-        h="30px"
-        justify="center"
-        pl={1}
-        w="30px"
+    <Box
+      _hover={{
+        cursor: 'pointer',
+        bg: active ? undefined : 'responseLeftTabItem.hoverLabelBg',
+      }}
+      alignItems="center"
+      bg={
+        active
+          ? 'responseLeftTabItem.selectedMenuItemBg'
+          : 'responseLeftTabItem.unselectedMenuItemBg'
+      }
+      borderRadius="6px"
+      data-id="000299"
+      display="flex"
+      fontSize="md"
+      fontWeight="normal"
+      h="42px"
+      w={['0', enforceDesktop ? '100%' : '42px', "100%"]}
+      justifyContent={['center', enforceDesktop ? 'flex-start' : 'center', 'flex-start']}
+      mb={[0, 0, 0]}
+      mx={[3, 0]}
+      onClick={redirectPage}
+      px={[0, enforceDesktop ? '14px' : 0, "14px"]}
+      py={[0, enforceDesktop ? '12px' : 0, "12px"]}
+      sx={{
+        '&:hover': active ? {} : { backgroundColor: 'responseLeftTabItem.hoverLabelBg' },
+      }}
+      transition="all 0.2s ease-out"
       >
-        <Icon
-          as={icon}
-          color="#ffffff"
-          data-id="000301"
-          h="21px"
-          w="21px" />
-      </Flex>
-      {(isDesktop || (isMobile && active)) && (
-        <Flex
-          color={'responseLeftTabItem.activeTextColor'}
-          data-id="000302"
-          flexGrow={1}
-          fontSize={['11px', '14px']}
-          ml={3}>
-          {label}
+      <Flex align="center" data-id="000300" h="100%" justify="space-between">
+        <Flex data-id="002750" align="center">
+          <Flex
+            alignItems="center"
+            bg="transparent"
+            data-id="000301"
+            h="30px"
+            justifyContent="center"
+            rounded="8px"
+            transition="all 0.2s ease-out"
+            w="30px">
+            <Icon
+              as={icon}
+              color="#fff"
+              data-id="000302"
+              fill="#ffffff"
+              h="18px"
+              stroke="#ffffff"
+              w="18px" />
+          </Flex>
         </Flex>
-      )}
-    </Flex>
+
+        {(isDesktop || (isMobile && active)) && (
+          <Flex
+            align="center"
+            data-id="000303"
+            justify="space-between"
+            w="100%">
+            <Box
+              data-id="002751"
+              color={
+                active
+                  ? 'responseLeftTabItem.selectedMenuItem'
+                  : 'responseLeftTabItem.unselectedMenuItem'
+              }
+              fontWeight="600"
+              fontSize="16px"
+              ml="8px">
+              {label}
+            </Box>
+          </Flex>
+        )}
+      </Flex>
+    </Box>
   );
 }
 
@@ -63,6 +104,15 @@ export default ResponseLeftTabItem;
 
 export const responseLeftTabItemStyles = {
   responseLeftTabItem: {
+    selectedMenuItem: '#ffffff',
+    unselectedMenuItem: '#ffffff',
+    selectedLabelBg: '#0068A3',
+    selectedMenuItemBg: '#0068A3',
+    unselectedMenuItemBg: '#01173E',
+    unselectedLabelBg: '#01173E',
+    hoverLabelBg: '#2A3B6C',
+    selectedIconStroke: '#ffffff',
+    unselectedIconStroke: '#818197',
     activeIconBg: '#462AC4',
     activeTextColor: '#ffffff',
     textColor: '#818197',

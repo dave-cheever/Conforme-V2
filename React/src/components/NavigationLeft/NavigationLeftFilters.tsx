@@ -56,12 +56,20 @@ function NavigationLeftFilters({
         </Flex>
       )}
       <Flex
+        _hover={{
+          cursor: 'pointer',
+          bg: (() => {
+            const isSelected = (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
+              itemStatusFilterValue?.includes(filter[0]);
+            return isSelected ? undefined : 'navigationLeftFilters.hoverLabelBg';
+          })(),
+        }}
         align="center"
         bg={
           (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
           itemStatusFilterValue?.includes(filter[0])
-            ? 'subSectionBG.selectedFontColor'
-            : 'subSectionBG.unselectedFontColor'
+            ? '#0067a34d'
+            : 'navigationLeftFilters.unselectedSubMenuItemBg'
         }
         borderRadius="6px"
         color={
@@ -88,6 +96,14 @@ function NavigationLeftFilters({
         position="relative"
         pr="21px"
         right={[0, '37px']}
+        sx={{
+          '&:hover': (() => {
+            const isSelected = (filter[0] === 'all' && itemStatusFilterValue?.length === 0) ||
+              itemStatusFilterValue?.includes(filter[0]);
+            return isSelected ? {} : { backgroundColor: 'navigationLeftFilters.hoverLabelBg' };
+          })(),
+        }}
+        transition="all 0.2s ease-out"
         w="100%"
       >
         <Flex align="center" data-id="000541">
@@ -151,6 +167,9 @@ export const navigationLeftFiltersStyles = {
     unselectedLabelFontColor: '#818197',
     selectedFontColor: '#ffffff',
     unselectedFontColor: '#ffffff',
+    unselectedSubMenuItemBg: '#01173E',
+    selectedMenuItemBg: '#0068A3',
+    hoverLabelBg: '#2A3B6C',
     seperator: '#818197',
     selectedMenuItem: "#462AC4",
   },

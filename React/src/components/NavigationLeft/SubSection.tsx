@@ -4,6 +4,74 @@ import { useAdminContext } from '../../contexts/AdminProvider';
 import useNavigate from '../../hooks/useNavigate';
 import { ISubSection } from '../../interfaces/INavItem';
 
+// Helper functions to reduce cognitive complexity
+const getBackgroundColor = (isPopover: boolean, isPathActive: (url: string, options?: { exact: boolean }) => boolean, url: string, showIcon?: boolean) => {
+  if (isPopover) {
+    return isPathActive(url, { exact: true }) ? '#0068A3' : 'white';
+  }
+  if (isPathActive(url, { exact: true }) && !showIcon) {
+    return '#0067a345';
+  }
+  return 'subSectionBG.unselectedSubMenuItemBg';
+};
+
+const getTextColor = (isPopover: boolean, isPathActive: (url: string, options?: { exact: boolean }) => boolean, url: string, showIcon?: boolean) => {
+  if (isPopover) {
+    return isPathActive(url, { exact: true }) ? 'white' : 'black';
+  }
+  if (isPathActive(url, { exact: true }) && !showIcon) {
+    return 'white';
+  }
+  return 'subSection.unselectedFontColor';
+};
+
+const getIndicatorColor = (isPopover: boolean, isPathActive: (url: string, options?: { exact: boolean }) => boolean, url: string, showIcon?: boolean) => {
+  if (isPopover) {
+    return isPathActive(url, { exact: true }) ? 'white' : 'black';
+  }
+  if (isPathActive(url, { exact: true }) && !showIcon) {
+    return 'white';
+  }
+  return 'subSection.unselectedIndicator';
+};
+
+const getIconStrokeColor = (isPopover: boolean, isPathActive: (url: string, options?: { exact: boolean }) => boolean, url: string) => {
+  if (isPopover && isPathActive(url, { exact: true })) {
+    return 'white';
+  }
+  if (isPopover) {
+    return 'black';
+  }
+  return 'subSection.iconStroke';
+};
+
+const getMarginLeft = (isPopover: boolean, menuOpen?: boolean, showIcon?: boolean) => {
+  if (isPopover) {
+    return '0px';
+  }
+  return [menuOpen ? '0px' : '10px', '20px', showIcon ? 6 : '0px'];
+};
+
+const handleSubSectionClick = (
+  url: string,
+  navigateTo: (url: string) => void,
+  showIcon?: boolean,
+  setAdminModalState?: (state: any) => void,
+  onClick?: () => void,
+  setMenuOpen?: (value: boolean) => void
+) => {
+  navigateTo(url);
+  if (showIcon && setAdminModalState) {
+    setAdminModalState('add');
+  }
+  if (setMenuOpen) {
+    setMenuOpen(false);
+  }
+  if (onClick) {
+    onClick();
+  }
+};
+
 function SubSection({
   subsection,
   setMenuOpen,
@@ -23,72 +91,55 @@ function SubSection({
   const { setAdminModalState } = useAdminContext();
   const { url, label, icon } = subsection;
 
+  const handleClick = () => {
+    handleSubSectionClick(
+      url,
+      navigateTo,
+      showIcon,
+      setAdminModalState,
+      onClick,
+      setMenuOpen
+    );
+  };
+
   return (
     <Flex
         alignItems="center"
-        bg={
-          isPopover
-            ? isPathActive(url, { exact: true }) ? '#462AC4' : 'white'
-            : isPathActive(url, { exact: true }) && !showIcon
-            ? 'subSectionBG.selectedFontColor'
-            : 'subSectionBG.unselectedFontColor'
-        }
+        bg={getBackgroundColor(isPopover || false, isPathActive, url, showIcon)}
         borderRadius="md"
-        color={
-          isPopover
-            ? isPathActive(url, { exact: true }) ? 'white' : 'black'
-            : isPathActive(url, { exact: true }) && !showIcon
-            ? 'subSection.selectedFontColor'
-            : 'subSection.unselectedFontColor'
-        }
+        color={getTextColor(isPopover || false, isPathActive, url, showIcon)}
         cursor="pointer"
         data-id="000586"
+        data-testid="subsection"
         fontSize="14px"
         fontWeight="400"
         key={label}
         lineHeight="40px"
-       ml={
-          !isPopover
-            ? [menuOpen ? '0px' : '10px', '20px', showIcon ? 6 : '0px']
-            : '0px'
-        }
-        onClick={() => {
-          navigateTo(url);
-          if (showIcon) setAdminModalState('add');
-          if (setMenuOpen) setMenuOpen(!menuOpen);
-          if (onClick) onClick();
-        }}
+        ml={getMarginLeft(isPopover || false, menuOpen, showIcon)}
+        onClick={handleClick}
         pl={9}
-        pr={9}
-      >
+        pr={9}>
+      
       {!showIcon && (
-      <Box
-        bg={
-           isPopover
-        ? isPathActive(url, { exact: true }) ? 'white' : 'black'
-        : isPathActive(url, { exact: true }) && !showIcon
-        ? 'subSection.selectedIndicator'
-            :'subSection.unselectedIndicator'
-        }
-        data-id="000587"
-        h="8px"
-        rounded="50%"
-        w="8px" />
+        <Box
+          bg={getIndicatorColor(isPopover || false, isPathActive, url, showIcon)}
+          data-id="000587"
+          data-testid="000587"
+          h="8px"
+          rounded="50%"
+          w="8px" />
       )}
+      
       {showIcon && (
         <Icon
           as={icon as any}
           data-id="000588"
+          data-testid="000588"
           h="16px"
-          stroke={
-            isPopover && isPathActive(url, { exact: true })
-              ? 'white'
-              : isPopover
-              ? 'black'
-              : 'subSection.iconStroke'
-          }
+          stroke={getIconStrokeColor(isPopover || false, isPathActive, url)}
           w="16px" />
-  )}
+      )}
+      
       <Text data-id="000589" ml="25px">{label}</Text>
     </Flex>
   );
@@ -100,6 +151,7 @@ export const subSectionStyles = {
   subSection: {
     selectedFontColor: '#ffffff',
     unselectedFontColor: '#CBD5E0',
+    unselectedSubMenuItemBg: '##01173E',
     selectedIndicator: '#ffffff',
     unselectedIndicator: '#ffffff',
     iconStroke: '#ffffff',
