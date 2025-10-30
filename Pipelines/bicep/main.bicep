@@ -159,7 +159,10 @@ var cosmosAccountConnectionString = listConnectionStrings(cosmosId, '2023-04-15'
 var csQIndex = indexOf(cosmosAccountConnectionString, '?')
 var csBase = substring(cosmosAccountConnectionString, 0, csQIndex)
 var csQuery = substring(cosmosAccountConnectionString, csQIndex, length(cosmosAccountConnectionString) - csQIndex)
-var cosmosConnectionString = '${csBase}/${cosmosDbName}${csQuery}'
+// Ensure we don't end up with a double slash before the database name
+var csBaseLastChar = substring(csBase, sub(length(csBase), 1), 1)
+var csBaseTrimmed = csBaseLastChar == '/' ? substring(csBase, 0, sub(length(csBase), 1)) : csBase
+var cosmosConnectionString = '${csBaseTrimmed}/${cosmosDbName}${csQuery}'
 
 // Client Web App (Linux)
 resource clientWeb 'Microsoft.Web/sites@2022-09-01' = {
