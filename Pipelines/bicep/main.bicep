@@ -26,6 +26,9 @@ param webAppNameAPI string = 'conforme-api'
 @description('Cosmos DB account name (must be globally unique; only lowercase letters and numbers)')
 param cosmosAccountName string
 
+@description('Use existing Cosmos DB account instead of creating a new one')
+param cosmosAccountIsExisting bool = false
+
 @description('Use Cosmos DB Free Tier (can be used once per subscription)')
 param cosmosUseFreeTier bool = false
 
@@ -101,8 +104,12 @@ resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
 var storageAccountKey = storage.listKeys().keys[0].value
 var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storage.name};AccountKey=${storageAccountKey};EndpointSuffix=${environment().suffixes.storage}'
 
-// Cosmos DB Account (Mongo API)
-resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
+// Cosmos DB Account (Mongo API) - reference existing or create new
+resource cosmosExisting 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = if (cosmosAccountIsExisting) {
+  name: cosmosAccountName
+}
+
+resource cosmosNew 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = if (!cosmosAccountIsExisting) {
   name: cosmosAccountName
   location: location
   kind: 'MongoDB'
@@ -129,10 +136,11 @@ resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
   }
 }
 
+var cosmosId = cosmosAccountIsExisting ? cosmosExisting.id : cosmosNew.id
+
 // Mongo Database (autoscale maxThroughput)
 resource mongoDb 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2023-04-15' = {
-  name: cosmosDbName
-  parent: cosmos
+  name: '${cosmosAccountName}/${cosmosDbName}'
   properties: {
     resource: {
       id: cosmosDbName
@@ -143,10 +151,11 @@ resource mongoDb 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2023-04
       }
     }
   }
+  dependsOn: cosmosAccountIsExisting ? [] : [cosmosNew]
 }
 
 // Get Cosmos DB connection string (target specific Mongo database)
-var cosmosAccountConnectionString = cosmos.listConnectionStrings().connectionStrings[0].connectionString
+var cosmosAccountConnectionString = listConnectionStrings(cosmosId, '2023-04-15').connectionStrings[0].connectionString
 var csQIndex = indexOf(cosmosAccountConnectionString, '?')
 var csBase = substring(cosmosAccountConnectionString, 0, csQIndex)
 var csQuery = substring(cosmosAccountConnectionString, csQIndex, length(cosmosAccountConnectionString) - csQIndex)
@@ -262,6 +271,6 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
 output clientWebUrl string = 'https://${webAppNameClient}.azurewebsites.net'
 output apiWebUrl string = 'https://${webAppNameAPI}.azurewebsites.net'
 output functionAppUrl string = 'https://${functionAppName}.azurewebsites.net'
-output cosmosAccountEndpoint string = cosmos.properties.documentEndpoint
+output cosmosAccountEndpoint string = reference(cosmosId, '2023-04-15').documentEndpoint
 output storageConnection string = storageConnectionString
 
