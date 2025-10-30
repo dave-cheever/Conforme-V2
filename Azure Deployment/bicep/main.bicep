@@ -26,6 +26,9 @@ param webAppNameAPI string = 'conforme-api'
 @description('Cosmos DB account name (must be globally unique; only lowercase letters and numbers)')
 param cosmosAccountName string
 
+@description('Use existing Cosmos DB account instead of creating a new one')
+param cosmosAccountIsExisting bool = false
+
 @description('Use Cosmos DB Free Tier (can be used once per subscription)')
 param cosmosUseFreeTier bool = true
 
@@ -156,8 +159,12 @@ resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' = {
 var storageAccountKey = listKeys(storage.id, '2022-09-01').keys[0].value
 var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storage.name};AccountKey=${storageAccountKey};EndpointSuffix=${environment().suffixes.storage}'
 
-// Cosmos DB Account (Mongo API)
-resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
+// Cosmos DB Account (Mongo API) - reference existing or create new
+resource cosmosExisting 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = if (cosmosAccountIsExisting) {
+  name: cosmosAccountName
+}
+
+resource cosmosNew 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = if (!cosmosAccountIsExisting) {
   name: cosmosAccountName
   location: location
   kind: 'MongoDB'
@@ -184,9 +191,11 @@ resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
   }
 }
 
+var cosmosId = cosmosAccountIsExisting ? cosmosExisting.id : cosmosNew.id
+
 // Mongo Database (autoscale maxThroughput)
 resource mongoDb 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2023-04-15' = {
-  name: '${cosmos.name}/${cosmosDbName}'
+  name: '${cosmosAccountName}/${cosmosDbName}'
   properties: {
     resource: {
       id: cosmosDbName
@@ -197,10 +206,10 @@ resource mongoDb 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2023-04
       }
     }
   }
-  dependsOn: [cosmos]
+  dependsOn: cosmosAccountIsExisting ? [] : [cosmosNew]
 }
 
-var cosmosConnectionStrings = listConnectionStrings(cosmos.id, '2023-04-15')
+var cosmosConnectionStrings = listConnectionStrings(cosmosId, '2023-04-15')
 var mongoConnectionString = cosmosConnectionStrings.connectionStrings[0].connectionString
 
 // Client Web App (Linux)
@@ -433,6 +442,6 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
 output clientWebUrl string = 'https://${webAppNameClient}.azurewebsites.net'
 output apiWebUrl string = 'https://${webAppNameAPI}.azurewebsites.net'
 output functionAppUrl string = 'https://${functionAppName}.azurewebsites.net'
-output cosmosAccountEndpoint string = cosmos.properties.documentEndpoint
+output cosmosAccountEndpoint string = reference(cosmosId, '2023-04-15').documentEndpoint
 output storageConnection string = storageConnectionString
 
