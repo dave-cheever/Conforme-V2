@@ -17,7 +17,6 @@ const useAuth = () => {
     if (session) setUser(session.user as any);
     else {
       setUser(null);
-      authClient.signOut();
     }
   }, [session, isPending, location.pathname]);
 

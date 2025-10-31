@@ -66,8 +66,6 @@ describe('Logout Redirect Behavior', () => {
 
       const logout = useLogout();
       await logout();
-
-      expect(mockSetUser).toHaveBeenCalledWith(null);
       
       const logOutUser = localStorage.getItem('logOutUser');
       expect(logOutUser).toBeTruthy();
@@ -128,8 +126,6 @@ describe('Logout Redirect Behavior', () => {
 
       const logout = useLogout();
       await logout();
-
-      expect(mockSetUser).toHaveBeenCalledWith(null);
       
       const logOutUser = localStorage.getItem('logOutUser');
       expect(logOutUser).toBeTruthy();

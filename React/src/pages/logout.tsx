@@ -14,7 +14,7 @@ import {
 } from '../utils/auth-pages-common';
 
 function Logout() {
-  const { organizationConfig } = useAppContext();
+  const { organizationConfig, setUser } = useAppContext();
   const device = useDevice();
   const navigate = useNavigate();
 
@@ -42,6 +42,11 @@ function Logout() {
       return null;
     }
   }, []);
+
+  // Ensure the in-memory user is cleared only once we're on the logout page
+  useEffect(() => {
+    setUser(null);
+  }, [setUser]);
 
   useEffect(() => {
     if (user === null && user !== undefined) return redirectToLogin();
