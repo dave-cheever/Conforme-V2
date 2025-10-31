@@ -4,11 +4,24 @@ import { mongodbAdapter } from 'better-auth/adapters/mongodb';
 import { customSession } from 'better-auth/plugins';
 import { isBefore } from 'date-fns';
 import { MongoClient } from 'mongodb';
+import { Types } from 'mongoose';
 
 import { Organizations, Users } from 'app-models';
 import { GraphService } from 'app-services';
 import { getProtocol } from 'app-utils';
 import { IUser } from 'app-interfaces';
+
+// Extend Better Auth user shape locally to include our domain userId
+type AuthSessionUser = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  email: string;
+  emailVerified: boolean;
+  name?: string;
+  image?: string | null;
+  userId?: string; // our domain user id (e.g., Graph id)
+};
 
 const client = new MongoClient(process.env.DB_CONNECTION_STRING || '');
 const db = client.db();
@@ -57,8 +70,8 @@ export const auth = betterAuth({
         if (!organization) {
           console.warn('No organization found for domain:', domain);
         }
-
-        const dbUser = await Users.findById(user.id);
+        const authUser = user as unknown as AuthSessionUser;
+        const dbUser = await Users.findOne({ userId: authUser.userId });
         // Extract only the actual user data, excluding Mongoose properties
         const userData = dbUser
           ? {
