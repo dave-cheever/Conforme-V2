@@ -98,9 +98,9 @@ function Login() {
           align="center"
           data-id="000217"
           h="full"
-          justify={['center', 'center', 'flex-end']}
+          justify={['center', 'center', 'center']}
           order={[2, 2, 1]}
-          w={['full', 'full', '45%']}>
+          w={['full', 'full', '35%']}>
           <Flex
             data-id="000218"
             flexDir="column"

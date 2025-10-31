@@ -261,7 +261,7 @@ export function BackgroundImage({
         top={['auto', 'auto', '0']}
         bottom={['auto', 'auto', '0']}
         h={['full', 'full', 'auto']}
-        w={['full', 'full', '70%']}
+        w={['full', 'full', '65%']}
         align="center"
         justify="center"
         bg="#f5f5f5"
