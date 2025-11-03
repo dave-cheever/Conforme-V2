@@ -171,7 +171,16 @@ function Audits() {
     { label: 'Reference', key: 'reference' },
     { label: 'Date submitted', key: 'completedDate' },
   ];
-  const [viewMode, setViewMode] = useState<TViewMode>('list');
+  // Initialize viewMode from localStorage to prevent flash of default view
+  const [viewMode, setViewMode] = useState<TViewMode>(() => {
+    if (typeof window !== 'undefined') {
+      const savedView = localStorage.getItem('viewMode') as TViewMode;
+      if (savedView && ['list', 'panel'].includes(savedView)) {
+        return savedView;
+      }
+    }
+    return 'list';
+  });
   const columns: ColumnConfig[] = useMemo(() => [
     {
       label: 'Due date',

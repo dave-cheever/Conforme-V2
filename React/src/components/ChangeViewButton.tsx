@@ -27,11 +27,16 @@ function ChangeViewButton({
       return;
     }
 
+    // Only update if the saved view is different from current viewMode
+    // This effect should only run on mount or when device/user/views change, not when viewMode changes
     const savedView = localStorage.getItem('viewMode') as TViewMode;
-    if (savedView && ['list', 'panel'].includes(savedView) && views.includes(savedView)) setViewMode(savedView);
-    else if (user?.role === 'admin') setViewMode('panel');
-    else setViewMode(viewMode);
-  }, [user, device]);
+    if (savedView && ['list', 'panel'].includes(savedView) && views.includes(savedView) && savedView !== viewMode) {
+      setViewMode(savedView);
+    } else if (!savedView && user?.role === 'admin' && viewMode !== 'panel') {
+      setViewMode('panel');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, device, views]);
 
   useEffect(() => {
     if (device === 'mobile') {

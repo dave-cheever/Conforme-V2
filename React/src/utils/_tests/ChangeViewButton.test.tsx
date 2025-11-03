@@ -194,8 +194,10 @@ describe('ChangeViewButton', () => {
         </TestWrapper>,
       );
 
-      // Should default to panel for admin users even if not in available views
-      expect(mockSetViewMode).toHaveBeenCalledWith('panel');
+      // Should not apply saved view if it's not in available views
+      // Since 'panel' is not in ['list'], setViewMode should not be called with 'panel'
+      // The component should maintain its initial viewMode ('list')
+      expect(mockSetViewMode).not.toHaveBeenCalledWith('panel');
     });
   });
 

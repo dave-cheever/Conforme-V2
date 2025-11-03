@@ -179,7 +179,16 @@ function TrackerItems() {
     { label: capitalize(t('business unit')), key: 'businessUnit.name' },
   ];
 
-  const [viewMode, setViewMode] = useState<TViewMode>('panel');
+  // Initialize viewMode from localStorage to prevent flash of default view
+  const [viewMode, setViewMode] = useState<TViewMode>(() => {
+    if (typeof window !== 'undefined') {
+      const savedView = localStorage.getItem('viewMode') as TViewMode;
+      if (savedView && ['list', 'panel'].includes(savedView)) {
+        return savedView;
+      }
+    }
+    return 'panel';
+  });
   const [total, setTotal] = useState(1);
 
   const { data: totalCompliantResponses } = useQuery(GET_RESPONSES_TOTALS, {
