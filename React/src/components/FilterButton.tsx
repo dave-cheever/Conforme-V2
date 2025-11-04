@@ -29,24 +29,22 @@ function FilterButton({ insightsFilter = false }: { insightsFilter?: boolean }) 
           Filters
         </Flex>
       </Flex>
-      {numberOfSelectedFilters > 0 && (
-        <Flex
-          align="center"
-          bg="#2D3748"
-          borderRadius="md"
-          color="white"
-          data-id="000271"
-          fontSize="12px"
-          fontWeight="400"
-          h="20px"
-          justify="center"
-          lineHeight="14px"
-          ml="2"
-          w="20px"
-        >
-          {numberOfSelectedFilters}
-        </Flex>
-      )}
+      <Flex
+        align="center"
+        bg={numberOfSelectedFilters === 0 ? "#EDF2F7" : "#2D3748" }
+        color={numberOfSelectedFilters === 0 ? "black" : "white"}
+        borderRadius="md"
+        data-id="000271"
+        fontSize="12px"
+        fontWeight="400"
+        h="20px"
+        justify="center"
+        lineHeight="14px"
+        ml="2"
+        w="20px"
+      >
+        {numberOfSelectedFilters}
+      </Flex>
     </Flex>
   );
 }
