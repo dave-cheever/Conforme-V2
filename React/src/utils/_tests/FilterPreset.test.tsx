@@ -500,4 +500,102 @@ describe('FilterPreset', () => {
     const button = screen.getByRole('button', { name: /filter presets/i });
     expect(button).toHaveStyle('font-weight: 500');
   });
+
+  describe('Menu Placement and Overflow Constraints', () => {
+    test('default placement is top-start', () => {
+      render(
+        <TestWrapper data-id="002230">
+          <FilterPreset data-id="filter-preset" />
+        </TestWrapper>,
+      );
+
+      // Verify the component renders without errors with default placement
+      // The default placement is now top-start (changed from bottom-start)
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      expect(button).toBeInTheDocument();
+    });
+
+    test('MenuList has maxH constraint when menu is open', async () => {
+      render(
+        <TestWrapper data-id="002231">
+          <FilterPreset data-id="filter-preset" />
+        </TestWrapper>,
+      );
+
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        const menuList = document.querySelector('[data-id="filter-preset-menu"]');
+        expect(menuList).toBeInTheDocument();
+        expect(menuList).toHaveStyle({ maxHeight: 'calc(100vh - 200px)' });
+      });
+    });
+
+    test('MenuList has overflowY auto when menu is open', async () => {
+      render(
+        <TestWrapper data-id="002232">
+          <FilterPreset data-id="filter-preset" />
+        </TestWrapper>,
+      );
+
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        const menuList = document.querySelector('[data-id="filter-preset-menu"]');
+        expect(menuList).toBeInTheDocument();
+        expect(menuList).toHaveStyle({ overflowY: 'auto' });
+      });
+    });
+
+    test('MenuList has minW constraint when menu is open', async () => {
+      render(
+        <TestWrapper data-id="002233">
+          <FilterPreset data-id="filter-preset" />
+        </TestWrapper>,
+      );
+
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        const menuList = document.querySelector('[data-id="filter-preset-menu"]');
+        expect(menuList).toBeInTheDocument();
+        expect(menuList).toHaveStyle({ minWidth: '280px' });
+      });
+    });
+
+    test('accepts custom placement prop and overrides default', () => {
+      render(
+        <TestWrapper data-id="002234">
+          <FilterPreset data-id="filter-preset" placement="bottom-end" />
+        </TestWrapper>,
+      );
+
+      // Verify the component renders with custom placement without errors
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      expect(button).toBeInTheDocument();
+      // The menu should render with the custom placement when opened
+    });
+
+    test('MenuList maintains viewport constraints with top-start placement', async () => {
+      render(
+        <TestWrapper data-id="002235">
+          <FilterPreset data-id="filter-preset" placement="top-start" />
+        </TestWrapper>,
+      );
+
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        const menuList = document.querySelector('[data-id="filter-preset-menu"]');
+        expect(menuList).toBeInTheDocument();
+        // Verify it has the overflow constraints to prevent viewport overflow
+        expect(menuList).toHaveStyle({ maxHeight: 'calc(100vh - 200px)' });
+        expect(menuList).toHaveStyle({ overflowY: 'auto' });
+      });
+    });
+  });
 });

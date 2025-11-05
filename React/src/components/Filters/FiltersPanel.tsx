@@ -35,6 +35,7 @@ function FiltersPanel() {
       boxShadow="md"
       data-id="000121"
       direction="column"
+      overflow={"hidden"}
       h="100vh"
       position={['relative', 'absolute']}
       ref={panelRef}

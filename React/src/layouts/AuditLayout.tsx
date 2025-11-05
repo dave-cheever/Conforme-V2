@@ -30,24 +30,27 @@ function AuditLayout({ component: Component }: { component: any }) {
   }
 
   return (
-    <Flex data-id="000190" h="full" minH="100vh" w="full">
+    <Flex data-id="000190" h="full" minH="100vh" maxH="100vh" w="full">
       <AuditLeftNavigation data-id="000191" />
       <AuditLeftNavigationTablet data-id="000192" />
       <Flex
         data-id="000193"
         direction="column"
         grow={1}
-        w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}>
+        w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}
+        overflow="hidden"
+        h="100vh"
+      >
         <NavigationTop data-id="000194" />
         <Flex
           data-id="000195"
           flexDirection="column"
-          h={['calc(100vh - 126px)', 'calc(100vh - 80px)']}
-          mt={['65px', 0]}
+          h="full"
           overflow="auto"
+          pb={3}
           pt={['25px', 0]}
-          top={[0, '80px']}
-          w="full">
+          w="full"
+        >
           <ShareModal data-id="000196" />
           <AuditHeader data-id="000197" />
           {isTabletAndMobile && (
@@ -77,8 +80,6 @@ function AuditLayout({ component: Component }: { component: any }) {
               data-id="000202"
               flexDirection="column"
               h="full"
-              maxH={['none', 'calc(100vh - 190px)']}
-              pb={[20, 3]}
               rounded="10px"
               w={['full', 'full', 'calc(100% - 320px)']}>
               <Component data-id="000203" />

@@ -546,7 +546,7 @@ function Audits() {
               </>
             )}
 
-            <Flex gap={1} data-id="001523" direction="row">
+            <Flex gap={2} data-id="001523" direction="row">
               <SortButton
                 data-id="000195"
                 setSortOrder={setSortOrder}
@@ -561,7 +561,7 @@ function Audits() {
           </Flex>
         </Flex>
       </Header>
-      <Flex data-id="000196" h={['calc(100vh - 80px)', 'full']} overflow="auto" pb={[4, 0]} mb='92px'>
+      <Flex data-id="000196" h="full" overflow="auto">
         {renderMainContent()}
       </Flex>
     </>

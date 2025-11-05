@@ -60,7 +60,6 @@ function NavigationTop() {
         data-id="000449"
         h={['72px', '80px']}
         justify="space-between"
-        position={['fixed', 'relative']}
         w={['100vw', 'full']}
         zIndex={10}>
       {isOpen && (

@@ -31,7 +31,6 @@ function NavigationBottomMobile() {
         h="fit-content"
         overflowX={hasMoreThanFiveItems ? "auto" : "hidden"}
         p="18px 16px"
-        position="fixed"
         ref={ref}
         sx={{
           '&::-webkit-scrollbar': {

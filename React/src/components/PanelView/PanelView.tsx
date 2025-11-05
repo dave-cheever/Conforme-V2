@@ -407,18 +407,18 @@ function PanelView({
     }
 
     return (
-        <Box
-            as="main"
+        <Flex
             bg={containerProps.bg}
+            as="main"
             data-id="1"
-            display="flex"
             flexDirection="column"
             gap={containerProps.gap}
-            h="100%"
+            h="full"
             minW="100%"
             p={containerProps.p}
             pt={containerProps.pt}
             w="100%"
+            overflow="auto"
         >
             {items?.map((item, index) => (
                 <Flex data-id={index + 2} display={'flex'} flexDirection={'column'} key={item._id || index}>
@@ -535,7 +535,7 @@ function PanelView({
                     </Box>
                 </Flex>
             ))}
-        </Box>
+        </Flex>
     );
 }
 export default PanelView;

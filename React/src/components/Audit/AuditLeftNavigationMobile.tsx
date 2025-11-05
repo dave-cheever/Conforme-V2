@@ -23,7 +23,6 @@ function AuditLeftNavigationMobile() {
       h="fit-content"
       justifyContent="space-between"
       p="16px 16px"
-      position="fixed"
       sx={{
         '&::-webkit-scrollbar': {
           display: 'none',

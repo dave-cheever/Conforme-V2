@@ -181,9 +181,8 @@ function NavigationLeft() {
                 key={`menu-${menuItem.url || menuItem.label}`}
                 // eslint-disable-next-line react/no-unstable-nested-components
                 yes={() => {
-                  if (device === 'desktop') return menuItem.hidden ? <></> : <NavigationLeftItem data-id="000550" menuItem={menuItem} />;
-
-                  if (device === 'tablet') {
+                  // When filter panel is open, use tablet view (mobile view with icons only)
+                  if (showFiltersPanel || device === 'tablet') {
                     return (
                       menuItem.hidden ? <></> : <NavigationLeftItemTablet
                         data-id="000551"
@@ -194,11 +193,16 @@ function NavigationLeft() {
                         subsectionOpen={subsectionOpen} />
                     );
                   }
+
+                  if (device === 'desktop') {
+                    return menuItem.hidden ? <></> : <NavigationLeftItem data-id="000550" menuItem={menuItem} />;
+                  }
+
                   return <Box data-id="000552" />;
                 }} />
             ))}
           </Box>
-          <NavigationPoweredBy data-id="002743" />
+          <NavigationPoweredBy data-id="002743" showFiltersPanel={showFiltersPanel} />
         </Flex>
       </Box>
       <Drawer

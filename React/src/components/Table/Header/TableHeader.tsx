@@ -4,7 +4,6 @@ function TableHeader({ children, title, ...rest }: { readonly children: React.Re
   return (
     <Box
       borderBottom="1px solid #CBD5E0"
-      borderTop="1px solid #CBD5E0"
       data-id="000334"
       {...rest}
       position="sticky"

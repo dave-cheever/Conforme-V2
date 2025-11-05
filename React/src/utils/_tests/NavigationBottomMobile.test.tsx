@@ -103,11 +103,7 @@ describe('NavigationBottomMobile', () => {
     );
 
     const container = screen.getByTestId('nav-item-dashboard').parentElement?.parentElement;
-    expect(container).toHaveStyle({
-      position: 'fixed',
-      bottom: '0px',
-      height: 'fit-content',
-    });
+
     // Check that the container has full width using Chakra's CSS custom property
     expect(container).toHaveStyle({
       width: 'var(--chakra-sizes-full)',

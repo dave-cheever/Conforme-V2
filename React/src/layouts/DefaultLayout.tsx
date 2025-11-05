@@ -14,25 +14,21 @@ function DefaultLayout({ component: Component }: { component: any }) {
   const device = useDevice();
   return (
     <ShareProvider data-id="000211">
-      <Flex data-id="000212" minH="100vh">
+      <Flex data-id="000212" minH="100vh" h="full" maxH="100vh" overflow="hidden">
         <NavigationLeft data-id="000213" />
         <Flex
           data-id="000214"
           direction="column"
           flexBasis="auto"
           flexGrow={1}
-          position="relative">
+          h="100vh"
+          w="full"
+          overflow="hidden"
+        >
           <NavigationTop data-id="000215" />
           <ShareModal data-id="000216" />
-          <Flex
-            data-id="000217"
-            flexDirection="column"
-            h="calc(100vh - 80px)"
-            position="absolute"
-            top="80px"
-            w="full">
-            <Component data-id="000218" />
-          </Flex>
+          <Component data-id="000218" />
+
           {device === 'mobile' && <NavigationBottomMobile data-id="000219" />}
         </Flex>
         {usedFilters?.length > 0 && <FiltersPanel data-id="000220" />}

@@ -82,7 +82,7 @@ export interface FilterPresetProps {
   readonly 'data-id'?: string;
 }
 
-function FilterPreset({ placement = 'bottom-start', 'data-id': dataId = 'filter-preset' }: FilterPresetProps) {
+function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-preset' }: FilterPresetProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSaving, setIsSaving] = useState(false);
   const [presetName, setPresetName] = useState('');
@@ -428,6 +428,8 @@ function FilterPreset({ placement = 'bottom-start', 'data-id': dataId = 'filter-
           boxShadow="0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03)"
           data-id={`${dataId}-menu`}
           minW="280px"
+          maxH="calc(100vh - 200px)"
+          overflowY="auto"
           onClick={(e) => {
             e.stopPropagation();
           }}
