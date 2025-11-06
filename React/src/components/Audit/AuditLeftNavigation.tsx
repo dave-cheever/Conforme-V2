@@ -28,7 +28,7 @@ function AuditLeftNavigation({ enforceDesktop, setDrawerOpen }: AuditLeftNavigat
       justifyContent="space-between"
       overflow={enforceDesktop ? "visible" : "auto"}
       w="280px">
-      <Flex data-id="000173" flexDirection="column" overflow="visible">
+      <Flex data-id="000173" flexDirection="column" overflow="visible" h={'100%'}>
 
         <Box
           alignItems="center"
@@ -73,51 +73,61 @@ function AuditLeftNavigation({ enforceDesktop, setDrawerOpen }: AuditLeftNavigat
           <ModuleSwitcher enforceDesktop={enforceDesktop} data-id="002735" />
         </Box>
         <Divider data-id="002736" color={'#3E4F6C'} />
+        <Box
+          data-id="002928"
+          display={'flex'}
+          h={'100%'}
+          flexDirection={'column'}
+          justifyContent={'space-between'}
+          alignItems={'space-between'}
+          gap={6}>
 
-        <Flex data-id="002737" flexDirection="column" px="14px">
+          <Flex data-id="002737" flexDirection="column" px="14px">
 
-          <Flex
-            align="center"
-            color="auditLeftNavigation.goBackColor"
-            cursor="pointer"
-            data-id="000176"
-            fontSize="14px"
-            h="30px"
-            mb="25px"
-            mt="18px"
-            gap="10px"
-            py="6px"
-            borderRadius="6px"
-            onClick={() => navigateTo('/')}>
-            <Box
-              data-id="002738"
-              transition="all 0.2s ease-out"
-              _hover={{
-                bg: 'rgba(255, 255, 255, 0.22)',
-                cursor: 'pointer'
-              }}
-              bg={'#152A4D'}
-              borderRadius={'8px'}
-              width={'34px'}
-              alignItems={'center'}
-              justifyContent={'center'}
-              display={'flex'}
-              height={'34px'}>
-              <BackArrowIcon data-id="000889" />
-            </Box>
-            <Flex data-id="002739" display={'flex'} flexDirection={'column'}>
-              <Text data-id="002740" fontWeight={'600'} fontSize="12px" color={'#9EA7B8'}>Location</Text>
-              <Text data-id="002741" fontWeight={'600'} fontSize="16px">Audit Detail</Text>
+            <Flex
+              align="center"
+              color="auditLeftNavigation.goBackColor"
+              cursor="pointer"
+              data-id="000176"
+              fontSize="14px"
+              h="30px"
+              mb="25px"
+              mt="18px"
+              gap="10px"
+              py="6px"
+              borderRadius="6px"
+              onClick={() => navigateTo('/')}>
+              <Box
+                data-id="002738"
+                transition="all 0.2s ease-out"
+                _hover={{
+                  bg: 'rgba(255, 255, 255, 0.22)',
+                  cursor: 'pointer'
+                }}
+                bg={'#152A4D'}
+                borderRadius={'8px'}
+                width={'34px'}
+                alignItems={'center'}
+                justifyContent={'center'}
+                display={'flex'}
+                height={'34px'}>
+                <BackArrowIcon data-id="000889" />
+              </Box>
+              <Flex data-id="002739" display={'flex'} flexDirection={'column'}>
+                <Text data-id="002740" fontWeight={'600'} fontSize="12px" color={'#9EA7B8'}>Location</Text>
+                <Text data-id="002741" fontWeight={'600'} fontSize="16px">Audit Detail</Text>
+              </Flex>
             </Flex>
-          </Flex>
-          <Flex data-id="000178" flexDirection="column" mb={2}>
-            {auditNavigationTabs.map(({ label, icon, url }) => (
-              <AuditLeftTabItem enforceDesktop={enforceDesktop} data-id="000179" icon={icon} key={url} label={label} url={url} />
-            ))}
-          </Flex>
-          <NavigationPoweredBy enforceDesktop={enforceDesktop} data-id="002742" />
+            <Flex data-id="000178" flexDirection="column" mb={2}>
+              {auditNavigationTabs.map(({ label, icon, url }) => (
+                <AuditLeftTabItem enforceDesktop={enforceDesktop} data-id="000179" icon={icon} key={url} label={label} url={url} />
+              ))}
+            </Flex>
 
-        </Flex>
+          </Flex>
+
+          <NavigationPoweredBy enforceDesktop={enforceDesktop} data-id="002742" />
+        </Box>
       </Flex>
     </Flex>
   );

@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 import { Box, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, Flex, useMediaQuery } from '@chakra-ui/react';
 
 import { useConfigContext } from '../../contexts/ConfigProvider';
-import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
 import AuditLeftNavigation from '../Audit/AuditLeftNavigation';
 import ResponseLeftNavigation from '../Response/ResponseLeftNavigation/index';
@@ -17,7 +16,6 @@ import NavigationPoweredBy from './NavigationPoweredBy';
 
 function NavigationLeft() {
   const [isTabletWidth] = useMediaQuery('(min-width: 748px) and (max-width: 1279px)');
-  const { showFiltersPanel } = useFiltersContext();
   const { menuItems } = useConfigContext();
   const [subsectionOpen, setSubsectionOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -88,29 +86,41 @@ function NavigationLeft() {
           data-id="drawer-000547"
           direction="column"
           borderTop="1px solid #3E4F6C"
-          gap={"25px"}
           h="calc(100% - 80px)"
-          justify="space-between"
-          overflowX={'hidden'}
-          overflowY={'auto'}
-          pb={"18px"}
-          pl={"14px"}
-          pr={"14px"}
-          pt={"18px"}
+          overflow="hidden"
         >
-          <Box data-id="drawer-000548">
-            {menuItems.map((menuItem: any) => (
-              <Can
-                action={menuItem.permission}
-                data-id="drawer-000549"
-                key={`drawer-menu-${menuItem.url || menuItem.label}`}
-                // eslint-disable-next-line react/no-unstable-nested-components
-                yes={() => {
-                  return menuItem.hidden ? <></> : <NavigationLeftItem data-id="drawer-000550" menuItem={menuItem} />;
-                }} />
-            ))}
+          <Box
+            data-id="002929"
+            overflowY={'auto'}
+            display={'flex'}
+            h={'100%'}
+            flexDirection={'column'}
+            justifyContent={'space-between'}
+            alignItems={'space-between'}
+            gap={6}>
+            <Box
+              data-id="drawer-000548"
+              flex="1"
+              overflowX={'hidden'}
+              pb={"18px"}
+              pl={"14px"}
+              pr={"14px"}
+              pt={"18px"}
+            >
+              {menuItems.map((menuItem: any) => (
+                <Can
+                  action={menuItem.permission}
+                  data-id="drawer-000549"
+                  key={`drawer-menu-${menuItem.url || menuItem.label}`}
+                  // eslint-disable-next-line react/no-unstable-nested-components
+                  yes={() => {
+                    return menuItem.hidden ? <></> : <NavigationLeftItem data-id="drawer-000550" menuItem={menuItem} />;
+                  }} />
+              ))}
+            </Box>
+            <NavigationPoweredBy data-id="drawer-002743" enforceDesktop={true} />
           </Box>
-          <NavigationPoweredBy data-id="drawer-002743" enforceDesktop={true} />
+
         </Flex>
       </Box>
     );
@@ -124,7 +134,7 @@ function NavigationLeft() {
         display={['none', 'block', 'block']}
         fontWeight="semibold"
         h="100vh"
-        w={(showFiltersPanel || isTabletWidth) ? ['0px', '80px', '80px'] : ['0px', '80px', '280px']}>
+        w={isTabletWidth ? ['0px', '80px', '80px'] : ['0px', '80px', '280px']}>
         <Box
           alignItems="center"
           cursor="pointer"
@@ -133,7 +143,7 @@ function NavigationLeft() {
           h="fit-content"
           justifyContent="center"
           px={'16px'}
-          py={'10px'}
+          py={'8px'}
           position={'relative'}
         >
           <Box
@@ -163,46 +173,51 @@ function NavigationLeft() {
           data-id="000547"
           direction="column"
           borderTop="1px solid #3E4F6C"
-          gap={"25px"}
           h="calc(100% - 80px)"
-          justify="space-between"
-          overflowX={device === 'desktop' ? 'hidden' : 'unset'}
-          overflowY={device === 'desktop' ? 'auto' : 'unset'}
-          pb={"18px"}
-          pl={"14px"}
-          pr={"14px"}
-          pt={"18px"}
+          overflow="hidden"
         >
-          <Box data-id="000548">
-            {menuItems.map((menuItem: any) => (
-              <Can
-                action={menuItem.permission}
-                data-id="000549"
-                key={`menu-${menuItem.url || menuItem.label}`}
-                // eslint-disable-next-line react/no-unstable-nested-components
-                yes={() => {
-                  // When filter panel is open, use tablet view (mobile view with icons only)
-                  if (showFiltersPanel || device === 'tablet') {
-                    return (
-                      menuItem.hidden ? <></> : <NavigationLeftItemTablet
-                        data-id="000551"
-                        filtersOpen={filtersOpen}
-                        menuItem={menuItem}
-                        setFiltersOpen={setFiltersOpen}
-                        setSubsectionOpen={setSubsectionOpen}
-                        subsectionOpen={subsectionOpen} />
-                    );
-                  }
+          <Box
+            data-id="000548"
+            flex="1"
+            overflowX={device === 'desktop' ? 'hidden' : 'unset'}
+            overflowY="auto"
+            pb={['18px', '18px', 0]}
+            pl={"14px"}
+            pr={"14px"}
+            pt={"18px"}
+            gap={6}
+            display={'flex'} h={'100%'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'space-between'}
+          >
+            <Box data-id="002930" display={'flex'} h={'100%'} flexDirection={'column'}>
+              {menuItems.map((menuItem: any) => (
+                <Can
+                  action={menuItem.permission}
+                  data-id="000549"
+                  key={`menu-${menuItem.url || menuItem.label}`}
+                  // eslint-disable-next-line react/no-unstable-nested-components
+                  yes={() => {
+                    if (device === 'tablet') {
+                      return (
+                        menuItem.hidden ? <></> : <NavigationLeftItemTablet
+                          data-id="000551"
+                          filtersOpen={filtersOpen}
+                          menuItem={menuItem}
+                          setFiltersOpen={setFiltersOpen}
+                          setSubsectionOpen={setSubsectionOpen}
+                          subsectionOpen={subsectionOpen} />
+                      );
+                    }
 
-                  if (device === 'desktop') {
-                    return menuItem.hidden ? <></> : <NavigationLeftItem data-id="000550" menuItem={menuItem} />;
-                  }
+                    if (device === 'desktop') {
+                      return menuItem.hidden ? <></> : <NavigationLeftItem data-id="000550" menuItem={menuItem} />;
+                    }
 
-                  return <Box data-id="000552" />;
-                }} />
-            ))}
+                    return <Box data-id="000552" />;
+                  }} />
+              ))}
+            </Box>
+            <NavigationPoweredBy data-id="002743" />
           </Box>
-          <NavigationPoweredBy data-id="002743" showFiltersPanel={showFiltersPanel} />
         </Flex>
       </Box>
       <Drawer

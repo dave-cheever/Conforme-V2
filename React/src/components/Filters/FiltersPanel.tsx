@@ -42,7 +42,7 @@ function FiltersPanel() {
       right="0"
       shrink={0}
       w={['full', '523px']}
-      zIndex="10"
+      zIndex="12"
     >
       <Flex
         align="center"

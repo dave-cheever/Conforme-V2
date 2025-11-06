@@ -6,7 +6,6 @@ import { capitalize } from 'lodash';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useNavigate from '../../hooks/useNavigate';
-import { ArrowRight } from '../../icons';
 import DropdownArrowIcon from '../../icons/DropdownArrowIcon';
 import { IMenuItem } from '../../interfaces/IMenu';
 import Can from '../can';
@@ -16,7 +15,7 @@ import SubSection from './SubSection';
 function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
   const { module } = useAppContext();
   const isTrackerComponent = module?.type === "tracker";
-  const { getPath, navigateTo, isPathActive } = useNavigate();
+  const { navigateTo, isPathActive } = useNavigate();
   const { url, icon, label } = menuItem;
   // Initialize menuOpen based on whether current path matches any subSection
   const [menuOpen, setMenuOpen] = useState(() => {
@@ -25,7 +24,7 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
     }
     return false;
   });
-  const { showFiltersPanel, responsesStatusesCounts } = useFiltersContext();
+  const { responsesStatusesCounts } = useFiltersContext();
 
   // Keep menu open when navigating to a subSection
   useEffect(() => {
@@ -107,89 +106,79 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
                 stroke="#ffffff"
                 w="18px" />
             </Flex>
-
-            {/* Show arrow right for filters panel */}
-            {showFiltersPanel && getPath() !== "components" && (menuItem.subSections?.length > 0 || isPathActive(url, { exact: true })) && (
-              <ArrowRight boxSize="10px" data-id="000563" ml={1} />
-            )}
           </Flex>
-
-
         </Flex>
-        {!showFiltersPanel && (
-          <Flex
-            align="center"
-            data-id="000564"
-            justify="space-between"
-            w="100%">
-            <Box
-              data-id="002745"
-              color={
-                menuItem.subSections
-                  ? isPathActive(url)
-                    ? 'navigationLeftItem.selectedMenuItem'
-                    : 'navigationLeftItem.unselectedMenuItem'
-                  : isPathActive(url, { exact: true })
-                    ? 'navigationLeftItem.selectedMenuItem'
-                    : 'navigationLeftItem.unselectedMenuItem'
-              }
-              fontWeight="600"
-              fontSize={'16px'}
-              ml="8px">
-              {capitalize(label)}
-            </Box>
+        <Flex
+          align="center"
+          data-id="000564"
+          justify="space-between"
+          w="100%">
+          <Box
+            data-id="002745"
+            color={
+              menuItem.subSections
+                ? isPathActive(url)
+                  ? 'navigationLeftItem.selectedMenuItem'
+                  : 'navigationLeftItem.unselectedMenuItem'
+                : isPathActive(url, { exact: true })
+                  ? 'navigationLeftItem.selectedMenuItem'
+                  : 'navigationLeftItem.unselectedMenuItem'
+            }
+            fontWeight="600"
+            fontSize={'16px'}
+            ml="8px">
+            {capitalize(label)}
+          </Box>
 
-            {/* Show dropdown arrow for menu items with sub-sections - positioned on far right */}
-            {menuItem.subSections && menuItem.subSections.length > 0 && (
-              <DropdownArrowIcon
-                data-id="002746"
-                dataId="000571"
-                fill="white"
-                height="19px"
-                width="18px"
-                style={{
-                  transform: menuOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.2s ease-in-out',
-                }} />
-            )}
-          </Flex>
-        )}
+          {/* Show dropdown arrow for menu items with sub-sections - positioned on far right */}
+          {menuItem.subSections && menuItem.subSections.length > 0 && (
+            <DropdownArrowIcon
+              data-id="002746"
+              dataId="000571"
+              fill="white"
+              height="19px"
+              width="18px"
+              style={{
+                transform: menuOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.2s ease-in-out',
+              }} />
+          )}
+        </Flex>
       </Box>
       {/* Sub-menu items with collapse */}
       {menuItem.subSections && menuItem.subSections.length > 0 && (
         <Collapse data-id="002747" in={menuOpen} animateOpacity>
           <Box marginTop={'12px'} data-id="000565">
-            {!showFiltersPanel &&
-              menuItem.subSections?.map((subSection) => {
-                if (subSection.permission) {
-                  return (
-                    <Can
-                      action={subSection.permission}
-                      data-id="000566"
-                      key={subSection.url}
-                      // eslint-disable-next-line react/no-unstable-nested-components
-                      yes={() => <SubSection
-                        data-id="000567"
-                        key={subSection.label}
-                        menuOpen={menuOpen}
-                        setMenuOpen={setMenuOpen}
-                        subsection={subSection} />} />
-                  );
-                }
+            {menuItem.subSections?.map((subSection) => {
+              if (subSection.permission) {
                 return (
-                  <SubSection
-                    data-id="000568"
-                    key={subSection.label}
-                    menuOpen={menuOpen}
-                    setMenuOpen={setMenuOpen}
-                    subsection={subSection} />
+                  <Can
+                    action={subSection.permission}
+                    data-id="000566"
+                    key={subSection.url}
+                    // eslint-disable-next-line react/no-unstable-nested-components
+                    yes={() => <SubSection
+                      data-id="000567"
+                      key={subSection.label}
+                      menuOpen={menuOpen}
+                      setMenuOpen={setMenuOpen}
+                      subsection={subSection} />} />
                 );
-              })}
+              }
+              return (
+                <SubSection
+                  data-id="000568"
+                  key={subSection.label}
+                  menuOpen={menuOpen}
+                  setMenuOpen={setMenuOpen}
+                  subsection={subSection} />
+              );
+            })}
           </Box>
         </Collapse>
       )}
       {/* Filters - always visible when on tracker items page */}
-      {isPathActive(url, { exact: true }) && !showFiltersPanel && isTrackerComponent && responsesStatusesCounts && (
+      {isPathActive(url, { exact: true }) && isTrackerComponent && responsesStatusesCounts && (
         <Box marginTop={'12px'} data-id="000571">
           {Object.keys(responsesStatusesCounts).length !== 0 && (
             <NavigationLeftFilters

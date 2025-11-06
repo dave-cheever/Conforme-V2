@@ -5,24 +5,15 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Icon, Menu, MenuButton, MenuItem, MenuList, Text, useMediaQuery } from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
-import { useFiltersContext } from '../contexts/FiltersProvider';
 import { Conforme } from '../icons';
 import { IModule } from '../interfaces/IModule';
 import { getInitials } from '../utils/helpers';
 
 // Helper functions to reduce cognitive complexity
-const getDisplayContent = (showFiltersPanel: boolean, isTabletWidth: boolean, isMobile: boolean, module: IModule | null, enforceDesktop?: boolean) => {
+const getDisplayContent = (isTabletWidth: boolean, isMobile: boolean, module: IModule | null, enforceDesktop?: boolean) => {
   
   if (enforceDesktop) {
     return module?.name || 'Select Module';
-  }
-
-  if (showFiltersPanel) {
-    return (
-      <Flex data-id="000430" pl={'18px'}>
-        <Icon as={Conforme} data-id="000431" h="30px" w="30px" />
-      </Flex>
-    );
   }
 
   if (isTabletWidth) {
@@ -44,8 +35,8 @@ const getDisplayContent = (showFiltersPanel: boolean, isTabletWidth: boolean, is
   return module?.name || 'Select Module';
 };
 
-const getSingleModuleDisplayContent = (showFiltersPanel: boolean, isTabletWidth: boolean, isMobile: boolean, module: IModule | null) => {
-  if (showFiltersPanel || isTabletWidth) {
+const getSingleModuleDisplayContent = (isTabletWidth: boolean, isMobile: boolean, module: IModule | null) => {
+  if (isTabletWidth) {
     return (
       <Flex data-id="000446">
         <Icon as={Conforme} data-id="000447" h="30px" w="30px" />
@@ -176,7 +167,6 @@ const getTextWrapperSx = () => ({
 const MenuButtonContent = ({
   showIcon,
   showSeparator,
-  showFiltersPanel,
   isMobile,
   isTabletWidth,
   enforceDesktop,
@@ -184,7 +174,6 @@ const MenuButtonContent = ({
 }: {
   showIcon: boolean;
   showSeparator: boolean;
-  showFiltersPanel: boolean;
   isMobile: boolean;
   isTabletWidth: boolean;
   enforceDesktop?: boolean;
@@ -209,7 +198,7 @@ const MenuButtonContent = ({
         align="center"
         data-id="000428"
         flex="1"
-        marginLeft={showFiltersPanel ? '20' : 0}
+        marginLeft={0}
         maxW={isMobile ? '120px' : '145px'}
         minW={isMobile ? '50px' : '120px'}>
         <Text
@@ -232,7 +221,6 @@ const MenuButtonContent = ({
 const SingleModuleDisplay = ({
   showIcon,
   showSeparator,
-  showFiltersPanel,
   isTabletWidth,
   isMobile,
   module,
@@ -240,7 +228,6 @@ const SingleModuleDisplay = ({
 }: {
   showIcon: boolean;
   showSeparator: boolean;
-  showFiltersPanel: boolean;
   isTabletWidth: boolean;
   isMobile: boolean;
   module: IModule | null;
@@ -261,7 +248,7 @@ const SingleModuleDisplay = ({
       align="center"
       data-id="000444"
       flex="1"
-      marginLeft={showFiltersPanel || isTabletWidth ? '20' : '2'}
+      marginLeft={isTabletWidth ? '20' : '2'}
       maxW={isMobile ? '120px' : '145px'}
       minW={isMobile ? '50px' : '120px'}>
       <Text
@@ -273,7 +260,7 @@ const SingleModuleDisplay = ({
         whiteSpace="normal"
         wordBreak="break-word"
         {...getSingleModuleTextStyles(isMobile)}>
-        {getSingleModuleDisplayContent(showFiltersPanel, isTabletWidth, isMobile, module)}
+        {getSingleModuleDisplayContent(isTabletWidth, isMobile, module)}
       </Text>
     </Flex>
   </Flex>
@@ -287,7 +274,6 @@ const MultipleModulesMenu = ({
   isTabletWidth,
   showIcon,
   showSeparator,
-  showFiltersPanel,
   enforceDesktop,
   displayContent,
   chooseModule
@@ -298,7 +284,6 @@ const MultipleModulesMenu = ({
   isTabletWidth: boolean;
   showIcon: boolean;
   showSeparator: boolean;
-  showFiltersPanel: boolean;
   enforceDesktop?: boolean;
   displayContent: React.ReactNode;
   chooseModule: (module: IModule) => void;
@@ -325,7 +310,6 @@ const MultipleModulesMenu = ({
         enforceDesktop={enforceDesktop}
         isMobile={isMobile}
         isTabletWidth={isTabletWidth}
-        showFiltersPanel={showFiltersPanel}
         showIcon={showIcon}
         showSeparator={showSeparator} />
     </MenuButton>
@@ -346,7 +330,6 @@ const MultipleModulesMenu = ({
 
 function ModuleSwitcher({ enforceDesktop }: { readonly enforceDesktop?: boolean }) {
   const { organizationConfig, module, setModule } = useAppContext();
-  const { showFiltersPanel } = useFiltersContext();
   const [isTabletWidth] = useMediaQuery('(min-width: 768px) and (max-width: 1279px)', { ssr: false });
   const [isMobile] = useMediaQuery('(max-width: 768px)', { ssr: false });
   const navigate = useNavigate();
@@ -364,9 +347,9 @@ function ModuleSwitcher({ enforceDesktop }: { readonly enforceDesktop?: boolean 
   if (!modulesInNavigation) return null;
 
   const hasMultipleModules = modulesInNavigation.length > 1;
-  const showIcon = enforceDesktop ? true : (!isTabletWidth && !showFiltersPanel);
+  const showIcon = enforceDesktop ? true : !isTabletWidth;
   const showSeparator = enforceDesktop ? true : (showIcon && !isMobile);
-  const displayContent = getDisplayContent(showFiltersPanel, isTabletWidth, isMobile, module || null, enforceDesktop);
+  const displayContent = getDisplayContent(isTabletWidth, isMobile, module || null, enforceDesktop);
 
   return (
     <Box data-id="000421" width={'full'}>
@@ -380,7 +363,6 @@ function ModuleSwitcher({ enforceDesktop }: { readonly enforceDesktop?: boolean 
           isTabletWidth={isTabletWidth}
           module={module || null}
           modulesInNavigation={modulesInNavigation}
-          showFiltersPanel={showFiltersPanel}
           showIcon={showIcon}
           showSeparator={showSeparator} />
       ) : (
@@ -390,7 +372,6 @@ function ModuleSwitcher({ enforceDesktop }: { readonly enforceDesktop?: boolean 
           isTabletWidth={isTabletWidth}
           module={module || null}
           navigate={navigate}
-          showFiltersPanel={showFiltersPanel}
           showIcon={showIcon}
           showSeparator={showSeparator} />
       )}

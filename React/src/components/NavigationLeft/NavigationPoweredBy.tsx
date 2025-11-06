@@ -4,12 +4,9 @@ import ConformeLogo from '../../icons/ConformeLogo';
 
 type ViewMode = 'desktop' | 'tablet' | 'default';
 
-function getViewMode(enforceDesktop?: boolean, showFiltersPanel?: boolean): ViewMode {
+function getViewMode(enforceDesktop?: boolean): ViewMode {
   if (enforceDesktop) {
     return 'desktop';
-  }
-  if (showFiltersPanel) {
-    return 'tablet';
   }
   return 'default';
 }
@@ -20,9 +17,8 @@ function getNavigationStyles(viewMode: ViewMode) {
       return {
         width: ['200px', 'fit-content', 'fit-content'],
         marginBottom: 0,
-        marginLeft: ['14px', 0, 0],
+        marginLeft: ['0px', 0, 0],
         transform: 'none',
-        position: ['relative', 'absolute', 'absolute'] as Array<'relative' | 'absolute'>,
         bottom: [0, '18px', '18px'],
         left: [0, '14px', '14px'],
       };
@@ -32,7 +28,6 @@ function getNavigationStyles(viewMode: ViewMode) {
         marginBottom: [0, '84px', '84px'], 
         marginLeft: ['14px', '-74px', '-74px'], 
         transform: ['none', 'rotate(-90deg)', 'rotate(-90deg)'], 
-        position: 'relative' as 'relative' | 'absolute', 
         bottom: 0,
         left: 0, 
       };
@@ -42,7 +37,6 @@ function getNavigationStyles(viewMode: ViewMode) {
         marginBottom: [0, '84px', 0],
         marginLeft: ['14px', '-74px', 0],
         transform: ['none', 'rotate(-90deg)', 'none'],
-        position: ['relative', 'relative', 'absolute'] as Array<'relative' | 'absolute'>,
         bottom: [0, 0, '18px'],
         left: [0, 0, '14px'],
       };
@@ -51,22 +45,20 @@ function getNavigationStyles(viewMode: ViewMode) {
 
 function NavigationPoweredBy({ enforceDesktop, showFiltersPanel }: { readonly enforceDesktop?: boolean; readonly showFiltersPanel?: boolean }) {
   // When filter panel is open, use tablet view styling (no rotation, simpler layout)
-  const viewMode = getViewMode(enforceDesktop, showFiltersPanel);
+  const viewMode = getViewMode(enforceDesktop);
   const styles = getNavigationStyles(viewMode);
 
   return (
     <Flex
       data-id="002748"
       width={'full'}
-      justifyContent={'flex-start'}
-      alignItems={'flex-start'}
       flexDirection="column"
       gap="4px"
       w={styles.width}
       marginBottom={styles.marginBottom}
       marginLeft={styles.marginLeft}
       transform={styles.transform}
-      position={styles.position}
+      position={'relative'}
       bottom={styles.bottom}
       left={styles.left}>
       <Text

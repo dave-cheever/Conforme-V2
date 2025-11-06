@@ -60,7 +60,7 @@ function ResponseLeftNavigation({ enforceDesktop, setDrawerOpen }: ResponseLeftN
       overflow={enforceDesktop ? "visible" : "auto"}
       w="280px">
       <Flex
-        data-id="000884" flexDirection="column" overflow="visible">
+        data-id="000884" flexDirection="column" overflow="visible" h={'100%'}>
         <Box
           alignItems="center"
           cursor="pointer"
@@ -107,7 +107,15 @@ function ResponseLeftNavigation({ enforceDesktop, setDrawerOpen }: ResponseLeftN
           <ModuleSwitcher enforceDesktop={enforceDesktop} data-id="002832" />
         </Box>
         <Divider data-id="002833" color={'#3E4F6C'} />
-        <Flex data-id="002834" flexDirection="column" px="14px">
+        <Box
+          data-id="002991"
+          display={'flex'}
+          h={'100%'}
+          flexDirection={'column'}
+          justifyContent={'space-between'}
+          alignItems={'space-between'}
+          gap={6}>
+        <Flex h={'100%'} data-id="002834" flexDirection="column" px="14px">
           <Flex
             align="center"
             color="responseLeftNavigation.goBackColor"
@@ -256,8 +264,10 @@ function ResponseLeftNavigation({ enforceDesktop, setDrawerOpen }: ResponseLeftN
               heading="Frequency"
               value={response?.trackerItem?.frequency || '-'} />
           </Box> */}
-          <NavigationPoweredBy enforceDesktop={enforceDesktop} data-id="002839" />
         </Flex>
+        <NavigationPoweredBy enforceDesktop={enforceDesktop} data-id="002839" />
+
+        </Box>
       </Flex>
     </Flex>
   );

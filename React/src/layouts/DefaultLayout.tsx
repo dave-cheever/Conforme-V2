@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import FiltersPanel from '../components/Filters/FiltersPanel';
 import NavigationBottomMobile from '../components/NavigationBottomMobile';
@@ -10,7 +10,7 @@ import ShareProvider from '../contexts/ShareProvider';
 import useDevice from '../hooks/useDevice';
 
 function DefaultLayout({ component: Component }: { component: any }) {
-  const { usedFilters } = useFiltersContext();
+  const { usedFilters, showFiltersPanel, setShowFiltersPanel } = useFiltersContext();
   const device = useDevice();
   return (
     <ShareProvider data-id="000211">
@@ -31,7 +31,25 @@ function DefaultLayout({ component: Component }: { component: any }) {
 
           {device === 'mobile' && <NavigationBottomMobile data-id="000219" />}
         </Flex>
-        {usedFilters?.length > 0 && <FiltersPanel data-id="000220" />}
+        {usedFilters?.length > 0 && (
+          <>
+            {showFiltersPanel && (
+              <Box
+                bg="black"
+                bottom="0"
+                data-id="filter-overlay"
+                left="0"
+                opacity={0.4}
+                position="fixed"
+                right="0"
+                top="0"
+                zIndex="11"
+                onClick={() => setShowFiltersPanel(false)}
+              />
+            )}
+            <FiltersPanel data-id="000220" />
+          </>
+        )}
       </Flex>
     </ShareProvider>
   );
