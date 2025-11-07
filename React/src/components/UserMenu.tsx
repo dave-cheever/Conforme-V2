@@ -55,11 +55,11 @@ function UserMenu() {
               src={user?.imgUrl}
               w="40px"
             />
-            <Box data-id="000523" display={['none', 'block']} minW="0" textAlign={'start'}>
-              <Text color={'black'} data-id="000524" fontSize={['12px', '14px']} fontWeight="600" isTruncated>
+            <Box data-id="000523" display={['none', 'block']} minW="0" textAlign={'start'} pt={"2px"}>
+              <Text color={'black'} data-id="000524" fontSize={['12px', '14px']} fontWeight="600" isTruncated lineHeight="16px">
                 {user?.displayName}
               </Text>
-              <Text color="#718096" data-id="000525" fontSize="13px" isTruncated lineHeight={0.8}>
+              <Text color="#718096" data-id="000525" fontSize="13px" isTruncated lineHeight="15px" >
                 {user?.jobTitle ? user.jobTitle.charAt(0).toUpperCase() + user.jobTitle.slice(1) : ''}
               </Text>
             </Box>
