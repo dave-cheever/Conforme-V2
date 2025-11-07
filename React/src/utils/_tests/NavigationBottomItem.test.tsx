@@ -93,7 +93,7 @@ describe('NavigationBottomItem', () => {
     const container = screen.getByText('Dashboard').parentElement;
     expect(container).toHaveStyle({
       display: 'flex',
-      width: '85.8px',
+      width: '75px',
       height: 'fit-content',
       gap: '2px',
       'flex-direction': 'column',

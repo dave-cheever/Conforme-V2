@@ -79,30 +79,54 @@ const DesktopView = ({
 
 // Mobile/tablet view component
 const MobileView = ({
+  label,
   icon,
   active,
 }: {
+  label: string;
   icon: React.ComponentType;
   active: boolean;
 }) => {
   const iconColor = active ? '#ffffff' : '#4A5568';
+  const textColor = '#4A5568';
   return (
     <Flex
       align="center"
-      bg={active ? '#0068A3' : 'none'}
-      borderRadius="8px"
-      data-id="000204"
-      h="30px"
+      direction="column"
       justify="center"
-      w="30px">
-      <Icon
-        as={icon}
-        data-id="000205"
-        fill={iconColor}
-        color={iconColor}
-        h="18px"
-        stroke={iconColor}
-        w="18px" />
+      gap="6px"
+      data-id="002910-mobile-view"
+      w="75px">
+      <Flex
+        align="center"
+        bg={active ? '#0068A3' : 'none'}
+        borderRadius="8px"
+        data-id="000204"
+        h="30px"
+        justify="center"
+        w="30px">
+        <Icon
+          as={icon}
+          data-id="000205"
+          fill={iconColor}
+          color={iconColor}
+          h="18px"
+          stroke={iconColor}
+          w="18px" />
+      </Flex>
+      <Text
+        display={['block', 'none', 'block']}
+        data-id="002910-label"
+        color={textColor}
+        fontSize="12px"
+        fontWeight={active ? "600" : "400"}
+        textAlign="center"
+        whiteSpace="nowrap"
+        overflow="hidden"
+        textOverflow="ellipsis"
+        maxW="100%">
+        {label}
+      </Text>
     </Flex>
   );
 };
@@ -132,7 +156,7 @@ function AuditLeftTabItem({
         cursor: 'pointer',
         bg: hoverBg,
       }}
-      bg={bg}
+      bg={ showDesktopView ? bg : 'transparent'}
       borderRadius="6px"
       data-id="000203"
       display="flex"
@@ -149,15 +173,16 @@ function AuditLeftTabItem({
       pos="relative"
       flexDirection={showDesktopView ? 'row' : 'column'}
       gap={showDesktopView ? undefined : '6px'}
-      h={['42px', enforceDesktop ? '56px' : '42px', '42px']}
-      w={['0', enforceDesktop ? '100%' : '42px', '100%']}
+      h={['54px', enforceDesktop ? '56px' : '42px', '42px']}
+      w={['fit-content', enforceDesktop ? '100%' : '42px', '100%']}
+      maxW={['54px', enforceDesktop ? '100%' : '42px', '100%']}
       justifyContent={['center', showDesktopView ? 'flex-start' : 'center', 'flex-start']}
       px={[0, showDesktopView ? '14px' : 0, '14px']}
       py={[0, showDesktopView ? '12px' : 0, '12px']}>
       {showDesktopView ? (
         <DesktopView data-id="002909" label={label} icon={icon} active={active} />
       ) : (
-        <MobileView data-id="002910" icon={icon} active={active} />
+        <MobileView data-id="002910" label={label} icon={icon} active={active} />
       )}
     </Box>
   );

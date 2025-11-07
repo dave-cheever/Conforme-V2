@@ -27,25 +27,25 @@ function NavigationBottomItem({
 
   return (
     <Box
-        alignItems="center"
-        data-id="000527"
-        display="flex"
-        flexDirection="column"
-        gap="2px"
-        height="fit-content"
-        justifyContent="center"
-        onClick={() => {
-          if (menuItem.url === '/') {
-            setFiltersOpen(!filtersOpen);
-            setSubsectionOpen(false);
-            navigateTo(url);
-          } else if (menuItem.url === '/admin') {
-            onOpen();
-            setFiltersOpen(false);
-          } else navigateTo(url);
-        }}
-        pos="relative"
-        width='85.8px'>
+      data-id="000527"
+      display="flex"
+      width='75px'
+      height="fit-content"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      gap="2px"
+      onClick={() => {
+        if (menuItem.url === '/') {
+          setFiltersOpen(!filtersOpen);
+          setSubsectionOpen(false);
+          navigateTo(url);
+        } else if (menuItem.url === '/admin') {
+          onOpen();
+          setFiltersOpen(false);
+        } else navigateTo(url);
+      }}
+      pos="relative">
       {/* Indicator line for items with submenus */}
       {menuItem.subSections && (
         <Box
@@ -63,7 +63,7 @@ function NavigationBottomItem({
       <Flex
         alignItems="center"
         bg={(() => {
-          const isActive = menuItem.subSections 
+          const isActive = menuItem.subSections
             ? isPathActive(url)
             : isPathActive(url, { exact: true });
           return isActive ? '#0068A3' : 'none';
@@ -77,27 +77,33 @@ function NavigationBottomItem({
         <Icon
           as={icon}
           data-id="000529"
+          color={(() => {
+            const isActive = menuItem.subSections
+              ? isPathActive(url)
+              : isPathActive(url, { exact: true });
+            return isActive ? '#ffffff' : '#4A5568';
+          })()}
           fill={(() => {
-            const isActive = menuItem.subSections 
+            const isActive = menuItem.subSections
               ? isPathActive(url)
               : isPathActive(url, { exact: true });
             return isActive ? '#ffffff' : '#4A5568';
           })()}
           h="18px"
           stroke={(() => {
-            const isActive = menuItem.subSections 
+            const isActive = menuItem.subSections
               ? isPathActive(url)
               : isPathActive(url, { exact: true });
             return isActive ? '#ffffff' : '#4A5568';
           })()}
           w="18px" />
       </Flex>
-      <Text 
+      <Text
         color="#4A5568"
-        data-id="000530" 
+        data-id="000530"
         fontSize="12px"
         fontWeight={(() => {
-          const isActive = menuItem.subSections 
+          const isActive = menuItem.subSections
             ? isPathActive(url)
             : isPathActive(url, { exact: true });
           return isActive ? "600" : "400";
@@ -138,37 +144,50 @@ function NavigationBottomItem({
       )}
       <Drawer data-id="002491" isOpen={isOpen} onClose={onClose} placement="bottom">
         <DrawerOverlay data-id="002492" />
-        <DrawerContent borderTopRadius="20px" data-id="002493">
-           <DrawerHeader
-             borderBottomColor="#E2E8F0"
-             borderBottomWidth="1px"
-             data-id="002494"
-             display={'flex'}
-             flexDirection={'row'}
-             justifyContent={'space-between'}>
-             <Text data-id="002495">{label}</Text>
-             <Box alignItems={'center'} cursor="pointer" data-id="close-drawer" justifyContent={'center'} onClick={onClose}>
-               <CloseDrawerIcon data-id="002496" dataId="close-drawer-icon" />
-             </Box>
-           </DrawerHeader>
+        <DrawerContent data-id="002493" borderTopRadius="14px">
+          <DrawerHeader
+            data-id="002494"
+            display={'flex'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+            borderBottomWidth="1px"
+            borderBottomColor="#E2E8F0" minH={'64px'}>
+            <Box
+              data-id="002911"
+              position={'absolute'}
+              top={'10px'}
+              left={0}
+              right={0}
+              backgroundColor={'#CBD5E0'}
+              h='4px'
+              w='42px'
+              borderRadius={'32px'}
+              margin={'0 auto'} />
+            <Text fontSize={'20px'} fontWeight={'500'} data-id="002495">{label}</Text>
+            <Box alignItems={'center'} justifyContent={'center'} onClick={onClose} cursor="pointer" data-id="close-drawer">
+              <CloseDrawerIcon data-id="002496" dataId="close-drawer-icon" />
+            </Box>
+          </DrawerHeader>
           <DrawerBody data-id="002497" p={0}>
-            {menuItem.subSections?.map((subSection) => (
-              <Box
-                _hover={{ bg: 'gray.50' }}
-                cursor="pointer"
-                data-id="002498"
-                key={subSection.label}
-                onClick={() => {
-                  navigateTo(subSection.url);
-                  onClose();
-                }}
-                px={'16px'}
-                py="16px">
-                <Text data-id="002499" fontSize="md" fontWeight="medium">
-                  {subSection.label}
-                </Text>
-              </Box>
-            ))}
+            <Flex data-id="002912" py='18px' flexDirection={'column'}>
+              {menuItem.subSections?.map((subSection) => (
+                <Box
+                  data-id="002498"
+                  key={subSection.label}
+                  px={'18px'}
+                  py="10px"
+                  onClick={() => {
+                    navigateTo(subSection.url);
+                    onClose();
+                  }}
+                  cursor="pointer"
+                  _hover={{ bg: 'gray.50' }}>
+                  <Text fontSize={'18px'} fontWeight={'500'} data-id="002499" color={'#2D3748'}>
+                    {subSection.label}
+                  </Text>
+                </Box>
+              ))}
+            </Flex>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

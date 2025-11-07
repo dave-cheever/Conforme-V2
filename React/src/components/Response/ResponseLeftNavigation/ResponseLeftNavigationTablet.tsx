@@ -156,7 +156,6 @@ function ResponseLeftNavigationTablet() {
                   <ResponseLeftTabItem
                     data-id="000879"
                     icon={icon}
-                    isDesktop={false}
                     key={url}
                     label={label}
                     url={url} />

@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 
+import { InMemoryCache } from '@apollo/client';
 import { MockedProvider } from '@apollo/client/testing';
 import { ChakraProvider } from '@chakra-ui/react';
 import { fireEvent, render, screen } from '@testing-library/react';
@@ -60,6 +61,9 @@ vi.mock('../../hooks/useValidate', () => ({
 
 const mockOnAction = vi.fn();
 
+// Create a cache without addTypename (deprecated in Apollo Client 3.14.0)
+const createTestCache = () => new InMemoryCache();
+
 describe('MessageInput', () => {
   beforeEach(() => {
     mockUseChatContext.mockReset();
@@ -71,7 +75,7 @@ describe('MessageInput', () => {
     function Wrapper() {
       const { control } = useForm({ defaultValues: { text: '' } });
       return (
-        <MockedProvider data-id="001196">
+        <MockedProvider data-id="001196" cache={createTestCache()}>
           <ChakraProvider data-id="001197">
             <MessageInput control={control} data-id="001198" label="Comment" name="text" onAction={mockOnAction} {...props} />
           </ChakraProvider>
