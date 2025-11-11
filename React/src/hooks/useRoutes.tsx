@@ -29,6 +29,7 @@ import Components from '../pages/components';
 import Dashboard from '../pages/dashboard';
 import Help from '../pages/help';
 import Insights from '../pages/insights';
+import Overview from '../pages/overview';
 import Licenses from '../pages/licenses';
 import Login from '../pages/login';
 import Logout from '../pages/logout';
@@ -74,6 +75,15 @@ const openRoutes: Array<IRoute> = [
 ];
 
 // Routes visible for signed in, that accepted the Terms and Conditions
+// Overview route is separate - it should NOT be prefixed with module path
+const overviewRoute: IRoute = {
+  path: '/overview',
+  key: 'overview',
+  exact: true,
+  component: Overview,
+  layout: DefaultLayout,
+};
+
 const protectedRoutes: Array<IRoute> = [
   {
     path: '/dashboard',
@@ -316,6 +326,20 @@ const useRoutes = () => {
   const { user, module } = useAppContext();
   if (!user) return openRoutes.map((route) => ({ ...route, element: <route.component data-id="000031" /> }));
   return [
+    // Overview route is at /overview (not prefixed with module path)
+    {
+      ...overviewRoute,
+      element: <Can
+        action={overviewRoute.permission}
+        data-id="000032"
+        no={() => <Navigate
+          data-id="000033"
+          key="not-found"
+          to="/overview" />}
+        yes={() => <overviewRoute.layout component={overviewRoute.component} data-id="000034" key={overviewRoute.key} />}
+      />,
+    },
+    // All other routes are prefixed with module path
     ...protectedRoutes.map((route) => ({
       ...route,
       path: `/:modulePath${route.path}`,
@@ -325,7 +349,7 @@ const useRoutes = () => {
         no={() => <Navigate
           data-id="000033"
           key="not-found"
-          to={module ? `/${module.path}/dashboard` : '/'} />}
+          to="/overview" />}
         yes={() => <route.layout component={route.component} data-id="000034" key={route.key} />}
       />,
     })),
@@ -335,7 +359,7 @@ const useRoutes = () => {
       element: <Navigate
         data-id="000035"
         key="not-found"
-        to={module ? `/${module.path}/dashboard` : '/'}
+        to="/overview"
       />,
       layout: DefaultLayout,
     },

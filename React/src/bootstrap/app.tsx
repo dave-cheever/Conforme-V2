@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
 import { ChakraProvider, CSSReset, Flex, Spinner } from '@chakra-ui/react';
@@ -20,8 +20,10 @@ function App() {
   const loadingSettings = useInit();
   const loadingUser = useAuth();
   const routes = useRoutes();
-  const { navigate } = useNavigate();
+  const { navigateTo } = useNavigate();
   const location = useLocation();
+  const hasRedirectedAfterLogin = useRef(false);
+  
   // Set cookie with client URL for auth flow
   const clientUrl = runtimeEnv.clientUrl() || '';
   const clientDomain = new URL(clientUrl).hostname;
@@ -30,15 +32,24 @@ function App() {
   document.cookie = `clientUrl=${clientUrl}; path=/; SameSite=None; Secure; Domain=.${topLevelDomain}`;
  
   useEffect(() => {
-    const isFromLogin = location.pathname === '/login';
-    const isOnLogout = location.pathname === '/logout';
-    if (user && isFromLogin && !isOnLogout && Array.isArray(user.defaultPage) && user.defaultPage.length > 0) {
-      const defaultPage = user.defaultPage.find((value) => value.name === module?.name);
-      const defaultPath = defaultPage?.path;
-      if (defaultPath === '/') navigate(defaultPath);
-      else navigate(`${defaultPath}`);
+    const isFromLogin = location.pathname === '/login' || location.pathname.endsWith('/login');
+    const isOnLogout = location.pathname === '/logout' || location.pathname.endsWith('/logout');
+    const isOnModuleRoot = location.pathname === `/${module?.path}` || location.pathname === '/';
+    
+    // Redirect to overview only when coming from login page or landing on root after login
+    if (user && !loadingUser && !loadingSettings && module && !isOnLogout) {
+      if ((isFromLogin || isOnModuleRoot) && !hasRedirectedAfterLogin.current) {
+        // Only redirect if we haven't redirected yet (initial load after login)
+        hasRedirectedAfterLogin.current = true;
+        navigateTo('/overview');
+      }
     }
-  }, [user, location.pathname]);
+    
+    // Reset the flag when user logs out
+    if (!user) {
+      hasRedirectedAfterLogin.current = false;
+    }
+  }, [user, location.pathname, module, navigateTo, loadingUser, loadingSettings]);
 
   if (user === undefined || loadingSettings || loadingUser) {
     return (

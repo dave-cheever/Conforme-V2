@@ -84,6 +84,7 @@ export { default as Move } from './Move';
 export { default as NotesIcon } from './NotesIcon';
 export { default as NotificationIcon } from './NotificationIcon';
 export { default as ObservationEye } from './ObservationEye';
+export { default as OverviewIcon } from './OverviewIcon';
 export { default as OpenExternalIcon } from './OpenExternalIcon';
 export { default as OpenMenuArrow } from './OpenMenuArrow';
 export { default as PlusIcon } from './PlusIcon';

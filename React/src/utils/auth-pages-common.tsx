@@ -16,20 +16,38 @@ export const FALLBACK_COMPANY_LOGO_URL = "https://raw.githubusercontent.com/dach
 // Common error handling hook
 export const useAuthErrorHandling = () => {
   const toast = useToast();
-  const params = globalThis.location.search.split('&');
-  const errorMessage = params.find((str) => str.includes('errorMessage'))?.split('=')[1];
+  const params = new URLSearchParams(globalThis.location.search);
+  const errorMessage = params.get('errorMessage');
+  const error = params.get('error'); // Better Auth error format
 
   useEffect(() => {
-    if (errorMessage) {
+    let message = errorMessage;
+    
+    // Handle Better Auth error format if errorMessage is not present
+    if (!message && error) {
+      // Convert Better Auth error code to readable message
+      // Format: "User_doesn't_exist_in_Conforme_AAD_group" -> "User doesn't exist in Conforme AAD group"
+      message = error
+        .replaceAll('_', ' ')
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+    }
+
+    if (message) {
       toast({
         ...toastFailed,
         title: "Couldn't sign in",
-        description: decodeURI(errorMessage),
+        description: decodeURIComponent(message),
       });
+      
+      // Clean up URL by removing error parameters
+      const url = new URL(globalThis.location.href);
+      url.searchParams.delete('errorMessage');
+      url.searchParams.delete('error');
+      globalThis.history.replaceState({}, '', url.toString());
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { errorMessage };
+  return { errorMessage: errorMessage || (error ? error.replaceAll('_', ' ').replace(/\b\w/g, (char) => char.toUpperCase()) : null) };
 };
 
 // Common login function

@@ -16,6 +16,7 @@ import {
   ListIcon,
   LocationIcon,
   ObservationEye,
+  OverviewIcon,
   RegulatoryBodyIcon,
   SiteIcon,
   TeamsIcon,
@@ -51,6 +52,13 @@ const useConfig = () => {
   ];
 
   const auditsMenuItems: INavItem[] = [
+    {
+      type: 'menuItem',
+      label: 'Overview',
+      url: '/overview',
+      icon: OverviewIcon,
+      permission: 'home.view',
+    },
     {
       type: 'menuItem',
       label: capitalize(pluralize(t('audit'))),
@@ -132,6 +140,13 @@ const useConfig = () => {
   ];
 
   const trackerMenuItems: INavItem[] = [
+    {
+      type: 'menuItem',
+      label: 'Overview',
+      url: '/overview',
+      icon: OverviewIcon,
+      permission: 'home.view',
+    },
     {
       type: 'menuItem',
       label: pluralize(t('tracker item')),

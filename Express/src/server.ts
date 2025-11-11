@@ -36,7 +36,62 @@ const getApp = async () => {
   app.disable('x-powered-by');
   app.use(cors(CORSConfig));
   // Add cookie-parser middleware
-  app.use(cookieParser()); 
+  app.use(cookieParser());
+  
+  // Intercept Better Auth error route and redirect to login with error message
+  app.get("/api/auth/error", (req, res) => {
+    const errorParam = req.query.error as string;
+    if (errorParam) {
+      // Convert Better Auth error code to readable message
+      // Format: "User_doesn't_exist_in_Conforme_AAD_group" -> "User doesn't exist in Conforme AAD group"
+      const errorMessage = errorParam
+        .replaceAll('_', ' ')
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+      
+      // Always use environment variable as source of truth for security
+      // Validate any user-provided URLs against the allowed domain
+      const allowedClientUrl = `${getProtocol()}${process.env.CLIENT_URL}`.replace(/\/$/, '');
+      
+      // Validate user-provided URL if present (for security, prevent open redirects)
+      let clientUrl = allowedClientUrl;
+      let userProvidedUrl: string | null = null;
+      
+      try {
+        if (req.cookies?.clientUrl) {
+          userProvidedUrl = req.cookies.clientUrl;
+        } else if (req.headers.referer) {
+          userProvidedUrl = new URL(req.headers.referer).origin;
+        }
+      } catch (error) {
+        // If URL parsing fails, ignore user-provided URL
+        userProvidedUrl = null;
+      }
+      
+      if (userProvidedUrl) {
+        try {
+          const userUrl = new URL(userProvidedUrl);
+          const allowedUrl = new URL(allowedClientUrl);
+          // Only use user-provided URL if it matches the allowed domain
+          if (userUrl.hostname === allowedUrl.hostname && userUrl.protocol === allowedUrl.protocol) {
+            clientUrl = userUrl.origin;
+          }
+        } catch (error) {
+          // If URL parsing fails, fall back to allowed URL
+          clientUrl = allowedClientUrl;
+        }
+      }
+      
+      // Remove trailing slash if present
+      clientUrl = clientUrl.replace(/\/$/, '');
+      
+      // Redirect to login page with error message
+      const redirectUrl = `${clientUrl}/login?errorMessage=${encodeURIComponent(errorMessage)}`;
+      return res.redirect(redirectUrl);
+    }
+    // If no error param, let Better Auth handle it
+    return toNodeHandler(auth)(req, res);
+  });
+  
   app.all("/api/auth/*", toNodeHandler(auth));
   app.use(logger('dev'));
   app.use(express.json());

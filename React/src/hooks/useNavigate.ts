@@ -16,6 +16,11 @@ const useNavigate = () => {
   const isPathActive = (path: string, options: { exact?: boolean } = {}) => {
     const { exact } = options;
 
+    // Overview route is at /overview (not prefixed with module path)
+    if (path === '/overview') {
+      return location.pathname === '/overview';
+    }
+
     // Remove module path from current path
     // and slash if present as last character
     const currentPath = location.pathname.replace(/\/([a-zA-Z0-9-]*)/, '').replace(/(\/$)/, '');
@@ -31,15 +36,25 @@ const useNavigate = () => {
 
   /**
    * This function can be used to navigate to a path inside a module
-   * @param path path inside module
+   * @param path path inside module (or /overview which is not module-prefixed)
    * @param state additional state to pass
    */
   const navigateTo = (path: string, state?: any) => {
-    navigate(`/${module?.path}${path}`, state);
+    // Overview route is at /overview (not prefixed with module path)
+    if (path === '/overview') {
+      navigate('/overview', state);
+    } else {
+      navigate(`/${module?.path}${path}`, state);
+    }
   };
 
   const openInNewTab = (path: string) => {
-    window.open(`/${module?.path}${path}`, '_blank');
+    // Overview route is at /overview (not prefixed with module path)
+    if (path === '/overview') {
+      window.open('/overview', '_blank');
+    } else {
+      window.open(`/${module?.path}${path}`, '_blank');
+    }
   };
 
   return {

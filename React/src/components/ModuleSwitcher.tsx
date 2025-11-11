@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Icon, Menu, MenuButton, MenuItem, MenuList, Text, useMediaQuery } from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
 import { Conforme } from '../icons';
+import ModuleSwitcherIcon from '../icons/ModuleSwitcherIcon';
 import { IModule } from '../interfaces/IModule';
 import { getInitials } from '../utils/helpers';
 
@@ -106,7 +106,8 @@ const ChevronIcon = () => (
     alignSelf="center"
     data-id="000433"
     display="flex">
-    <ChevronDownIcon
+    <Icon
+      as={ModuleSwitcherIcon}
       color="moduleSwitcher.button.text.active"
       data-id="000434"
       h="24px"
