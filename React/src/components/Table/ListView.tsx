@@ -88,7 +88,8 @@ function ListView({
   );
 }
 
-export default ListView;
+// Memoize ListView to prevent unnecessary re-renders when props haven't changed
+export default React.memo(ListView);
 
 export const listViewStyles = {
   container: {

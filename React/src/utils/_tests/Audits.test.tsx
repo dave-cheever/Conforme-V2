@@ -1,6 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
 
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
@@ -295,6 +295,13 @@ describe('Audits – assignedToMe, filters, and new render helpers', () => {
     renderPage();
 
     await user.click(screen.getByTestId('to-panel'));
+    // Wait for view transition to complete (loader should disappear)
+    await waitFor(
+      () => {
+        expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
+      },
+      { timeout: 2000 },
+    );
     // empty state text rendered by renderEmptyState('000204')
     expect(screen.getByText(/No audits found\. Try adjusting the filters\./i)).toBeInTheDocument();
   });
@@ -305,6 +312,13 @@ describe('Audits – assignedToMe, filters, and new render helpers', () => {
     renderPage();
 
     await user.click(screen.getByTestId('to-panel'));
+    // Wait for view transition to complete (loader should disappear)
+    await waitFor(
+      () => {
+        expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
+      },
+      { timeout: 2000 },
+    );
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
 
@@ -314,6 +328,13 @@ describe('Audits – assignedToMe, filters, and new render helpers', () => {
     renderPage();
 
     await user.click(screen.getByTestId('to-list'));
+    // Wait for view transition to complete (loader should disappear)
+    await waitFor(
+      () => {
+        expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
+      },
+      { timeout: 2000 },
+    );
     // ListView should be in the document
     const listView = screen.queryByRole('table');
     expect(listView).toBeDefined();

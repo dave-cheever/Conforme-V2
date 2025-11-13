@@ -538,4 +538,6 @@ function PanelView({
         </Flex>
     );
 }
-export default PanelView;
+
+// Memoize PanelView to prevent unnecessary re-renders when props haven't changed
+export default React.memo(PanelView);

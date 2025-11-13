@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, startTransition } from 'react';
+import { flushSync } from 'react-dom';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { Button, Divider, Flex, Modal, ModalOverlay, Text } from '@chakra-ui/rea
 import { format } from 'date-fns';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
+import React from 'react';
 
 import AuditModal from '../components/AuditModal/AuditModal';
 import ChangeViewButton from '../components/ChangeViewButton';
@@ -132,11 +134,73 @@ function Audits() {
   const [assignedToMe, setAssignedToMe] = useState(false);
   const {
     sortedData: sortedAudits,
-    sortOrder,
-    sortType,
-    setSortType,
-    setSortOrder,
+    sortOrder: sortOrderState,
+    sortType: sortTypeState,
+    setSortType: setSortTypeOriginal,
+    setSortOrder: setSortOrderOriginal,
   } = useSort(filteredAudits, 'auditor.displayName', 'asc');
+
+  // Track sorting transition state
+  const [isSorting, setIsSorting] = useState(false);
+  const sortTypeRef = useRef<string>(sortTypeState);
+  const sortOrderRef = useRef<'asc' | 'desc'>(sortOrderState);
+
+  // Update refs when sort state changes
+  useEffect(() => {
+    sortTypeRef.current = sortTypeState;
+    sortOrderRef.current = sortOrderState;
+  }, [sortTypeState, sortOrderState]);
+
+  // Wrapper functions that show loading immediately and use startTransition
+  const setSortType = useCallback((newSortType: string) => {
+    if (newSortType !== sortTypeRef.current) {
+      // Immediately show loading state
+      flushSync(() => {
+        setIsSorting(true);
+      });
+      
+      // Use startTransition to defer the sorting work
+      startTransition(() => {
+        setSortTypeOriginal(newSortType);
+      });
+      
+      // Hide loading after sort completes
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            setIsSorting(false);
+          }, 100);
+        });
+      });
+    }
+  }, [setSortTypeOriginal]);
+
+  const setSortOrder = useCallback((newSortOrder: 'asc' | 'desc') => {
+    if (newSortOrder !== sortOrderRef.current) {
+      // Immediately show loading state
+      flushSync(() => {
+        setIsSorting(true);
+      });
+      
+      // Use startTransition to defer the sorting work
+      startTransition(() => {
+        setSortOrderOriginal(newSortOrder);
+      });
+      
+      // Hide loading after sort completes
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            setIsSorting(false);
+          }, 100);
+        });
+      });
+    }
+  }, [setSortOrderOriginal]);
+
+  // Use the state values for display
+  const sortType = sortTypeState;
+  const sortOrder = sortOrderState;
 
   // Apply sorting from context when it changes (e.g., from preset)
   const prevSortingStateRef = useRef<{ sortType: string; sortOrder: 'asc' | 'desc' } | null>(null);
@@ -150,15 +214,16 @@ function Audits() {
         prevSortingStateRef.current.sortOrder !== sortingState.sortOrder)
     ) {
       isApplyingFromContext.current = true;
-      setSortType(sortingState.sortType);
-      setSortOrder(sortingState.sortOrder);
+      // When applying from context, use the original setters to avoid showing loading
+      setSortTypeOriginal(sortingState.sortType);
+      setSortOrderOriginal(sortingState.sortOrder);
       // Reset the flag after state updates
       setTimeout(() => {
         isApplyingFromContext.current = false;
       }, 0);
     }
     prevSortingStateRef.current = sortingState;
-  }, [sortingState, setSortType, setSortOrder]);
+  }, [sortingState, setSortTypeOriginal, setSortOrderOriginal]);
 
   // Update context when local sorting changes (but not when applying from context)
   useEffect(() => {
@@ -174,7 +239,7 @@ function Audits() {
     { label: 'Date submitted', key: 'completedDate' },
   ];
   // Initialize viewMode from localStorage to prevent flash of default view
-  const [viewMode, setViewMode] = useState<TViewMode>(() => {
+  const [viewMode, setViewModeState] = useState<TViewMode>(() => {
     if (typeof window !== 'undefined') {
       const savedView = localStorage.getItem('viewMode') as TViewMode;
       if (savedView && ['list', 'panel'].includes(savedView)) {
@@ -183,6 +248,46 @@ function Audits() {
     }
     return 'list';
   });
+
+  // Track view transition state to show loading during switch
+  const [isViewTransitioning, setIsViewTransitioning] = useState(false);
+  const prevViewModeRef = useRef<TViewMode>(viewMode);
+  // Use a ref to track current viewMode to avoid stale closure issues
+  const viewModeRef = useRef<TViewMode>(viewMode);
+
+  // Update ref when viewMode changes
+  useEffect(() => {
+    viewModeRef.current = viewMode;
+    prevViewModeRef.current = viewMode;
+  }, [viewMode]);
+
+  // Custom setViewMode that immediately shows loading and uses startTransition
+  const setViewMode = useCallback((newViewMode: TViewMode) => {
+    // Use ref to check current value to avoid stale closure
+    if (newViewMode !== viewModeRef.current) {
+      // Immediately show loading state synchronously (before any transitions)
+      flushSync(() => {
+        setIsViewTransitioning(true);
+      });
+      
+      // Use startTransition to mark the view change as a non-urgent update
+      // This allows React to keep the UI responsive during the transition
+      startTransition(() => {
+        setViewModeState(newViewMode);
+        localStorage.setItem('viewMode', newViewMode);
+      });
+      
+      // Hide loading after the transition completes
+      // Use a slightly longer delay to ensure the new view has rendered
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            setIsViewTransitioning(false);
+          }, 150);
+        });
+      });
+    }
+  }, []); // Empty deps array since we use ref
 
   const location = useLocation();
 
@@ -497,58 +602,86 @@ function Audits() {
     [JSON.stringify(filteredAudits)],
   );
 
-  const renderPanelView = () =>
-    sortedAudits?.length > 0 ? (
-      <PanelView
-        config={{
-          ...auditPanelConfig,
-          actions: {
-            ...auditPanelConfig.actions,
-            primary: {
-              ...auditPanelConfig.actions.primary!,
-              onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`),
-            },
-            panelClick: {
-              onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`),
-            },
-          },
-        }}
-        data-id="002176"
-        dataSourceName="audits"
-        items={sortedAudits}
+  // Memoize panel config to prevent unnecessary re-renders
+  const panelConfig = useMemo(
+    () => ({
+      ...auditPanelConfig,
+      actions: {
+        ...auditPanelConfig.actions,
+        primary: {
+          ...auditPanelConfig.actions.primary!,
+          onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`),
+        },
+        panelClick: {
+          onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`),
+        },
+      },
+    }),
+    [navigateTo],
+  );
+
+  // Memoize panel view component
+  const panelViewComponent = useMemo(
+    () =>
+      sortedAudits?.length > 0 ? (
+        <PanelView
+          config={panelConfig}
+          data-id="002176"
+          dataSourceName="audits"
+          items={sortedAudits}
+        />
+      ) : (
+        <NoRecordsFound
+          data-id="000202"
+          dataSourceName="audits"
+          height="100%"
+        />
+      ),
+    [sortedAudits, panelConfig],
+  );
+
+  // Memoize list view component
+  const listViewComponent = useMemo(
+    () => (
+      <ListView
+        columns={columns}
+        data={sortedAudits}
+        data-id="000201"
+        dataType="audits"
+        onRowClick={handleRowClick}
+        setSortOrder={setSortOrder}
+        setSortType={setSortType}
+        sortOrder={sortOrder}
+        sortType={sortType}
       />
-    ) : (
-      <NoRecordsFound
-        data-id="000202"
-        dataSourceName="audits"
-        height="100%"
-      />
-    );
+    ),
+    [columns, sortedAudits, handleRowClick, setSortOrder, setSortType, sortOrder, sortType],
+  );
+
+  // Update ref when viewMode changes (for tracking)
+  useEffect(() => {
+    prevViewModeRef.current = viewMode;
+  }, [viewMode]);
 
   // Helper function to render main content
   const renderMainContent = () => {
     if (loading) return <Loader center data-id="000197" />;
 
-    if (viewMode === 'list') {
-      return (
-        <ListView
-          columns={columns}
-          data={sortedAudits}
-          data-id="000201"
-          dataType="audits"
-          onRowClick={handleRowClick}
-          setSortOrder={setSortOrder}
-          setSortType={setSortType}
-          sortOrder={sortOrder}
-          sortType={sortType}
-        />
-      );
+    // Show loading during view transition or sorting
+    if (isViewTransitioning || isSorting) {
+      return <Loader center data-id="000197" />;
     }
 
-    if (viewMode === 'panel') return renderPanelView();
+    if (viewMode === 'list') {
+      return listViewComponent;
+    }
+
+    if (viewMode === 'panel') {
+      return panelViewComponent;
+    }
 
     // Default to panel view
-    return renderPanelView();
+    return panelViewComponent;
   };
 
   const isAuditPageValue = isAuditPage(isPathActive);
