@@ -7,7 +7,7 @@ const saveFilterPreset = async (_, { saveFilterPresetInput }, { authorize, organ
     const user = await authorize();
     const { name, filters, moduleId, moduleType, pageName, userId, metadata } = saveFilterPresetInput;
     
-    if (user.userId === userId) throw new Error('User is not permitted');
+    if (user.userId !== userId) throw new Error('User is not permitted');
 
     // Find the user to update
     const userToUpdate = await Users.customFindById(userId, organization._id);
