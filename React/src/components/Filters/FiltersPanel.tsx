@@ -1,37 +1,20 @@
 import { useEffect, useRef } from 'react';
 
 import { Box, Button, Flex, HStack, Spacer, useOutsideClick } from '@chakra-ui/react';
-import { useLocation } from 'react-router-dom';
 
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useDevice from '../../hooks/useDevice';
 import { CrossIcon, FilterWhite, ResetIcon } from '../../icons';
-import { shouldHideFilterInPanelView } from '../../utils/getFiltersToHideInPanelView';
 import { isPermitted } from '../can';
 import FilterPreset from '../FilterPreset/FilterPreset';
 import FiltersPanelItem from './FiltersPanelItem';
 
 function FiltersPanel() {
-  const { user, module } = useAppContext();
+  const { user } = useAppContext();
   const { filtersValues, usedFilters, showFiltersPanel, setShowFiltersPanel, cleanFilters, applyFilters } = useFiltersContext();
   const panelRef = useRef(null);
   const device = useDevice();
-  const location = useLocation();
-
-  // Determine which filters to hide in panel view
-  const shouldHideFilter = (filterName: string): boolean => {
-    // Read viewMode directly from localStorage (always up-to-date, no polling needed)
-    const currentViewMode = typeof globalThis.window !== 'undefined' ? (localStorage.getItem('viewMode') || 'list') : 'list';
-    
-    // Only hide filters when in panel view
-    if (currentViewMode !== 'panel') {
-      return false;
-    }
-
-    return shouldHideFilterInPanelView(filterName, module?.type, location.pathname);
-  };
-
   useOutsideClick({
     ref: panelRef,
     handler: () => setShowFiltersPanel(false),
@@ -77,12 +60,7 @@ function FiltersPanel() {
       </Flex>
       <Flex data-id="000125" direction="column" grow={1} overflowY="auto" px="4">
         {Object.entries(filtersValues).map(([name, value]) => {
-          if (
-            usedFilters.includes(name) && 
-            !value?.hideFromPanel && 
-            !shouldHideFilter(name) &&
-            isPermitted({ user, action: value?.permission })
-          )
+          if (usedFilters.includes(name) && !value?.hideFromPanel && isPermitted({ user, action: value?.permission }))
             return <FiltersPanelItem data-id="000126" filter={value} key={name} name={name} />;
           return null;
         })}

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState, startTransition } fr
 import { flushSync } from 'react-dom';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
 
 import { gql, useQuery } from '@apollo/client';
 import { Button, Divider, Flex, Modal, ModalOverlay, Text } from '@chakra-ui/react';
@@ -38,7 +37,6 @@ import { TViewMode } from '../interfaces/TViewMode';
 import updateLocalStorageFilter from '../utils/filterStorage';
 import FilterButton from '../components/FilterButton';
 import isAuditPage from '../utils/isAuditPage';
-import { getFiltersToHideInPanelView } from '../utils/getFiltersToHideInPanelView';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -249,6 +247,7 @@ function Audits() {
     return 'list';
   });
 
+
   // Track view transition state to show loading during switch
   const [isViewTransitioning, setIsViewTransitioning] = useState(false);
   const prevViewModeRef = useRef<TViewMode>(viewMode);
@@ -288,57 +287,6 @@ function Audits() {
       });
     }
   }, []); // Empty deps array since we use ref
-
-  const location = useLocation();
-
-  // Helper function to get reset value for a filter
-  const getFilterResetValue = (filterName: string): any => {
-    if (filterName === 'usersIds') return {};
-    if (filterName === 'showArchived') return false;
-    return [];
-  };
-
-  // Helper function to build filters to reset
-  const buildFiltersToReset = (filtersToHide: string[]): Record<string, any> => {
-    const filtersToReset: Record<string, any> = {};
-    for (const filterName of filtersToHide) {
-      if (filtersValues[filterName]?.value) {
-        filtersToReset[filterName] = getFilterResetValue(filterName);
-      }
-    }
-    return filtersToReset;
-  };
-
-  // Helper function to update localStorage
-  const updateLocalStorageFilters = (filtersToReset: Record<string, any>) => {
-    if (!user || !module) return;
-    
-    const localStorageKey = `${module._id}-filters-${user.userId}`;
-    const existing = localStorage.getItem(localStorageKey);
-    if (!existing) return;
-    
-    const parsed = JSON.parse(existing);
-    for (const key of Object.keys(filtersToReset)) {
-      delete parsed[key];
-    }
-    localStorage.setItem(localStorageKey, JSON.stringify(parsed));
-  };
-
-  // Reset inapplicable filters when switching to panel view
-  useEffect(() => {
-    if (viewMode !== 'panel' || !module) return;
-    
-    const filtersToHide = getFiltersToHideInPanelView(module.type, location.pathname);
-    if (filtersToHide.length === 0) return;
-    
-    const filtersToReset = buildFiltersToReset(filtersToHide);
-    if (Object.keys(filtersToReset).length === 0) return;
-    
-    updateLocalStorageFilters(filtersToReset);
-    setFilters(filtersToReset);
-    applyFiltersImmediately(filtersToReset);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewMode, module, location.pathname]);
   
   const columns: ColumnConfig[] = useMemo(() => [
     {

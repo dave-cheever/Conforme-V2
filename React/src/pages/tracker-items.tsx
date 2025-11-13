@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Divider, Flex } from '@chakra-ui/react';
@@ -26,7 +25,6 @@ import updateLocalStorageFilter from '../utils/filterStorage';
 import { removeEmptyArraysAndObjects } from '../utils/helpers';
 import FilterButton from '../components/FilterButton';
 import isAuditPage from '../utils/isAuditPage';
-import { getFiltersToHideInPanelView } from '../utils/getFiltersToHideInPanelView';
 
 const GET_RESPONSES_TOTALS = gql`
   query ResponsesTotals($responsesQuery: Any) {
@@ -191,74 +189,6 @@ function TrackerItems() {
     }
     return 'panel';
   });
-
-  const location = useLocation();
-
-  // Helper function to get reset value for a filter
-  const getFilterResetValue = (filterName: string, filterValue?: any): any => {
-    if (filterName === 'usersIds') return {};
-    if (filterName === 'showArchived') return false;
-    if (filterValue !== undefined) {
-      return Array.isArray(filterValue) ? [] : {};
-    }
-    return [];
-  };
-
-  // Helper function to build filters to reset
-  const buildFiltersToReset = (filtersToHide: string[]): Record<string, any> => {
-    const filtersToReset: Record<string, any> = {};
-    
-    // Reset standard filters that should be hidden
-    for (const filterName of filtersToHide) {
-      if (filtersValues[filterName]?.value) {
-        filtersToReset[filterName] = getFilterResetValue(filterName);
-      }
-    }
-    
-    // Also check for custom question filters in tracker items
-    if (module?.type === 'tracker') {
-      const standardFilters = new Set(['trackerItemsIds', 'categoriesIds', 'usersIds', 'locationsIds', 'businessUnitsIds', 'itemStatus', 'regulatoryBodiesIds', 'dueDate']);
-      for (const filterName of Object.keys(filtersValues)) {
-        if (!standardFilters.has(filterName) && filtersValues[filterName]?.value) {
-          filtersToReset[filterName] = getFilterResetValue(filterName, filtersValues[filterName].value);
-        }
-      }
-    }
-    
-    return filtersToReset;
-  };
-
-  // Helper function to update localStorage
-  const updateLocalStorageFilters = (filtersToReset: Record<string, any>) => {
-    if (!user || !module) return;
-    
-    const localStorageKey = `${module._id}-filters-${user.userId}`;
-    const existing = localStorage.getItem(localStorageKey);
-    if (!existing) return;
-    
-    const parsed = JSON.parse(existing);
-    for (const key of Object.keys(filtersToReset)) {
-      delete parsed[key];
-    }
-    localStorage.setItem(localStorageKey, JSON.stringify(parsed));
-  };
-
-  // Reset inapplicable filters when switching to panel view
-  useEffect(() => {
-    if (viewMode !== 'panel' || !module) return;
-    
-    const filtersToHide = getFiltersToHideInPanelView(module.type, location.pathname);
-    if (filtersToHide.length === 0) return;
-    
-    const filtersToReset = buildFiltersToReset(filtersToHide);
-    if (Object.keys(filtersToReset).length === 0) return;
-    
-    updateLocalStorageFilters(filtersToReset);
-    setFilters(filtersToReset);
-    applyFiltersImmediately(filtersToReset);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewMode, module, location.pathname]);
-  
   const [total, setTotal] = useState(1);
 
   const { data: totalCompliantResponses } = useQuery(GET_RESPONSES_TOTALS, {
