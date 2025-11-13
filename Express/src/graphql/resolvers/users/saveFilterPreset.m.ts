@@ -1,13 +1,13 @@
 import { Users } from 'app-models';
-import { genMetatags, isPermitted } from 'app-utils';
+import { genMetatags } from 'app-utils';
 import { v4 as uuidv4 } from 'uuid';
 
 const saveFilterPreset = async (_, { saveFilterPresetInput }, { authorize, organization }) => {
   try {
     const user = await authorize();
-    if (!isPermitted({ user, action: 'users.edit' })) throw new Error('User is not permitted');
-
     const { name, filters, moduleId, moduleType, pageName, userId, metadata } = saveFilterPresetInput;
+    
+    if (user.userId === userId) throw new Error('User is not permitted');
 
     // Find the user to update
     const userToUpdate = await Users.customFindById(userId, organization._id);
