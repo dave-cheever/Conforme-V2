@@ -4,9 +4,8 @@ import { isPermitted } from 'app-utils';
 const getFilterPresets = async (_, { getFilterPresetsInput }, { authorize, organization }) => {
   try {
     const user = await authorize();
-    if (!isPermitted({ user, action: 'users.view' })) throw new Error('User is not permitted');
-
     const { userId, moduleId, pageName } = getFilterPresetsInput;
+    if (user.userId !== userId) throw new Error('User is not permitted');
 
     // Find the user
     const userData = await Users.customFindById(userId, organization._id);
