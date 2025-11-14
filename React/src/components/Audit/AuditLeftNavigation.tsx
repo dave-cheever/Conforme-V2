@@ -96,7 +96,7 @@ function AuditLeftNavigation({ enforceDesktop, setDrawerOpen }: AuditLeftNavigat
               gap="10px"
               py="6px"
               borderRadius="6px"
-              onClick={() => navigateTo('/')}>
+              onClick={() => navigateTo('/dashboard')}>
               <Box
                 data-id="002738"
                 transition="all 0.2s ease-out"

@@ -136,7 +136,7 @@ describe('AuditLeftNavigationMobile', () => {
     const backButton = screen.getByText('Back').parentElement;
     fireEvent.click(backButton!);
 
-    expect(mockNavigateTo).toHaveBeenCalledWith('/audits');
+    expect(mockNavigateTo).toHaveBeenCalledWith('/dashboard');
   });
 
   test('renders audit navigation tabs', () => {

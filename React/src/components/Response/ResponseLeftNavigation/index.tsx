@@ -126,7 +126,7 @@ function ResponseLeftNavigation({ enforceDesktop, setDrawerOpen }: ResponseLeftN
             mb="25px"
             mt="18px"
             gap="10px"
-            onClick={() => navigateTo('/tracker-items')}
+            onClick={() => navigateTo('/dashboard')}
             px="8px"
             py="6px"
             borderRadius="6px"

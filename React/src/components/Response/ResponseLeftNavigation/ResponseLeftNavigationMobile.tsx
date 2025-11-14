@@ -139,7 +139,7 @@ function ResponseLeftNavigationMobile() {
           fontSize="14px"
           h="100%"
           mr={4}
-          onClick={() => navigateTo('/tracker-items')}>
+          onClick={() => navigateTo('/dashboard')}>
 
           <Box
             alignItems="center"

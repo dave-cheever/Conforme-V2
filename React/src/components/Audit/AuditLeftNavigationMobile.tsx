@@ -143,7 +143,7 @@ function AuditLeftNavigationMobile() {
           fontSize="14px"
           h="100%"
           mr={4}
-          onClick={() => navigateTo('/audits')}>
+          onClick={() => navigateTo('/dashboard')}>
           <Box
             alignItems="center"
             bg="#E2E8F0"

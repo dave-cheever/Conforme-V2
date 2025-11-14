@@ -6,19 +6,26 @@ import { describe, expect, test, vi, beforeEach } from 'vitest';
 import NavigationLeftItem from '../../components/NavigationLeft/NavigationLeftItem';
 import theme from '../../bootstrap/theme';
 
+// Mock variables that can be modified in tests
+const mockModule: { type: 'tracker' | 'audits'; name: string } = { type: 'tracker', name: 'Test Module' };
+let mockResponsesStatusesCounts: { compliant: number; nonCompliant: number } | null = {
+  compliant: 5,
+  nonCompliant: 3
+};
+let mockIsPathActiveFn: (url: string, options?: { exact?: boolean }) => boolean;
+
 // Mock the hooks and contexts
 vi.mock('../../contexts/AppProvider', () => ({
   useAppContext: () => ({
-    module: { type: 'tracker', name: 'Test Module' }
+    module: mockModule
   })
 }));
 
 vi.mock('../../contexts/FiltersProvider', () => ({
   useFiltersContext: () => ({
     showFiltersPanel: false,
-    responsesStatusesCounts: {
-      compliant: 5,
-      nonCompliant: 3
+    get responsesStatusesCounts() {
+      return mockResponsesStatusesCounts;
     }
   })
 }));
@@ -29,6 +36,9 @@ vi.mock('../../hooks/useNavigate', () => ({
     getPath: () => 'tracker-items',
     navigateTo: vi.fn(),
     isPathActive: (url: string, options?: { exact?: boolean }) => {
+      if (mockIsPathActiveFn) {
+        return mockIsPathActiveFn(url, options);
+      }
       if (options?.exact) {
         return url === '/tracker-items';
       }
@@ -92,6 +102,14 @@ const renderWithProviders = (component: React.ReactElement) => {
 describe('NavigationLeftItem', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Reset to defaults
+    mockModule.type = 'tracker';
+    mockModule.name = 'Test Module';
+    mockResponsesStatusesCounts = {
+      compliant: 5,
+      nonCompliant: 3
+    };
+    mockIsPathActiveFn = undefined as any;
   });
 
   test('renders menu item with correct label', () => {
@@ -141,15 +159,31 @@ describe('NavigationLeftItem', () => {
     expect(dropdownArrow).toHaveStyle('transform: rotate(180deg)');
   });
 
-  test('shows filters when on tracker items page', () => {
-    renderWithProviders(<NavigationLeftItem data-id="002781" menuItem={mockMenuItem} />);
+  test('shows filters when on dashboard page', () => {
+    mockIsPathActiveFn = (url: string, options?: { exact?: boolean }) => {
+      if (options?.exact) {
+        return url === '/dashboard';
+      }
+      return url.startsWith('/dashboard');
+    };
+
+    const dashboardMenuItem = { ...mockMenuItem, url: '/dashboard', subSections: [] };
+    renderWithProviders(<NavigationLeftItem data-id="002781" menuItem={dashboardMenuItem} />);
     
     const filters = screen.getAllByTestId('filter');
     expect(filters).toHaveLength(3); // All, Compliant, Non-Compliant
   });
 
   test('filters are always visible (not collapsed)', () => {
-    renderWithProviders(<NavigationLeftItem data-id="002782" menuItem={mockMenuItem} />);
+    mockIsPathActiveFn = (url: string, options?: { exact?: boolean }) => {
+      if (options?.exact) {
+        return url === '/dashboard';
+      }
+      return url.startsWith('/dashboard');
+    };
+
+    const dashboardMenuItem = { ...mockMenuItem, url: '/dashboard', subSections: [] };
+    renderWithProviders(<NavigationLeftItem data-id="002782" menuItem={dashboardMenuItem} />);
     
     const filters = screen.getAllByTestId('filter');
     filters.forEach(filter => {
@@ -189,16 +223,6 @@ describe('NavigationLeftItem', () => {
     expect(true).toBe(true);
   });
 
-  test('does not show filters when not a tracker component', () => {
-    // Skip this test for now as it requires complex mocking
-    expect(true).toBe(true);
-  });
-
-  test('does not show filters when responsesStatusesCounts is null', () => {
-    // Skip this test for now as it requires complex mocking
-    expect(true).toBe(true);
-  });
-
   test('navigates directly when menu item has no sub-sections', () => {
     const menuItemWithoutSubs = { ...mockMenuItem, subSections: [] };
     renderWithProviders(<NavigationLeftItem data-id="002786" menuItem={menuItemWithoutSubs} />);
@@ -209,5 +233,109 @@ describe('NavigationLeftItem', () => {
     // Should not have sub-sections
     const subSections = screen.queryAllByTestId('subsection');
     expect(subSections).toHaveLength(0);
+  });
+
+  describe('Filter display logic - only show on /dashboard', () => {
+    test('shows filters when on /dashboard page with tracker component', () => {
+      mockIsPathActiveFn = (url: string, options?: { exact?: boolean }) => {
+        if (options?.exact) {
+          return url === '/dashboard';
+        }
+        return url.startsWith('/dashboard');
+      };
+
+      const dashboardMenuItem = { ...mockMenuItem, url: '/dashboard', subSections: [] };
+      renderWithProviders(<NavigationLeftItem data-id="002789" menuItem={dashboardMenuItem} />);
+      
+      const filters = screen.getAllByTestId('filter');
+      expect(filters.length).toBeGreaterThan(0);
+    });
+
+    test('does not show filters when on /overview page with tracker component', () => {
+      mockIsPathActiveFn = (url: string, options?: { exact?: boolean }) => {
+        if (options?.exact) {
+          return url === '/overview';
+        }
+        return url.startsWith('/overview');
+      };
+
+      const overviewMenuItem = { ...mockMenuItem, url: '/overview', subSections: [] };
+      renderWithProviders(<NavigationLeftItem data-id="002790" menuItem={overviewMenuItem} />);
+      
+      const filters = screen.queryAllByTestId('filter');
+      expect(filters).toHaveLength(0);
+    });
+
+    test('does not show filters when on /components page with tracker component', () => {
+      mockIsPathActiveFn = (url: string, options?: { exact?: boolean }) => {
+        if (options?.exact) {
+          return url === '/components';
+        }
+        return url.startsWith('/components');
+      };
+
+      const componentsMenuItem = { ...mockMenuItem, url: '/components', subSections: [] };
+      renderWithProviders(<NavigationLeftItem data-id="002791" menuItem={componentsMenuItem} />);
+      
+      const filters = screen.queryAllByTestId('filter');
+      expect(filters).toHaveLength(0);
+    });
+
+    test('does not show filters when URL is /dashboard but path is not active', () => {
+      mockIsPathActiveFn = () => false;
+
+      const dashboardMenuItem = { ...mockMenuItem, url: '/dashboard', subSections: [] };
+      renderWithProviders(<NavigationLeftItem data-id="002792" menuItem={dashboardMenuItem} />);
+      
+      const filters = screen.queryAllByTestId('filter');
+      expect(filters).toHaveLength(0);
+    });
+
+    test('does not show filters when URL is not /dashboard even if path is active', () => {
+      mockIsPathActiveFn = (url: string, options?: { exact?: boolean }) => {
+        if (options?.exact) {
+          return url === '/tracker-items';
+        }
+        return url.startsWith('/tracker-items');
+      };
+
+      const trackerItemsMenuItem = { ...mockMenuItem, url: '/tracker-items', subSections: [] };
+      renderWithProviders(<NavigationLeftItem data-id="002793" menuItem={trackerItemsMenuItem} />);
+      
+      const filters = screen.queryAllByTestId('filter');
+      expect(filters).toHaveLength(0);
+    });
+
+    test('does not show filters when not a tracker component', () => {
+      mockModule.type = 'audits';
+      mockIsPathActiveFn = (url: string, options?: { exact?: boolean }) => {
+        if (options?.exact) {
+          return url === '/dashboard';
+        }
+        return url.startsWith('/dashboard');
+      };
+
+      const dashboardMenuItem = { ...mockMenuItem, url: '/dashboard', subSections: [] };
+      renderWithProviders(<NavigationLeftItem data-id="002787" menuItem={dashboardMenuItem} />);
+      
+      const filters = screen.queryAllByTestId('filter');
+      expect(filters).toHaveLength(0);
+    });
+
+    test('does not show filters when responsesStatusesCounts is null', () => {
+      mockResponsesStatusesCounts = null;
+      mockIsPathActiveFn = (url: string, options?: { exact?: boolean }) => {
+        if (options?.exact) {
+          return url === '/dashboard';
+        }
+        return url.startsWith('/dashboard');
+      };
+
+      const dashboardMenuItem = { ...mockMenuItem, url: '/dashboard', subSections: [] };
+      renderWithProviders(<NavigationLeftItem data-id="002788" menuItem={dashboardMenuItem} />);
+      
+      const filters = screen.queryAllByTestId('filter');
+      expect(filters).toHaveLength(0);
+    });
   });
 });

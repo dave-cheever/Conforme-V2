@@ -177,8 +177,8 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
           </Box>
         </Collapse>
       )}
-      {/* Filters - always visible when on tracker items page */}
-      {isPathActive(url, { exact: true }) && isTrackerComponent && responsesStatusesCounts && (
+      {/* Filters - always visible when on tracker items page (dashboard) */}
+      {isPathActive(url, { exact: true }) && isTrackerComponent && url === '/dashboard' && responsesStatusesCounts && (
         <Box marginTop={'12px'} data-id="000571">
           {Object.keys(responsesStatusesCounts).length !== 0 && (
             <NavigationLeftFilters
