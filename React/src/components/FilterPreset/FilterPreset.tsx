@@ -41,8 +41,8 @@ export const SAVE_FILTER_PRESET = gql`
 export const DELETE_FILTER_PRESET = gql`
   mutation DeleteFilterPreset($deleteFilterPresetInput: DeleteFilterPresetInput!) {
     deleteFilterPreset(deleteFilterPresetInput: $deleteFilterPresetInput) {
-      _id
-      name
+      success
+      message
     }
   }
 `;
@@ -491,7 +491,8 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
                   onCancel={handleCancelSave}
                   onPresetNameChange={setPresetName}
                   onSave={handleSavePreset}
-                  presetName={presetName} />
+                  presetName={presetName}
+                />
               </Box>
             )}
 
@@ -502,7 +503,8 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
               loading={loadingPresets}
               onDeletePreset={handleDeletePreset}
               onPresetClick={handlePresetClick}
-              presets={actualPresets} />
+              presets={actualPresets}
+            />
           </VStack>
         </MenuList>
       </Menu>
@@ -512,7 +514,8 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
         isOpen={!!presetToDelete}
         onCancel={cancelDeletePreset}
         onConfirm={confirmDeletePreset}
-        presetToDelete={presetToDelete} />
+        presetToDelete={presetToDelete}
+      />
     </>
   );
 }

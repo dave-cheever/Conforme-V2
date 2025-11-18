@@ -1,12 +1,15 @@
 import { Users } from 'app-models';
-import { genMetatags, isPermitted } from 'app-utils';
+import { genMetatags } from 'app-utils';
 
 const deleteFilterPreset = async (_, { deleteFilterPresetInput }, { authorize, organization }) => {
   try {
     const user = await authorize();
-    if (!isPermitted({ user, action: 'users.edit' })) throw new Error('User is not permitted');
-
     const { _id, userId } = deleteFilterPresetInput;
+
+    // Ensure the userId being modified is the same as the userId of the session user
+    if (user.userId !== userId) {
+      throw new Error('User is not permitted');
+    }
 
     // Find the user to update
     const userToUpdate = await Users.customFindById(userId, organization._id);
