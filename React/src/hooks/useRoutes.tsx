@@ -41,6 +41,7 @@ import History from '../pages/tracker-item/history';
 import TrackerItemResponse from '../pages/tracker-item/index';
 import Team from '../pages/tracker-item/team';
 import { runtimeEnv } from '../utils/runtime-env';
+import NotificationSettings from '../pages/notification-settings';
 
 // Routes visible for not signed in
 const openRoutes: Array<IRoute> = [
@@ -212,6 +213,13 @@ const protectedRoutes: Array<IRoute> = [
     layout: DefaultLayout,
   },
   {
+    path: '/notification-settings',
+    key: 'notification-settings',
+    exact: true,
+    component: NotificationSettings,
+    layout: DefaultLayout,
+  },
+  {
     path: '/mentions',
     key: 'mentions',
     exact: true,
@@ -313,13 +321,17 @@ const protectedRoutes: Array<IRoute> = [
     component: Help,
     layout: DefaultLayout,
   },
-  ...(runtimeEnv.enableComponentsPage() ? [{
-    path: '/components',
-    key: 'components',
-    exact: true,
-    component: Components,
-    layout: DefaultLayout,
-  }] : []),
+  ...(runtimeEnv.enableComponentsPage()
+    ? [
+        {
+          path: '/components',
+          key: 'components',
+          exact: true,
+          component: Components,
+          layout: DefaultLayout,
+        },
+      ]
+    : []),
 ];
 
 const useRoutes = () => {
@@ -338,38 +350,32 @@ const useRoutes = () => {
     // Overview route is at /overview (not prefixed with module path)
     {
       ...overviewRoute,
-      element: <Can
-        action={overviewRoute.permission}
-        data-id="000032"
-        no={() => <Navigate
-          data-id="000033"
-          key="not-found"
-          to="/overview" />}
-        yes={() => <overviewRoute.layout component={overviewRoute.component} data-id="000034" key={overviewRoute.key} />}
-      />,
+      element: (
+        <Can
+          action={overviewRoute.permission}
+          data-id="000032"
+          no={() => <Navigate data-id="000033" key="not-found" to="/overview" />}
+          yes={() => <overviewRoute.layout component={overviewRoute.component} data-id="000034" key={overviewRoute.key} />}
+        />
+      ),
     },
     // All other routes are prefixed with module path
     ...protectedRoutes.map((route) => ({
       ...route,
       path: `/:modulePath${route.path}`,
-      element: <Can
-        action={route.permission}
-        data-id="000032"
-        no={() => <Navigate
-          data-id="000033"
-          key="not-found"
-          to="/overview" />}
-        yes={() => <route.layout component={route.component} data-id="000034" key={route.key} />}
-      />,
+      element: (
+        <Can
+          action={route.permission}
+          data-id="000032"
+          no={() => <Navigate data-id="000033" key="not-found" to="/overview" />}
+          yes={() => <route.layout component={route.component} data-id="000034" key={route.key} />}
+        />
+      ),
     })),
     {
       path: '*',
       key: 'not-found',
-      element: <Navigate
-        data-id="000035"
-        key="not-found"
-        to="/overview"
-      />,
+      element: <Navigate data-id="000035" key="not-found" to="/overview" />,
       layout: DefaultLayout,
     },
   ];

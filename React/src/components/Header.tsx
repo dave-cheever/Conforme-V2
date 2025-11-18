@@ -38,6 +38,7 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
       'privacy-policy',
       'audit-log',
       'settings',
+      'notification-settings',
       'users',
       'insights',
       'actions',
@@ -73,12 +74,22 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
   );
 
   return (
-    <Flex align="center" background="#ffffff" data-id="000275" h={'fit-content'} pb="10px" position="relative" px={['14px', '14px', '0']} zIndex="2"  borderBottom={'1px solid #CBD5E0'}>
+    <Flex
+      align="center"
+      background="#ffffff"
+      data-id="000275"
+      h={'fit-content'}
+      pb="10px"
+      position="relative"
+      px={['14px', '14px', '0']}
+      zIndex="2"
+      borderBottom={'1px solid #CBD5E0'}
+    >
       <Flex data-id="000276" flexDirection="column" justify="space-between" pb="1" rowGap={[4, 0, 0]} w="full">
-        <Flex data-id="000277" display="flex" flexShrink={0} ml={[0, 0, "5"]} pt={[1, 4, 4]}>
+        <Flex data-id="000277" display="flex" flexShrink={0} ml={[0, 0, '5']} pt={[1, 4, 4]}>
           {breadCrumbs.map(renderBreadcrumb)}
         </Flex>
-        <Flex data-id="001518" direction={["column", "column", "row"]} rowGap={['10px', '10px', '0']}>
+        <Flex data-id="001518" direction={['column', 'column', 'row']} rowGap={['10px', '10px', '0']}>
           <Flex data-id="000278" justify="flex-end" mr="15px" w="full">
             {children}
           </Flex>
