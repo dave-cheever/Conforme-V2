@@ -36,8 +36,23 @@ function App() {
     const isOnLogout = location.pathname === '/logout' || location.pathname.endsWith('/logout');
     const isOnModuleRoot = location.pathname === `/${module?.path}` || location.pathname === '/';
     
+    // Check if we're in the process of redirecting to Microsoft login
+    // If so, don't redirect to overview - let the Microsoft redirect happen
+    const isRedirectingToLogin = sessionStorage.getItem('isRedirectingToLogin') === 'true';
+    
+    // If we're redirecting to login, prevent any navigation to protected routes
+    // This ensures users can't access the app until authentication is complete
+    if (isRedirectingToLogin) {
+      // If we're on a protected route (not login/logout), redirect to login
+      if (!isFromLogin && !isOnLogout) {
+        navigateTo('/login');
+      }
+      return; // Don't proceed with any other redirects
+    }
+    
     // Redirect to overview only when coming from login page or landing on root after login
-    if (user && !loadingUser && !loadingSettings && module && !isOnLogout) {
+    // But NOT if we're currently redirecting to Microsoft login
+    if (user && !loadingUser && !loadingSettings && module && !isOnLogout && !isRedirectingToLogin) {
       if ((isFromLogin || isOnModuleRoot) && !hasRedirectedAfterLogin.current) {
         // Only redirect if we haven't redirected yet (initial load after login)
         hasRedirectedAfterLogin.current = true;

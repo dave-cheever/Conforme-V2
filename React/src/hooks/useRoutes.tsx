@@ -324,7 +324,16 @@ const protectedRoutes: Array<IRoute> = [
 
 const useRoutes = () => {
   const { user, module } = useAppContext();
-  if (!user) return openRoutes.map((route) => ({ ...route, element: <route.component data-id="000031" /> }));
+  
+  // Check if we're in the process of redirecting to Microsoft login
+  // If so, only show open routes (login/logout) to prevent access to protected routes
+  const isRedirectingToLogin = typeof window !== 'undefined' && sessionStorage.getItem('isRedirectingToLogin') === 'true';
+  
+  // If no user OR we're redirecting to login, show only open routes
+  if (!user || isRedirectingToLogin) {
+    return openRoutes.map((route) => ({ ...route, element: <route.component data-id="000031" /> }));
+  }
+  
   return [
     // Overview route is at /overview (not prefixed with module path)
     {

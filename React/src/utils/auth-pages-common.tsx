@@ -54,11 +54,33 @@ export const useAuthErrorHandling = () => {
 export const useAuthLogin = () => {
   const toast = useToast();
 
-  const login = async () => {
+  const login = async (event?: React.MouseEvent) => {
+    // Prevent default button behavior and stop propagation to avoid React re-renders
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    
+    // Set a flag to indicate we're initiating a login redirect
+    // This prevents the user state from being cleared during redirect
+    // AND prevents access to protected routes until authentication is complete
+    sessionStorage.setItem('isRedirectingToLogin', 'true');
+    sessionStorage.setItem('isRedirectingToLoginTimestamp', Date.now().toString());
+    
     const loginOptions = {
-      onRequest: () => {},
-      onSuccess: () => {},
-      onError: (ctx) => { 
+      onRequest: () => {
+        // Redirect is being initiated - Better Auth will handle the redirect
+        // The flag is already set, so routes will be restricted
+      },
+      onSuccess: () => {
+        // Clear the flag on success
+        sessionStorage.removeItem('isRedirectingToLogin');
+        sessionStorage.removeItem('isRedirectingToLoginTimestamp');
+      },
+      onError: (ctx) => {
+        // Clear the flag on error
+        sessionStorage.removeItem('isRedirectingToLogin');
+        sessionStorage.removeItem('isRedirectingToLoginTimestamp');
         toast({ 
           status: 'error',
           title: 'Error',
@@ -67,6 +89,9 @@ export const useAuthLogin = () => {
       },
     };
 
+    // Immediately initiate the redirect
+    // Better Auth's signIn.social should redirect immediately without waiting
+    // The isRedirectingToLogin flag ensures no protected routes are accessible during this redirect
     authClient.signIn.social({
       provider: "microsoft",
       callbackURL: runtimeEnv.clientUrl(),
