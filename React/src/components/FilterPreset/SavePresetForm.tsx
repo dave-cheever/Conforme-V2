@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Button, HStack, Input } from '@chakra-ui/react';
-
+import { Button, HStack, Input, Text, VStack } from '@chakra-ui/react';
 import { CrossIcon, SaveIcon } from '../../icons';
+import { MAX_PRESET_NAME_LENGTH } from '../../constants';
 
 interface SavePresetFormProps {
   readonly presetName: string;
@@ -12,28 +12,34 @@ interface SavePresetFormProps {
   readonly dataId: string;
 }
 
+
 function SavePresetForm({ presetName, onPresetNameChange, onSave, onCancel, dataId }: SavePresetFormProps) {
+  const isOverLimit = presetName.length > MAX_PRESET_NAME_LENGTH;
+  
   return (
-    <HStack data-id="002338" spacing="8px">
-      <Input
-        _focus={{
-          borderColor: '#CBD5E0',
-          boxShadow: '0px 1px 2px 0px rgba(16, 24, 40, 0.05), 0px 0px 0px 4px rgba(16, 24, 40, 0.05)',
-        }}
-        border="1px solid #CBD5E0"
-        borderRadius="6px"
-        color="#A0AEC0"
-        data-id={`${dataId}-preset-input`}
-        fontSize="14px"
-        h="32px"
-        onChange={(e) => onPresetNameChange(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') onSave();
-          else if (e.key === 'Escape') onCancel();
-        }}
-        placeholder="Preset name"
-        value={presetName}
-      />
+    <VStack align="stretch" data-id="002338" spacing="4px" w="100%">
+      <HStack data-id="003085" spacing="8px">
+        <Input
+          _focus={{
+            borderColor: isOverLimit ? '#E53E3E' : '#CBD5E0',
+            boxShadow: isOverLimit 
+              ? '0px 1px 2px 0px rgba(229, 62, 62, 0.05), 0px 0px 0px 4px rgba(229, 62, 62, 0.05)'
+              : '0px 1px 2px 0px rgba(16, 24, 40, 0.05), 0px 0px 0px 4px rgba(16, 24, 40, 0.05)',
+          }}
+          border={`1px solid ${isOverLimit ? '#E53E3E' : '#CBD5E0'}`}
+          borderRadius="6px"
+          data-id={`${dataId}-preset-input`}
+          fontSize="14px"
+          h="32px"
+          isInvalid={isOverLimit}
+          onChange={(e) => onPresetNameChange(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !isOverLimit) onSave();
+            else if (e.key === 'Escape') onCancel();
+          }}
+          placeholder="Preset name"
+          value={presetName}
+        />
       <Button
         _hover={{ bg: 'gray.50' }}
         bg="transparent"
@@ -52,24 +58,34 @@ function SavePresetForm({ presetName, onPresetNameChange, onSave, onCancel, data
       >
         <CrossIcon data-id="002339" h="10px" w="10px" />
       </Button>
-      <Button
-        _hover={{ opacity: 0.9 }}
-        bg="#0068A3"
-        borderRadius="6px"
-        data-id={`${dataId}-confirm-save-button`}
-        h="32px"
-        minW="32px"
-        onClick={(e) => {
-          e.stopPropagation();
-          onSave();
-        }}
-        p="0"
-        variant="solid"
-        w="32px"
-      >
-        <SaveIcon color="white" data-id="002340" h="12px" stroke="white" w="12px" />
-      </Button>
-    </HStack>
+        <Button
+          _hover={{ opacity: 0.9 }}
+          bg="#0068A3"
+          borderRadius="6px"
+          data-id={`${dataId}-confirm-save-button`}
+          h="32px"
+          isDisabled={isOverLimit}
+          minW="32px"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!isOverLimit) {
+              onSave();
+            }
+          }}
+          opacity={isOverLimit ? 0.5 : 1}
+          p="0"
+          variant="solid"
+          w="32px"
+        >
+          <SaveIcon color="white" data-id="002340" h="12px" stroke="white" w="12px" />
+        </Button>
+      </HStack>
+      {isOverLimit && (
+        <Text data-id="003086" color="#E53E3E" fontSize="12px" mt="4px">
+          Preset name must be {MAX_PRESET_NAME_LENGTH} characters or less ({presetName.length}/{MAX_PRESET_NAME_LENGTH})
+        </Text>
+      )}
+    </VStack>
   );
 }
 

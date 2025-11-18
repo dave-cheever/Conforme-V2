@@ -6,6 +6,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import FilterPreset, { GET_FILTER_PRESETS, SAVE_FILTER_PRESET } from '../../components/FilterPreset';
+import { MAX_PRESET_NAME_LENGTH } from '../../constants';
 
 // Mock the contexts
 const mockAppContext = {
@@ -595,6 +596,215 @@ describe('FilterPreset', () => {
         // Verify it has the overflow constraints to prevent viewport overflow
         expect(menuList).toHaveStyle({ maxHeight: 'calc(100vh - 200px)' });
         expect(menuList).toHaveStyle({ overflowY: 'auto' });
+      });
+    });
+  });
+
+  describe('Preset Name Character Limit Validation', () => {
+    test('allows preset names within character limit', async () => {
+      render(
+        <TestWrapper data-id="002236">
+          <FilterPreset data-id="filter-preset" />
+        </TestWrapper>,
+      );
+
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        const saveButton = screen.getByText('Save preset');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        const input = screen.getByPlaceholderText('Preset name');
+        const validName = 'A'.repeat(MAX_PRESET_NAME_LENGTH);
+        fireEvent.change(input, { target: { value: validName } });
+        expect(input).toHaveValue(validName);
+      });
+
+      await waitFor(() => {
+        const errorMessage = screen.queryByText(/must be.*characters or less/i);
+        expect(errorMessage).not.toBeInTheDocument();
+      });
+
+      const saveButtonElement = document.querySelector('[data-id="filter-preset-confirm-save-button"]');
+      expect(saveButtonElement).not.toBeDisabled();
+    });
+
+    test('shows error message when preset name exceeds character limit', async () => {
+      render(
+        <TestWrapper data-id="002237">
+          <FilterPreset data-id="filter-preset" />
+        </TestWrapper>,
+      );
+
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        const saveButton = screen.getByText('Save preset');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        const input = screen.getByPlaceholderText('Preset name');
+        const tooLongName = 'A'.repeat(MAX_PRESET_NAME_LENGTH + 1);
+        fireEvent.change(input, { target: { value: tooLongName } });
+        expect(input).toHaveValue(tooLongName);
+      });
+
+      await waitFor(() => {
+        const errorMessage = screen.getByText(
+          new RegExp(`Preset name must be ${MAX_PRESET_NAME_LENGTH} characters or less`, 'i'),
+        );
+        expect(errorMessage).toBeInTheDocument();
+      });
+    });
+
+    test('disables save button when preset name exceeds character limit', async () => {
+      render(
+        <TestWrapper data-id="002238">
+          <FilterPreset data-id="filter-preset" />
+        </TestWrapper>,
+      );
+
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        const saveButton = screen.getByText('Save preset');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        const input = screen.getByPlaceholderText('Preset name');
+        const tooLongName = 'A'.repeat(MAX_PRESET_NAME_LENGTH + 10);
+        fireEvent.change(input, { target: { value: tooLongName } });
+      });
+
+      await waitFor(() => {
+        const saveButtonElement = document.querySelector('[data-id="filter-preset-confirm-save-button"]');
+        expect(saveButtonElement).toBeDisabled();
+      });
+    });
+
+    test('shows character count in error message', async () => {
+      render(
+        <TestWrapper data-id="002239">
+          <FilterPreset data-id="filter-preset" />
+        </TestWrapper>,
+      );
+
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        const saveButton = screen.getByText('Save preset');
+        fireEvent.click(saveButton);
+      });
+
+      const tooLongName = 'A'.repeat(MAX_PRESET_NAME_LENGTH + 5);
+
+      await waitFor(() => {
+        const input = screen.getByPlaceholderText('Preset name');
+        fireEvent.change(input, { target: { value: tooLongName } });
+      });
+
+      await waitFor(() => {
+        const characterCount = screen.getByText(
+          new RegExp(`\\(${MAX_PRESET_NAME_LENGTH + 5}/${MAX_PRESET_NAME_LENGTH}\\)`, 'i'),
+        );
+        expect(characterCount).toBeInTheDocument();
+      });
+    });
+
+    test('prevents Enter key from saving when over character limit', async () => {
+      render(
+        <TestWrapper data-id="002240">
+          <FilterPreset data-id="filter-preset" />
+        </TestWrapper>,
+      );
+
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        const saveButton = screen.getByText('Save preset');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        const input = screen.getByPlaceholderText('Preset name');
+        const tooLongName = 'A'.repeat(MAX_PRESET_NAME_LENGTH + 1);
+        fireEvent.change(input, { target: { value: tooLongName } });
+        fireEvent.keyDown(input, { key: 'Enter' });
+      });
+
+      await waitFor(() => {
+        const input = screen.getByPlaceholderText('Preset name');
+        expect(input).toBeInTheDocument();
+      });
+    });
+
+    test('allows Enter key to save when within character limit', async () => {
+      render(
+        <TestWrapper data-id="002241">
+          <FilterPreset data-id="filter-preset" />
+        </TestWrapper>,
+      );
+
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        const saveButton = screen.getByText('Save preset');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        const input = screen.getByPlaceholderText('Preset name');
+        const validName = 'Valid Name';
+        fireEvent.change(input, { target: { value: validName } });
+        fireEvent.keyDown(input, { key: 'Enter' });
+      });
+    });
+
+    test('removes error message when name is shortened to valid length', async () => {
+      render(
+        <TestWrapper data-id="002243">
+          <FilterPreset data-id="filter-preset" />
+        </TestWrapper>,
+      );
+
+      const button = screen.getByRole('button', { name: /filter presets/i });
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        const saveButton = screen.getByText('Save preset');
+        fireEvent.click(saveButton);
+      });
+
+      await waitFor(() => {
+        const input = screen.getByPlaceholderText('Preset name');
+        const tooLongName = 'A'.repeat(MAX_PRESET_NAME_LENGTH + 10);
+        fireEvent.change(input, { target: { value: tooLongName } });
+      });
+
+      await waitFor(() => {
+        const errorMessage = screen.getByText(/must be.*characters or less/i);
+        expect(errorMessage).toBeInTheDocument();
+      });
+
+      await waitFor(() => {
+        const input = screen.getByPlaceholderText('Preset name');
+        const validName = 'A'.repeat(MAX_PRESET_NAME_LENGTH);
+        fireEvent.change(input, { target: { value: validName } });
+      });
+
+      await waitFor(() => {
+        const errorMessage = screen.queryByText(/must be.*characters or less/i);
+        expect(errorMessage).not.toBeInTheDocument();
       });
     });
   });

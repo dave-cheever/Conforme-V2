@@ -11,6 +11,7 @@ import updateLocalStorageFilter from '../../utils/filterStorage';
 import DeletePresetModal from './DeletePresetModal';
 import FilterPresetList from './FilterPresetList';
 import SavePresetForm from './SavePresetForm';
+import { MAX_PRESET_NAME_LENGTH } from '../../constants';
 
 export const SAVE_FILTER_PRESET = gql`
   mutation SaveFilterPreset($saveFilterPresetInput: SaveFilterPresetInput!) {
@@ -172,6 +173,20 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
       const currentFilters = getCurrentFilterValues();
       const currentPageName = getCurrentPageName();
       const trimmedName = presetName.trim();
+
+      // Check for character limit
+      if (trimmedName.length > MAX_PRESET_NAME_LENGTH) {
+        toast({
+          title: 'Preset name too long',
+          description: `Preset name must be ${MAX_PRESET_NAME_LENGTH} characters or less.`,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+        });
+        setIsSaving(false);
+        return;
+      }
 
       // Check if there are any meaningful filters to save (excluding sorting)
       const filtersWithoutSorting = { ...currentFilters };
@@ -427,8 +442,9 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
           borderRadius="8px"
           boxShadow="0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03)"
           data-id={`${dataId}-menu`}
-          minW="280px"
           maxH="calc(100vh - 200px)"
+          maxW="400px"
+          minW="280px"
           overflowY="auto"
           onClick={(e) => {
             e.stopPropagation();
