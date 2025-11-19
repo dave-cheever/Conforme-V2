@@ -21,8 +21,38 @@ export const CORSConfig = {
   origin: (origin, callback) => {
     if (process.env.APPSETTING_NODE_ENV === 'dev' && origin === 'https://studio.apollographql.com') return callback(null, true);
 
-    const whitelist = [...(process.env.ALLOWED_DOMAINS || '').split(';'), 'login.microsoftonline.com'];
-    if (!origin || origin === 'null' || whitelist.indexOf(origin.replace(getProtocol(), '')) !== -1) return callback(null, true);
+    // Allow requests without origin (e.g., Postman, curl without Origin header)
+    if (!origin || origin === 'null') return callback(null, true);
+
+    // Normalize origin
+    let originDomain = origin
+      .replace(/^https?:\/\//, '')
+      .split('/')[0]
+      .toLowerCase();
+
+    const allowedDomains = (process.env.ALLOWED_DOMAINS || '')
+      .split(';')
+      .map((domain) =>
+        domain
+          .trim()
+          .replace(/^https?:\/\//, '')
+          .split('/')[0]
+          .toLowerCase(),
+      )
+      .filter(Boolean);
+    const whitelist = [...allowedDomains, 'login.microsoftonline.com'];
+
+    if (whitelist.includes(originDomain)) return callback(null, true);
+
+    if (process.env.CLIENT_URL) {
+      const baseDomain = process.env.CLIENT_URL.replace(/^https?:\/\//, '')
+        .split('/')[0]
+        .toLowerCase();
+
+      if (originDomain === baseDomain || originDomain.endsWith('.' + baseDomain)) {
+        return callback(null, true);
+      }
+    }
 
     callback(new Error(`${origin} is not allowed by CORS`));
   },
