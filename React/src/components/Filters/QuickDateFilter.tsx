@@ -155,7 +155,10 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
                   inline
                   onChange={(date) => {
                     setSelectedDate(date);
-                    setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: ['exactDate', date] });
+                    // Create a date at midnight UTC for the selected date to prevent timezone shifting
+                    // This ensures the exact date selected is used regardless of user's timezone
+                    const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+                    setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: ['exactDate', utcDate] });
                   }}
                   selected={startDate ? new Date(startDate) : new Date()}
                 />
@@ -168,7 +171,11 @@ function QuickDateFilter({ filterName, toggleActiveFilters }: { filterName: stri
                   inline
                   onChange={(dates) => {
                     const [start, end] = dates;
-                    setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: ['dateRange', start, end] });
+                    // Create dates at midnight UTC for the selected dates to prevent timezone shifting
+                    // This ensures the exact dates selected are used regardless of user's timezone
+                    const utcStartDate = start ? new Date(Date.UTC(start.getFullYear(), start.getMonth(), start.getDate())) : null;
+                    const utcEndDate = end ? new Date(Date.UTC(end.getFullYear(), end.getMonth(), end.getDate())) : null;
+                    setFilters({ [module?.type === 'tracker' ? 'dueDate' : filterName]: ['dateRange', utcStartDate, utcEndDate] });
                   }}
                   selected={startDate}
                   selectsRange
