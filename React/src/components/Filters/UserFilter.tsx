@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Box, Flex, Input, InputGroup, Select, Spacer, Text } from '@chakra-ui/react';
@@ -31,7 +31,50 @@ function UserFilter() {
         return 'auditor';
     }
   }, [location.pathname]);
-  const [selectedRole, setSelectedRole] = useState<string>(module?.type === 'tracker' ? 'responsible' : auditSelectedUserRole);
+
+  // Helper function to get tracker role based on selected users
+  const getTrackerRole = useMemo(() => {
+    const trackerFilter = filtersValues.usersIds as IUserFilter;
+    if ((trackerFilter?.value?.responsibleIds?.length ?? 0) > 0) return 'responsible';
+    if ((trackerFilter?.value?.accountableIds?.length ?? 0) > 0) return 'accountable';
+    if ((trackerFilter?.value?.contributorIds?.length ?? 0) > 0) return 'contributor';
+    if ((trackerFilter?.value?.followerIds?.length ?? 0) > 0) return 'follower';
+    return 'responsible';
+  }, [filtersValues.usersIds]);
+
+  // Helper function to get audit role based on selected users
+  const getAuditRole = useMemo(() => {
+    const path = getPath();
+    if (path === 'actions') {
+      return 'assignee';
+    }
+    if (path === 'answers') {
+      return 'addedBy';
+    }
+    // Default to audits
+    const auditFilter = filtersValues.usersIds as IAuditUserFilter;
+    if ((auditFilter?.value?.participantsIds?.length ?? 0) > 0) return 'participant';
+    if ((auditFilter?.value?.auditorsIds?.length ?? 0) > 0) return 'auditor';
+    return 'auditor';
+  }, [filtersValues.usersIds, getPath]);
+
+  // Determine initial selected role based on which role has selected users
+  const getInitialSelectedRole = useMemo(() => {
+    return module?.type === 'tracker' ? getTrackerRole : getAuditRole;
+  }, [module?.type, getTrackerRole, getAuditRole]);
+
+  const [selectedRole, setSelectedRole] = useState<string>(getInitialSelectedRole);
+
+  // Update selectedRole when filtersValues change to reflect which role has selected users
+  // This ensures the dropdown shows the role that has selected users when filter is reopened
+  useEffect(() => {
+    const newSelectedRole = getInitialSelectedRole;
+    // Only update if the computed role is different from current selection
+    // This prevents unnecessary updates and respects user's manual selection
+    setSelectedRole((currentRole) => {
+      return newSelectedRole === currentRole ? currentRole : newSelectedRole;
+    });
+  }, [getInitialSelectedRole]);
 
   const baseAuditUserRoles = useMemo(() => {
     switch (getPath()) {
@@ -344,6 +387,7 @@ function UserFilter() {
         icon={<ArrowDownSmall data-id="000194" />}
         iconColor="usersSelector.roles.selector.iconDown"
         iconSize="15px"
+        value={selectedRole}
         onChange={(value) => {
           setSelectedRole(value.target.value);
         }}
