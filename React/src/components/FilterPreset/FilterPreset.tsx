@@ -404,9 +404,16 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
     onClose();
   };
 
+  const handleMenuClose = () => {
+    // Don't close the menu if the delete modal is open
+    if (!presetToDelete) {
+      onClose();
+    }
+  };
+
   return (
     <>
-      <Menu data-id={dataId} isOpen={isOpen} onClose={onClose} onOpen={onOpen} placement={placement}>
+      <Menu data-id={dataId} isOpen={isOpen} onClose={handleMenuClose} onOpen={onOpen} placement={placement}>
         <MenuButton
           _active={{
             bg: 'gray.100',

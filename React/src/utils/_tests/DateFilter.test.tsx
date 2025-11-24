@@ -18,14 +18,36 @@ vi.mock('../../utils/filterStorage');
 
 // Mock react-datepicker
 vi.mock('react-datepicker', () => ({
-  default: ({ onChange, onMonthChange, onYearChange, selected, ...props }) => (
-    <div data-id="002349" data-testid="datepicker" {...props}>
+  default: ({
+    onChange,
+    onMonthChange,
+    onYearChange,
+    selected,
+    startDate,
+    endDate,
+    selectsRange,
+    inline,
+    disabledKeyboardNavigation,
+    dropdownMode,
+    showMonthDropdown,
+    showYearDropdown,
+    yearDropdownItemNumber,
+    'data-id': dataId,
+    ...props
+  }) => (
+    <div data-id={dataId || '002349'} data-testid="datepicker">
       <button
         data-id="002350"
         data-testid="datepicker-change"
         onClick={() => {
           const testDate = new Date('2024-01-15');
-          onChange(testDate);
+          if (onChange) {
+            if (selectsRange) {
+              onChange([testDate, null]);
+            } else {
+              onChange(testDate);
+            }
+          }
         }}
         type="button"
       >
@@ -36,7 +58,9 @@ vi.mock('react-datepicker', () => ({
         data-testid="datepicker-month-change"
         onClick={() => {
           const testDate = new Date('2024-02-01');
-          onMonthChange(testDate);
+          if (onMonthChange) {
+            onMonthChange(testDate);
+          }
         }}
         type="button"
       >
@@ -47,7 +71,9 @@ vi.mock('react-datepicker', () => ({
         data-testid="datepicker-year-change"
         onClick={() => {
           const testDate = new Date('2025-01-01');
-          onYearChange(testDate);
+          if (onYearChange) {
+            onYearChange(testDate);
+          }
         }}
         type="button"
       >
@@ -56,6 +82,8 @@ vi.mock('react-datepicker', () => ({
       <div data-id="002353" data-testid="selected-date">
         {selected ? selected.toString() : 'No date selected'}
       </div>
+      {startDate && <div data-id="003172" data-testid="start-date">{startDate.toString()}</div>}
+      {endDate && <div data-id="003173" data-testid="end-date">{endDate.toString()}</div>}
     </div>
   ),
 }));

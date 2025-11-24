@@ -101,7 +101,7 @@ describe('DeletePresetModal', () => {
     );
 
     const deleteButton = screen.getByText('Delete');
-    fireEvent.mouseDown(deleteButton);
+    fireEvent.click(deleteButton);
 
     expect(defaultProps.onConfirm).toHaveBeenCalled();
   });

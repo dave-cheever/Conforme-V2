@@ -17,7 +17,25 @@ function FiltersPanel() {
   const device = useDevice();
   useOutsideClick({
     ref: panelRef,
-    handler: () => setShowFiltersPanel(false),
+    handler: (e) => {
+      // Don't close the panel if clicking on a modal or modal overlay
+      const target = e.target as HTMLElement;
+      // Check if clicking on modal elements or if any modal is currently open
+      const isModalElement =
+        target.closest('[role="dialog"]') ||
+        target.closest('[data-chakra-modal]') ||
+        target.closest('.chakra-modal') ||
+        target.closest('[id^="chakra-modal"]') ||
+        target.closest('[id*="modal"]');
+      
+      const hasOpenModal = document.querySelector('[role="dialog"]:not([aria-hidden="true"])') ||
+        document.querySelector('.chakra-modal:not([aria-hidden="true"])');
+      
+      if (isModalElement || hasOpenModal) {
+        return;
+      }
+      setShowFiltersPanel(false);
+    },
   });
   useEffect(() => {
     if (showFiltersPanel && device === 'mobile') document.body.style.overflow = 'hidden';

@@ -226,8 +226,8 @@ describe('UserMenu Styling', () => {
 
       const logoutText = screen.getByText('Logout');
       expect(logoutText).toHaveStyle({
-        color: 'var(--chakra-colors-red-500)',
-        'font-size': '14px',
+        color: 'rgb(208, 2, 27)', // #D0021B
+        'font-size': '16px',
         'font-weight': '500',
       });
     });
