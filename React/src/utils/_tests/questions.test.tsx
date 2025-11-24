@@ -9,8 +9,17 @@ import { AdminContext } from '../../contexts/AdminProvider';
 import Questions from '../../pages/admin/questions';
 
 // Mock i18next
+const { mockT } = vi.hoisted(() => {
+  const mockT = vi.fn((s: string) => s);
+  return { mockT };
+});
 vi.mock('i18next', () => ({
-  t: (s: string) => s,
+  t: mockT,
+}));
+
+// Mock lodash capitalize
+vi.mock('lodash', () => ({
+  capitalize: (s: string) => s.charAt(0).toUpperCase() + s.slice(1),
 }));
 
 // Mock Apollo hooks
@@ -31,8 +40,12 @@ vi.mock('../../components/Admin/AdminModal', () => ({
     </div>
   ),
 }));
+const dropdownProps: any = {};
 vi.mock('../../components/Forms/Dropdown', () => ({
-  default: () => <div data-id="001949" data-testid="dropdown" />,
+  default: (props: any) => {
+    Object.assign(dropdownProps, props);
+    return <div data-id="001949" data-testid="dropdown" data-label={props.label} data-placeholder={props.placeholder} />;
+  },
 }));
 vi.mock('../../components/Forms/TextInput', () => ({
   default: () => <div data-id="001950" data-testid="text-input" />,
@@ -73,6 +86,7 @@ const createWrapper = (adminValue?: any) =>
 describe('Questions page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    Object.keys(dropdownProps).forEach((key) => delete dropdownProps[key]);
   });
 
   it('renders ListView with questions and correct column', () => {
@@ -219,5 +233,28 @@ describe('Questions page', () => {
     render(<Questions data-id="001963" />, { wrapper: createWrapper() });
     const list = screen.getByTestId('listview');
     expect(list.getAttribute('data-length')).toBe('3');
+  });
+
+  it('uses translated label and placeholder for question set dropdown', () => {
+    mockUseQuery.mockReturnValue({
+      data: { questions: [], questionsCategories: [{ _id: 'c1', name: 'Category 1', maxQuestionsNumber: 10 }] },
+      loading: false,
+      refetch: vi.fn(),
+    });
+
+    render(<Questions data-id="001964" />, { wrapper: createWrapper({ adminModalState: 'add', setAdminModalState: vi.fn() }) });
+
+    const dropdown = screen.getByTestId('dropdown');
+    const label = dropdown.getAttribute('data-label');
+    const placeholder = dropdown.getAttribute('data-placeholder');
+
+    // Verify translation function was called
+    expect(mockT).toHaveBeenCalledWith('question');
+
+    // Verify label uses translation pattern: capitalize(t('question')) + ' set'
+    expect(label).toBe('Question set');
+
+    // Verify placeholder uses translation pattern: t('question') + ' set'
+    expect(placeholder).toBe('question set');
   });
 });

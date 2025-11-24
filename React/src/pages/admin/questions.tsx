@@ -333,13 +333,13 @@ function Questions() {
           <Dropdown
             control={control}
             data-id="000487"
-            label="Questions Category"
+            label={`${capitalize(t('question'))} set`}
             name="questionsCategoryId"
             options={questionsCategories?.map(({ _id, name }) => ({
               label: name,
               value: _id,
             }))}
-            placeholder="Questions category"
+            placeholder={`${t('question')} set`}
             required
             validations={{
               notEmpty: true,
