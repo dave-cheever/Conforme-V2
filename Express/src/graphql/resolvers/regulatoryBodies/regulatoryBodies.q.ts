@@ -45,7 +45,17 @@ const regulatoryBodies = async (
       }
     }
 
-    return regulatoryBodies.sort((a, b) => a.name.localeCompare(b.name));
+    // Remove duplicates - keep the first occurrence based on _id (or name as fallback)
+    const uniqueRegulatoryBodiesMap = new Map<string, typeof regulatoryBodies[0]>();
+    regulatoryBodies.forEach((regulatoryBody) => {
+      if (!regulatoryBody) return;
+      const uniqueKey = regulatoryBody._id || regulatoryBody.name;
+      if (uniqueKey && !uniqueRegulatoryBodiesMap.has(uniqueKey)) {
+        uniqueRegulatoryBodiesMap.set(uniqueKey, regulatoryBody);
+      }
+    });
+
+    return Array.from(uniqueRegulatoryBodiesMap.values()).sort((a, b) => a.name.localeCompare(b.name));
   } catch (err: any) {
     throw new Error(err);
   }

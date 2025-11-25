@@ -163,7 +163,18 @@ const users = async (_, { usersAnswersCountInput, usersPagination }, { organizat
         return user;
       }),
     );
-    return users;
+
+    // Remove duplicates - keep the first occurrence based on userId (or _id as fallback)
+    const uniqueUsersMap = new Map<string, typeof users[0]>();
+    users.forEach((user) => {
+      if (!user) return;
+      const uniqueKey = user.userId || user._id;
+      if (uniqueKey && !uniqueUsersMap.has(uniqueKey)) {
+        uniqueUsersMap.set(uniqueKey, user);
+      }
+    });
+
+    return Array.from(uniqueUsersMap.values());
   } catch (err: any) {
     throw new Error(err);
   }

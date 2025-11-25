@@ -52,7 +52,17 @@ const categories = async (
       // Wait for all promises to resolve (all category counts to be fetched)
       await Promise.all(promises);
     }
-    return categories.sort((a, b) => a.name.localeCompare(b.name));
+    // Remove duplicates - keep the first occurrence based on _id (or name as fallback)
+    const uniqueCategoriesMap = new Map<string, typeof categories[0]>();
+    categories.forEach((category) => {
+      if (!category) return;
+      const uniqueKey = category._id || category.name;
+      if (uniqueKey && !uniqueCategoriesMap.has(uniqueKey)) {
+        uniqueCategoriesMap.set(uniqueKey, category);
+      }
+    });
+
+    return Array.from(uniqueCategoriesMap.values()).sort((a, b) => a.name.localeCompare(b.name));
   } catch (err: any) {
     throw new Error(err);
   }

@@ -330,7 +330,17 @@ const locations = async (
       );
     }
 
-    return locations?.sort((a, b) => a.name.localeCompare(b.name));
+    // Remove duplicates - keep the first occurrence based on name (or _id as fallback)
+    const uniqueLocationsMap = new Map<string, typeof locations[0]>();
+    locations.forEach((location) => {
+      if (!location) return;
+      const uniqueKey = location.name || location._id;
+      if (uniqueKey && !uniqueLocationsMap.has(uniqueKey)) {
+        uniqueLocationsMap.set(uniqueKey, location);
+      }
+    });
+
+    return Array.from(uniqueLocationsMap.values()).sort((a, b) => a.name.localeCompare(b.name));
   } catch (err: any) {
     console.error(err);
     throw new Error(err);

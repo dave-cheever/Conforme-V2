@@ -237,7 +237,17 @@ const businessUnits = async (
       }),
     );
 
-    return businessUnits.sort((a, b) => a.name.localeCompare(b.name));
+    // Remove duplicates - keep the first occurrence based on _id (or name as fallback)
+    const uniqueBusinessUnitsMap = new Map<string, typeof businessUnits[0]>();
+    businessUnits.forEach((businessUnit) => {
+      if (!businessUnit) return;
+      const uniqueKey = businessUnit._id || businessUnit.name;
+      if (uniqueKey && !uniqueBusinessUnitsMap.has(uniqueKey)) {
+        uniqueBusinessUnitsMap.set(uniqueKey, businessUnit);
+      }
+    });
+
+    return Array.from(uniqueBusinessUnitsMap.values()).sort((a, b) => a.name.localeCompare(b.name));
   } catch (err: any) {
     throw new Error(err);
   }
