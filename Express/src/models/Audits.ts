@@ -242,15 +242,12 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
     },
   });
 
-  // Filter by search text (in businessUnit name, auditor and reference)
-  pipeline.push({
-    $match: {
-      $or: [
-        { 'businessUnit.name': new RegExp(searchText, 'i') },
-        { 'auditor.displayName': new RegExp(searchText, 'i') },
-        { reference: new RegExp(searchText, 'i') },
-      ],
-    },
+  // Join auditType BEFORE search filter so we can search by auditType name
+  join({
+    pipeline,
+    collection: 'auditTypes',
+    from: 'auditTypeId',
+    to: 'auditType',
   });
 
   join({
@@ -258,6 +255,26 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
     collection: 'locations',
     from: 'locationId',
     to: 'location',
+  });
+
+  // Filter by search text (in reference and auditType name)
+  pipeline.push({
+    $match: {
+      $or: [
+        { 
+          $and: [
+            { reference: { $exists: true, $ne: null } },
+            { reference: { $regex: searchText, $options: 'i' } }
+          ]
+        },
+        { 
+          $and: [
+            { 'auditType.name': { $exists: true, $ne: null } },
+            { 'auditType.name': { $regex: searchText, $options: 'i' } }
+          ]
+        },
+      ],
+    },
   });
 
   pipeline.push({
@@ -268,8 +285,11 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
     $project: {
       _id: 1,
       auditorId: 1,
+      reference: 1,
+      status: 1,
       title: { $concat: ['$auditor.displayName', ' - ', '$reference'] },
       type: 'audits',
+      auditType: 1,
     },
   });
 
@@ -278,17 +298,32 @@ auditsSchema.statics.customSearch = async function (searchQuery, user, organizat
 
   data = await Promise.all(
     data.map(async (audit) => {
-      if (!audit.auditorId) return audit;
-      try {
+      if (!audit.auditorId) {
         return {
           ...audit,
-          user: await Users.customFindByIdWithDetails({
-            userId: audit?.auditorId,
-            organization,
-          }),
+          user: null,
+          auditTypeName: audit.auditType?.name || null,
         };
-      } catch (e) {
-        return audit;
+      }
+      try {
+        const user = await Users.customFindByIdWithDetails({
+          userId: audit?.auditorId,
+          organization,
+          awaitForResponse: false,
+        });
+        return {
+          ...audit,
+          user: user ? { _id: user._id } : null,
+          auditTypeName: audit.auditType?.name || null,
+        };
+      } catch (error) {
+        // Handle user lookup errors gracefully by returning null user
+        console.error('Error fetching user details for audit:', audit?.auditorId, error);
+        return {
+          ...audit,
+          user: null,
+          auditTypeName: audit.auditType?.name || null,
+        };
       }
     }),
   );

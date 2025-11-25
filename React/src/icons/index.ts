@@ -17,6 +17,7 @@ export { default as AttachmentClipIcon } from './AttachmentClipIcon';
 export { default as AttachmentIcon } from './AttachmentIcon';
 export { default as AtTheRateIcon } from './AtTheRateIcon';
 export { default as AuditIcon } from './AuditIcon';
+export { default as AuditSearchIcon } from './AuditSearchIcon';
 export { default as Audits } from './Audits';
 export { default as AuditWhiteIcon } from './AuditWhiteIcon';
 export { default as Bar } from './Bar';
@@ -121,6 +122,7 @@ export { default as SwapIcon } from './SwapIcon';
 export { default as TeamsIcon } from './TeamsIcon';
 export { default as ThumbUpIcon } from './ThumbUpIcon';
 export { default as TickIcon } from './TickIcon';
+export { default as TrackerItemSearchIcon } from './TrackerItemSearchIcon';
 export { default as Trashcan } from './Trashcan';
 export { default as UnFollowIcon } from './UnFollowIcon';
 export { default as UnsafeAct } from './UnsafeAct';
@@ -130,6 +132,7 @@ export { default as UpcomingIcon } from './UpcomingIcon';
 export { default as UploadedCross } from './UploadedCross';
 export { default as UploadedTick } from './UploadedTick';
 export { default as UploadIcon } from './UploadIcon';
+export { default as ViewMoreIcon } from './ViewMoreIcon';
 export { default as WarningIcon } from './WarningIcon';
 
 // Additional re-exports following the same pattern

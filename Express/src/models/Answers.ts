@@ -235,18 +235,30 @@ answersSchema.statics.customSearch = async function (searchQuery, user, organiza
 
   data = await Promise.all(
     data.map(async (answer) => {
-      if (!answer.metatags.addedBy) return answer;
-      try {
+      if (!answer.metatags.addedBy) {
         return {
           ...answer,
-          user: await Users.customFindByIdWithDetails({
-            userId: answer?.metatags.addedBy,
-            organization,
-          }),
+          user: null,
         };
-      } catch (e) {
-        console.log(`Error occured for answer with ID ${answer._id}: ${e}`);
-        return answer;
+      }
+      try {
+        const user = await Users.customFindByIdWithDetails({
+          userId: answer?.metatags.addedBy,
+          organization,
+          awaitForResponse: false,
+        });
+        return {
+          ...answer,
+          user: user ? { _id: user._id } : null,
+        };
+      } catch (error) {
+        // User not found - return answer without user field
+        // This can happen if user was deleted or userId is invalid
+        console.error('Error fetching user details for answer:', answer?.metatags.addedBy, error);
+        return {
+          ...answer,
+          user: null,
+        };
       }
     }),
   );

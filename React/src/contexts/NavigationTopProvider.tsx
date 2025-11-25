@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
 
 import { INavigationTopContext } from '../interfaces/INavigationTopProvider';
+import { ISearchResult } from '../interfaces/ISearchResult';
 
 export const NavigationTopContext = createContext({} as INavigationTopContext);
 
@@ -13,6 +14,8 @@ export const useNavigationTopContext = () => {
 function NavigationTopProvider({ children }) {
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
   const [searchText, setSearchText] = useState<string>('');
+  const [searchResults, setSearchResults] = useState<ISearchResult[]>([]);
+  const [searchLoading, setSearchLoading] = useState<boolean>(false);
 
   const value = useMemo(
     () => ({
@@ -20,9 +23,13 @@ function NavigationTopProvider({ children }) {
       setIsSearchBarOpen,
       searchText,
       setSearchText,
+      searchResults,
+      setSearchResults,
+      searchLoading,
+      setSearchLoading,
     }),
     // eslint-disable-line react-hooks/exhaustive-deps
-    [isSearchBarOpen, searchText],
+    [isSearchBarOpen, searchText, searchResults, searchLoading],
   );
 
   return <NavigationTopContext.Provider data-id="000012" value={value}>{children}</NavigationTopContext.Provider>;

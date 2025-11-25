@@ -29,7 +29,9 @@ const search = async (_, { searchQuery }, { authorize, organization }) => {
         default:
           searchResults = [];
       }
-      return searchResults.map(searchResult => ({ ...searchResult, scope: { type, _id } }));
+      // Limit to top 3 results per category
+      const limitedResults = searchResults.slice(0, 3);
+      return limitedResults.map(searchResult => ({ ...searchResult, scope: { type, _id } }));
     }));
 
     await AuditLogs.customAudit(

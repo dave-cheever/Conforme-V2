@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Box, Flex, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
+import { Box, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
 
 import { useAppContext } from '../contexts/AppProvider';
 import { useAuditContext } from '../contexts/AuditProvider';
@@ -10,10 +10,11 @@ import { useResponseContext } from '../contexts/ResponseProvider';
 import useConfig from '../hooks/useConfig';
 import useDevice from '../hooks/useDevice';
 import useNavigate from '../hooks/useNavigate';
-import { AddIcon, CrossIcon, SearchIcon } from '../icons';
+import { AddIcon, CloseDrawerIcon, CrossIcon, SearchIcon } from '../icons';
 import Can from './can';
 import ModuleSwitcher from './ModuleSwitcher';
 import SubSection from './NavigationLeft/SubSection';
+import MobileSearchResults from './MobileSearchResults';
 import SearchBar from './SearchBar';
 import UserMenu from './UserMenu';
 
@@ -23,8 +24,10 @@ function NavigationTop() {
   const { trackerAddItems, auditAddItems } = useConfig();
   const { isPathActive } = useNavigate();
   const { module } = useAppContext();
-  const { isSearchBarOpen, setIsSearchBarOpen } = useNavigationTopContext();
+  const { setIsSearchBarOpen, searchText, searchResults, searchLoading } = useNavigationTopContext();
+  const { auditSearchItems, trackerSearchItems } = useConfig();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isSearchDrawerOpen, onOpen: onSearchDrawerOpen, onClose: onSearchDrawerClose } = useDisclosure();
 
   // Check if TopNavgation is rendered inside ResponseLayout
   const { response } = useResponseContext();
@@ -103,20 +106,20 @@ function NavigationTop() {
         fontWeight="semi_medium"
         justifyContent={["space-between", "flex-start"]}
         mr={['0', '20px']}
-        pl={isSearchBarOpen ? [3, 6] : [0, 6]}
+        pl={[0, 6]}
         spacing={0}
         w="full">
         <Flex
           alignItems="center"
           cursor="pointer"
           data-id="000456"
-          display={device !== 'mobile' || isSearchBarOpen ? 'none' : 'flex'}
+          display={device === 'mobile' ? 'flex' : 'none'}
           h="80px">
          <ModuleSwitcher data-id="000457" />
         </Flex>
         <Flex
           data-id="000458"
-          display={device !== 'mobile' || (device === 'mobile' && isSearchBarOpen) ? 'block' : 'none'}>
+          display={device === 'mobile' ? 'none' : 'block'}>
           <SearchBar data-id="000459" />
         </Flex>
         {!isTrackerItemPage && module?.type === 'tracker' && (
@@ -205,22 +208,23 @@ function NavigationTop() {
       <Flex
         align="center"
         data-id="000468"
-        display={device === 'mobile' && isSearchBarOpen ? 'none' : 'flex'}>
-        <IconButton
+        display="flex">
+        <Flex
           aria-label="Search responses"
-          bg="navigationTop.searchIconBackground"
-          borderRadius="20px"
           data-id="000469"
           display={['block', 'none']}
-          icon={<SearchIcon
-            data-id="000470"
-            fill="navigationTop.searchBarIcon"
-            h="22px"
-            opacity="1"
-            stroke="brand.outerSpace"
-            w="18px" />}
-          mr={1}
-          onClick={() => setIsSearchBarOpen(true)} />
+          onClick={() => {
+            if (device === 'mobile') {
+              onSearchDrawerOpen();
+            } else {
+              setIsSearchBarOpen(true);
+            }
+          }}>
+          <SearchIcon
+            data-id="000469"
+            h="19px"
+            w="19px" />
+        </Flex>
         {/* <NotificationIcon
           _hover={{ color: "navigationTop.notificationIconHover", opacity: 0.7, cursor: "pointer" }}
           _active={{}}
@@ -230,18 +234,79 @@ function NavigationTop() {
         <Badge variant="solid" bg="navigationTop.notificationColorScheme" border="2px solid" borderColor="navigationTop.notificationBadgeBorder" borderRadius="5px" cursor="pointer">3</Badge> */}
         <UserMenu data-id="000471" />
       </Flex>
-      {/* <Stack
-        spacing={4}
-        direction="row"
-        align="center"
-        fontWeight="semi_medium"
-        fontSize="md"
-        w="full"
-        ml={5}
-        display={device === "mobile" && isSearchBarOpen ? "block" : "none"}
-      >
-        <SearchBar />
-      </Stack> */}
+      {/* Mobile Search Drawer */}
+      {device === 'mobile' && (
+        <Drawer
+          data-id="003191"
+          isOpen={isSearchDrawerOpen}
+          onClose={onSearchDrawerClose}
+          placement="bottom">
+          <DrawerOverlay data-id="003192" />
+          <DrawerContent data-id="003193" borderTopRadius="14px" height="70vh">
+            <DrawerHeader
+              data-id="003194"
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between"
+              borderBottomWidth="1px"
+              borderBottomColor="#E2E8F0"
+              minH="64px"
+              px={4}
+              pb={4}>
+              <Box
+                data-id="003195"
+                position="absolute"
+                top="10px"
+                left={0}
+                right={0}
+                backgroundColor="#CBD5E0"
+                h="4px"
+                w="42px"
+                borderRadius="32px"
+                margin="0 auto" />
+              <Box data-id="003196" flex={1} mr={2}>
+                <SearchBar data-id="003197" isInMobileDrawer={true} />
+              </Box>
+              <Box
+                data-id="003198"
+                alignItems="center"
+                justifyContent="center"
+                onClick={() => {
+                  setIsSearchBarOpen(false);
+                  onSearchDrawerClose();
+                }}
+                cursor="pointer"
+                ml={2}>
+                <CloseDrawerIcon data-id="003199" />
+              </Box>
+            </DrawerHeader>
+            <DrawerBody
+              data-id="003200"
+              p={4}
+              h="100%"
+              display="flex"
+              flexDirection="column"
+              overflow="hidden">
+              <Box data-id="003201" flex={1} overflowY="auto" overflowX="hidden" w="100%">
+                <MobileSearchResults
+                  data-id="003202"
+                  searchResults={searchResults}
+                  searchText={searchText}
+                  searchLoading={searchLoading}
+                  module={module}
+                  auditSearchItems={auditSearchItems}
+                  trackerSearchItems={trackerSearchItems}
+                  onResultClick={(result) => {
+                    // Navigation will be handled by SearchBar's handleSearchResultClick
+                    setIsSearchBarOpen(false);
+                    onSearchDrawerClose();
+                  }} />
+              </Box>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+      )}
     </Flex>
   );
 }

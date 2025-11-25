@@ -1,16 +1,16 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { SearchIcon } from '@chakra-ui/icons';
 import {
   Box,
+  Divider,
   Flex,
-  HStack,
-  Icon,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Stack,
   Text,
   useDisclosure,
   useOutsideClick,
@@ -23,14 +23,13 @@ import { useAppContext } from '../contexts/AppProvider';
 import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
 import useConfig from '../hooks/useConfig';
 import useNavigate from '../hooks/useNavigate';
-import { ChevronRight, CrossIcon, MenuIcon } from '../icons';
+import { AuditSearchIcon, CrossIcon, MenuIcon, TrackerItemSearchIcon, ViewMoreIcon } from '../icons';
 import { IScope } from '../interfaces/IScope';
 import { ISearchCategory } from '../interfaces/ISearchCategory';
 import { ISearchResult } from '../interfaces/ISearchResult';
-import { IUser } from '../interfaces/IUser';
 import QuestionsCategoryIcon from './Icon';
 import Loader from './Loader';
-import UserAvatar from './UserAvatar';
+import StatusCell from './Table/Cells/StatusCell';
 
 const GET_QUESTIONS_CATEGORIES = gql`
   query {
@@ -55,15 +54,18 @@ const GET_SEARCH_RESULTS = gql`
         type
         _id
       }
+      reference
+      status
+      auditTypeName
     }
   }
 `;
 
-function SearchBar() {
+function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: boolean }>) {
   const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
   const { module } = useAppContext();
   const { navigateTo } = useNavigate();
-  const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText } = useNavigationTopContext();
+  const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText, searchResults: contextSearchResults, setSearchResults: setContextSearchResults, searchLoading: contextSearchLoading, setSearchLoading: setContextSearchLoading } = useNavigationTopContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const toast = useToast();
 
@@ -98,6 +100,7 @@ function SearchBar() {
     return items;
   }, [module, questionsCategoriesData]);
 
+
   useOutsideClick({
     ref,
     handler: () => {
@@ -106,50 +109,90 @@ function SearchBar() {
     },
   });
 
-  const getScopes = () => {
+  const getScopes = useCallback(() => {
     const scopes: IScope[] = [];
-    if (selectedSearchCategory?.type === 'all') {
-      const searchCategoriesWithoutAll = searchCategories.filter(({ type }) => type !== 'all');
-      searchCategoriesWithoutAll.forEach(({ type, _id }) => scopes.push({ type, _id }));
-    } else {
-      scopes.push({
-        type: selectedSearchCategory?.type,
-        _id: selectedSearchCategory?._id,
-      });
-    }
+    // Always search all categories for the module
+    const searchCategoriesWithoutAll = searchCategories.filter(({ type }) => type !== 'all');
+    searchCategoriesWithoutAll.forEach(({ type, _id }) => scopes.push({ type, _id }));
     return scopes;
-  };
+  }, [searchCategories]);
 
   const [getSearchResults, { loading }] = useLazyQuery(GET_SEARCH_RESULTS, { fetchPolicy: 'network-only' });
-  const [searchResults, setSearchResults] = useState<ISearchResult[]>();
+  const [localSearchResults, setLocalSearchResults] = useState<ISearchResult[]>([]);
+
+  // Use context state when in mobile drawer, local state otherwise
+  const searchResults = isInMobileDrawer ? contextSearchResults : localSearchResults;
+  const setSearchResults = isInMobileDrawer ? setContextSearchResults : setLocalSearchResults;
+  const searchLoading = isInMobileDrawer ? contextSearchLoading : loading;
+
+  // Sync loading state to context when in mobile drawer
+  useEffect(() => {
+    if (isInMobileDrawer) {
+      setContextSearchLoading(loading);
+    }
+  }, [loading, isInMobileDrawer, setContextSearchLoading]);
+
   const search = useCallback(
-    async (searchText: string) => {
-      if (searchText) {
-        const results = await getSearchResults({
-          variables: {
-            searchQuery: {
-              searchText,
-              moduleId: module?._id,
-              scopes: getScopes(),
+    async (searchTextValue: string) => {
+      if (searchTextValue?.trim()) {
+        try {
+          const results = await getSearchResults({
+            variables: {
+              searchQuery: {
+                searchText: searchTextValue,
+                moduleId: module?._id,
+                scopes: getScopes(),
+              },
             },
-          },
-        });
-        setSearchResults(results.data.search);
+          });
+          setSearchResults(results.data?.search || []);
+        } catch (error) {
+          console.error('Search error:', error);
+          setSearchResults([]);
+        }
+      } else {
+        setSearchResults([]);
       }
     },
-    [searchText, getScopes, module?._id],
+    [getSearchResults, module?._id, getScopes],
   );
 
-  // Debounce to delay search after changing search phrase
-  const debounceSearch = useMemo(() => debounce(search, 750), [JSON.stringify(selectedSearchCategory)]);
+  // Debounce search with 500ms delay
+  const debouncedSearch = useMemo(
+    () => debounce((searchTextValue: string) => {
+      search(searchTextValue);
+    }, 500),
+    [search],
+  );
 
-  // Effect to trigger search immediately after search category change
+  // Effect to trigger search when searchText changes
   useEffect(() => {
-    search(searchText);
-  }, [JSON.stringify(selectedSearchCategory)]);
+    if (searchText) {
+      debouncedSearch(searchText);
+    } else {
+      setSearchResults([]);
+      debouncedSearch.cancel();
+    }
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [searchText, debouncedSearch]);
 
-  const handleSearchResultClick = (result: any) => {
-    const category = searchCategories.find((category) => category.type === result.type && category._id == result.scope._id);
+  // Group search results by category
+  const groupedResults = useMemo(() => {
+    const grouped: Record<string, ISearchResult[]> = {};
+    searchResults.forEach((result) => {
+      const key = `${result.scope.type}-${result.scope._id || 'all'}`;
+      if (!grouped[key]) {
+        grouped[key] = [];
+      }
+      grouped[key].push(result);
+    });
+    return grouped;
+  }, [searchResults]);
+
+  const handleSearchResultClick = async (result: ISearchResult) => {
+    const category = searchCategories.find((category) => category.type === result.scope.type && category._id == result.scope._id);
     if (!category) return;
 
     let url = '';
@@ -177,17 +220,172 @@ function SearchBar() {
           title: 'Search for this data type was not yet implemented',
         });
     }
-    if (url) navigateTo(`/${url}`);
+    if (url) {
+      navigateTo(`/${url}`);
+      setIsSearchBarOpen(false);
+      setSearchText('');
+      setSearchResults([]);
+    }
+  };
+
+  const getCategoryLabel = (scopeType: string, scopeId?: string) => {
+    if (scopeType === 'all') return 'All categories';
+    const category = searchCategories.find((cat) => cat.type === scopeType && cat._id === scopeId);
+    const label = category?.label || scopeType;
+    return label.charAt(0).toUpperCase() + label.slice(1);
+  };
+
+  // Helper function to highlight matching text
+  const highlightText = (text: string, query: string) => {
+    if (!query || !text) return text;
+
+    const escapedQuery = query.replace(/[.*+?^$\{}()|[\]\\]/g, String.raw`\$&`);
+    const regex = new RegExp(`(${escapedQuery})`, 'gi');
+    const parts = text.split(regex);
+
+    return parts.map((part, index) => {
+      // When using split with a capturing group, matches are included in the array
+      // Check if this part matches the query (case-insensitive) by creating a new regex
+      const matchRegex = new RegExp(`^${escapedQuery}$`, 'i');
+      const key = `${part}-${index}`;
+      if (matchRegex.test(part)) {
+        return (
+          <Text data-id="003203" as="span" key={key} fontWeight="bold">
+            {part}
+          </Text>
+        );
+      }
+      return <React.Fragment key={key}>{part}</React.Fragment>;
+    });
+  };
+
+  // Helper function to render search result icon
+  const renderSearchIcon = (resultType: string) => {
+    if (resultType === 'audits') {
+      return <AuditSearchIcon data-id="003219" boxSize="20px" color="#4A5568" />;
+    }
+    if (resultType === 'tracker-item-response') {
+      return <TrackerItemSearchIcon data-id="003220" boxSize="20px" color="#4A5568" />;
+    }
+    return null;
+  };
+
+  // Helper function to render a single search result item
+  const renderSearchResultItem = (result: any) => {
+    return (
+      <Flex
+        data-id="003216"
+        key={result._id}
+        _hover={{ cursor: 'pointer' }}
+        align="center"
+        gap={2}
+        onClick={() => handleSearchResultClick(result)}
+        h={result.type === 'audits' ? '60px' : '42px'}
+        rounded="md">
+        <Flex data-id="003217" flexDir={'row'} align={'center'} gap={4}>
+          <Box
+            data-id="003218"
+            h='28px'
+            w='28px'
+            rounded='6px'
+            bg='#EDF2F7'
+            display="flex"
+            alignItems="center"
+            justifyContent="center">
+            {renderSearchIcon(result.type)}
+          </Box>
+          <Stack data-id="003221" spacing={0}>
+            <Flex data-id="003222" flexDir={'row'} align={'center'} gap={2}>
+              <Text data-id="003223" flex={1} fontSize="16px">
+                {highlightText(
+                  result.type === 'audits' && result.reference ? result.reference : result.title,
+                  searchText
+                )}
+              </Text>
+              {result.type === 'audits' && result.status && (
+                <StatusCell data-id="003224" status={result.status} size="sm" />
+              )}
+            </Flex>
+            <Flex data-id="003225" align="center" gap={2}>
+              {result.type === 'audits' && result.auditTypeName && (
+                <Text data-id="003226" fontSize="16px" fontWeight="400" color="gray.700">
+                  {highlightText(result.auditTypeName, searchText)}
+                </Text>
+              )}
+            </Flex>
+          </Stack>
+        </Flex>
+      </Flex>
+    );
+  };
+
+  const renderSearchContent = () => {
+    if (searchLoading) {
+      return (
+        <Flex data-id="003205" justify="center" p={4}>
+          <Loader data-id="003206" />
+        </Flex>
+      );
+    }
+    if (searchResults.length > 0) {
+      return (
+        <Stack data-id="003207" spacing={4}>
+          {Object.entries(groupedResults).map(([key, results]) => {
+            const [scopeType, scopeId] = key.split('-');
+            const categoryLabel = getCategoryLabel(scopeType, scopeId);
+            return (
+              <Box data-id="003208" key={key}>
+                <Flex data-id="003209" flexDir={'row'} align={'center'} gap={'8px'} mb={1}>
+                  <Text data-id="003210" fontSize="14px" fontWeight="600" color={'#718096'}>
+                    {categoryLabel}
+                  </Text>
+                  <Divider data-id="003211" borderColor={'#CBD5E0'} flex={1} />
+                  {results.length >= 3 && (
+                    <Flex data-id="003212" align="center" gap={2} cursor="pointer">
+                      <Text data-id="003213" fontSize="14px" fontWeight="500" color="#0073E6">
+                        View more results
+                      </Text>
+                      <ViewMoreIcon data-id="003214" boxSize="9px" color="#0073E6" />
+                    </Flex>
+                  )}
+                </Flex>
+                <Stack data-id="003215" spacing={0}>
+                  {results.map((result) => renderSearchResultItem(result))}
+                </Stack>
+              </Box>
+            );
+          })}
+        </Stack>
+      );
+    }
+    return (
+      <Text
+        data-id="003227"
+        color="gray.500"
+        fontSize="14px"
+        py={4}
+        textAlign="center">
+        No search results found
+      </Text>
+    );
   };
 
   return (
-    <Flex border={"1px solid #CBD5E0"} borderRadius={"md"} data-id="000359" direction="column"  position="relative" ref={ref} w={["auto", "449px"]}>
+    <Flex
+      border={"1px solid #CBD5E0"}
+      borderRadius={"md"}
+      data-id="000359"
+      direction="column"
+      position="relative"
+      ref={ref}
+      w={isInMobileDrawer ? "100%" : ["auto", "449px"]}
+      boxShadow={isInMobileDrawer ? "none" : undefined}>
       <InputGroup
         data-id="000360"
         display="block"
         maxW="100%"
         transition="width .15s"
-        w={['calc(100vw - 30px)', isSearchBarOpen ? '550px' : '260px']}
+        w={isInMobileDrawer ? "100%" : ['calc(100vw - 30px)', isSearchBarOpen ? '550px' : '260px']}
         zIndex={1}>
         <InputLeftElement
           color="navigationTop.inputIconColor"
@@ -199,38 +397,39 @@ function SearchBar() {
             opacity="1"
             stroke="brand.outerSpace" />
         </InputLeftElement>
-        <InputRightElement
-          data-id="000363"
-          display={isSearchBarOpen ? 'block' : 'none'}
-          h="full">
-          <CrossIcon
-            _active={{}}
-            _hover={{
-              color: 'navigationTop.notificationIconHover',
-              opacity: 0.7,
-              cursor: 'pointer',
-            }}
-            data-id="000364"
-            h="13.5px"
-            ml="15px"
-            mt="10px"
-            onClick={() => {
-              setIsSearchBarOpen(false);
-              setSearchText('');
-              setSearchResults([]);
-            }}
-            stroke="navigationTop.searchCrossIconStroke"
-            w="13.5px" />
-        </InputRightElement>
+        {!isInMobileDrawer && (
+          <InputRightElement
+            data-id="000363"
+            display={isSearchBarOpen ? 'block' : 'none'}
+            h="full">
+            <CrossIcon
+              _active={{}}
+              _hover={{
+                color: 'navigationTop.notificationIconHover',
+                opacity: 0.7,
+                cursor: 'pointer',
+              }}
+              data-id="000364"
+              h="13.5px"
+              ml="15px"
+              mt="10px"
+              onClick={() => {
+                setIsSearchBarOpen(false);
+                setSearchText('');
+                setSearchResults([]);
+              }}
+              stroke="navigationTop.searchCrossIconStroke"
+              w="13.5px" />
+          </InputRightElement>
+        )}
         <Input
-         _placeholder={{ color: '#A0AEC0' }}
+          _placeholder={{ color: '#A0AEC0' }}
           bg="navigationTop.inputBg"
           data-id="000365"
           fontSize="smm"
           fontWeight="semi_medium"
           onChange={(e) => {
             setSearchText(e.target.value);
-            debounceSearch(e.target.value);
           }}
           onFocus={() => {
             setIsSearchBarOpen(true);
@@ -239,143 +438,29 @@ function SearchBar() {
           placeholder="Search"
           rounded="10px"
           value={searchText}
-          w={["90%", "447px"]} />
+          w={isInMobileDrawer ? "100%" : ["90%", "447px"]} />
       </InputGroup>
-      {isOpen && (
+      {isOpen && !isInMobileDrawer && (
         <Box
           data-id="000366"
           display={isSearchBarOpen ? 'block' : 'none'}
           position="absolute"
-          pt={[10, 12]}
-          w={['100%', null, '40rem']}
-          zIndex={0}>
+          pt={[10, 4]}
+          top="100%"
+          w={['100%', null, '100%']}
+          zIndex={1000}>
           <Flex
             bg="white"
-            boxShadow="0px 3px 10px rgba(0, 0, 0, .1)"
+            boxShadow={isInMobileDrawer ? "none" : "0px 3px 10px rgba(0, 0, 0, .1)"}
             data-id="000367"
-            direction="row"
+            direction="column"
             fontSize="smm"
+            maxH="500px"
+            overflowY="auto"
+            p={'12px'}
             rounded="10px">
-              
-            {/* eslint-disable-next-line react/jsx-sort-props */}
-            <Box
-              bg="searchBar.categoriesBg"
-              borderBottomRightRadius="none"
-              borderRadius="10px"
-              borderTopRightRadius="none"
-              data-id="000368"
-              pb={2}
-              px={[2, 3]}>
-              {searchCategories.map((searchCategory) => (
-                <Box
-                  _hover={{
-                    cursor: 'pointer',
-                  }}
-                  alignItems="center"
-                  data-id="000369"
-                  display="flex"
-                  fontSize={['sm', 'md']}
-                  fontWeight="normal"
-                  h="42px"
-                  key={`${searchCategory.type}-${searchCategory._id}`}
-                  mt={2}
-                  onClick={() => setSelectedSearchCategory(searchCategory)}
-                  pos="relative"
-                  w={['150px', '200px']}>
-                  <Flex align="center" data-id="000370" h="100%">
-                    <Flex
-                      alignItems="center"
-                      bg={
-                        `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
-                          ? 'navigationLeftItem.selectedLabelBg'
-                          : '#e7e7e7'
-                      }
-                      data-id="000371"
-                      h={['22px', '30px']}
-                      justifyContent="center"
-                      rounded="8px"
-                      w={['22px', '30px']}>
-                      <Icon
-                        as={searchCategory.icon}
-                        color={
-                        `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
-                          ? '#ffffff'
-                          : '#111111'
-                        }
-                        data-id="000372"                       
-                        h="15px"
-                        stroke={
-                        `${selectedSearchCategory?.type}-${selectedSearchCategory?._id}` === `${searchCategory.type}-${searchCategory._id}`
-                          ? '#ffffff'
-                          : '#111111'
-                        }
-                        w="15px" />
-                    </Flex>
-                  </Flex>
-                  <Box
-                    color="black"
-                    data-id="000373"
-                    fontSize={['12px', '14px']}
-                    fontWeight="400"
-                    ml={[2, 5]}
-                    >
-                    {searchCategory.label}
-                  </Box>
-                </Box>
-              ))}
-            </Box>
-            <Box data-id="000374" h="auto" w="full">
-              {loading ? (
-                <Flex align="center" data-id="000375" h="100px" justify="center" w="full">
-                  <Loader center data-id="000376" size="sm" />
-                </Flex>
-              ) : (
-                <Flex data-id="000377" direction="column">
-                  {searchResults ? (
-                    searchResults.length > 0 ? (
-                      <>
-                        {(searchResults ?? []).map((result) => (
-                          <HStack
-                            _hover={{
-                              background: 'searchBar.results.bgColor.hover',
-                            }}
-                            align="center"
-                            cursor="pointer"
-                            data-id="000378"
-                            key={result._id}
-                            onClick={() => handleSearchResultClick(result)}
-                            p={3}
-                            spacing={3}>
-                            <Box data-id="000379">
-                              <UserAvatar data-id="000380" size="sm" userId={(result.user as IUser)?._id} />
-                            </Box>
-                            <Flex data-id="000381" direction="column" grow={1}>
-                              {selectedSearchCategory?.type === 'all' && (
-                                <Text data-id="000382" fontSize="xs">
-                                  {searchCategories.find(({ type, _id }) => type === result.type && _id == result.scope._id)?.label}
-                                </Text>
-                              )}
-                              <Text data-id="000383" fontSize={["11px", "14px"]} fontWeight="bold" noOfLines={1}>
-                                {result.title}
-                              </Text>
-                            </Flex>
-                            <ChevronRight cursor="pointer" data-id="000384" />
-                          </HStack>
-                        ))}
-                      </>
-                    ) : (
-                      <Flex align="center" data-id="000385" justify="center" mt={4}>
-                        <Text data-id="000386" fontSize={['12px', '14px']}>No results found</Text>
-                      </Flex>
-                    )
-
-                  ) : (
-                    <Flex align="center" data-id="000387" justify="center" mt={4}>
-                      <Text data-id="000388" fontSize={["12px", "14px"]}>Enter search phrase in the box above</Text>
-                    </Flex>
-                  )}
-                </Flex>
-              )}
+            <Box data-id="003204" w={'100%'}>
+              {renderSearchContent()}
             </Box>
           </Flex>
         </Box>

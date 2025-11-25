@@ -13,6 +13,9 @@ export const searchTypeDefs = `
     type: String!
     user: User
     scope: Scope!
+    reference: String
+    status: String
+    auditTypeName: String
   }
 
   input SearchQuery {

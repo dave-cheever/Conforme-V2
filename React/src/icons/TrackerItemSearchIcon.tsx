@@ -1,0 +1,15 @@
+import { Icon, IconProps } from '@chakra-ui/icons';
+
+function TrackerItemSearchIcon(props: Readonly<IconProps>) {
+  return (
+    <Icon data-id="tracker-item-search-icon" viewBox="0 0 78 78" {...props}>
+      <path
+        data-id="003230"
+        d="M13 22.75V68.25H58.5V74.75H13C9.425 74.75 6.5 71.825 6.5 68.25V22.75H13ZM65 9.75C68.575 9.75 71.5 12.675 71.5 16.25V55.25C71.5 58.825 68.575 61.75 65 61.75H26C22.425 61.75 19.5 58.825 19.5 55.25V16.25C19.5 12.675 22.425 9.75 26 9.75H36.335C37.7 5.98 41.275 3.25 45.5 3.25C49.725 3.25 53.3 5.98 54.665 9.75H65ZM45.5 9.75C43.7125 9.75 42.25 11.2125 42.25 13C42.25 14.7875 43.7125 16.25 45.5 16.25C47.2875 16.25 48.75 14.7875 48.75 13C48.75 11.2125 47.2875 9.75 45.5 9.75ZM32.5 22.75V16.25H26V55.25H65V16.25H58.5V22.75H32.5ZM48.75 48.75H32.5V42.25H48.75V48.75ZM58.5 35.75H32.5V29.25H58.5V35.75Z"
+        fill="currentColor" />
+    </Icon>
+  );
+}
+
+export default TrackerItemSearchIcon;
+
