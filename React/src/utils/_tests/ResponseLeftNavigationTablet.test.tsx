@@ -121,7 +121,7 @@ vi.mock('../../components/Response/ResponseLeftNavigation', () => ({
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
-    <MockedProvider data-id="002856" mocks={[]} addTypename={false}>
+    <MockedProvider data-id="002856" mocks={[]}>
       <ChakraProvider data-id="002857" theme={theme}>
         <BrowserRouter data-id="002858">
           {component}

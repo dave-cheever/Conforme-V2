@@ -102,6 +102,9 @@ describe('UserMenu', () => {
   it('renders organization modules with Admin role', () => {
     renderUserMenu();
 
+    // Open the menu to see module roles
+    fireEvent.click(screen.getByRole('button'));
+
     expect(screen.getByText('Document Control - Admin')).toBeInTheDocument();
     expect(screen.getByText('Safety Walk - Admin')).toBeInTheDocument();
   });

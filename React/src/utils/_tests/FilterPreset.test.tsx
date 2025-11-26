@@ -133,7 +133,7 @@ const mocks = [
 function TestWrapper({ children }: { readonly children: React.ReactNode }) {
   return (
     <ChakraProvider data-id="002201" theme={mockTheme}>
-      <MockedProvider addTypename={false} data-id="002202" mocks={mocks}>
+      <MockedProvider data-id="002202" mocks={mocks}>
         <BrowserRouter data-id="002203">{children}</BrowserRouter>
       </MockedProvider>
     </ChakraProvider>

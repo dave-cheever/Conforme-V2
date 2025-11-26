@@ -236,7 +236,8 @@ function UserMenu() {
           {/* Module Roles Box */}
           <Box bg="#EDF2F7" borderRadius="8px" data-id="002490" mb="8px" p="12px" w="100%" overflow="hidden">
             {organizationConfig?.modules?.map((module, index) => {
-              const roleText = `${module.name} - Admin`;
+              const role = user?.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : '';
+              const roleText = `${module.name} - ${role}`;
               return (
                 <Box
                   data-id="003171"

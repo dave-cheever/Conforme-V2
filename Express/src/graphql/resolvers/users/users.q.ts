@@ -168,7 +168,14 @@ const users = async (_, { usersAnswersCountInput, usersPagination }, { organizat
     const uniqueUsersMap = new Map<string, typeof users[0]>();
     users.forEach((user) => {
       if (!user) return;
-      const uniqueKey = user.userId || user._id;
+      let uniqueKey = '';
+      if (user.userId) {
+        uniqueKey = typeof user.userId === 'string' ? user.userId.trim() : String(user.userId).trim();
+      } else if (user._id) {
+        // Handle both string and ObjectId types for _id
+        // String() constructor handles both string and ObjectId types
+        uniqueKey = String(user._id);
+      }
       if (uniqueKey && !uniqueUsersMap.has(uniqueKey)) {
         uniqueUsersMap.set(uniqueKey, user);
       }

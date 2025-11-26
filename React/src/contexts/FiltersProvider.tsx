@@ -108,6 +108,25 @@ function FiltersProvider({ children }) {
     return getFilters();
   };
 
+  // Generic function to remove duplicates from filter arrays
+  const removeDuplicates = <T extends { _id?: string; name?: string; userId?: string; displayName?: string }>(
+    array: T[] | undefined,
+    getUniqueKey?: (item: T) => string | undefined,
+    sortFn?: (a: T, b: T) => number,
+  ): T[] => {
+    if (!array) return [];
+    const uniqueMap = new Map<string, T>();
+    array.forEach((item) => {
+      if (!item) return;
+      const uniqueKey = getUniqueKey ? getUniqueKey(item) : item._id || item.name || item.userId || '';
+      if (uniqueKey && !uniqueMap.has(uniqueKey)) {
+        uniqueMap.set(uniqueKey, item);
+      }
+    });
+    const result = Array.from(uniqueMap.values());
+    return sortFn ? result.sort(sortFn) : result;
+  };
+
   const [filtersValues, setFiltersValues] = useState<IFilters>(getInitialFilters);
   const [appliedFilters, setAppliedFilters] = useState<object>({});
   const [usedFilters, setUsedFilters] = useState<string[]>([]);
@@ -219,7 +238,11 @@ function FiltersProvider({ children }) {
       locations: data?.locations,
       regulatoryBodies: data?.regulatoryBodies,
       businessUnits: data?.businessUnits,
-      users: [...(data?.users || [])].sort((a, b) => a.displayName.localeCompare(b.displayName)),
+      users: removeDuplicates(
+        data?.users,
+        (item) => item.userId || item._id || '',
+        (a, b) => (a.displayName || '').localeCompare(b.displayName || ''),
+      ),
       auditStatuses: ['upcoming', 'completed', 'missed'] as TAuditStatus[],
       answerStatuses: ['open', 'closed'] as TAnswerStatus[],
       auditWalkTypes: ['virtual', 'physical'] as TAuditWalkType[],

@@ -122,7 +122,7 @@ vi.mock('../../bootstrap/config', () => ({
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
-    <MockedProvider data-id="002801" mocks={[]} addTypename={false}>
+    <MockedProvider data-id="002801" mocks={[]}>
       <ChakraProvider data-id="002802" theme={theme}>
         <BrowserRouter data-id="002803">
           {component}

@@ -1,3 +1,4 @@
+import { InMemoryCache } from '@apollo/client';
 import { MockedProvider } from '@apollo/client/testing';
 import { ChakraProvider } from '@chakra-ui/react';
 import { render, screen, waitFor } from '@testing-library/react';
@@ -110,11 +111,14 @@ const mockTheme = {
 // Helper for elements that use data-id (not data-testid)
 const getByDataId = (id: string) => document.querySelector(`[data-id="${id}"]`);
 
+// Create a cache without deprecated options (Apollo Client 3.14.0+)
+const createTestCache = () => new InMemoryCache();
+
 // Mock ChakraProvider wrapper
 function TestWrapper({ children }: { readonly children: React.ReactNode }) {
   return (
     <ChakraProvider data-id="001493" theme={mockTheme}>
-      <MockedProvider data-id="001494" mocks={[]}>
+      <MockedProvider data-id="001494" mocks={[]} cache={createTestCache()}>
         {children}
       </MockedProvider>
     </ChakraProvider>
@@ -154,7 +158,7 @@ describe('Insights', () => {
 
     render(
       <ChakraProvider data-id="001497" theme={mockTheme}>
-        <MockedProvider data-id="001498" mocks={errorMocks}>
+        <MockedProvider data-id="001498" mocks={errorMocks} cache={createTestCache()}>
           <Insights data-id="001499" />
         </MockedProvider>
       </ChakraProvider>,
@@ -186,7 +190,7 @@ describe('Insights', () => {
 
     render(
       <ChakraProvider data-id="001500" theme={mockTheme}>
-        <MockedProvider data-id="001501" mocks={mocks}>
+        <MockedProvider data-id="001501" mocks={mocks} cache={createTestCache()}>
           <Insights data-id="001502" />
         </MockedProvider>
       </ChakraProvider>,
@@ -236,7 +240,7 @@ describe('Insights', () => {
 
     render(
       <ChakraProvider data-id="001503" theme={mockTheme}>
-        <MockedProvider data-id="001504" mocks={mocks}>
+        <MockedProvider data-id="001504" mocks={mocks} cache={createTestCache()}>
           <Insights data-id="001505" />
         </MockedProvider>
       </ChakraProvider>,
@@ -278,7 +282,7 @@ describe('Insights', () => {
 
     render(
       <ChakraProvider data-id="001506" theme={mockTheme}>
-        <MockedProvider data-id="001507" mocks={mocks}>
+        <MockedProvider data-id="001507" mocks={mocks} cache={createTestCache()}>
           <Insights data-id="001508" />
         </MockedProvider>
       </ChakraProvider>,
@@ -315,7 +319,7 @@ describe('Insights', () => {
 
     render(
       <ChakraProvider data-id="001509" theme={mockTheme}>
-        <MockedProvider data-id="001510" mocks={mocks}>
+        <MockedProvider data-id="001510" mocks={mocks} cache={createTestCache()}>
           <Insights data-id="001511" />
         </MockedProvider>
       </ChakraProvider>,
@@ -361,7 +365,7 @@ describe('Insights', () => {
 
     render(
       <ChakraProvider data-id="001512" theme={mockTheme}>
-        <MockedProvider data-id="001513" mocks={mocks}>
+        <MockedProvider data-id="001513" mocks={mocks} cache={createTestCache()}>
           <Insights data-id="001514" />
         </MockedProvider>
       </ChakraProvider>,
@@ -407,7 +411,7 @@ describe('Insights', () => {
 
     render(
       <ChakraProvider data-id="001515" theme={mockTheme}>
-        <MockedProvider data-id="001516" mocks={mocks}>
+        <MockedProvider data-id="001516" mocks={mocks} cache={createTestCache()}>
           <Insights data-id="001517" />
         </MockedProvider>
       </ChakraProvider>,
@@ -451,7 +455,7 @@ describe('Insights', () => {
 
     render(
       <ChakraProvider data-id="001518" theme={mockTheme}>
-        <MockedProvider data-id="001519" mocks={mocks}>
+        <MockedProvider data-id="001519" mocks={mocks} cache={createTestCache()}>
           <Insights data-id="001520" />
         </MockedProvider>
       </ChakraProvider>,

@@ -1,5 +1,6 @@
 import { MemoryRouter } from 'react-router-dom';
 
+import { InMemoryCache } from '@apollo/client';
 import { MockedProvider } from '@apollo/client/testing';
 import { ChakraProvider } from '@chakra-ui/react';
 import { render, screen, waitFor } from '@testing-library/react';
@@ -156,11 +157,14 @@ const mockAnswersData = {
   ],
 };
 
+// Create a cache without deprecated options (Apollo Client 3.14.0+)
+const createTestCache = () => new InMemoryCache();
+
 function TestWrapper({ children, mocks = [] }: { readonly children: React.ReactNode; readonly mocks?: any[] }) {
   return (
     <MemoryRouter data-id="001596">
       <ChakraProvider data-id="001597" theme={mockTheme}>
-        <MockedProvider data-id="001598" mocks={mocks}>
+        <MockedProvider data-id="001598" mocks={mocks} cache={createTestCache()}>
           {children}
         </MockedProvider>
       </ChakraProvider>
