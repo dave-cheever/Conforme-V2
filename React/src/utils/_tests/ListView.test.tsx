@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import AppProvider from '../../contexts/AppProvider';
+import { PAGINATION_PAGE_SIZE_OPTIONS } from '../../bootstrap/config';
 
 // Mock AppProvider for testing
 vi.mock('../../contexts/AppProvider', () => ({
@@ -13,7 +14,7 @@ vi.mock('../../contexts/AppProvider', () => ({
 }));
 
 // Mock ListViewRow component
-vi.mock('./Rows/ListViewRow', () => ({
+vi.mock('../../components/Table/Rows/ListViewRow', () => ({
   default: ({ row, columns }: { row: any; columns: ColumnConfig[] }) => (
     <div data-id="001870" data-testid={`row-${row._id}`}>
       {columns.map((col) => (
@@ -23,6 +24,59 @@ vi.mock('./Rows/ListViewRow', () => ({
       ))}
     </div>
   ),
+}));
+
+// Mock Pagination component
+vi.mock('../../components/UI/Pagination/Pagination', () => ({
+  default: ({ currentPage, pageSize, total, onPageChange, onPageSizeChange }: any) => {
+    // Match the actual component behavior - return null if any required prop is undefined
+    if (currentPage === undefined || pageSize === undefined || total === undefined || onPageChange === undefined || onPageSizeChange === undefined) {
+      return null;
+    }
+    
+    const totalPages = Math.ceil(total / pageSize);
+    
+    return (
+      <div data-id="pagination" data-testid="pagination-component">
+        <div data-id="003089" data-testid="pagination-info">
+          Page {currentPage} of {totalPages}, Total: {total}, PageSize: {pageSize}
+        </div>
+        <button
+          data-id="003090"
+          data-testid="pagination-previous"
+          disabled={currentPage === 1}
+          onClick={() => {
+            if (currentPage > 1) {
+              onPageChange(currentPage - 1);
+            }
+          }}>
+          Previous
+        </button>
+        <button
+          data-id="003091"
+          data-testid="pagination-next"
+          disabled={currentPage >= totalPages}
+          onClick={() => {
+            if (currentPage < totalPages) {
+              onPageChange(currentPage + 1);
+            }
+          }}>
+          Next
+        </button>
+        <select
+          data-id="003092"
+          data-testid="pagination-page-size-select"
+          value={pageSize}
+          onChange={(e) => onPageSizeChange(Number(e.target.value))}>
+          {PAGINATION_PAGE_SIZE_OPTIONS.map((option) => (
+            <option data-id="003093" key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  },
 }));
 
 const createWrapper = () =>
@@ -75,6 +129,8 @@ describe('ListView', () => {
   const mockSetSortType = vi.fn();
   const mockSetSortOrder = vi.fn();
   const mockOnRowClick = vi.fn();
+  const mockOnPageChange = vi.fn();
+  const mockOnPageSizeChange = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -422,5 +478,154 @@ describe('ListView', () => {
     // Ensure our mocked header renders at least once
     const headerContainer = container.querySelector('[data-id="000308"]');
     expect(headerContainer).not.toBeNull();
+  });
+
+  describe('Pagination', () => {
+    it('should render pagination component when pagination props are provided', () => {
+      render(
+        <ListView
+          columns={mockColumns}
+          data={mockData}
+          data-id="002044"
+          dataType="audits"
+          onRowClick={mockOnRowClick}
+          setSortOrder={mockSetSortOrder}
+          setSortType={mockSetSortType}
+          sortOrder="asc"
+          sortType="name"
+          currentPage={1}
+          pageSize={15}
+          total={100}
+          onPageChange={mockOnPageChange}
+          onPageSizeChange={mockOnPageSizeChange}
+        />,
+        { wrapper: createWrapper() },
+      );
+      expect(screen.getByTestId('pagination-component')).toBeInTheDocument();
+    });
+
+    it('should not render pagination component when pagination props are missing', () => {
+      render(
+        <ListView
+          columns={mockColumns}
+          data={mockData}
+          data-id="002045"
+          dataType="audits"
+          onRowClick={mockOnRowClick}
+          setSortOrder={mockSetSortOrder}
+          setSortType={mockSetSortType}
+          sortOrder="asc"
+          sortType="name"
+        />,
+        { wrapper: createWrapper() },
+      );
+      expect(screen.queryByTestId('pagination-component')).not.toBeInTheDocument();
+    });
+
+    it('should call onPageChange when next button is clicked', () => {
+      render(
+        <ListView
+          columns={mockColumns}
+          data={mockData}
+          data-id="002046"
+          dataType="audits"
+          onRowClick={mockOnRowClick}
+          setSortOrder={mockSetSortOrder}
+          setSortType={mockSetSortType}
+          sortOrder="asc"
+          sortType="name"
+          currentPage={1}
+          pageSize={15}
+          total={100}
+          onPageChange={mockOnPageChange}
+          onPageSizeChange={mockOnPageSizeChange}
+        />,
+        { wrapper: createWrapper() },
+      );
+      const nextButton = screen.getByTestId('pagination-next');
+      fireEvent.click(nextButton);
+      expect(mockOnPageChange).toHaveBeenCalledWith(2);
+    });
+
+    it('should call onPageChange when previous button is clicked', () => {
+      render(
+        <ListView
+          columns={mockColumns}
+          data={mockData}
+          data-id="002047"
+          dataType="audits"
+          onRowClick={mockOnRowClick}
+          setSortOrder={mockSetSortOrder}
+          setSortType={mockSetSortType}
+          sortOrder="asc"
+          sortType="name"
+          currentPage={2}
+          pageSize={15}
+          total={100}
+          onPageChange={mockOnPageChange}
+          onPageSizeChange={mockOnPageSizeChange}
+        />,
+        { wrapper: createWrapper() },
+      );
+      const previousButton = screen.getByTestId('pagination-previous');
+      fireEvent.click(previousButton);
+      expect(mockOnPageChange).toHaveBeenCalledWith(1);
+    });
+
+    it('should call onPageSizeChange when page size selector is changed', () => {
+      render(
+        <ListView
+          columns={mockColumns}
+          data={mockData}
+          data-id="002048"
+          dataType="audits"
+          onRowClick={mockOnRowClick}
+          setSortOrder={mockSetSortOrder}
+          setSortType={mockSetSortType}
+          sortOrder="asc"
+          sortType="name"
+          currentPage={1}
+          pageSize={15}
+          total={100}
+          onPageChange={mockOnPageChange}
+          onPageSizeChange={mockOnPageSizeChange}
+        />,
+        { wrapper: createWrapper() },
+      );
+      const pageSizeSelect = screen.getByTestId('pagination-page-size-select');
+      fireEvent.change(pageSizeSelect, { target: { value: PAGINATION_PAGE_SIZE_OPTIONS[0].toString() } });
+      expect(mockOnPageSizeChange).toHaveBeenCalledWith(PAGINATION_PAGE_SIZE_OPTIONS[0]);
+    });
+
+    it('should maintain correct layout structure with flex column', () => {
+      const { container } = render(
+        <ListView
+          columns={mockColumns}
+          data={mockData}
+          data-id="002049"
+          dataType="audits"
+          onRowClick={mockOnRowClick}
+          setSortOrder={mockSetSortOrder}
+          setSortType={mockSetSortType}
+          sortOrder="asc"
+          sortType="name"
+          currentPage={1}
+          pageSize={15}
+          total={100}
+          onPageChange={mockOnPageChange}
+          onPageSizeChange={mockOnPageSizeChange}
+        />,
+        { wrapper: createWrapper() },
+      );
+
+      const mainContainer = container.querySelector('[data-id="000306"]');
+      expect(mainContainer).not.toBeNull();
+      
+      const headerContainer = container.querySelector('[data-id="000307"]');
+      expect(headerContainer).not.toBeNull();
+      
+      const contentArea = container.querySelector('[data-id="000316"]');
+      expect(contentArea).not.toBeNull();
+    });
   });
 });

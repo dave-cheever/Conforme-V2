@@ -19,7 +19,7 @@ const auditsResolvers = {
 export const auditsTypeDefs = `
   type Audit {
     _id: ID!
-    auditTypeId: String!
+    auditTypeId: String
     walkType: String
     reference: String!
     status: String!
@@ -30,7 +30,7 @@ export const auditsTypeDefs = `
     location: Location
     businessUnitId: ID
     businessUnit: BusinessUnit
-    auditorId: ID!
+    auditorId: ID
     auditor: User
     participantsIds: [ID]
     participants: [User]
@@ -78,10 +78,15 @@ export const auditsTypeDefs = `
     participantsIds: [ID]
     recurring: Boolean
   }
+
+  type AuditsResponse {
+    audits: [Audit!]!
+    total: Int! 
+  }
 `;
 
 export const auditsQueryDefs = `
-  audits(auditQueryInput: AuditQueryInput): [Audit!]!
+  audits(auditQueryInput: AuditQueryInput, pagination: PaginationInput): AuditsResponse!
 `;
 
 export const auditsMutationDefs = `

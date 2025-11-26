@@ -11,7 +11,7 @@ import updateLocalStorageFilter from '../../utils/filterStorage';
 import DeletePresetModal from './DeletePresetModal';
 import FilterPresetList from './FilterPresetList';
 import SavePresetForm from './SavePresetForm';
-import { MAX_PRESET_NAME_LENGTH } from '../../constants';
+import { MAX_PRESET_NAME_LENGTH } from '../../bootstrap/config';
 
 export const SAVE_FILTER_PRESET = gql`
   mutation SaveFilterPreset($saveFilterPresetInput: SaveFilterPresetInput!) {

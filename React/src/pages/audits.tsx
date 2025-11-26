@@ -37,6 +37,7 @@ import { TViewMode } from '../interfaces/TViewMode';
 import updateLocalStorageFilter from '../utils/filterStorage';
 import FilterButton from '../components/FilterButton';
 import isAuditPage from '../utils/isAuditPage';
+import usePagination from '../hooks/usePagination';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -61,46 +62,49 @@ function isAssignedToMeFilter(val: any, myIds: string[]) {
 }
 
 const GET_AUDITS = gql`
-  query ($auditQueryInput: AuditQueryInput) {
-    audits(auditQueryInput: $auditQueryInput) {
-      _id
-      reference
-      walkType
-      dueDate
-      completedDate
-      status
-      auditorId
-      numberOfActions
-      answersCount
-      recurring
-      auditType {
+  query ($auditQueryInput: AuditQueryInput, $pagination: PaginationInput) {
+    audits(auditQueryInput: $auditQueryInput, pagination: $pagination) {
+      audits {
         _id
-        name
-        startingDate
-        frequency
-        sections {
-          type
+        reference
+        walkType
+        dueDate
+        completedDate
+        status
+        auditorId
+        numberOfActions
+        answersCount
+        recurring
+        auditType {
           _id
+          name
+          startingDate
+          frequency
+          sections {
+            type
+            _id
+          }
+        }
+        location {
+          _id
+          name
+        }
+        businessUnit {
+          _id
+          name
+        }
+        auditor {
+          _id
+          displayName
+          imgUrl
+        }
+        participantsIds
+        metatags {
+          addedAt
+          removedBy
         }
       }
-      location {
-        _id
-        name
-      }
-      businessUnit {
-        _id
-        name
-      }
-      auditor {
-        _id
-        displayName
-        imgUrl
-      }
-      participantsIds
-      metatags {
-        addedAt
-        removedBy
-      }
+      total
     }
   }
 `;
@@ -126,17 +130,26 @@ function Audits() {
   const { user, module } = useAppContext();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { audit, reset, trigger } = useAuditModalContext();
-  const { data, loading, error, refetch } = useQuery(GET_AUDITS);
+  const { currentPage, setCurrentPage, pageSize, setPageSize, total, setTotal } = usePagination();
   const [filteredAudits, setFilteredAudits] = useState<IAudit[]>([]);
   const [filtersInitialized, setFiltersInitialized] = useState(false);
   const [assignedToMe, setAssignedToMe] = useState(false);
   const {
-    sortedData: sortedAudits,
     sortOrder: sortOrderState,
     sortType: sortTypeState,
     setSortType: setSortTypeOriginal,
     setSortOrder: setSortOrderOriginal,
-  } = useSort(filteredAudits, 'auditor.displayName', 'asc');
+  } = useSort([], 'auditor.displayName', 'asc');
+  const { data, loading, error, refetch } = useQuery(GET_AUDITS, {
+    variables: {
+      pagination: {
+        limit: pageSize,
+        offset: (currentPage - 1) * pageSize,
+        sortBy: sortTypeState,
+        sortDirection: sortOrderState,
+      },
+    },
+  });
 
   // Track sorting transition state
   const [isSorting, setIsSorting] = useState(false);
@@ -149,52 +162,55 @@ function Audits() {
     sortOrderRef.current = sortOrderState;
   }, [sortTypeState, sortOrderState]);
 
-  // Wrapper functions that show loading immediately and use startTransition
-  const setSortType = useCallback((newSortType: string) => {
-    if (newSortType !== sortTypeRef.current) {
-      // Immediately show loading state
-      flushSync(() => {
-        setIsSorting(true);
-      });
-      
-      // Use startTransition to defer the sorting work
-      startTransition(() => {
-        setSortTypeOriginal(newSortType);
-      });
-      
-      // Hide loading after sort completes
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            setIsSorting(false);
-          }, 100);
-        });
-      });
-    }
-  }, [setSortTypeOriginal]);
+  const scheduleHideSortingState = () => {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        setIsSorting(false);
+      }, 100);
+    });
+  };
 
-  const setSortOrder = useCallback((newSortOrder: 'asc' | 'desc') => {
-    if (newSortOrder !== sortOrderRef.current) {
-      // Immediately show loading state
-      flushSync(() => {
-        setIsSorting(true);
-      });
-      
-      // Use startTransition to defer the sorting work
-      startTransition(() => {
-        setSortOrderOriginal(newSortOrder);
-      });
-      
-      // Hide loading after sort completes
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            setIsSorting(false);
-          }, 100);
+  // Wrapper functions that show loading immediately and use startTransition
+  const setSortType = useCallback(
+    (newSortType: string) => {
+      if (newSortType !== sortTypeRef.current) {
+        flushSync(() => {
+          setIsSorting(true);
         });
-      });
-    }
-  }, [setSortOrderOriginal]);
+
+        startTransition(() => {
+          setSortTypeOriginal(newSortType);
+        });
+
+        requestAnimationFrame(() => {
+          scheduleHideSortingState();
+        });
+      }
+    },
+    [setSortTypeOriginal],
+  );
+
+  const setSortOrder = useCallback(
+    (newSortOrder: 'asc' | 'desc') => {
+      if (newSortOrder !== sortOrderRef.current) {
+        // Immediately show loading state
+        flushSync(() => {
+          setIsSorting(true);
+        });
+
+        // Use startTransition to defer the sorting work
+        startTransition(() => {
+          setSortOrderOriginal(newSortOrder);
+        });
+
+        // Hide loading after sort completes
+        requestAnimationFrame(() => {
+          scheduleHideSortingState();
+        });
+      }
+    },
+    [setSortOrderOriginal],
+  );
 
   // Use the state values for display
   const sortType = sortTypeState;
@@ -247,7 +263,6 @@ function Audits() {
     return 'list';
   });
 
-
   // Track view transition state to show loading during switch
   const [isViewTransitioning, setIsViewTransitioning] = useState(false);
   const prevViewModeRef = useRef<TViewMode>(viewMode);
@@ -268,14 +283,14 @@ function Audits() {
       flushSync(() => {
         setIsViewTransitioning(true);
       });
-      
+
       // Use startTransition to mark the view change as a non-urgent update
       // This allows React to keep the UI responsive during the transition
       startTransition(() => {
         setViewModeState(newViewMode);
         localStorage.setItem('viewMode', newViewMode);
       });
-      
+
       // Hide loading after the transition completes
       // Use a slightly longer delay to ensure the new view has rendered
       requestAnimationFrame(() => {
@@ -287,81 +302,89 @@ function Audits() {
       });
     }
   }, []); // Empty deps array since we use ref
-  
-  const columns: ColumnConfig[] = useMemo(() => [
-    {
-      label: 'Due date',
-      sortKey: 'dueDate',
-      width: '9%',
-      dataId: '000309',
-      render: (row) => <DateTimeCell data-id="002149" date={row?.dueDate} fallbackText="No due date" showTime={false} />,
-    },
-    {
-      label: capitalize(t('location')),
-      sortKey: 'location.name',
-      width: module?.featureFlags?.enableSafetyWalk ? '20%' : '12%',
-      dataId: '000310',
-      render: (row) => <TextOrNumberCell data-id="002087" fallbackText="Virtual" icon={LocationIcon} text={row.location?.name} />,
-    },
-    {
-      label: 'Status',
-      sortKey: 'status',
-      width: '12%',
-      dataId: '000311',
-      render: (row) => <StatusCell data-id="001212" status={row?.status} />,
-    },
-    {
-      label: 'Walk type',
-      sortKey: 'walkType',
-      width: '9%',
-      dataId: '000312',
-      disabled: !module?.featureFlags?.enableSafetyWalk,
-      render: (row) => <TextOrNumberCell data-id="002088" text={auditWalkTypes[row?.walkType]} />,
-    },
-    {
-      label: 'Auditor',
-      sortKey: 'auditor.displayName',
-      width: '18%',
-      dataId: '000313',
-      render: (row) => <AvatarCell data-id="001206" users={row.auditor ? [row.auditor] : []} userType="auditors" />,
-    },
-    {
-      label: 'Reference',
-      sortKey: 'reference',
-      width: '13%',
-      dataId: '000314',
-      render: (row) => <TextOrNumberCell data-id="002089" text={row.reference} />,
-    },
-    {
-      label: 'Date submitted',
-      sortKey: 'completedDate',
-      width: '10%',
-      dataId: '000315',
-      render: (row) => (
-        <DateTimeCell data-id="002150" date={row?.status === 'completed' && row?.completedDate} fallbackText="No submitted date" showTime />
-      ),
-    },
-    {
-      label: 'View',
-      sortKey: '',
-      width: '7%',
-      dataId: '000316',
-      disableSort: true,
-      render: (row) => (
-        <Button
-          data-id="002091"
-          onClick={(e) => {
-            e.stopPropagation();
-            navigateTo(`/audits/${row._id}`);
-          }}
-          size="sm"
-          variant="outline"
-        >
-          View
-        </Button>
-      ),
-    },
-  ], [t, module?.featureFlags?.enableSafetyWalk, navigateTo]);
+
+  const columns: ColumnConfig[] = useMemo(
+    () => [
+      {
+        label: 'Due date',
+        sortKey: 'dueDate',
+        width: '9%',
+        dataId: '000309',
+        render: (row) => <DateTimeCell data-id="002149" date={row?.dueDate} fallbackText="No due date" showTime={false} />,
+      },
+      {
+        label: capitalize(t('location')),
+        sortKey: 'location.name',
+        width: module?.featureFlags?.enableSafetyWalk ? '20%' : '12%',
+        dataId: '000310',
+        render: (row) => <TextOrNumberCell data-id="002087" fallbackText="Virtual" icon={LocationIcon} text={row.location?.name} />,
+      },
+      {
+        label: 'Status',
+        sortKey: 'status',
+        width: '12%',
+        dataId: '000311',
+        render: (row) => <StatusCell data-id="001212" status={row?.status} />,
+      },
+      {
+        label: 'Walk type',
+        sortKey: 'walkType',
+        width: '9%',
+        dataId: '000312',
+        disabled: !module?.featureFlags?.enableSafetyWalk,
+        render: (row) => <TextOrNumberCell data-id="002088" text={auditWalkTypes[row?.walkType]} />,
+      },
+      {
+        label: 'Auditor',
+        sortKey: 'auditor.displayName',
+        width: '18%',
+        dataId: '000313',
+        render: (row) => <AvatarCell data-id="001206" users={row.auditor ? [row.auditor] : []} userType="auditors" />,
+      },
+      {
+        label: 'Reference',
+        sortKey: 'reference',
+        width: '13%',
+        dataId: '000314',
+        render: (row) => <TextOrNumberCell data-id="002089" text={row.reference} />,
+      },
+      {
+        label: 'Date submitted',
+        sortKey: 'completedDate',
+        width: '10%',
+        dataId: '000315',
+        render: (row) => (
+          <DateTimeCell
+            data-id="002150"
+            date={row?.status === 'completed' && row?.completedDate}
+            fallbackText="No submitted date"
+            showTime
+          />
+        ),
+      },
+      {
+        label: 'View',
+        sortKey: '',
+        width: '7%',
+        dataId: '000316',
+        disableSort: true,
+        render: (row) => (
+          <Button
+            data-id="002091"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigateTo(`/audits/${row._id}`);
+            }}
+            size="sm"
+            variant="outline"
+          >
+            View
+          </Button>
+        ),
+      },
+    ],
+    [t, module?.featureFlags?.enableSafetyWalk, navigateTo],
+  );
   const handleAssignedToMeToggle = (isChecked: boolean) => {
     setAssignedToMe(isChecked);
 
@@ -380,9 +403,12 @@ function Audits() {
     return filters;
   }, [module]);
 
-  const handleRowClick = useCallback((row: IAudit) => {
-    navigateTo(`/audits/${row._id}`);
-  }, [navigateTo]);
+  const handleRowClick = useCallback(
+    (row: IAudit) => {
+      navigateTo(`/audits/${row._id}`);
+    },
+    [navigateTo],
+  );
 
   useEffect(() => {
     if (!user || usedFilters.length === 0) return;
@@ -501,17 +527,61 @@ function Audits() {
       return { ...acc, [key]: extractedValue };
     }, {});
 
-    if (Object.keys(parsedFilters).length > 0) refetch({ auditQueryInput: parsedFilters });
+    // Reset to page 1 when filters change
+    setCurrentPage(1);
+
+    if (Object.keys(parsedFilters).length > 0) {
+      refetch({
+        auditQueryInput: parsedFilters,
+        pagination: {
+          limit: pageSize,
+          offset: 0,
+          sortBy: sortTypeState,
+          sortDirection: sortOrderState,
+        },
+      });
+    }
 
     // Safely check for auditorsIds array and userId match
     const { auditorsIds } = (appliedFilters as any)?.usersIds?.value || {};
     if (Array.isArray(auditorsIds) && auditorsIds.length === 1 && auditorsIds[0] === user?.userId) setAssignedToMe(true);
     else setAssignedToMe(false);
-  }, [appliedFilters, user?.userId]);
+  }, [appliedFilters, user?.userId, pageSize, sortTypeState, sortOrderState, refetch, allowedFilters]);
 
   useEffect(() => {
-    if (data && data?.audits && !error) setFilteredAudits(data?.audits);
-  }, [data?.audits]);
+    if (!error && data?.audits) {
+      setFilteredAudits(data.audits.audits ?? []);
+      setTotal(data.audits.total ?? 0);
+    }
+  }, [data, error]);
+
+  // Refetch when pagination or sorting changes
+  useEffect(() => {
+    if (filtersInitialized) {
+      const parsedFilters = Object.entries(appliedFilters || {}).reduce((acc, [key, value]) => {
+        if (!value || !allowedFilters.includes(key)) return acc;
+
+        let extractedValue = value?.value;
+
+        if (key === 'dueDate') extractedValue = parseDueDateFilter(extractedValue);
+        else if (key === 'usersIds') extractedValue = parseUsersIdsFilter(extractedValue);
+
+        if (!isValidFilterValue(extractedValue)) return acc;
+
+        return { ...acc, [key]: extractedValue };
+      }, {});
+
+      refetch({
+        auditQueryInput: Object.keys(parsedFilters).length > 0 ? parsedFilters : undefined,
+        pagination: {
+          limit: pageSize,
+          offset: (currentPage - 1) * pageSize,
+          sortBy: sortTypeState,
+          sortDirection: sortOrderState,
+        },
+      });
+    }
+  }, [currentPage, pageSize, sortTypeState, sortOrderState, filtersInitialized]);
 
   // Sync assignedToMe state with current filter state
   useEffect(() => {
@@ -571,21 +641,22 @@ function Audits() {
   // Memoize panel view component
   const panelViewComponent = useMemo(
     () =>
-      sortedAudits?.length > 0 ? (
+      filteredAudits?.length > 0 ? (
         <PanelView
           config={panelConfig}
           data-id="002176"
           dataSourceName="audits"
-          items={sortedAudits}
+          items={filteredAudits}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          total={total}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
         />
       ) : (
-        <NoRecordsFound
-          data-id="000202"
-          dataSourceName="audits"
-          height="100%"
-        />
+        <NoRecordsFound data-id="000202" dataSourceName="audits" height="100%" />
       ),
-    [sortedAudits, panelConfig],
+    [filteredAudits, panelConfig],
   );
 
   // Memoize list view component
@@ -593,7 +664,7 @@ function Audits() {
     () => (
       <ListView
         columns={columns}
-        data={sortedAudits}
+        data={filteredAudits}
         data-id="000201"
         dataType="audits"
         onRowClick={handleRowClick}
@@ -601,9 +672,14 @@ function Audits() {
         setSortType={setSortType}
         sortOrder={sortOrder}
         sortType={sortType}
+        currentPage={currentPage}
+        pageSize={pageSize}
+        total={total}
+        onPageChange={setCurrentPage}
+        onPageSizeChange={setPageSize}
       />
     ),
-    [columns, sortedAudits, handleRowClick, setSortOrder, setSortType, sortOrder, sortType],
+    [columns, filteredAudits, handleRowClick, setSortOrder, setSortType, sortOrder, sortType, currentPage, pageSize, total],
   );
 
   // Update ref when viewMode changes (for tracking)
@@ -648,7 +724,7 @@ function Audits() {
         <AuditModal data-id="000188" refetch={refetch} />
       </Modal>
       <Header breadcrumbs={[pluralize(t('audit'))]} data-id="000189" mobileBreadcrumbs={[pluralize(t('audit'))]}>
-        <Flex data-id="001519" direction="row" justifyContent="space-between" pl={[0, 0, "6"]} w="full">
+        <Flex data-id="001519" direction="row" justifyContent="space-between" pl={[0, 0, '6']} w="full">
           <AssignedToMeFilter data-id="001204" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
 
           <Flex data-id="001520" direction="row">
@@ -692,7 +768,6 @@ function Audits() {
               />
               {device !== 'desktop' && usedFilters && isAuditPageValue && usedFilters.length > 0 && <FilterButton data-id="000279" />}
             </Flex>
-
           </Flex>
         </Flex>
       </Header>

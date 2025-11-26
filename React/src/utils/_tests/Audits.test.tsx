@@ -78,6 +78,37 @@ vi.mock('../../contexts/AuditModalProvider', () => ({
 // 4) Device + Sort hooks
 vi.mock('../../hooks/useDevice', () => ({ __esModule: true, default: () => 'desktop' }));
 
+// Mock useNavigate hook
+vi.mock('../../hooks/useNavigate', () => ({
+  __esModule: true,
+  default: () => ({
+    navigateTo: vi.fn(),
+    isPathActive: vi.fn(() => true),
+  }),
+}));
+
+// Mock isAuditPage utility
+vi.mock('../../utils/isAuditPage', () => ({
+  __esModule: true,
+  default: (isPathActive: (path: string) => boolean) => true, // Returns true for any path check
+}));
+
+// Mock usePagination hook
+const mockSetCurrentPage = vi.fn();
+const mockSetPageSize = vi.fn();
+const mockSetTotal = vi.fn();
+vi.mock('../../hooks/usePagination', () => ({
+  __esModule: true,
+  default: () => ({
+    currentPage: 1,
+    setCurrentPage: mockSetCurrentPage,
+    pageSize: 10,
+    setPageSize: mockSetPageSize,
+    total: 0,
+    setTotal: mockSetTotal,
+  }),
+}));
+
 const mockSetSortType = vi.fn();
 const mockSetSortOrder = vi.fn();
 
@@ -98,7 +129,7 @@ vi.mock('@apollo/client', async () => {
   return {
     ...actual,
     useQuery: () => ({
-      data: { audits: MOCK_AUDITS },
+      data: { audits: { audits: MOCK_AUDITS, total: MOCK_AUDITS.length } },
       loading: MOCK_LOADING,
       error: false,
       refetch: MOCK_REFETCH,
@@ -113,6 +144,7 @@ vi.mock('../../components/Audit/AuditModal', () => ({ default: () => <div data-i
 vi.mock('../../components/Audit/AuditsList', () => ({ default: () => <div data-id="001351" data-testid="audits-list" /> }));
 vi.mock('../../components/Audit/AuditSquare', () => ({ default: () => <div data-id="001352" data-testid="audit-square" /> }));
 vi.mock('../../components/Loader', () => ({ default: () => <div data-id="001353" data-testid="loader" /> }));
+vi.mock('../../components/FilterButton', () => ({ default: () => <div data-id="001360" data-testid="filter-button" /> }));
 vi.mock('../../components/Header', () => ({
   default: ({ children }: any) => (
     <div data-id="001354">
@@ -214,6 +246,9 @@ beforeEach(() => {
   mockSetSortType.mockClear();
   mockSetSortOrder.mockClear();
   mockSetSortingState.mockClear();
+  mockSetCurrentPage.mockClear();
+  mockSetPageSize.mockClear();
+  mockSetTotal.mockClear();
 });
 
 // ============================ TESTS ============================
@@ -267,6 +302,12 @@ describe('Audits – assignedToMe, filters, and new render helpers', () => {
     // refetch called with parsedFilters
     expect(MOCK_REFETCH).toHaveBeenCalledWith({
       auditQueryInput: { dueDate: '2025-01-10', usersIds: { auditorsIds: [TEST_USER.userId] } },
+      pagination: {
+        limit: 10,
+        offset: 0,
+        sortBy: 'auditor.displayName',
+        sortDirection: 'asc',
+      },
     });
 
     // assignedToMe from auditorsIds==me path
@@ -285,13 +326,14 @@ describe('Audits – assignedToMe, filters, and new render helpers', () => {
 
   test('renderMainContent: loading branch shows Loader', () => {
     MOCK_LOADING = true;
+    MOCK_AUDITS = [];
     renderPage();
     expect(screen.getByTestId('loader')).toBeInTheDocument();
   });
 
   test('renderPanelView: empty state when sortedAudits is empty', async () => {
     const user = userEvent.setup();
-    MOCK_SORTED_AUDITS = []; // nothing to show
+    MOCK_AUDITS = []; // nothing to show
     renderPage();
 
     await user.click(screen.getByTestId('to-panel'));
@@ -308,7 +350,7 @@ describe('Audits – assignedToMe, filters, and new render helpers', () => {
 
   test('renderPanelView: shows PanelView when sortedAudits has items', async () => {
     const user = userEvent.setup();
-    MOCK_SORTED_AUDITS = [{ _id: 'a1', auditor: { displayName: 'X' } }];
+    MOCK_AUDITS = [{ _id: 'a1', auditor: { displayName: 'X' } }];
     renderPage();
 
     await user.click(screen.getByTestId('to-panel'));
@@ -324,7 +366,7 @@ describe('Audits – assignedToMe, filters, and new render helpers', () => {
 
   test('renderListView: switches to list view and shows ListView component', async () => {
     const user = userEvent.setup();
-    MOCK_SORTED_AUDITS = [{ _id: 'a1', auditor: { displayName: 'X' } }];
+    MOCK_AUDITS = [{ _id: 'a1', auditor: { displayName: 'X' } }];
     renderPage();
 
     await user.click(screen.getByTestId('to-list'));
@@ -351,13 +393,13 @@ describe('Audits – assignedToMe, filters, and new render helpers', () => {
   });
 
   test('handles empty sorted audits in list view', () => {
-    MOCK_SORTED_AUDITS = [];
+    MOCK_AUDITS = [];
     renderPage();
     expect(screen.getByText(/No audits found\. Try adjusting the filters\./i)).toBeInTheDocument();
   });
 
   test('default viewMode renders list view', () => {
-    MOCK_SORTED_AUDITS = [{ _id: 'a1', auditor: { displayName: 'X' } }];
+    MOCK_AUDITS = [{ _id: 'a1', auditor: { displayName: 'X' } }];
     renderPage();
     // Should render ListView by default
     const listView = screen.queryByRole('table');

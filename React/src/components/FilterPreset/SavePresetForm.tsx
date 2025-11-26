@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button, HStack, Input, Text, VStack } from '@chakra-ui/react';
 import { CrossIcon, SaveIcon } from '../../icons';
-import { MAX_PRESET_NAME_LENGTH } from '../../constants';
+import { MAX_PRESET_NAME_LENGTH } from '../../bootstrap/config';
 
 interface SavePresetFormProps {
   readonly presetName: string;

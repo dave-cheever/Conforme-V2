@@ -2,9 +2,11 @@ import React, { useCallback } from 'react';
 
 import { Box, Flex } from '@chakra-ui/react';
 
+import Pagination from '../UI/Pagination/Pagination';
 import TableHeader from './Header/TableHeader';
 import TableHeaderElement from './Header/TableHeaderElement';
 import ListViewRow from './Rows/ListViewRow';
+import { PAGINATION_PAGE_SIZE_OPTIONS } from '../../bootstrap/config';
 
 export interface ColumnConfig {
   label: React.ReactNode;
@@ -28,6 +30,11 @@ function ListView({
   columns,
   dataType,
   onRowClick,
+  currentPage,
+  pageSize,
+  total,
+  onPageChange,
+  onPageSizeChange,
 }: {
   readonly data: Array<any>;
   readonly sortOrder: 'asc' | 'desc';
@@ -37,31 +44,32 @@ function ListView({
   readonly columns: ColumnConfig[];
   readonly dataType: string;
   readonly onRowClick: (row: any) => void;
+  readonly currentPage?: number;
+  readonly pageSize?: (typeof PAGINATION_PAGE_SIZE_OPTIONS)[number];
+  readonly total?: number;
+  readonly onPageChange?: (page: number) => void;
+  readonly onPageSizeChange?: (pageSize: (typeof PAGINATION_PAGE_SIZE_OPTIONS)[number]) => void;
 }) {
-  const handleSort = useCallback((sortKey: string) => {
-    setSortType(sortKey);
-    setSortOrder(sortOrder === 'asc' && sortType === sortKey ? 'desc' : 'asc');
-  }, [setSortType, setSortOrder, sortOrder, sortType]);
+  const handleSort = useCallback(
+    (sortKey: string) => {
+      setSortType(sortKey);
+      setSortOrder(sortOrder === 'asc' && sortType === sortKey ? 'desc' : 'asc');
+    },
+    [setSortType, setSortOrder, sortOrder, sortType],
+  );
 
   // Helper function to render empty state
   if (data?.length === 0) {
     return (
-        <Flex alignItems="center" data-id={"empty-list-view"} fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
-            No {dataType} found. Try adjusting the filters.
-        </Flex>
+      <Flex alignItems="center" data-id={'empty-list-view'} fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
+        No {dataType} found. Try adjusting the filters.
+      </Flex>
     );
   }
 
   return (
-    <Box bg="container.bg" data-id="000306" h="full" overflow="auto" position="relative" w="full">
-      <Box
-        bg="container.bg"
-        data-id="000307"
-        h="fit-content"
-        minH="full"
-        position="relative"
-        w="full"
-      >
+    <Box bg="container.bg" data-id="000306" display="flex" flexDir="column" h="full" position="relative" w="full">
+      <Box bg="container.bg" data-id="000307" flexShrink={0} position="relative" w="full">
         <TableHeader data-id="000308">
           {columns
             .filter((column) => column.disabled !== true)
@@ -79,11 +87,29 @@ function ListView({
               />
             ))}
         </TableHeader>
-        <Flex data-id="000316" flexDir="column" pb={4} w="full">
-          {data?.map((row, index) =>
-            <ListViewRow columns={columns} data-id="000317" data-testid={`row-${index + 1}`} key={row._id} onRowClick={onRowClick} row={row} />)}
+      </Box>
+      <Box data-id="000316" flex="1" overflowY="auto" w="full">
+        <Flex data-id="003087" flexDir="column" w="full">
+          {data?.map((row, index) => (
+            <ListViewRow
+              columns={columns}
+              data-id="000317"
+              data-testid={`row-${index + 1}`}
+              key={row._id}
+              onRowClick={onRowClick}
+              row={row}
+            />
+          ))}
         </Flex>
       </Box>
+      <Pagination
+        data-id="003088"
+        currentPage={currentPage}
+        pageSize={pageSize}
+        total={total}
+        onPageChange={onPageChange}
+        onPageSizeChange={onPageSizeChange} 
+      />
     </Box>
   );
 }
@@ -104,7 +130,7 @@ export const listViewStyles = {
   row: {
     bg: '#FFFFFF',
     borderColor: '#CBD5E0',
-    color: "#2D3748",
+    color: '#2D3748',
     hoverBg: '#F5F7FA',
   },
 };

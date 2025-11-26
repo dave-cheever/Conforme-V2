@@ -1,4 +1,5 @@
 import React from 'react';
+import { PAGINATION_PAGE_SIZE_OPTIONS } from '../bootstrap/config';
 
 export interface PanelFieldConfig {
   readonly key: string; // Path to the data (e.g., 'auditType.name', 'status')
@@ -83,4 +84,9 @@ export interface PanelViewProps {
   readonly error?: string;
   readonly emptyStateMessage?: string;
   readonly dataSourceName?: string;
+  readonly currentPage?: number;
+  readonly pageSize?: (typeof PAGINATION_PAGE_SIZE_OPTIONS)[number];
+  readonly total?: number;
+  readonly onPageChange?: (page: number) => void;
+  readonly onPageSizeChange?: (pageSize: (typeof PAGINATION_PAGE_SIZE_OPTIONS)[number]) => void;
 }

@@ -103,6 +103,9 @@ vi.mock('../../icons', () => ({
   FilterPresetsIcon: (props: any) => <div data-id="001737" data-testid="filter-preset-icon" {...props} />,
   FilterWhite: (props: any) => <div data-id="001738" data-testid="filter-white-icon" {...props} />,
   PlusIcon: (props: any) => <div data-id="001739" data-testid="plus-icon" {...props} />,
+  ProgressIcon: (props: any) => <div data-id="001740" data-testid="progress-icon" {...props} />,
+  AuditIcon: (props: any) => <div data-id="001741" data-testid="audit-icon" {...props} />,
+  TeamsIcon: (props: any) => <div data-id="001742" data-testid="teams-icon" {...props} />,
 }));
 
 // Mock theme

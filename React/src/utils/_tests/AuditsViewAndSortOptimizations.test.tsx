@@ -90,6 +90,22 @@ vi.mock('../../contexts/AuditModalProvider', () => ({
 // Mock device hook
 vi.mock('../../hooks/useDevice', () => ({ __esModule: true, default: () => 'desktop' }));
 
+// Mock usePagination hook
+const mockSetCurrentPage = vi.fn();
+const mockSetPageSize = vi.fn();
+const mockSetTotal = vi.fn();
+vi.mock('../../hooks/usePagination', () => ({
+  __esModule: true,
+  default: () => ({
+    currentPage: 1,
+    setCurrentPage: mockSetCurrentPage,
+    pageSize: 10,
+    setPageSize: mockSetPageSize,
+    total: 0,
+    setTotal: mockSetTotal,
+  }),
+}));
+
 // Mock useSort hook with controllable state
 let mockSortType = 'auditor.displayName';
 let mockSortOrder: 'asc' | 'desc' = 'asc';
@@ -117,11 +133,12 @@ vi.mock('@apollo/client', async () => {
   return {
     ...actual,
     useQuery: () => ({
-      data: { audits: MOCK_AUDITS },
+      data: { audits: { audits: MOCK_AUDITS, total: MOCK_AUDITS.length } },
       loading: MOCK_LOADING,
       error: null,
       refetch: MOCK_REFETCH,
     }),
+    gql: (x: any) => x,
   };
 });
 
@@ -132,6 +149,12 @@ vi.mock('../../hooks/useNavigate', () => ({
     navigateTo: vi.fn(),
     isPathActive: vi.fn(() => true),
   }),
+}));
+
+// Mock isAuditPage utility
+vi.mock('../../utils/isAuditPage', () => ({
+  __esModule: true,
+  default: (isPathActive: (path: string) => boolean) => true, // Returns true for any path check
 }));
 
 // Mock components
@@ -262,6 +285,11 @@ vi.mock('../../components/Filters/AssignedToMeFilter', () => ({
   default: () => <div data-id="003083" data-testid="assigned-filter">Assigned Filter</div>,
 }));
 
+vi.mock('../../components/FilterButton', () => ({
+  __esModule: true,
+  default: () => <div data-id="003084" data-testid="filter-button" />,
+}));
+
 // Mock localStorage
 const mockLocalStorage = {
   getItem: vi.fn(),
@@ -302,6 +330,9 @@ beforeEach(() => {
   mockSetSortTypeOriginal.mockClear();
   mockSetSortOrderOriginal.mockClear();
   mockSetSortingState.mockClear();
+  mockSetCurrentPage.mockClear();
+  mockSetPageSize.mockClear();
+  mockSetTotal.mockClear();
 });
 
 describe('Audits – View Switching Optimizations', () => {

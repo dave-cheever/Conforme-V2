@@ -330,3 +330,7 @@ export const availableOptions: (enableSafetyWalk: boolean) => IAuditOption[] = (
   }
   return [];
 };
+
+export const PAGINATION_PAGE_SIZE_OPTIONS = [15, 30, 50, 100] as const;
+export const MAX_PRESET_NAME_LENGTH = 50;
+export const PAGINATION_DEFAULT_PAGE_SIZE = 15;

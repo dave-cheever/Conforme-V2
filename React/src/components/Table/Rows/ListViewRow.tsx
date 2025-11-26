@@ -13,6 +13,7 @@ function ListViewRowComponent({ row, columns, onRowClick, 'data-testid': dataTes
   return (
     <Box
       _hover={{ bg: "row.hoverBg" }}
+      _last={{ border: "none" }}
       bg="row.bg"
       borderBottomColor="row.borderColor"
       borderBottomWidth="1px"

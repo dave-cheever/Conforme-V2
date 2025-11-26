@@ -6,7 +6,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import FilterPreset, { GET_FILTER_PRESETS, SAVE_FILTER_PRESET } from '../../components/FilterPreset';
-import { MAX_PRESET_NAME_LENGTH } from '../../constants';
+import { MAX_PRESET_NAME_LENGTH } from '../../bootstrap/config';
 
 // Mock the contexts
 const mockAppContext = {

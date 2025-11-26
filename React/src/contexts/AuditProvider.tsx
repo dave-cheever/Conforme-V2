@@ -19,47 +19,47 @@ export const AuditContext = createContext({} as IAuditContext);
 const GET_AUDIT = gql`
   query GetAudit($auditQueryInput: AuditQueryInput) {
     audits(auditQueryInput: $auditQueryInput) {
-      _id
-      auditTypeId
-      walkType
-      reference
-      status
-      auditorId
-      participantsIds
-      recurring
-      auditType {
+      audits {
         _id
-        name
-        sections {
-          type
+        reference
+        walkType
+        dueDate
+        completedDate
+        status
+        auditorId
+        numberOfActions
+        answersCount
+        recurring
+        auditType {
           _id
+          name
+          startingDate
+          frequency
+          sections {
+            type
+            _id
+          }
         }
-        businessUnitScope
+        location {
+          _id
+          name
+        }
+        businessUnit {
+          _id
+          name
+        }
+        auditor {
+          _id
+          displayName
+          imgUrl
+        }
+        participantsIds
+        metatags {
+          addedAt
+          removedBy
+        }
       }
-      location {
-        _id
-        name
-      }
-      businessUnit {
-        _id
-        name
-      }
-      auditor {
-        _id
-        userId
-        displayName
-        imgUrl
-        email
-        jobTitle
-      }
-      participants {
-        _id
-        userId
-        displayName
-        imgUrl
-        email
-        jobTitle
-      }
+      total
     }
   }
 `;
@@ -329,7 +329,7 @@ function AuditProvider({ children }) {
     variables: { auditQueryInput: { _id: id } },
   });
 
-  const audit = data?.audits[0];
+  const audit = data?.audits?.audits[0];
   const auditType = audit?.auditType;
   const location = audit?.location;
   const businessUnit = audit?.businessUnit;

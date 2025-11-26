@@ -164,46 +164,6 @@ function NavigationTop() {
                 zIndex={5} />
             )} />
         )}
-        {module?.type === 'audits' && !(device === 'mobile' && isAuditPage) && (
-          <Can
-            data-id="000464"
-            action="audits.add"
-            // eslint-disable-next-line react/no-unstable-nested-components
-            yes={() => (
-              <IconButton
-                data-id="000465"
-                _hover={{ opacity: 0.7 }}
-                 aria-label="Add"
-                bg="white"
-                border={"1px solid #CBD5E0"}
-                bottom={['107px', '0']}
-                boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
-                color="white"
-                display={['/admin/users', '/admin/settings', '/admin/audit-log'].includes(location.pathname) ? 'none' : 'block'}
-                flexShrink={0}
-                h={['52px', '40px']}
-                icon={
-                  isOpen ? (
-                    <CrossIcon
-                      data-id="000466"
-                      h="20px"
-                      ml="1"
-                     stroke="black"
-                      w="20px" />
-                  ) : (
-                    <AddIcon data-id="000467" h="21px" stroke="black" w="21px" />
-                  )
-                }
-                ml={['0', '4']}
-                mr={['4', '0']}
-                onClick={isOpen ? onClose : onOpen}
-                position={['fixed', 'relative']}
-                right={['0', '0']}
-                rounded={['20px', '8px']}
-                w={['52px', '40px']}  
-                zIndex={5} />
-            )} />
-        )}
       </Stack>
       <Flex
         align="center"

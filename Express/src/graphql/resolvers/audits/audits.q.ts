@@ -1,6 +1,5 @@
 import {
   addMonths,
-  compareDesc,
   endOfDay,
   endOfMonth,
   endOfWeek,
@@ -18,414 +17,383 @@ import { IUser } from 'app-interfaces';
 import { Audits, Users } from 'app-models';
 import { doesPathExist, getProjectFields, isPermitted, join } from 'app-utils';
 
-const audits = async (_, { auditQueryInput }, { authorize, organization }, info: GraphQLResolveInfo) => {
-  const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['audits', ...elements]);
-  try {
-    const user = await authorize();
-    const pipeline: PipelineStage[] = [
-      {
-        $match: {
-          'metatags.removedAt': auditQueryInput?.showArchived ? { $exists: true } : { $eq: null },
-          organizationId: organization._id,
-        },
+const buildDateRangeMatch = (filter: string, startDate: string, endDate: string, filterByCreatedDate: boolean) => {
+  const dateField = filterByCreatedDate ? 'metatags.addedAt' : 'dueDate';
+  const now = new Date();
+
+  const dateRanges: Record<string, { $gte: Date; $lte: Date }> = {
+    thisWeek: {
+      $gte: startOfWeek(now, { weekStartsOn: 1 }),
+      $lte: endOfWeek(now, { weekStartsOn: 1 }),
+    },
+    thisMonth: {
+      $gte: startOfMonth(now),
+      $lte: endOfMonth(now),
+    },
+    thisYear: {
+      $gte: startOfYear(now),
+      $lte: endOfYear(now),
+    },
+    last12Months: {
+      $gte: startOfMonth(addMonths(subYears(now, 1), 1)),
+      $lte: endOfMonth(now),
+    },
+    nextMonth: {
+      $gte: startOfMonth(addMonths(now, 1)),
+      $lte: endOfMonth(addMonths(now, 1)),
+    },
+    exactDate: {
+      $gte: startOfDay(new Date(startDate)),
+      $lte: endOfDay(new Date(startDate)),
+    },
+    dateRange: {
+      $gte: startOfDay(new Date(startDate)),
+      $lte: endOfDay(new Date(endDate)),
+    },
+  };
+
+  const range = dateRanges[filter];
+  if (!range) return null;
+
+  if (filter === 'dateRange' && (!startDate || !endDate)) return null;
+
+  return {
+    $and: [
+      { [dateField]: { $gte: range.$gte } },
+      { [dateField]: { $lte: range.$lte } },
+    ],
+  };
+};
+
+const buildInitialMatches = (auditQueryInput: any, organization: any): PipelineStage[] => {
+  const matches: PipelineStage[] = [
+    {
+      $match: {
+        'metatags.removedAt': auditQueryInput?.showArchived ? { $exists: true } : { $eq: null },
+        organizationId: organization._id,
       },
-    ];
-    if (shouldJoin(['location']) || !isPermitted({ user, action: 'audits.viewAll' })) {
-      join({
-        pipeline,
-        collection: 'locations',
-        from: 'locationId',
-        to: 'location',
-      });
-    }
+    },
+  ];
 
-    if (shouldJoin(['businessUnit']) || !isPermitted({ user, action: 'audits.viewAll' })) {
-      join({
-        pipeline,
-        collection: 'businessUnits',
-        from: 'businessUnitId',
-        to: 'businessUnit',
-      });
-    }
+  if (auditQueryInput?._id) {
+    matches.push({ $match: { _id: auditQueryInput._id } });
+  }
 
-    // For "user" role filter audits
-    if (!isPermitted({ user, action: 'audits.viewAll' })) {
-      /**
-       * User's direct reports. The user is a manager of these users.
-       */
-      const users = await Users.customFindWithDetails({ selector: { managerId: user.userId }, organization });
+  return matches;
+};
 
-      /**
-       * Array of all users including the user himself and his direct reports
-       */
-      const userIds = [user.userId, ...users.map((user) => user.userId)];
+const buildFilterMatches = (auditQueryInput: any): PipelineStage[] => {
+  const matches: PipelineStage[] = [];
 
-      const $or: { [key: string]: string }[] = [];
-      userIds.forEach((_id) => {
-        $or.push(
-          ...[
-            {
-              auditorId: _id,
-            },
-            {
-              participantsIds: _id,
-            },
-            {
-              'location.ownerId': _id,
-            },
-            {
-              'businessUnit.ownerId': _id,
-            },
-          ],
-        );
-      });
+  if (auditQueryInput?.walkType?.length > 0) {
+    matches.push({ $match: { walkType: { $in: auditQueryInput.walkType } } });
+  }
 
-      pipeline.push({
-        $match: {
-          $or,
-        },
-      });
-    }
+  if (auditQueryInput?.auditTypesIds?.length > 0) {
+    matches.push({ $match: { auditTypeId: { $in: auditQueryInput.auditTypesIds } } });
+  }
 
-    if (auditQueryInput?._id) {
-      pipeline.push({
-        $match: {
-          _id: auditQueryInput._id,
-        },
-      });
-    }
+  if (auditQueryInput?.locationsIds?.length > 0) {
+    matches.push({ $match: { locationId: { $in: auditQueryInput.locationsIds } } });
+  }
 
-    if (auditQueryInput?.walkType?.length > 0) {
-      pipeline.push({
-        $match: {
-          walkType: { $in: auditQueryInput.walkType },
-        },
-      });
-    }
-
-    if (auditQueryInput?.auditTypesIds?.length > 0) {
-      pipeline.push({
-        $match: {
-          auditTypeId: { $in: auditQueryInput.auditTypesIds },
-        },
-      });
-    }
-
-    if (auditQueryInput?.locationsIds?.length > 0) {
-      pipeline.push({
-        $match: {
-          locationId: { $in: auditQueryInput.locationsIds },
-        },
-      });
-    }
-
-    if (auditQueryInput?.businessUnitsIds?.length > 0) {
-      pipeline.push({
+  if (auditQueryInput?.businessUnitsIds?.length > 0) {
+    matches.push(
+      {
         $lookup: {
           from: 'answers',
           localField: '_id',
           foreignField: 'scope._id',
           as: 'answers',
         },
-      });
-
-      pipeline.push({
+      },
+      {
         $match: {
           $or: [
             { businessUnitId: { $in: auditQueryInput.businessUnitsIds } },
             { 'answers.businessUnitId': { $in: auditQueryInput.businessUnitsIds } },
           ],
         },
-      });
-    }
+      },
+    );
+  }
 
-    if (auditQueryInput?.usersIds?.auditorsIds?.length > 0) {
-      pipeline.push({
-        $match: {
-          auditorId: { $in: auditQueryInput.usersIds?.auditorsIds },
-        },
-      });
-    }
+  if (auditQueryInput?.usersIds?.auditorsIds?.length > 0) {
+    matches.push({ $match: { auditorId: { $in: auditQueryInput.usersIds.auditorsIds } } });
+  }
 
-    if (auditQueryInput?.usersIds?.participantsIds?.length > 0) {
-      pipeline.push({
-        $match: {
-          participantsIds: {
-            $in: auditQueryInput.usersIds?.participantsIds,
-          },
-        },
-      });
-    }
+  if (auditQueryInput?.usersIds?.participantsIds?.length > 0) {
+    matches.push({ $match: { participantsIds: { $in: auditQueryInput.usersIds.participantsIds } } });
+  }
 
-    if (auditQueryInput?.status?.length > 0) {
-      pipeline.push({
-        $match: {
-          status: {
-            $in: auditQueryInput.status,
-          },
-        },
-      });
-    }
+  if (auditQueryInput?.status?.length > 0) {
+    matches.push({ $match: { status: { $in: auditQueryInput.status } } });
+  }
 
-    // Filter by created date or due date
-    // Based on query parameter
-    // Audits attribute selected conditionally to filter
-    if (auditQueryInput?.createdDate || auditQueryInput?.dueDate) {
-      const [filter, startDate, endDate] = auditQueryInput?.createdDate || auditQueryInput?.dueDate;
-      const filterByCreatedDate = !!auditQueryInput.createdDate;
-      let $match;
-      switch (filter) {
-        case 'thisWeek':
-          $match = {
-            $and: [
-              {
-                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $gte: startOfWeek(new Date(), { weekStartsOn: 1 }),
-                },
-              },
-              {
-                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $lte: endOfWeek(new Date(), { weekStartsOn: 1 }),
-                },
-              },
-            ],
-          };
-          break;
-        case 'thisMonth':
-          $match = {
-            $and: [
-              {
-                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $gte: startOfMonth(new Date()),
-                },
-              },
-              {
-                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $lte: endOfMonth(new Date()),
-                },
-              },
-            ],
-          };
-          break;
-        case 'thisYear':
-          $match = {
-            $and: [
-              {
-                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $gte: startOfYear(new Date()),
-                },
-              },
-              {
-                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $lte: endOfYear(new Date()),
-                },
-              },
-            ],
-          };
-          break;
-        case 'last12Months':
-          $match = {
-            $and: [
-              {
-                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $gte: startOfMonth(addMonths(subYears(new Date(), 1), 1)),
-                },
-              },
-              {
-                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $lte: endOfMonth(new Date()),
-                },
-              },
-            ],
-          };
-          break;
-        case 'nextMonth':
-          $match = {
-            $and: [
-              {
-                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $gte: startOfMonth(addMonths(new Date(), 1)),
-                },
-              },
-              {
-                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $lte: endOfMonth(addMonths(new Date(), 1)),
-                },
-              },
-            ],
-          };
-          break;
-        case 'exactDate':
-          $match = {
-            $and: [
-              {
-                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $gte: startOfDay(new Date(startDate)),
-                },
-              },
-              {
-                [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                  $lte: endOfDay(new Date(startDate)),
-                },
-              },
-            ],
-          };
-          break;
-        case 'dateRange':
-          if (startDate && endDate) {
-            $match = {
-              $and: [
-                {
-                  [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                    $gte: startOfDay(new Date(startDate)),
-                  },
-                },
-                {
-                  [filterByCreatedDate ? 'metatags.addedAt' : 'dueDate']: {
-                    $lte: endOfDay(new Date(endDate)),
-                  },
-                },
-              ],
-            };
-          }
-          break;
-        default:
-          break;
-      }
+  return matches;
+};
 
-      if ($match) pipeline.push({ $match });
-    }
+const buildDateFilterMatch = (auditQueryInput: any): PipelineStage | null => {
+  if (!auditQueryInput?.createdDate && !auditQueryInput?.dueDate) return null;
 
-    if (shouldJoin(['auditType'])) {
-      join({
-        pipeline,
-        collection: 'auditTypes',
-        from: 'auditTypeId',
-        to: 'auditType',
-      });
-    }
+  const [filter, startDate, endDate] = auditQueryInput?.createdDate || auditQueryInput?.dueDate;
+  const filterByCreatedDate = !!auditQueryInput.createdDate;
+  const dateMatch = buildDateRangeMatch(filter, startDate, endDate, filterByCreatedDate);
 
-    if (shouldJoin(['questions'])) {
-      pipeline.push({
-        $lookup: {
-          from: 'questions',
-          localField: '_id',
-          foreignField: 'scope._id',
-          as: 'questions',
-        },
-      });
-    }
+  return dateMatch ? { $match: dateMatch } : null;
+};
 
-    pipeline.push({
-      $project: {
-        auditorId: shouldJoin(['auditor']),
-        participantsIds: shouldJoin(['participants']),
-        ...getProjectFields(info.fieldNodes, 'audits'),
-        metatags: 1,
+const buildUserPermissionMatch = async (user: any, organization: any): Promise<PipelineStage | null> => {
+  if (isPermitted({ user, action: 'audits.viewAll' })) return null;
+
+  const users = await Users.customFindWithDetails({ selector: { managerId: user.userId }, organization });
+  const userIds = [user.userId, ...users.map((u) => u.userId)];
+
+  const $or = userIds.flatMap((_id) => [
+    { auditorId: _id },
+    { participantsIds: _id },
+    { 'location.ownerId': _id },
+    { 'businessUnit.ownerId': _id },
+  ]);
+
+  return { $match: { $or } };
+};
+
+const buildLookupStages = (
+  shouldJoin: (elements: string[]) => boolean,
+  baseProjection: any,
+): { stages: PipelineStage[]; projection: any } => {
+  const stages: PipelineStage[] = [];
+  const projection = { ...baseProjection };
+
+  if (shouldJoin(['questions'])) {
+    stages.push({
+      $lookup: {
+        from: 'questions',
+        localField: '_id',
+        foreignField: 'scope._id',
+        as: 'questions',
       },
     });
+    projection.questions = 1;
+  }
 
-    if (shouldJoin(['numberOfActions'])) {
-      pipeline.push({
+  if (shouldJoin(['numberOfActions'])) {
+    stages.push(
+      {
         $lookup: {
           from: 'answers',
           localField: '_id',
           foreignField: 'scope._id',
           as: 'answers',
         },
-      });
-      pipeline.push({
+      },
+      {
         $lookup: {
           from: 'actions',
           localField: 'answers._id',
           foreignField: 'scope._id',
           as: 'actions',
         },
-      });
-      pipeline.push({
+      },
+      {
         $project: {
-          auditorId: shouldJoin(['auditor']),
-          participantsIds: shouldJoin(['participants']),
-          ...getProjectFields(info.fieldNodes, 'audits'),
-          metatags: 1,
+          ...projection,
           actions: 1,
           answers: 1,
         },
-      });
-    }
+      },
+    );
+  }
 
-    if (shouldJoin(['answersCount'])) {
-      pipeline.push({
+  if (shouldJoin(['answersCount'])) {
+    stages.push(
+      {
         $lookup: {
           from: 'questions',
           localField: '_id',
           foreignField: 'scope._id',
           as: 'questions',
         },
-      });
-      pipeline.push({
+      },
+      {
         $lookup: {
           from: 'answers',
           localField: 'questions._id',
           foreignField: 'questionId',
           as: 'answers',
         },
-      });
-      pipeline.push({
+      },
+      {
         $project: {
-          auditorId: shouldJoin(['auditor']),
-          participantsIds: shouldJoin(['participants']),
-          ...getProjectFields(info.fieldNodes, 'audits'),
-          metatags: 1,
+          ...projection,
           answers: 1,
         },
+      },
+    );
+  }
+
+  return { stages, projection };
+};
+
+const buildPaginationStages = (pagination: any): PipelineStage[] => {
+  const sortBy = pagination?.sortBy || 'metatags.addedAt';
+  const sortDirection = pagination?.sortDirection === 'asc' ? 1 : -1;
+  const limit = pagination?.limit || 15;
+  const offset = pagination?.offset || 0;
+
+  return [
+    {
+      $facet: {
+        audits: [{ $sort: { [sortBy]: sortDirection } }, { $skip: offset }, { $limit: limit }],
+        total: [{ $count: 'total' }],
+      },
+    },
+    {
+      $unwind: {
+        path: '$total',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $project: {
+        audits: 1,
+        total: '$total.total',
+      },
+    },
+  ];
+};
+
+const enrichAuditsWithUsers = async (
+  audits: any[],
+  shouldJoin: (elements: string[]) => boolean,
+  organization: any,
+): Promise<any[]> => {
+  if (!shouldJoin(['auditor']) && !shouldJoin(['participants'])) return audits;
+
+  const userIdsSet = new Set<string>();
+  audits.forEach((audit) => {
+    if (shouldJoin(['auditor']) && audit.auditorId) {
+      userIdsSet.add(audit.auditorId);
+    }
+    if (shouldJoin(['participants']) && audit.participantsIds?.length > 0) {
+      audit.participantsIds.forEach((id: string) => userIdsSet.add(id));
+    }
+  });
+
+  const userIdsArray = Array.from(userIdsSet);
+  const usersMap = new Map<string, IUser>();
+  if (userIdsArray.length > 0) {
+    const users = await Users.customFindWithDetails({ selector: { userId: { $in: userIdsArray } }, organization });
+    users.forEach((user) => {
+      usersMap.set(user.userId, user);
+    });
+  }
+
+  return audits.map((audit) => {
+    const auditor = shouldJoin(['auditor']) && audit.auditorId ? usersMap.get(audit.auditorId) : undefined;
+    const participants =
+      shouldJoin(['participants']) && audit.participantsIds?.length > 0
+        ? audit.participantsIds
+          .map((id: string) => usersMap.get(id))
+          .filter((user): user is IUser => user !== undefined)
+        : [];
+
+    return { ...audit, auditor, participants };
+  });
+};
+
+const enrichAuditsWithComputedFields = (audits: any[], shouldJoin: (elements: string[]) => boolean): any[] => {
+  let result = audits;
+
+  if (shouldJoin(['numberOfActions'])) {
+    result = result.map((audit) => ({
+      ...audit,
+      numberOfActions: audit.actions?.filter((action: any) => !action.metatags.removedAt)?.length ?? 0,
+    }));
+  }
+
+  if (shouldJoin(['answersCount'])) {
+    result = result.map((audit) => ({
+      ...audit,
+      answersCount: audit.answers?.length || 0,
+    }));
+  }
+
+  return result;
+};
+
+const audits = async (_, { auditQueryInput, pagination }, { authorize, organization }, info: GraphQLResolveInfo) => {
+  const shouldJoin = (elements: string[]) => doesPathExist(info.fieldNodes, ['audits', 'audits', ...elements]);
+
+  try {
+    const user = await authorize();
+
+    const auditsProjectFields = getProjectFields(info.fieldNodes, 'audits') as any;
+    const projectFields = auditsProjectFields?.audits || {};
+    const baseProjection: any = { ...projectFields };
+
+    const pipelineStages: PipelineStage[] = [];
+
+    pipelineStages.push(...buildInitialMatches(auditQueryInput, organization));
+
+    if (shouldJoin(['location']) || !isPermitted({ user, action: 'audits.viewAll' })) {
+      join({
+        pipeline: pipelineStages,
+        collection: 'locations',
+        from: 'locationId',
+        to: 'location',
+      });
+      baseProjection.locationId = 1;
+      baseProjection.location = 1;
+    }
+
+    if (shouldJoin(['businessUnit']) || !isPermitted({ user, action: 'audits.viewAll' })) {
+      join({
+        pipeline: pipelineStages,
+        collection: 'businessUnits',
+        from: 'businessUnitId',
+        to: 'businessUnit',
+      });
+      baseProjection.businessUnitId = 1;
+      baseProjection.businessUnit = 1;
+    }
+
+    const userMatch = await buildUserPermissionMatch(user, organization);
+    if (userMatch) pipelineStages.push(userMatch);
+
+    pipelineStages.push(...buildFilterMatches(auditQueryInput));
+
+    const dateMatch = buildDateFilterMatch(auditQueryInput);
+    if (dateMatch) pipelineStages.push(dateMatch);
+
+    if (shouldJoin(['auditType'])) {
+      join({
+        pipeline: pipelineStages,
+        collection: 'auditTypes',
+        from: 'auditTypeId',
+        to: 'auditType',
       });
     }
 
-    let audits = await Audits.aggregate(pipeline);
+    const { stages: lookupStages } = buildLookupStages(shouldJoin, baseProjection);
 
-    if (shouldJoin(['auditor']) || shouldJoin(['participants'])) {
-      audits = await Promise.all(
-        audits.map(async (audit) => {
-          try {
-            let auditor;
-            let participants: IUser[] = [];
-            if (shouldJoin(['auditor'])) {
-              auditor = await Users.customFindByIdWithDetails({
-                userId: audit.auditorId,
-                organization,
-              });
-            }
-            if (shouldJoin(['participants']) && audit.participantsIds && audit.participantsIds.length > 0)
-              participants = await Users.customFindWithDetails({ selector: { userId: { $in: audit.participantsIds } }, organization });
+    pipelineStages.push(
+      ...lookupStages,
+      ...buildPaginationStages(pagination)
+    );
 
-            return {
-              ...audit,
-              auditor,
-              participants,
-            };
-          } catch (e) {
-            return audit;
-          }
-        }),
-      );
-    }
+    const res = (await Audits.aggregate(pipelineStages))[0];
+    let resultAudits = res?.audits || [];
 
-    if (shouldJoin(['numberOfActions'])) {
-      audits = audits.map((audit) => ({
-        ...audit,
-        numberOfActions: audit.actions?.filter((action) => !action.metatags.removedAt)?.length ?? 0,
-      }));
-    }
+    resultAudits = await enrichAuditsWithUsers(resultAudits, shouldJoin, organization);
 
-    if (shouldJoin(['answersCount'])) {
-      audits = audits.map((audit) => ({
-        ...audit,
-        answersCount: audit.answers?.length || 0,
-      }));
-    }
+    resultAudits = enrichAuditsWithComputedFields(resultAudits, shouldJoin);
 
-    return audits.sort((a, b) => compareDesc(new Date(a.metatags.addedAt), new Date(b.metatags.addedAt)));
+    return {
+      audits: resultAudits,
+      total: res?.total || 0,
+    };
   } catch (err: any) {
     throw new Error(err);
   }
