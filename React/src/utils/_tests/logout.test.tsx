@@ -107,6 +107,17 @@ describe('Logout Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.restoreAllMocks();
+    localStorage.clear();
+    
+    // Set up localStorage with user data (logout page reads from localStorage)
+    const logOutUser = {
+      displayName: mockUser.displayName,
+      imgUrl: mockUser.imgUrl,
+      firstName: mockUser.firstName,
+      email: mockUser.email,
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24 hours from now
+    };
+    localStorage.setItem('logOutUser', JSON.stringify(logOutUser));
     
     // Mock image loading by default
     mockSuccessfulImageLoad();
@@ -118,16 +129,14 @@ describe('Logout Component', () => {
   });
 
   describe('Basic Rendering', () => {
-    test('renders logout page with organization name', () => {
+    test('renders logout page with welcome message', () => {
       render(
         <TestWrapper data-id="002580">
           <Logout data-id="002581" />
         </TestWrapper>,
       );
 
-      const orgName = document.querySelector('[data-id="000229"]');
-      expect(orgName).toBeInTheDocument();
-      expect(orgName?.textContent).toBe('Test Organization');
+      expect(screen.getByText('Welcome back!')).toBeInTheDocument();
     });
 
     test('renders company logo', async () => {
@@ -169,46 +178,46 @@ describe('Logout Component', () => {
   });
 
   describe('User Information Display', () => {
-    test('displays user name when user is logged in', () => {
+    test('displays welcome message when user is logged out', () => {
       render(
         <TestWrapper data-id="002588">
           <Logout data-id="002589" />
         </TestWrapper>,
       );
 
-      expect(screen.getByText('You have logged out.')).toBeInTheDocument();
-      expect(screen.getByText("It's a good idea to close all browser windows.")).toBeInTheDocument();
+      expect(screen.getByText('Welcome back!')).toBeInTheDocument();
     });
 
-    test('displays logout confirmation message', () => {
+    test('displays user card with email and name', () => {
       render(
         <TestWrapper data-id="002590">
           <Logout data-id="002591" />
         </TestWrapper>,
       );
 
-      expect(screen.getByText('You have logged out.')).toBeInTheDocument();
-      expect(screen.getByText("It's a good idea to close all browser windows.")).toBeInTheDocument();
+      expect(screen.getByText('Welcome back!')).toBeInTheDocument();
+      expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
+      expect(screen.getByText('John')).toBeInTheDocument(); // Shows firstName, not displayName
     });
 
-    test('renders logout button', () => {
+    test('renders continue button', () => {
       render(
         <TestWrapper data-id="002592">
           <Logout data-id="002593" />
         </TestWrapper>,
       );
 
-      expect(screen.getByText('Log back in')).toBeInTheDocument();
+      expect(screen.getByText(/Continue as/)).toBeInTheDocument();
     });
 
-    test('renders login as someone else button', () => {
+    test('renders login as someone else link', () => {
       render(
         <TestWrapper data-id="002594">
           <Logout data-id="002595" />
         </TestWrapper>,
       );
 
-      expect(screen.getByText('Log back in')).toBeInTheDocument();
+      expect(screen.getByText('Login as someone else')).toBeInTheDocument();
     });
   });
 
@@ -262,11 +271,18 @@ describe('Logout Component', () => {
         </TestWrapper>,
       );
 
+      // Wait for the background image container to appear
       await waitFor(() => {
-        const bgImage = document.querySelector('[data-id="000241"]');
+        const bgContainer = document.querySelector('[data-id="002733"]');
+        expect(bgContainer).toBeInTheDocument();
+      });
+
+      // Then wait for the actual image to load
+      await waitFor(() => {
+        const bgImage = document.querySelector('[data-id="000243"]');
         expect(bgImage).toBeInTheDocument();
         expect(bgImage).toHaveAttribute('src', mockOrganizationConfig.bgImageUrl);
-      });
+      }, { timeout: 3000 });
     });
   });
 
@@ -346,6 +362,16 @@ describe('Logout Component', () => {
         displayName: 'John Doe', // Keep displayName as string since it's required
       };
 
+      // Update localStorage with the user data
+      const logOutUser = {
+        displayName: userWithoutDisplayName.displayName,
+        imgUrl: userWithoutDisplayName.imgUrl,
+        firstName: userWithoutDisplayName.firstName,
+        email: userWithoutDisplayName.email,
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+      };
+      localStorage.setItem('logOutUser', JSON.stringify(logOutUser));
+
       vi.mocked(useAppContext).mockReturnValue({
         ...mockAppContext,
         user: userWithoutDisplayName,
@@ -357,7 +383,7 @@ describe('Logout Component', () => {
         </TestWrapper>,
       );
 
-      expect(screen.getByText('Log back in')).toBeInTheDocument();
+      expect(screen.getByText(/Continue as/)).toBeInTheDocument();
     });
 
     test('handles user with missing firstName', () => {
@@ -365,6 +391,16 @@ describe('Logout Component', () => {
         ...mockUser,
         firstName: 'John', // Keep firstName as string since it's required
       };
+
+      // Update localStorage with the user data
+      const logOutUser = {
+        displayName: userWithoutFirstName.displayName,
+        imgUrl: userWithoutFirstName.imgUrl,
+        firstName: userWithoutFirstName.firstName,
+        email: userWithoutFirstName.email,
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+      };
+      localStorage.setItem('logOutUser', JSON.stringify(logOutUser));
 
       vi.mocked(useAppContext).mockReturnValue({
         ...mockAppContext,
@@ -377,37 +413,37 @@ describe('Logout Component', () => {
         </TestWrapper>,
       );
 
-      expect(screen.getByText('Log back in')).toBeInTheDocument();
+      expect(screen.getByText(/Continue as/)).toBeInTheDocument();
     });
   });
 
   describe('User Interactions', () => {
-    test('handles logout button click', async () => {
+    test('handles continue button click', async () => {
       render(
         <TestWrapper data-id="002614">
           <Logout data-id="002615" />
         </TestWrapper>,
       );
 
-      const logoutButton = screen.getByText('Log back in');
-      fireEvent.click(logoutButton);
+      const continueButton = screen.getByText(/Continue as/);
+      fireEvent.click(continueButton);
 
       // The component should handle the click without crashing
-      expect(logoutButton).toBeInTheDocument();
+      expect(continueButton).toBeInTheDocument();
     });
 
-    test('handles login as someone else button click', async () => {
+    test('handles login as someone else link click', async () => {
       render(
         <TestWrapper data-id="002616">
           <Logout data-id="002617" />
         </TestWrapper>,
       );
 
-      const loginButton = screen.getByText('Log back in');
-      fireEvent.click(loginButton);
+      const loginLink = screen.getByText('Login as someone else');
+      fireEvent.click(loginLink);
 
       // The component should handle the click without crashing
-      expect(loginButton).toBeInTheDocument();
+      expect(loginLink).toBeInTheDocument();
     });
   });
 });

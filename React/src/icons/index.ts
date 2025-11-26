@@ -115,6 +115,7 @@ export { default as ShieldIcon } from './ShieldIcon';
 export { default as Share } from './Share';
 export { default as ShareIcon } from './ShareIcon';
 export { default as SignInButton } from './SignInButton';
+export { default as MicrosoftIcon } from './MicrosoftIcon';
 export { default as SiteIcon } from './SiteIcon';
 export { default as SubmitIcon } from './SubmitIcon';
 export { default as SuccessCircleIcon } from './Success';

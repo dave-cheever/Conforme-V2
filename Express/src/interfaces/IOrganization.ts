@@ -5,6 +5,7 @@ export interface IOrganization extends IBase {
   domain: string;
   licenceExpirationDate: Date;
   logoUrl: string;
+  logoUrlMobile?: string;
   bgImageUrl: string;
   bgImageTabletUrl: string;
   theme: object;
@@ -20,4 +21,6 @@ export interface IOrganization extends IBase {
   tenantId: string; // Tenant ID of Azure App
   clientId: string; // Client ID of Azure App
   secret: string; // Secret of Azure App
+  loginText?: string;
+  logoutText?: string;
 }

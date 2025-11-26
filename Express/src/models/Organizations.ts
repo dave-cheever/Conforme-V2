@@ -8,6 +8,7 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
   domain: String,
   licenceExpirationDate: Date,
   logoUrl: String,
+  logoUrlMobile: String,
   bgImageUrl: String,
   bgImageTabletUrl: String,
   theme: Object,
@@ -36,6 +37,8 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
   tenantId: String,
   clientId: String,
   secret: String,
+  loginText: String,
+  logoutText: String,
   metatags: {
     addedAt: Date,
     addedBy: String,

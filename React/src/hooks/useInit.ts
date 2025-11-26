@@ -47,6 +47,7 @@ const ORGANIZATION = gql`
       _id
       name
       logoUrl
+      logoUrlMobile
       bgImageUrl
       bgImageTabletUrl
       theme
@@ -62,6 +63,8 @@ const ORGANIZATION = gql`
         featureFlags
       }
       revokedPermissions
+      loginText
+      logoutText
     }
   }
 `;

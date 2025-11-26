@@ -26,6 +26,7 @@ export const organizationsTypeDefs = `
     name: String!
     licenceExpirationDate: Date!
     logoUrl: String
+    logoUrlMobile: String
     bgImageUrl: String
     bgImageTabletUrl: String
     theme: Object!
@@ -34,6 +35,8 @@ export const organizationsTypeDefs = `
     clientId: String
     tenantId: String
     secret: String
+    loginText: String
+    logoutText: String
   }
 `;
 

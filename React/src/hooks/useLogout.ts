@@ -12,17 +12,17 @@ const useLogout = () => {
       displayName: user?.displayName,
       imgUrl: user?.imgUrl,
       firstName: user?.firstName,
+      email: user?.email,
       expiresAt: addHours(new Date(), 24),
     };
     localStorage.setItem('logOutUser', JSON.stringify(logOutUser));
-    
 
     // Complete server-side sign out
     try {
       await authClient.signOut();
     } catch (e) {
       console.log(e);
-    } 
+    }
   };
 
   return logout;

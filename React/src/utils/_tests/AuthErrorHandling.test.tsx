@@ -143,7 +143,7 @@ describe('useAuthErrorHandling', () => {
 
       expect(mockToast).toHaveBeenCalledWith(
         expect.objectContaining({
-          description: "User Doesn'T Exist In Conforme AAD Group",
+          description: "User Doesn't Exist In Conforme AAD Group",
         }),
       );
     });

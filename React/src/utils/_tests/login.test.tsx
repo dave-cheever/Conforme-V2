@@ -31,19 +31,7 @@ vi.mock('../../utils/runtime-env', () => ({
   },
 }));
 
-vi.mock('../../icons/SignInButton', () => ({
-  __esModule: true,
-  default: ({ onClick, ...props }: any) => (
-    <button
-      data-id="002545"
-      data-testid="sign-in-button"
-      onClick={onClick}
-      type="button"
-      {...props}>
-      Sign In
-    </button>
-  ),
-}));
+// SignInButton component removed - now using regular Button component
 
 vi.mock('@chakra-ui/react', async () => {
   const actual = await vi.importActual('@chakra-ui/react');
@@ -171,7 +159,7 @@ describe('Login Component', () => {
         </TestWrapper>,
       );
 
-      expect(screen.getByTestId('sign-in-button')).toBeInTheDocument();
+      expect(screen.getByText('Login in with Microsoft')).toBeInTheDocument();
     });
   });
 
@@ -317,7 +305,7 @@ describe('Login Component', () => {
         </TestWrapper>,
       );
 
-      expect(screen.getByTestId('sign-in-button')).toBeInTheDocument();
+      expect(screen.getByText('Login in with Microsoft')).toBeInTheDocument();
     });
 
     test('uses fallback images when organization config is missing', async () => {
