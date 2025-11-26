@@ -14,6 +14,7 @@ export const organizationsTypeDefs = `
     name: String!
     defaultFilters: Any
     path: String!
+    icon: String!
     showInNavigation: Boolean
     translations: Any
     customQuestionsInDashboard: [String]

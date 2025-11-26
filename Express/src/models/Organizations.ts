@@ -21,6 +21,7 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
       },
       name: String,
       path: String,
+      icon: String,
       showInNavigation: Boolean,
       translations: Object,
       customQuestionsInDashboard: [String],

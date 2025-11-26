@@ -12,6 +12,7 @@ export interface IModule {
   type: TModuleType;
   defaultFilters: IModuleDefaultFilters;
   name: string;
+  icon: string;
   path: string;
   showInNavigation: boolean;
   translations: { [key: string]: string };

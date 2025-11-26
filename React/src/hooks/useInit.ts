@@ -57,6 +57,7 @@ const ORGANIZATION = gql`
         defaultFilters
         name
         path
+        icon
         showInNavigation
         translations
         customQuestionsInDashboard
