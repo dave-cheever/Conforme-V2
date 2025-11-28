@@ -8,9 +8,6 @@ import useDevice from '../../hooks/useDevice';
 import {
   BackgroundImage,
   CompanyLogo,
-  FALLBACK_BG_DESKTOP_URL,
-  FALLBACK_BG_MOBILE_URL,
-  FALLBACK_COMPANY_LOGO_URL,
 } from '../auth-pages-common';
 
 // Mock the modules before importing the component
@@ -156,7 +153,7 @@ describe('auth-pages-common', () => {
       );
 
       await waitFor(() => {
-        const textFallback = screen.queryByText('CompanyLogo');
+        const textFallback = screen.getByText('Company logo couldn\'t be loaded.');
         expect(textFallback).toBeInTheDocument();
       });
     });
@@ -171,7 +168,7 @@ describe('auth-pages-common', () => {
       );
 
       await waitFor(() => {
-        const textFallback = screen.getByText('CompanyLogo');
+        const textFallback = screen.getByText('Company logo couldn\'t be loaded.');
         expect(textFallback).toBeInTheDocument();
       });
     });
@@ -190,7 +187,7 @@ describe('auth-pages-common', () => {
       );
 
       await waitFor(() => {
-        const textFallback = screen.getByText('CompanyLogo');
+        const textFallback = screen.getByText('Company logo couldn\'t be loaded.');
         expect(textFallback).toBeInTheDocument();
       });
     });
@@ -233,7 +230,7 @@ describe('auth-pages-common', () => {
       );
 
       // Should not render anything while loading
-      const textFallback = screen.queryByText('CompanyLogo');
+      const textFallback = screen.queryByText('Company logo couldn\'t be loaded.');
       expect(textFallback).not.toBeInTheDocument();
     });
   });
@@ -282,8 +279,11 @@ describe('auth-pages-common', () => {
       );
 
       await waitFor(() => {
-        const textFallback = screen.getByText('Background Image');
-        expect(textFallback).toBeInTheDocument();
+        const wrapper = document.querySelector('[data-id="background-image-text-fallback-wrapper"]');
+        expect(wrapper).toBeInTheDocument();
+        // Check for the icon instead of text
+        const icon = wrapper?.querySelector('svg');
+        expect(icon).toBeInTheDocument();
       });
     });
 
@@ -298,8 +298,11 @@ describe('auth-pages-common', () => {
       );
 
       await waitFor(() => {
-        const textFallback = screen.getByText('Background Image');
-        expect(textFallback).toBeInTheDocument();
+        const wrapper = document.querySelector('[data-id="background-image-text-fallback-wrapper"]');
+        expect(wrapper).toBeInTheDocument();
+        // Check for the icon instead of text
+        const icon = wrapper?.querySelector('svg');
+        expect(icon).toBeInTheDocument();
       });
     });
 
@@ -317,8 +320,11 @@ describe('auth-pages-common', () => {
       );
 
       await waitFor(() => {
-        const textFallback = screen.getByText('Background Image');
-        expect(textFallback).toBeInTheDocument();
+        const wrapper = document.querySelector('[data-id="background-image-text-fallback-wrapper"]');
+        expect(wrapper).toBeInTheDocument();
+        // Check for the icon instead of text
+        const icon = wrapper?.querySelector('svg');
+        expect(icon).toBeInTheDocument();
       });
     });
 
@@ -393,30 +399,12 @@ describe('auth-pages-common', () => {
       );
 
       // Should not render anything while loading
-      const textFallback = screen.queryByText('Background Image');
-      expect(textFallback).not.toBeInTheDocument();
+      const wrapper = document.querySelector('[data-id="background-image-text-fallback-wrapper"]');
+      expect(wrapper).not.toBeInTheDocument();
     });
   });
 
-  describe('Constants', () => {
-    test('exports fallback URLs', () => {
-      expect(FALLBACK_BG_DESKTOP_URL).toBeDefined();
-      expect(FALLBACK_BG_MOBILE_URL).toBeDefined();
-      expect(FALLBACK_COMPANY_LOGO_URL).toBeDefined();
-    });
-
-    test('fallback URLs are strings', () => {
-      expect(typeof FALLBACK_BG_DESKTOP_URL).toBe('string');
-      expect(typeof FALLBACK_BG_MOBILE_URL).toBe('string');
-      expect(typeof FALLBACK_COMPANY_LOGO_URL).toBe('string');
-    });
-
-    test('fallback URLs contain GitHub raw content URLs', () => {
-      expect(FALLBACK_BG_DESKTOP_URL).toContain('raw.githubusercontent.com');
-      expect(FALLBACK_BG_MOBILE_URL).toContain('raw.githubusercontent.com');
-      expect(FALLBACK_COMPANY_LOGO_URL).toContain('raw.githubusercontent.com');
-    });
-  });
+  // Constants tests removed - fallback URLs are no longer used as we go directly to UI fallbacks
 
   describe('Device-specific behavior', () => {
     test('uses correct images for mobile device', async () => {

@@ -83,7 +83,7 @@ function Logout() {
           <Flex
             color="logoutPage.organizationNameColor"
             data-id="000229"
-            fontSize={["26px", "40px"]}
+            fontSize="26px"
             fontWeight="bold"
             lineHeight="41px"
             noOfLines={2}
@@ -174,7 +174,7 @@ function Logout() {
             maxW={['full', 'full', '400px']}
           >
             <Text color="logoutPage.organizationNameColor" data-id="000299" fontSize="16px" fontWeight="600">
-              Continue as {user?.firstName || user?.displayName}
+              Continue as {user?.displayName}
             </Text>
           </Button>
 

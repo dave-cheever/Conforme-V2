@@ -144,7 +144,7 @@ function Login() {
                 maxW={['full', 'full', '400px']}
               >
                 <Text color="loginPage.organizationNameColor" data-id="000221a" fontSize="16px" fontWeight="600">
-                  Login in with Microsoft
+                  Login with Microsoft
                 </Text>
               </Button>
             </Flex>

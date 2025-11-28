@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
 
-import { Avatar, Flex, Image, Text, useToast } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Image, Text, useToast } from '@chakra-ui/react';
 
 import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
+import { BrokenImageIcon } from '../icons';
 import authClient from './auth-client';
 import { runtimeEnv } from './runtime-env';
 
-// Common constants
-export const FALLBACK_BG_DESKTOP_URL = 'https://raw.githubusercontent.com/dacheever/images/main/Full%20background%20img%20-%20desktop.png';
-export const FALLBACK_BG_MOBILE_URL = 'https://raw.githubusercontent.com/dacheever/images/main/Screenshot%20-%20desktop.png';
-export const FALLBACK_COMPANY_LOGO_URL = 'https://raw.githubusercontent.com/dacheever/images/main/Logo%20Icon%20-%20navigation.svg';
+// Common constants removed - UI fallbacks are now used directly when images fail to load
 
 // Helper function to convert Better Auth error code to readable message
 // Format: "User_doesn't_exist_in_Conforme_AAD_group" -> "User doesn't exist in Conforme AAD group"
@@ -142,13 +140,31 @@ function LogoContainer({ isMobile, children }: { readonly isMobile: boolean; rea
 // Separate component for text fallback
 function CompanyLogoTextFallback({ isMobile }: { readonly isMobile: boolean }) {
   return (
-    <LogoContainer data-id="002726" isMobile={isMobile}>
-      <Flex align="center" bg="white" borderRadius="md" data-id="company-logo-text-fallback" h="full" justify="center" px={4}>
-        <Text data-id="002727" color="#462AC4" fontWeight="bold" fontSize={isMobile ? '16px' : '18px'} whiteSpace="nowrap">
-          CompanyLogo
-        </Text>
+    <Flex
+      data-id="002726"
+      position="absolute"
+      top={isMobile ? '16px' : '40px'}
+      left={isMobile ? '50%' : '20px'}
+      transform={isMobile ? 'translateX(-50%)' : 'none'}
+      zIndex={10}
+      maxW={isMobile ? '90%' : '600px'}
+      align="center"
+      justify="flex-start"
+    >
+      <Flex align="center" borderRadius="md" data-id="company-logo-text-fallback" h="auto" justify="center" px={4} py={2} gap={2} minH={isMobile ? '48px' : '50px'}>
+        <Box data-id="003346" flexShrink={0}>
+          <BrokenImageIcon data-id="003347" w="40px" h="40px" color="#718096" />
+        </Box>
+       <Flex data-id="003348" direction="column">
+          <Text data-id="002727" color="#1A202C" fontSize={isMobile ? '14px' : '16px'} fontWeight="500">
+            Company logo couldn't be loaded.
+          </Text>
+          <Text data-id="002727" color="#A0AEC0" fontSize={isMobile ? '12px' : '14px'} fontWeight="500"> 
+          Please check your logo link in Settings.
+          </Text>
       </Flex>
-    </LogoContainer>
+      </Flex>
+    </Flex>
   );
 }
 
@@ -172,14 +188,8 @@ export function CompanyLogo({ isMobile = false }: { readonly isMobile?: boolean 
         }
       }
 
-      // Test fallback logo
-      const fallbackLoaded = await testImageLoad(FALLBACK_COMPANY_LOGO_URL);
-      if (fallbackLoaded) {
-        setLogoSrc(FALLBACK_COMPANY_LOGO_URL);
-      } else {
-        setLogoSrc(null); // Show text fallback
-      }
-
+      // If primary logo fails, show UI fallback
+      setLogoSrc(null);
       setIsLoading(false);
     };
 
@@ -199,7 +209,7 @@ export function CompanyLogo({ isMobile = false }: { readonly isMobile?: boolean 
   // Show the logo image
   return (
     <LogoContainer data-id="002729" isMobile={isMobile}>
-      <Image alt="" data-id="company-logo" h="full" maxH="full" maxW="full" objectFit="contain" src={logoSrc} w="full" />
+      <Image alt="" data-id="company-logo" h="full" maxH="full" maxW="full" objectFit="contain" src={logoSrc || undefined} w="full" />
     </LogoContainer>
   );
 }
@@ -235,7 +245,6 @@ export function BackgroundImage({
       setIsLoading(true);
 
       const customBgUrl = device === 'desktop' ? organizationConfig?.bgImageUrl : organizationConfig?.bgImageTabletUrl;
-      const fallbackUrl = device === 'desktop' ? FALLBACK_BG_DESKTOP_URL : FALLBACK_BG_MOBILE_URL;
 
       // Test primary background first (if exists)
       if (customBgUrl) {
@@ -247,14 +256,8 @@ export function BackgroundImage({
         }
       }
 
-      // Test fallback background
-      const fallbackLoaded = await testImageLoad(fallbackUrl);
-      if (fallbackLoaded) {
-        setBackgroundSrc(fallbackUrl);
-      } else {
-        setBackgroundSrc(null); // Show text fallback
-      }
-
+      // If primary background fails, show UI fallback
+      setBackgroundSrc(null);
       setIsLoading(false);
     };
 
@@ -279,15 +282,11 @@ export function BackgroundImage({
         w="full"
         align="center"
         justify="center"
-        bg="#f5f5f5"
+        bg="#E2E8F0"
         data-id="background-image-text-fallback-wrapper"
         zIndex={1}
       >
-        <Flex data-id="002731" align="center" bg="white" borderRadius="lg" boxShadow="md" justify="center" px={8} py={6}>
-          <Text data-id="002732" color="#462AC4" fontWeight="bold" fontSize="28px" textAlign="center">
-            Background Image
-          </Text>
-        </Flex>
+        <BrokenImageIcon data-id="003349" w="100px" h="100px" color="#CBD5E0" />
       </Flex>
     );
   }
@@ -295,11 +294,11 @@ export function BackgroundImage({
   // Show the background image with text overlay
   return (
     <Flex position="relative" h="100%" w="100%" data-id="002733" overflow="hidden">
-      <Image alt="" data-id={dataId} h="100%" w="100%" objectFit={fit} src={backgroundSrc} objectPosition={objectPosition ?? 'center'} />
+      <Image alt="" data-id={dataId} h="100%"  w="100%" objectFit={fit} src={backgroundSrc || undefined} objectPosition={objectPosition ?? 'center'} />
       <Flex
         data-id="003184"
         position="absolute"
-        top={[10, 0]}
+        top={[10, -2, 0]}
         left={['50%', '60%', '50%']}
         transform="translateX(-50%)"
         zIndex={2}
@@ -311,7 +310,7 @@ export function BackgroundImage({
         <Text
           data-id="003185"
           color="white"
-          fontSize={['24px', '32px', '40px']}
+          fontSize={['24px', '22px', '40px']}
           fontWeight="bold"
           lineHeight="1.2">
           {tagline}

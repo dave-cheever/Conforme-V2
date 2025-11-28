@@ -301,8 +301,8 @@ function UserMenu() {
         <Divider borderColor="#CBD5E0" data-id="002498" mx="2px" my="4px" />
 
         <MenuItem
-          _focus={{ bg: 'red.50', outline: 'none' }}
-          _hover={{ bg: 'red.50' }}
+          _focus={{ bg: 'gray.50', outline: 'none' }}
+          _hover={{ bg: 'gray.50' }}
           bg="transparent"
           borderRadius="8px"
           cursor="pointer"
@@ -317,7 +317,7 @@ function UserMenu() {
         >
           <Flex align="center" data-id="002499" w="full">
             <Icon as={LogoutIcon} boxSize="16px" color="#D0021B" data-id="002500" mr="12px" />
-            <Text color="#D0021B" data-id="002501" fontSize="16px" fontWeight="500">
+            <Text color="#2D3748" data-id="002501" fontSize="16px" fontWeight="500">
               Logout
             </Text>
           </Flex>

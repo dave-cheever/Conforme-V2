@@ -24,6 +24,7 @@ export { default as AuditWhiteIcon } from './AuditWhiteIcon';
 export { default as BankOutline } from './BankOutline';
 export { default as Bar } from './Bar';
 export { default as BlankPage } from './BlankPage';
+export { default as BrokenImageIcon } from './BrokenImageIcon';
 export { default as Briefcase } from './Briefcase';
 export { default as Building } from './Building';
 export { default as CalendarIcon } from './CalendarIcon';

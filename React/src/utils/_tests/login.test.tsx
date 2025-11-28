@@ -159,7 +159,7 @@ describe('Login Component', () => {
         </TestWrapper>,
       );
 
-      expect(screen.getByText('Login in with Microsoft')).toBeInTheDocument();
+      expect(screen.getByText('Login with Microsoft')).toBeInTheDocument();
     });
   });
 
@@ -305,7 +305,7 @@ describe('Login Component', () => {
         </TestWrapper>,
       );
 
-      expect(screen.getByText('Login in with Microsoft')).toBeInTheDocument();
+      expect(screen.getByText('Login with Microsoft')).toBeInTheDocument();
     });
 
     test('uses fallback images when organization config is missing', async () => {
@@ -322,9 +322,10 @@ describe('Login Component', () => {
       );
 
       await waitFor(() => {
-        const logo = document.querySelector('[data-id="company-logo"]');
-        expect(logo).toBeInTheDocument();
-        expect(logo).toHaveAttribute('src', expect.stringContaining('Logo%20Icon%20-%20navigation.svg'));
+        const fallback = document.querySelector('[data-id="company-logo-text-fallback"]');
+        expect(fallback).toBeInTheDocument();
+        const textFallback = screen.getByText('Company logo couldn\'t be loaded.');
+        expect(textFallback).toBeInTheDocument();
       });
     });
   });

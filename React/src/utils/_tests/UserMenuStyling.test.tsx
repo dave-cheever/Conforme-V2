@@ -226,7 +226,7 @@ describe('UserMenu Styling', () => {
 
       const logoutText = screen.getByText('Logout');
       expect(logoutText).toHaveStyle({
-        color: 'rgb(208, 2, 27)', // #D0021B
+        color: 'rgb(45, 55, 72)', // #2D3748
         'font-size': '16px',
         'font-weight': '500',
       });

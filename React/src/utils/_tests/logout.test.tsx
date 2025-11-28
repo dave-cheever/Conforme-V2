@@ -348,9 +348,10 @@ describe('Logout Component', () => {
       );
 
       await waitFor(() => {
-        const logo = document.querySelector('[data-id="company-logo"]');
-        expect(logo).toBeInTheDocument();
-        expect(logo).toHaveAttribute('src', expect.stringContaining('Logo%20Icon%20-%20navigation.svg'));
+        const fallback = document.querySelector('[data-id="company-logo-text-fallback"]');
+        expect(fallback).toBeInTheDocument();
+        const textFallback = screen.getByText('Company logo couldn\'t be loaded.');
+        expect(textFallback).toBeInTheDocument();
       });
     });
   });
