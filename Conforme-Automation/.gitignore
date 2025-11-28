@@ -1,0 +1,10 @@
+# Ignore IDE and project-specific files
+.idea/
+.project
+.classpath
+.settings/
+
+# Ignore build output and test reports
+test-output/
+target/
+screenshots/

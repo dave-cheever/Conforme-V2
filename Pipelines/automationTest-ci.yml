@@ -1,0 +1,55 @@
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - script: |
+      sudo apt-get update
+      sudo apt-get install -y libwoff1 libvpx9 libevent-2.1-7 libopus0 \
+        libgstreamer-plugins-base1.0-0 libgstreamer-gl1.0-0 libgstreamer-plugins-bad1.0-0 \
+        libflite1 libharfbuzz-icu0 libsecret-1-0 libhyphen0 libmanette-0.2-0 \
+        libgles2 gstreamer1.0-libav libavif16
+    displayName: 'Install Playwright Browser Dependencies'
+
+  - task: Maven@4
+    displayName: 'Run Maven Tests'
+    inputs:
+      mavenPomFile: 'Conforme-Automation/pom.xml'
+      goals: 'clean test'
+      options: '-e -X'
+      testResultsFiles: '**/target/surefire-reports/junitreports/*.xml'
+      testRunTitle: 'Regression Test'
+      allowBrokenSymlinks: false
+      jdkVersionOption: 1.17
+      jdkArchitectureOption: x64
+
+  - task: PublishTestResults@2
+    displayName: 'Publish TestNG Results'
+    inputs:
+      testResultsFormat: 'TestNG'
+      testResultsFiles: '**/target/surefire-reports/testng-results.xml'
+      mergeTestResults: true
+      testRunTitle: 'Regression Test Results'
+      failTaskOnFailedTests: false
+    condition: succeededOrFailed()
+
+  # ──────────────────────────────────────────────────────────────────────────────
+
+  - task: CopyFiles@2
+    displayName: 'Copy Allure Results'
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)/Conforme-Automation/target/allure-results'
+      Contents: '**/*'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/allure-results'
+      CleanTargetFolder: true
+    condition: succeededOrFailed()
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Allure Results Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/allure-results'
+      ArtifactName: 'AllureResults'
+      publishLocation: 'Container'
+    condition: succeededOrFailed()
