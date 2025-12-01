@@ -23,6 +23,7 @@ describe('SavePresetForm', () => {
     onSave: vi.fn(),
     onCancel: vi.fn(),
     dataId: 'test-save-form',
+    isSaving: false,
   };
 
   beforeEach(() => {
@@ -151,5 +152,18 @@ describe('SavePresetForm', () => {
       fireEvent.click(clearButton, { stopPropagation });
       expect(defaultProps.onCancel).toHaveBeenCalled();
     }
+  });
+
+  test('shows loading spinner when isSaving is true', () => {
+    render(
+      <TestWrapper data-id="002312">
+        <SavePresetForm data-id="002313" {...defaultProps} isSaving={true} />
+      </TestWrapper>,
+    );
+
+    const saveButton = screen.getByRole('button', { name: /loading/i });
+    expect(saveButton).toBeInTheDocument();
+    expect(saveButton).toHaveAttribute('data-loading');
+    expect(saveButton).toBeDisabled();
   });
 });

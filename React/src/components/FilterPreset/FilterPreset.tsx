@@ -85,6 +85,7 @@ export interface FilterPresetProps {
 
 function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-preset' }: FilterPresetProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [ showFilterPresetForm, setShowFilterPresetForm ] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [presetName, setPresetName] = useState('');
   const [presetToDelete, setPresetToDelete] = useState<{ id: string; name: string } | null>(null);
@@ -169,6 +170,7 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
     );
 
   const handleSavePreset = async () => {
+    setIsSaving(true);
     if (presetName.trim()) {
       const currentFilters = getCurrentFilterValues();
       const currentPageName = getCurrentPageName();
@@ -263,7 +265,6 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
       };
 
       try {
-        setIsSaving(true);
         await saveFilterPresetMutation({
           variables: {
             saveFilterPresetInput: presetData,
@@ -284,6 +285,7 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
 
         setPresetName('');
         setIsSaving(false);
+        setShowFilterPresetForm(false);
       } catch (error: any) {
         // Error saving filter preset
         toast({
@@ -312,6 +314,7 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
   const handleCancelSave = () => {
     setPresetName('');
     setIsSaving(false);
+    setShowFilterPresetForm(false);
   };
 
   const handleDeletePreset = (presetId: string, e: React.MouseEvent) => {
@@ -477,7 +480,7 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
                     leftIcon={<PlusIcon color="#4A5568" data-id="002315" h="12px" w="12px" />}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setIsSaving(true);
+                      setShowFilterPresetForm(true);
                     }}
                     p="0"
                     variant="ghost"
@@ -490,7 +493,7 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
             </Box>
 
             {/* Save Preset Input Section */}
-            {isSaving && (
+            {showFilterPresetForm && (
               <Box borderBottom="1px solid #CBD5E0" data-id="002317" pb="10px" px="16px">
                 <SavePresetForm
                   data-id="002318"
@@ -499,6 +502,7 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
                   onPresetNameChange={setPresetName}
                   onSave={handleSavePreset}
                   presetName={presetName}
+                  isSaving={isSaving}
                 />
               </Box>
             )}
