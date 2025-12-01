@@ -93,10 +93,12 @@ function FiltersPanel() {
         boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.15)', 'none']}
         data-id="000127"
         gap="2"
-        position={['sticky', 'relative']}
+        position={['fixed', 'relative']}
         px="4"
         py="3"
+        pb={['calc(1rem + env(safe-area-inset-bottom))', '0.75rem']}
         w="full"
+        zIndex={['13', 'auto']}
       >
         {/* Left group */}
         <HStack data-id="001519" spacing="3">
