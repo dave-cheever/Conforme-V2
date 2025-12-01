@@ -21,7 +21,8 @@
     "app-models": "./models",
     "app-services": "./services",
     "app-shared": "./shared",
-    "app-migrations": "./scripts"
+    "app-migrations": "./scripts",
+    "app-adapters": "./adapters"
   },
   "keywords": [],
   "author": "",

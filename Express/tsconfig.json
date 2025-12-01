@@ -20,7 +20,8 @@
       "app-services": ["src/services"],
       "app-shared": ["src/shared"],
       "app-utils": ["src/utils"],
-      "app-migrations": ["src/migrations"]
+      "app-migrations": ["src/migrations"],
+      "app-adapters": ["src/adapters"]
     },
     "types": ["node"],
     "typeRoots": ["node_modules/@types"]

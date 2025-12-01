@@ -1,15 +1,14 @@
 import { betterAuth } from 'better-auth';
 import { APIError } from 'better-auth/api';
-import { mongodbAdapter } from 'better-auth/adapters/mongodb';
 import { customSession } from 'better-auth/plugins';
 import { isBefore } from 'date-fns';
 import { MongoClient } from 'mongodb';
-import { Types } from 'mongoose';
 
 import { Organizations, Users } from 'app-models';
 import { GraphService } from 'app-services';
 import { getProtocol } from 'app-utils';
 import { IUser } from 'app-interfaces';
+import { mongodbCustomAdapter } from 'app-adapters';
 
 // Extend Better Auth user shape locally to include our domain userId
 type AuthSessionUser = {
@@ -51,7 +50,7 @@ function getClientUrl(ctx: any): string {
 }
 
 export const auth = betterAuth({
-  database: mongodbAdapter(db),
+  database: mongodbCustomAdapter(db),
   trustedOrigins: [`${getProtocol()}${process.env.CLIENT_URL}`],
   socialProviders: {
     microsoft: {
@@ -131,7 +130,7 @@ export const auth = betterAuth({
       }
     }),
   ],
-
+  
   user: {
     modelName: 'users',
     fields: {
@@ -262,12 +261,14 @@ export const auth = betterAuth({
               ? existingDbUser.organizationsIds
               : ([...(existingDbUser.organizationsIds || []), organization._id] as any);
 
-            const userId = existingDbUser?._id || graphId;
+            const userId = graphId;
 
             // Get additional user details from Graph
             const userDetails = await GraphService.getUserData({ userId, organization });
             const managerId = await GraphService.getLineManagerId({ userId, organization });
 
+            const normalizedEmail = user.email?.toLowerCase();
+            
             const enrichedUser = {
               ...user,
               imgUrl: `${getProtocol()}${process.env.API_URL}/files/photo/${userId}`,
@@ -276,6 +277,7 @@ export const auth = betterAuth({
               displayName: userDetails?.displayName || '',
               jobTitle: userDetails?.jobTitle || '',
               ...existingDbUser,
+              email: normalizedEmail, // Override with normalized email from OAuth (source of truth)
               organizationsIds: updatedOrganisationIds,
               userId,
               managerId,
