@@ -101,9 +101,16 @@ function ModuleMenuItem({
       onClick={() => onChooseModule(module)}
     >
       <Flex data-id="003080" align="center" justify="space-between" w="100%">
-        <Flex data-id="003081" align="center" gap="3">
-          <Icon as={getIconByName(module.icon)} data-id="000447" h="20px" w="20px" fontWeight="400" />
-          <Text data-id="000439" fontSize={isMobile ? '12px' : '14px'} fontWeight="400">
+        <Flex data-id="003081" align="center" gap="3" flex="1" minW="0">
+          <Icon as={getIconByName(module.icon)} data-id="000447" h="20px" w="20px" fontWeight="400" flexShrink={0} />
+          <Text
+            data-id="000439"
+            fontSize={isMobile ? '12px' : '14px'}
+            fontWeight="400"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+          >
             {module.name}
           </Text>
         </Flex>
@@ -142,9 +149,15 @@ function GlobalViewMenuItem({ isDashboardPath, isMobile, navigate }: { readonly 
       onClick={() => { navigate('/overview'); }}
     >
       <Flex data-id="003074" align="center" justify="space-between" w="100%">
-        <Flex data-id="003075" align="center" gap="3">
-          <Icon as={ConformeNew} data-id="000447" h="20px" w="20px" fontWeight="400" />
-          <Text data-id="000439" fontSize={isMobile ? '12px' : '14px'} fontWeight="400">
+        <Flex data-id="003075" align="center" gap="3" flex="1" minW="0">
+          <Icon as={ConformeNew} data-id="000447" h="20px" w="20px" fontWeight="400" flexShrink={0} />
+          <Text
+            data-id="000439"
+            fontSize={isMobile ? '12px' : '14px'}
+            fontWeight="400" 
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap">
             Governance Suite
           </Text>
         </Flex>
@@ -290,7 +303,7 @@ function MultipleModulesMenu({
           showIcon={showIcon}
           showSeparator={showSeparator} />
       </MenuButton>
-      <MenuList data-id="000435" zIndex={100} p={2} borderRadius="12px" minW="260px">
+      <MenuList data-id="000435" zIndex={100} p={2} borderRadius="12px" w="260px">
         <Box data-id="003071" py={2} mb={3}>
           <Text
             data-id="003072"

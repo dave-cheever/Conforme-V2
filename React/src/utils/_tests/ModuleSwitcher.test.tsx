@@ -1,5 +1,5 @@
 import { ChakraProvider, useMediaQuery } from '@chakra-ui/react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
@@ -18,6 +18,7 @@ const mockModule = {
   name: 'Tracker Items',
   path: 'tracker-items',
   type: 'tracker',
+  icon: 'TrackerIcon',
   showInNavigation: true,
 } as any;
 
@@ -29,6 +30,7 @@ const mockOrganizationConfig = {
       name: 'Audits',
       path: 'audits',
       type: 'audits',
+      icon: 'AuditIcon',
       showInNavigation: true,
     },
   ],
@@ -82,6 +84,35 @@ vi.mock('../../icons/Conforme', () => ({
       <path data-id="002960" d="M15 0L30 15L15 30Z" />
     </svg>
   ),
+}));
+
+vi.mock('../../icons/ConformeNew', () => ({
+  __esModule: true,
+  default: ({ dataId }: { dataId?: string }) => (
+    <svg data-id={dataId} data-testid="conforme-new-icon" viewBox="0 0 30 30">
+      <path data-id="002961" d="M15 0L30 15L15 30Z" />
+    </svg>
+  ),
+}));
+
+vi.mock('../../utils/getIconByName', () => ({
+  __esModule: true,
+  default: vi.fn((name: string) => {
+    const MockIcon = ({ dataId }: { dataId?: string }) => (
+      <svg data-id={dataId} data-testid={`icon-${name}`} viewBox="0 0 20 20">
+        <path data-id="002962" d="M10 0L20 10L10 20Z" />
+      </svg>
+    );
+    return MockIcon;
+  }),
+  getIconByName: vi.fn((name: string) => {
+    const MockIcon = ({ dataId }: { dataId?: string }) => (
+      <svg data-id={dataId} data-testid={`icon-${name}`} viewBox="0 0 20 20">
+        <path data-id="002962" d="M10 0L20 10L10 20Z" />
+      </svg>
+    );
+    return MockIcon;
+  }),
 }));
 
 const renderWithProviders = (component: React.ReactElement) => {
@@ -261,6 +292,94 @@ describe('ModuleSwitcher Icon Replacement', () => {
       const icon = screen.getByTestId('module-switcher-icon');
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe('svg');
+    });
+  });
+
+  describe('Text Truncation', () => {
+    test('module names truncate with ellipsis when they exceed available space', () => {
+      const longNameModule = {
+        ...mockModule,
+        name: 'This is a very long module name that should be truncated with an ellipsis when it exceeds the available space in the menu',
+        _id: 'module3',
+        path: 'long-module',
+      };
+
+      const configWithLongName = {
+        ...mockOrganizationConfig,
+        modules: [
+          longNameModule,
+          {
+            _id: 'module2',
+            name: 'Audits',
+            path: 'audits',
+            type: 'audits',
+            icon: 'AuditIcon',
+            showInNavigation: true,
+          },
+        ],
+      };
+
+      vi.mocked(useAppContext).mockReturnValue({
+        organizationConfig: configWithLongName,
+        module: longNameModule,
+        setModule: mockSetModule,
+      } as any);
+
+      renderWithProviders(<ModuleSwitcher data-id="002979" />);
+
+      const menuButton = screen.getByRole('button');
+      fireEvent.click(menuButton);
+
+      const allTexts = screen.getAllByText(longNameModule.name);
+      const moduleNameText = allTexts.find(
+        (text) => text.closest('[role="menuitem"]') !== null
+      );
+      expect(moduleNameText).toBeDefined();
+
+      // Check that truncation styles are applied
+      expect(moduleNameText!).toHaveStyle({
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+      });
+    });
+
+    test('Governance Suite text truncates with ellipsis', () => {
+      renderWithProviders(<ModuleSwitcher data-id="002980" />);
+
+      const menuButton = screen.getByRole('button');
+      fireEvent.click(menuButton);
+
+      const governanceText = screen.getByText('Governance Suite');
+      expect(governanceText).toBeInTheDocument();
+
+      expect(governanceText).toHaveStyle({
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+      });
+    });
+
+    test('module menu items have proper structure for truncation', () => {
+      renderWithProviders(<ModuleSwitcher data-id="002981" />);
+
+      const menuButton = screen.getByRole('button');
+      fireEvent.click(menuButton);
+
+      const allTexts = screen.getAllByText('Tracker Items');
+      const moduleNameText = allTexts.find(
+        (text) => text.closest('[role="menuitem"]') !== null
+      );
+      expect(moduleNameText).toBeDefined();
+
+      const flexContainer = document.querySelector('[data-id="003081"]');
+      expect(flexContainer).toBeInTheDocument();
+      
+      expect(moduleNameText!).toHaveStyle({
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+      });
     });
   });
 });
