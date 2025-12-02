@@ -10,14 +10,17 @@ import SearchBar from '../../components/SearchBar';
 // Mock dependencies
 const mockUseLazyQuery = vi.fn();
 const mockUseQuery = vi.fn();
+const mockUseMutation = vi.fn();
 const mockUseAppContext = vi.fn();
 const mockUseNavigationTopContext = vi.fn();
 const mockUseConfig = vi.fn();
 const mockUseNavigate = vi.fn();
+const mockRefetchRecentSearches = vi.fn();
 
 vi.mock('@apollo/client', () => ({
   useLazyQuery: () => mockUseLazyQuery(),
   useQuery: () => mockUseQuery(),
+  useMutation: () => mockUseMutation(),
   gql: (strings: TemplateStringsArray) => strings.join(''),
 }));
 
@@ -80,6 +83,9 @@ vi.mock('../../icons', async (importOriginal) => {
     ViewMoreIcon: ({ boxSize }: { boxSize: string }) => (
       <svg data-id="003301" data-testid="view-more-icon" width={boxSize} />
     ),
+    ClockIcon: ({ boxSize, color }: { boxSize?: string; color?: string }) => (
+      <svg data-id="003355" data-testid="clock-icon" width={boxSize} color={color} />
+    ),
     CrossIcon: () => <svg data-id="003302" data-testid="cross-icon" />,
     MenuIcon: () => <svg data-id="003303" data-testid="menu-icon" />,
   };
@@ -91,13 +97,14 @@ vi.mock('../../components/Icon', () => ({
 }));
 
 const mockModule = { _id: 'module1', type: 'audits' };
-const mockUser = { _id: 'user1' };
+const mockUser = { _id: 'user1', userId: 'user1' };
 const mockNavigateTo = vi.fn();
 const mockSetIsSearchBarOpen = vi.fn();
 const mockSetSearchText = vi.fn();
 const mockSetSearchResults = vi.fn();
 const mockSetSearchLoading = vi.fn();
 const mockGetSearchResults = vi.fn();
+const mockSaveRecentSearch = vi.fn();
 const mockOnOpen = vi.fn();
 const mockOnClose = vi.fn();
 
@@ -152,13 +159,28 @@ describe('SearchBar Component', () => {
       navigateTo: mockNavigateTo,
     });
 
-    mockUseQuery.mockReturnValue({
-      data: mockQuestionsCategoriesData,
-      loading: false,
+    // Mock useQuery to handle both questionsCategories and recentSearches queries
+    mockUseQuery.mockImplementation((query, options) => {
+      if (options?.skip === false && options?.variables?.getRecentSearchesInput) {
+        return {
+          data: { getRecentSearches: [] },
+          loading: false,
+          refetch: mockRefetchRecentSearches,
+        };
+      }
+      return {
+        data: mockQuestionsCategoriesData,
+        loading: false,
+      };
     });
 
     mockUseLazyQuery.mockReturnValue([
       mockGetSearchResults,
+      { loading: false },
+    ]);
+
+    mockUseMutation.mockReturnValue([
+      mockSaveRecentSearch,
       { loading: false },
     ]);
   });

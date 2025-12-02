@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { SearchIcon } from '@chakra-ui/icons';
 import {
   Box,
@@ -16,14 +16,15 @@ import {
   useOutsideClick,
   useToast,
 } from '@chakra-ui/react';
-import { debounce } from 'lodash';
+import { debounce, result } from 'lodash';
 
 import { toastWarning } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
 import useConfig from '../hooks/useConfig';
 import useNavigate from '../hooks/useNavigate';
-import { AuditSearchIcon, CrossIcon, MenuIcon, TrackerItemSearchIcon, ViewMoreIcon } from '../icons';
+import { AuditSearchIcon, ClockIcon, CrossIcon, MenuIcon, TrackerItemSearchIcon, ViewMoreIcon } from '../icons';
+import { IRecentSearch } from '../interfaces/IRecentSearch';
 import { IScope } from '../interfaces/IScope';
 import { ISearchCategory } from '../interfaces/ISearchCategory';
 import { ISearchResult } from '../interfaces/ISearchResult';
@@ -61,9 +62,51 @@ const GET_SEARCH_RESULTS = gql`
   }
 `;
 
+const GET_RECENT_SEARCHES = gql`
+  query GetRecentSearches($getRecentSearchesInput: GetRecentSearchesInput!) {
+    getRecentSearches(getRecentSearchesInput: $getRecentSearchesInput) {
+      _id
+      userId
+      term
+      entityId
+      entityType
+      organizationId
+      metatags {
+        addedAt
+        addedBy
+        updatedAt
+        updatedBy
+        removedAt
+        removedBy
+      }
+    }
+  }
+`;
+
+const SAVE_RECENT_SEARCH = gql`
+  mutation SaveRecentSearch($saveRecentSearchInput: SaveRecentSearchInput!) {
+    saveRecentSearch(saveRecentSearchInput: $saveRecentSearchInput) {
+      _id
+      userId
+      term
+      entityId
+      entityType
+      organizationId
+      metatags {
+        addedAt
+        addedBy
+        updatedAt
+        updatedBy
+        removedAt
+        removedBy
+      }
+    }
+  }
+`;
+
 function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: boolean }>) {
   const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const { module } = useAppContext();
+  const { module, user } = useAppContext();
   const { navigateTo } = useNavigate();
   const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText, searchResults: contextSearchResults, setSearchResults: setContextSearchResults, searchLoading: contextSearchLoading, setSearchLoading: setContextSearchLoading } = useNavigationTopContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -119,6 +162,21 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
 
   const [getSearchResults, { loading }] = useLazyQuery(GET_SEARCH_RESULTS, { fetchPolicy: 'network-only' });
   const [localSearchResults, setLocalSearchResults] = useState<ISearchResult[]>([]);
+  const [recentSearches, setRecentSearches] = useState<IRecentSearch[]>([]);
+  const [saveRecentSearch] = useMutation(SAVE_RECENT_SEARCH);
+
+  const { data: recentSearchesData, loading: recentSearchesLoading } = useQuery(
+    GET_RECENT_SEARCHES,
+    {
+      variables: {
+        getRecentSearchesInput: {
+          userId: user?.userId || '',
+        },
+      },
+      skip: !user?.userId || !isSearchBarOpen,
+      fetchPolicy: 'network-only',
+    }
+  );
 
   // Use context state when in mobile drawer, local state otherwise
   const searchResults = isInMobileDrawer ? contextSearchResults : localSearchResults;
@@ -178,6 +236,13 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     };
   }, [searchText, debouncedSearch]);
 
+  // Effect to update recent searches when data changes
+  useEffect(() => {
+    if (recentSearchesData?.getRecentSearches) {
+      setRecentSearches(recentSearchesData.getRecentSearches);
+    }
+  }, [recentSearchesData]);
+
   // Group search results by category
   const groupedResults = useMemo(() => {
     const grouped: Record<string, ISearchResult[]> = {};
@@ -190,6 +255,22 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     });
     return grouped;
   }, [searchResults]);
+
+  // Map search result type to entity type
+  const mapSearchResultTypeToEntityType = (resultType: string): 'audits' | 'actions' | 'locations' | 'complaints' | null => {
+    switch (resultType) {
+      case 'audits':
+        return 'audits';
+      case 'actions':
+        return 'actions';
+      case 'tracker-item-response':
+        return null;
+      case 'answers':
+        return null;
+      default:
+        return null;
+    }
+  };
 
   const handleSearchResultClick = async (result: ISearchResult) => {
     const category = searchCategories.find((category) => category.type === result.scope.type && category._id == result.scope._id);
@@ -221,6 +302,61 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
         });
     }
     if (url) {
+      const entityType = mapSearchResultTypeToEntityType(result.type);
+      if (entityType && user?.userId) {
+        saveRecentSearch({
+          variables: {
+            saveRecentSearchInput: {
+              userId: user.userId,
+              term: result.title,
+              entityId: result._id,
+              entityType,
+            },
+          },
+        })
+          .catch((error) => {
+            console.error('Failed to save recent search:', error);
+          });
+      }
+
+      navigateTo(`/${url}`);
+      setIsSearchBarOpen(false);
+      setSearchText('');
+      setSearchResults([]);
+    }
+  };
+
+  const handleRecentSearchClick = async (recentSearch: IRecentSearch) => {
+    let url = '';
+    switch (recentSearch.entityType) {
+      case 'audits':
+        url = `audits/${recentSearch.entityId}`;
+        break;
+      case 'actions':
+        url = `actions?id=${recentSearch.entityId}`;
+        break;
+      default:
+        break;
+    }
+
+    if (url) {
+      const entityType = mapSearchResultTypeToEntityType(recentSearch.entityType);
+      if (entityType && user?.userId) {
+        saveRecentSearch({
+          variables: {
+            saveRecentSearchInput: {
+              userId: user.userId,
+              term: recentSearch.term,
+              entityId: recentSearch.entityId,
+              entityType,
+            },
+          },
+        })
+          .catch((error) => {
+            console.error('Failed to save recent search:', error);
+          });
+      }
+
       navigateTo(`/${url}`);
       setIsSearchBarOpen(false);
       setSearchText('');
@@ -319,6 +455,50 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     );
   };
 
+  const renderRecentSearches = () => {
+    if (recentSearchesLoading) {
+      return (
+        <Flex data-id="003340" justify="center" p={4}>
+          <Loader data-id="003341" />
+        </Flex>
+      );
+    }
+
+    if (recentSearches.length === 0) {
+      return null;
+    }
+
+    return (
+      <Box data-id="003342" mb={4}>
+        <Flex data-id="003209" flexDir={'row'} align={'center'} gap={'8px'} mb={1}>
+          <Text data-id="003210" fontSize="14px" fontWeight="600" color={'#718096'}>
+            Recent searches
+          </Text>
+          <Divider data-id="003211" borderColor={'#CBD5E0'} flex={1} />
+        </Flex>
+        <Stack data-id="003344" spacing={0}>
+          {recentSearches.map((recentSearch) => (
+            <Flex
+              data-id="003345"
+              key={recentSearch._id}
+              _hover={{ cursor: 'pointer', bg: '#F7FAFC' }}
+              align="center"
+              gap={2}
+              onClick={() => handleRecentSearchClick(recentSearch)}
+              px={2}
+              py={2}
+              rounded="md">
+              <ClockIcon data-id="003346" boxSize="16px" color="#718096" />
+              <Text data-id="003347" fontSize="14px" color="#2D3748" flex={1}>
+                {recentSearch.term}
+              </Text>
+            </Flex>
+          ))}
+        </Stack>
+      </Box>
+    );
+  };
+
   const renderSearchContent = () => {
     if (searchLoading) {
       return (
@@ -329,33 +509,36 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     }
     if (searchResults.length > 0) {
       return (
-        <Stack data-id="003207" spacing={4}>
-          {Object.entries(groupedResults).map(([key, results]) => {
-            const [scopeType, scopeId] = key.split('-');
-            const categoryLabel = getCategoryLabel(scopeType, scopeId);
-            return (
-              <Box data-id="003208" key={key}>
-                <Flex data-id="003209" flexDir={'row'} align={'center'} gap={'8px'} mb={1}>
-                  <Text data-id="003210" fontSize="14px" fontWeight="600" color={'#718096'}>
-                    {categoryLabel}
-                  </Text>
-                  <Divider data-id="003211" borderColor={'#CBD5E0'} flex={1} />
-                  {results.length >= 3 && (
-                    <Flex data-id="003212" align="center" gap={2} cursor="pointer">
-                      <Text data-id="003213" fontSize="14px" fontWeight="500" color="#0073E6">
-                        View more results
-                      </Text>
-                      <ViewMoreIcon data-id="003214" boxSize="9px" color="#0073E6" />
-                    </Flex>
-                  )}
-                </Flex>
-                <Stack data-id="003215" spacing={0}>
-                  {results.map((result) => renderSearchResultItem(result))}
-                </Stack>
-              </Box>
-            );
-          })}
-        </Stack>
+        <>
+          {renderRecentSearches()}
+          <Stack data-id="003207" spacing={4}>
+            {Object.entries(groupedResults).map(([key, results]) => {
+              const [scopeType, scopeId] = key.split('-');
+              const categoryLabel = getCategoryLabel(scopeType, scopeId);
+              return (
+                <Box data-id="003208" key={key}>
+                  <Flex data-id="003209" flexDir={'row'} align={'center'} gap={'8px'} mb={1}>
+                    <Text data-id="003210" fontSize="14px" fontWeight="600" color={'#718096'}>
+                      {categoryLabel}
+                    </Text>
+                    <Divider data-id="003211" borderColor={'#CBD5E0'} flex={1} />
+                    {results.length >= 3 && (
+                      <Flex data-id="003212" align="center" gap={2} cursor="pointer">
+                        <Text data-id="003213" fontSize="14px" fontWeight="500" color="#0073E6">
+                          View more results
+                        </Text>
+                        <ViewMoreIcon data-id="003214" boxSize="9px" color="#0073E6" />
+                      </Flex>
+                    )}
+                  </Flex>
+                  <Stack data-id="003215" spacing={0}>
+                    {results.map((result) => renderSearchResultItem(result))}
+                  </Stack>
+                </Box>
+              );
+            })}
+          </Stack>
+        </>
       );
     }
     return (
@@ -460,7 +643,8 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
             p={'12px'}
             rounded="10px">
             <Box data-id="003204" w={'100%'}>
-              {renderSearchContent()}
+              {!searchText && renderRecentSearches()}
+              {searchText && renderSearchContent()}
             </Box>
           </Flex>
         </Box>

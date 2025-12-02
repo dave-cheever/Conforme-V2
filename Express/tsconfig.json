@@ -21,6 +21,7 @@
       "app-shared": ["src/shared"],
       "app-utils": ["src/utils"],
       "app-migrations": ["src/migrations"],
+      "app-enums": ["src/enums"],
       "app-adapters": ["src/adapters"]
     },
     "types": ["node"],

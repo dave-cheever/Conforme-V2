@@ -1,41 +1,20 @@
-import Actions from './Actions';
-import Answers from './Answers';
-import AuditLogs from './AuditLogs';
-import Audits from './Audits';
-import AuditTypes from './AuditTypes';
-import BusinessUnits from './BusinessUnits';
-import Categories from './Categories';
-import Comments from './Comments';
-import Help from './Help';
-import Locations from './Locations';
-import Notifications from './Notifications';
-import Organizations from './Organizations';
-import Questions from './Questions';
-import QuestionsCategories from './QuestionsCategories';
-import RegulatoryBodies from './RegulatoryBodies';
-import Responses from './Responses';
-import Settings from './Settings';
-import TrackerItems from './TrackerItems';
-import Users from './Users';
-
-export {
-  Actions,
-  Answers,
-  AuditLogs,
-  Audits,
-  AuditTypes,
-  BusinessUnits,
-  Categories,
-  Comments,
-  Locations,
-  Notifications,
-  Organizations,
-  QuestionsCategories,
-  Questions,
-  RegulatoryBodies,
-  Responses,
-  Settings,
-  TrackerItems,
-  Users,
-  Help,
-};
+export { default as Actions } from './Actions';
+export { default as Answers } from './Answers';
+export { default as AuditLogs } from './AuditLogs';
+export { default as Audits } from './Audits';
+export { default as AuditTypes } from './AuditTypes';
+export { default as BusinessUnits } from './BusinessUnits';
+export { default as Categories } from './Categories';
+export { default as Comments } from './Comments';
+export { default as Help } from './Help';
+export { default as Locations } from './Locations';
+export { default as Notifications } from './Notifications';
+export { default as Organizations } from './Organizations';
+export { default as Questions } from './Questions';
+export { default as QuestionsCategories } from './QuestionsCategories';
+export { default as RegulatoryBodies } from './RegulatoryBodies';
+export { default as Responses } from './Responses';
+export { default as Settings } from './Settings';
+export { default as TrackerItems } from './TrackerItems';
+export { default as Users } from './Users';
+export { default as RecentSearches } from './RecentSearches';

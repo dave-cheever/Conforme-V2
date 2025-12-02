@@ -20,6 +20,7 @@ import searchResolvers from './search';
 import settingsResolvers from './settings';
 import trackerItemsResolvers from './trackerItems';
 import usersResolvers from './users';
+import recentSearchesResolvers from './recentSearches';
 
 export default {
   Any: scalars.anyScalar,
@@ -45,6 +46,7 @@ export default {
     ...settingsResolvers.Query,
     ...trackerItemsResolvers.Query,
     ...usersResolvers.Query,
+    ...recentSearchesResolvers.Query,
     ...helpResolvers.Query,
   },
   Mutation: {
@@ -63,5 +65,6 @@ export default {
     ...settingsResolvers.Mutation,
     ...trackerItemsResolvers.Mutation,
     ...usersResolvers.Mutation,
+    ...recentSearchesResolvers.Mutation,
   },
 };

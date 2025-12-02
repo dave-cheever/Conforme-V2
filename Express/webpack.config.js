@@ -19,6 +19,7 @@ module.exports = (env) => ({
       'app-models': path.resolve(__dirname, 'src/models/index.ts'),
       'app-shared': path.resolve(__dirname, 'src/shared/index.ts'),
       'app-migrations': path.resolve(__dirname, 'src/migrations/index.ts'),
+      'app-enums': path.resolve(__dirname, 'src/enums/index.ts'),
       'app-adapters': path.resolve(__dirname, 'src/adapters/index.ts'),
     },
     extensions: ['.ts', '.js'],

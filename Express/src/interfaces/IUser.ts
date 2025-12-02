@@ -1,5 +1,4 @@
 import { IScope } from 'app-interfaces';
-import { Types } from 'mongoose';
 
 export interface DefaultPage {
   name?: string;

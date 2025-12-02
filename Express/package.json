@@ -22,6 +22,7 @@
     "app-services": "./services",
     "app-shared": "./shared",
     "app-migrations": "./scripts",
+    "app-enums": "./enums",
     "app-adapters": "./adapters"
   },
   "keywords": [],

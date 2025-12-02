@@ -85,6 +85,11 @@ import {
   usersQueryDefs,
   usersTypeDefs,
 } from './resolvers/users';
+import {
+  recentSearchesMutationsDefs,
+  recentSearchesQueryDefs,
+  recentSearchesTypeDefs,
+} from './resolvers/recentSearches';
 
 const typeDefs = gql`
   scalar Any
@@ -164,6 +169,7 @@ const typeDefs = gql`
   ${settingsTypeDefs}
   ${trackerItemsTypeDefs}
   ${usersTypeDefs}
+  ${recentSearchesTypeDefs}
   ${helpTypeDefs}
 
   type Query {
@@ -187,6 +193,7 @@ const typeDefs = gql`
     ${settingsQueryDefs}
     ${trackerItemsQueryDefs}
     ${usersQueryDefs}
+    ${recentSearchesQueryDefs}
     ${helpQueryDefs}
   }
   type Mutation {
@@ -205,6 +212,7 @@ const typeDefs = gql`
     ${settingsMutationDefs}
     ${trackerItemsMutationDefs}
     ${usersMutationsDefs}
+    ${recentSearchesMutationsDefs}
   }
 `;
 

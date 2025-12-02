@@ -32,6 +32,7 @@ export { default as CategoryIcon } from './CategoryIcon';
 export { default as CheckIcon } from './CheckIcon';
 export { default as ChevronRight } from './ChevronRight';
 export { default as CircleChecked } from './CircleChecked';
+export { default as ClockIcon } from './ClockIcon';
 export { default as CircledCross } from './CircledCross';
 export { default as CircledTickBold } from './CircledTickBold';
 export { default as CircleEmpty } from './CircleEmpty';
