@@ -16,7 +16,7 @@ describe('Pagination', () => {
 
   const defaultProps = {
     currentPage: 1,
-    pageSize: 15,
+    pageSize: 10,
     total: 142,
     onPageChange: mockOnPageChange,
     onPageSizeChange: mockOnPageSizeChange,
@@ -35,7 +35,7 @@ describe('Pagination', () => {
       );
 
       expect(screen.getByText('Show rows per page')).toBeInTheDocument();
-      expect(screen.getByText('1 - 15 of 142')).toBeInTheDocument();
+      expect(screen.getByText('1 - 10 of 142')).toBeInTheDocument();
       expect(screen.getByLabelText('Previous page')).toBeInTheDocument();
       expect(screen.getByLabelText('Next page')).toBeInTheDocument();
     });
@@ -47,7 +47,7 @@ describe('Pagination', () => {
         </TestWrapper>,
       );
 
-      const select = screen.getByDisplayValue('15');
+      const select = screen.getByDisplayValue('10');
       expect(select).toBeInTheDocument();
       expect(select).toHaveAttribute('data-id', 'pagination-page-size-select');
     });
@@ -55,11 +55,11 @@ describe('Pagination', () => {
     test('renders page size selector with valid page size option', () => {
       render(
         <TestWrapper data-id="003098">
-          <Pagination data-id="003099" {...defaultProps} pageSize={15} />
+          <Pagination data-id="003099" {...defaultProps} pageSize={20} />
         </TestWrapper>,
       );
 
-      const select = screen.getByDisplayValue('15');
+      const select = screen.getByDisplayValue('20');
       expect(select).toBeInTheDocument();
       expect(select).toHaveAttribute('data-id', 'pagination-page-size-select');
     });
@@ -67,11 +67,11 @@ describe('Pagination', () => {
     test('displays correct page range information', () => {
       render(
         <TestWrapper data-id="003100">
-          <Pagination data-id="003101" {...defaultProps} currentPage={2} pageSize={15} />
+          <Pagination data-id="003101" {...defaultProps} currentPage={2} pageSize={20} />
         </TestWrapper>,
       );
 
-      expect(screen.getByText('16 - 30 of 142')).toBeInTheDocument();
+      expect(screen.getByText('21 - 40 of 142')).toBeInTheDocument();
     });
 
     test('displays correct page range for last page', () => {
@@ -80,13 +80,13 @@ describe('Pagination', () => {
           <Pagination
             data-id="003103"
             {...defaultProps}
-            currentPage={10}
-            pageSize={15}
+            currentPage={8}
+            pageSize={20}
             total={142} />
         </TestWrapper>,
       );
 
-      expect(screen.getByText('136 - 142 of 142')).toBeInTheDocument();
+      expect(screen.getByText('141 - 142 of 142')).toBeInTheDocument();
     });
 
     test('displays zero range when total is zero', () => {
@@ -109,10 +109,10 @@ describe('Pagination', () => {
         </TestWrapper>,
       );
 
-      const select = screen.getByDisplayValue('15');
-      await user.selectOptions(select, '15');
+      const select = screen.getByDisplayValue('10');
+      await user.selectOptions(select, '10');
 
-      expect(mockOnPageSizeChange).toHaveBeenCalledWith(15);
+      expect(mockOnPageSizeChange).toHaveBeenCalledWith(10);
     });
 
     test('calls onPageSizeChange with correct value for different option', async () => {
@@ -123,7 +123,7 @@ describe('Pagination', () => {
         </TestWrapper>,
       );
 
-      const select = screen.getByDisplayValue('15');
+      const select = screen.getByDisplayValue('10');
       await user.selectOptions(select, '50');
 
       expect(mockOnPageSizeChange).toHaveBeenCalledWith(50);
@@ -135,22 +135,22 @@ describe('Pagination', () => {
           <Pagination
             data-id="003111"
             {...defaultProps}
-            pageSize={15} />
+            pageSize={20} />
         </TestWrapper>,
       );
 
-      expect(screen.getByDisplayValue('15')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('20')).toBeInTheDocument();
 
       rerender(
         <TestWrapper data-id="003112">
           <Pagination
             data-id="003113"
             {...defaultProps}
-            pageSize={15} />
+            pageSize={20} />
         </TestWrapper>,
       );
 
-      expect(screen.getByDisplayValue('15')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('20')).toBeInTheDocument();
     });
   });
 
@@ -204,9 +204,9 @@ describe('Pagination', () => {
           <Pagination
             data-id="003121"
             {...defaultProps}
-            currentPage={10}
+            currentPage={8}
             total={142}
-            pageSize={15} />
+            pageSize={20} />
         </TestWrapper>,
       );
 
@@ -246,9 +246,9 @@ describe('Pagination', () => {
           <Pagination
             data-id="003127"
             {...defaultProps}
-            currentPage={10}
+            currentPage={8}
             total={142}
-            pageSize={15} />
+            pageSize={20} />
         </TestWrapper>,
       );
 
@@ -285,21 +285,21 @@ describe('Pagination', () => {
     test('calculates correct start item for first page', () => {
       render(
         <TestWrapper data-id="003132">
-          <Pagination data-id="003133" {...defaultProps} currentPage={1} pageSize={15} />
+          <Pagination data-id="003133" {...defaultProps} currentPage={1} pageSize={20} />
         </TestWrapper>,
       );
 
-      expect(screen.getByText('1 - 15 of 142')).toBeInTheDocument();
+      expect(screen.getByText('1 - 20 of 142')).toBeInTheDocument();
     });
 
     test('calculates correct start item for second page', () => {
       render(
         <TestWrapper data-id="003134">
-          <Pagination data-id="003135" {...defaultProps} currentPage={2} pageSize={15} />
+          <Pagination data-id="003135" {...defaultProps} currentPage={2} pageSize={20} />
         </TestWrapper>,
       );
 
-      expect(screen.getByText('16 - 30 of 142')).toBeInTheDocument();
+      expect(screen.getByText('21 - 40 of 142')).toBeInTheDocument();
     });
 
     test('calculates correct end item for last page', () => {
@@ -308,13 +308,13 @@ describe('Pagination', () => {
           <Pagination
             data-id="003137"
             {...defaultProps}
-            currentPage={10}
-            pageSize={15}
+            currentPage={8}
+            pageSize={20}
             total={142} />
         </TestWrapper>,
       );
 
-      expect(screen.getByText('136 - 142 of 142')).toBeInTheDocument();
+      expect(screen.getByText('141 - 142 of 142')).toBeInTheDocument();
     });
 
     test('handles single page correctly', () => {
@@ -324,7 +324,7 @@ describe('Pagination', () => {
             data-id="003139"
             {...defaultProps}
             currentPage={1}
-            pageSize={15}
+            pageSize={20}
             total={10} />
         </TestWrapper>,
       );
@@ -358,8 +358,8 @@ describe('Pagination', () => {
 
       expect(container.querySelector('[data-id="pagination"]')).toBeInTheDocument();
       expect(screen.getByText('Show rows per page')).toHaveAttribute('data-id', 'pagination-page-size-label');
-      expect(screen.getByDisplayValue('15')).toHaveAttribute('data-id', 'pagination-page-size-select');
-      expect(screen.getByText('1 - 15 of 142')).toHaveAttribute('data-id', 'pagination-page-info');
+      expect(screen.getByDisplayValue('10')).toHaveAttribute('data-id', 'pagination-page-size-select');
+      expect(screen.getByText('1 - 10 of 142')).toHaveAttribute('data-id', 'pagination-page-info');
     });
 
     test('has proper aria-labels for navigation buttons', () => {
@@ -411,7 +411,7 @@ describe('Pagination', () => {
             data-id="003151"
             {...defaultProps}
             currentPage={1}
-            pageSize={15}
+            pageSize={20}
             total={1} />
         </TestWrapper>,
       );
@@ -456,7 +456,7 @@ describe('Pagination', () => {
         </TestWrapper>,
       );
 
-      expect(screen.getByText('1 - 15 of 100')).toBeInTheDocument();
+      expect(screen.getByText('1 - 10 of 100')).toBeInTheDocument();
 
       rerender(
         <TestWrapper data-id="003158">
@@ -465,11 +465,11 @@ describe('Pagination', () => {
             {...defaultProps}
             currentPage={3}
             total={200}
-            pageSize={15} />
+            pageSize={20} />
         </TestWrapper>,
       );
 
-      expect(screen.getByText('31 - 45 of 200')).toBeInTheDocument();
+      expect(screen.getByText('41 - 60 of 200')).toBeInTheDocument();
     });
   });
 
@@ -513,7 +513,7 @@ describe('Pagination', () => {
         </TestWrapper>,
       );
 
-      const select = screen.getByDisplayValue('15');
+      const select = screen.getByDisplayValue('10');
 
       for (const option of PAGINATION_PAGE_SIZE_OPTIONS) {
         await user.selectOptions(select, String(option));
