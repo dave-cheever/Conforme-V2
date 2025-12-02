@@ -303,6 +303,7 @@ describe('NavigationTop - Mobile Drawer', () => {
 
       expect(mockOnClose).toHaveBeenCalled();
       expect(mockSetIsSearchBarOpen).toHaveBeenCalledWith(false);
+      expect(mockSetSearchText).toHaveBeenCalledWith('');
     });
   });
 

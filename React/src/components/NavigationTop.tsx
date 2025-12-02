@@ -24,7 +24,7 @@ function NavigationTop() {
   const { trackerAddItems, auditAddItems } = useConfig();
   const { isPathActive } = useNavigate();
   const { module } = useAppContext();
-  const { setIsSearchBarOpen, searchText, searchResults, searchLoading } = useNavigationTopContext();
+  const { searchText, searchResults, searchLoading, setIsSearchBarOpen, setSearchText } = useNavigationTopContext();
   const { auditSearchItems, trackerSearchItems } = useConfig();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isSearchDrawerOpen, onOpen: onSearchDrawerOpen, onClose: onSearchDrawerClose } = useDisclosure();
@@ -234,11 +234,12 @@ function NavigationTop() {
                 justifyContent="center"
                 onClick={() => {
                   setIsSearchBarOpen(false);
+                  setSearchText('');
                   onSearchDrawerClose();
                 }}
                 cursor="pointer"
                 ml={2}>
-                <CloseDrawerIcon data-id="003199" />
+                <CloseDrawerIcon data-id="003199"  />
               </Box>
             </DrawerHeader>
             <DrawerBody
