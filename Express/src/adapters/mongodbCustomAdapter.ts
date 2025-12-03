@@ -1,5 +1,5 @@
 import { CleanedWhere, createAdapter } from "better-auth/adapters";
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 
 export const mongodbCustomAdapter = (db: Db) => {
   return createAdapter({
@@ -46,6 +46,26 @@ export const mongodbCustomAdapter = (db: Db) => {
               // REASON: When the user login second time, the email is not the same as the one in the database, so we need to make the comparison case-insensitive
               if (field === 'email' && typeof value === 'string') {
                 mongoCondition[field] = { $regex: `^${String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, $options: 'i' };
+              } else if (field === '_id' && typeof value === 'string') {
+                // Handle _id field: sessions may have _id stored as ObjectId or string
+                // Try to match both formats to handle legacy data
+                const isValidObjectId = ObjectId.isValid(value);
+                if (isValidObjectId) {
+                  // Match both string and ObjectId formats
+                  mongoCondition[field] = { $in: [value, new ObjectId(value)] };
+                } else {
+                  mongoCondition[field] = value;
+                }
+              } else if (field === 'userId' && typeof value === 'string') {
+                // Handle userId field: sessions may have userId stored as ObjectId or string
+                // Try to match both formats to handle legacy data
+                const isValidObjectId = ObjectId.isValid(value);
+                if (isValidObjectId) {
+                  // Match both string and ObjectId formats
+                  mongoCondition[field] = { $in: [value, new ObjectId(value)] };
+                } else {
+                  mongoCondition[field] = value;
+                }
               } else {
                 mongoCondition[field] = value;
               }
@@ -55,6 +75,22 @@ export const mongodbCustomAdapter = (db: Db) => {
               // REASON: When the user login second time, the email is not the same as the one in the database, so we need to make the comparison case-insensitive
               if (field === 'email' && typeof value === 'string') {
                 mongoCondition[field] = { $not: { $regex: `^${String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, $options: 'i' } };
+              } else if (field === '_id' && typeof value === 'string') {
+                // Handle _id field: sessions may have _id stored as ObjectId or string
+                const isValidObjectId = ObjectId.isValid(value);
+                if (isValidObjectId) {
+                  mongoCondition[field] = { $nin: [value, new ObjectId(value)] };
+                } else {
+                  mongoCondition[field] = { $ne: value };
+                }
+              } else if (field === 'userId' && typeof value === 'string') {
+                // Handle userId field: sessions may have userId stored as ObjectId or string
+                const isValidObjectId = ObjectId.isValid(value);
+                if (isValidObjectId) {
+                  mongoCondition[field] = { $nin: [value, new ObjectId(value)] };
+                } else {
+                  mongoCondition[field] = { $ne: value };
+                }
               } else {
                 mongoCondition[field] = { $ne: value };
               }
@@ -72,10 +108,30 @@ export const mongodbCustomAdapter = (db: Db) => {
               mongoCondition[field] = { $gte: value };
               break;
             case 'in':
-              mongoCondition[field] = { $in: value };
+              if ((field === '_id' || field === 'userId') && Array.isArray(value)) {
+                const convertedValues = value.map((v) => {
+                  if (typeof v === 'string' && ObjectId.isValid(v)) {
+                    return [v, new ObjectId(v)];
+                  }
+                  return v;
+                }).flat();
+                mongoCondition[field] = { $in: convertedValues };
+              } else {
+                mongoCondition[field] = { $in: value };
+              }
               break;
             case 'not_in':
-              mongoCondition[field] = { $nin: value };
+              if ((field === '_id' || field === 'userId') && Array.isArray(value)) {
+                const convertedValues = value.map((v) => {
+                  if (typeof v === 'string' && ObjectId.isValid(v)) {
+                    return [v, new ObjectId(v)];
+                  }
+                  return v;
+                }).flat();
+                mongoCondition[field] = { $nin: convertedValues };
+              } else {
+                mongoCondition[field] = { $nin: value };
+              }
               break;
             case 'contains':
               mongoCondition[field] = { $regex: String(value), $options: 'i' };
@@ -126,12 +182,28 @@ export const mongodbCustomAdapter = (db: Db) => {
 
       return {
         create: async ({ model, data }) => {
+          const dataAny = data as any;
+          
+          if (model === 'sessions') {
+            if (dataAny?.userId) {
+              dataAny.userId = typeof dataAny.userId === 'string' ? dataAny.userId : String(dataAny.userId);
+            }
+            if (dataAny?._id && typeof dataAny._id === 'string' && ObjectId.isValid(dataAny._id)) {
+              dataAny._id = new ObjectId(dataAny._id);
+            }
+          }
+          
           const result = await db.collection(model).insertOne(data);
           const inserted: any = await db.collection(model).findOne({ _id: result.insertedId });
           return inserted as any;
         },
         update: async ({ model, where, update }) => {
           const whereClause = convertWhere(where);
+          // Ensure userId is stored as string (not ObjectId) for sessions
+          const updateAny = update as any;
+          if (model === 'sessions' && updateAny?.userId) {
+            updateAny.userId = typeof updateAny.userId === 'string' ? updateAny.userId : String(updateAny.userId);
+          }
           await db.collection(model).updateOne(whereClause, { $set: update });
           const updated: any = await db.collection(model).findOne(whereClause);
           return updated as any;
