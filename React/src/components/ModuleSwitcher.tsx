@@ -88,6 +88,7 @@ function ModuleMenuItem({
 
   return (
     <MenuItem
+      _hover={{ bg: '#EDF2F7' }}
       key={module.path}
       bg={isActive ? '#EBF3F8' : 'transparent'}
       color={isActive ? 'gray.800' : 'inherit'}
@@ -137,6 +138,7 @@ function ModuleMenuItem({
 function GlobalViewMenuItem({ isDashboardPath, isMobile, navigate }: { readonly isDashboardPath: boolean; readonly isMobile: boolean; readonly navigate: (path: string) => void }) {
   return (
     <MenuItem
+      _hover={{ bg: '#EDF2F7' }}
       bg={isDashboardPath ? '#EBF3F8' : 'transparent'}
       color={isDashboardPath ? 'gray.800' : 'inherit'}
       borderColor={isDashboardPath ? '#015F9D' : 'transparent'}

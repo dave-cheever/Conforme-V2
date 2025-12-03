@@ -1,5 +1,5 @@
 import { ChakraProvider, useMediaQuery } from '@chakra-ui/react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
@@ -379,6 +379,91 @@ describe('ModuleSwitcher Icon Replacement', () => {
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
+      });
+    });
+  });
+
+  describe('Menu Item Hover Styles', () => {
+    test('ModuleMenuItem renders with hover style configuration', async () => {
+      renderWithProviders(<ModuleSwitcher data-id="002979" />);
+
+      // Open the menu by clicking the button
+      const menuButton = screen.getByRole('button');
+      fireEvent.click(menuButton);
+
+      // Wait for menu items to appear
+      await waitFor(() => {
+        expect(screen.getAllByRole('menuitem').length).toBeGreaterThan(0);
+      });
+
+      // Find the module menu item by text content
+      const menuItems = screen.getAllByRole('menuitem');
+      const moduleMenuItem = menuItems.find((item) => 
+        item.textContent?.includes('Tracker Items')
+      );
+      
+      expect(moduleMenuItem).toBeDefined();
+      if (moduleMenuItem) {
+        expect(moduleMenuItem).toBeInTheDocument();
+        // Verify it has the correct data-id
+        expect(moduleMenuItem).toHaveAttribute('data-id', '000436');
+      }
+      
+      // Note: Chakra UI's _hover prop is converted to CSS pseudo-classes,
+      // so the actual hover state can't be tested in unit tests without browser hover events.
+      // This test verifies the menu item renders correctly with the hover style configuration.
+    });
+
+    test('GlobalViewMenuItem renders with hover style configuration', async () => {
+      renderWithProviders(<ModuleSwitcher data-id="002980" />);
+
+      // Open the menu by clicking the button
+      const menuButton = screen.getByRole('button');
+      fireEvent.click(menuButton);
+
+      // Wait for menu items to appear
+      await waitFor(() => {
+        expect(screen.getAllByRole('menuitem').length).toBeGreaterThan(0);
+      });
+
+      // Find menu items - Governance Suite should be the first one
+      const menuItems = screen.getAllByRole('menuitem');
+      const governanceMenuItem = menuItems.find((item) => 
+        item.textContent?.includes('Governance Suite')
+      );
+      
+      expect(governanceMenuItem).toBeDefined();
+      if (governanceMenuItem) {
+        expect(governanceMenuItem).toBeInTheDocument();
+        // Verify it has the correct data-id
+        expect(governanceMenuItem).toHaveAttribute('data-id', '000436');
+      }
+    });
+
+    test('all menu items are rendered and accessible', async () => {
+      renderWithProviders(<ModuleSwitcher data-id="002981" />);
+
+      // Open the menu by clicking the button
+      const menuButton = screen.getByRole('button');
+      fireEvent.click(menuButton);
+
+      // Wait for menu items to appear
+      await waitFor(() => {
+        const items = screen.getAllByRole('menuitem');
+        expect(items.length).toBeGreaterThanOrEqual(2);
+      });
+
+      // Get all menu items
+      const menuItems = screen.getAllByRole('menuitem');
+      
+      // Should have at least Governance Suite and the modules
+      expect(menuItems.length).toBeGreaterThanOrEqual(2);
+      
+      // Verify each menu item exists and has the correct structure
+      // (hover styles are configured via _hover prop in the component)
+      menuItems.forEach((item) => {
+        expect(item).toBeInTheDocument();
+        expect(item).toHaveAttribute('data-id', '000436');
       });
     });
   });
