@@ -37,6 +37,7 @@ export const organizationsTypeDefs = `
     tenantId: String
     secret: String
     loginText: String
+    loginTextMobile: String
     logoutText: String
   }
 `;

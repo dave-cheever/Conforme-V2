@@ -6,6 +6,7 @@ import { toastFailed } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import useDevice from '../hooks/useDevice';
 import { BrokenImageIcon } from '../icons';
+import layoutImage from '../images/layout.png';
 import authClient from './auth-client';
 import { runtimeEnv } from './runtime-env';
 
@@ -178,10 +179,26 @@ export function CompanyLogo({ isMobile = false }: { readonly isMobile?: boolean 
     const loadLogo = async () => {
       setIsLoading(true);
 
+      // For mobile, try logoUrlMobile first, then fallback to logoUrl
+      // For desktop/tablet, use logoUrl
+      const logoUrlToTry = isMobile && organizationConfig?.logoUrlMobile 
+        ? organizationConfig.logoUrlMobile 
+        : organizationConfig?.logoUrl;
+
       // Test primary logo first (if exists)
-      if (organizationConfig?.logoUrl) {
-        const primaryLoaded = await testImageLoad(organizationConfig.logoUrl);
+      if (logoUrlToTry) {
+        const primaryLoaded = await testImageLoad(logoUrlToTry);
         if (primaryLoaded) {
+          setLogoSrc(logoUrlToTry);
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      // If mobile and logoUrlMobile failed, try fallback to logoUrl
+      if (isMobile && organizationConfig?.logoUrlMobile && organizationConfig?.logoUrl) {
+        const fallbackLoaded = await testImageLoad(organizationConfig.logoUrl);
+        if (fallbackLoaded) {
           setLogoSrc(organizationConfig.logoUrl);
           setIsLoading(false);
           return;
@@ -194,7 +211,7 @@ export function CompanyLogo({ isMobile = false }: { readonly isMobile?: boolean 
     };
 
     loadLogo();
-  }, [organizationConfig?.logoUrl]);
+  }, [organizationConfig?.logoUrl, organizationConfig?.logoUrlMobile, isMobile]);
 
   // Show loading state (empty for now, could add spinner)
   if (isLoading) {
@@ -229,11 +246,13 @@ export function BackgroundImage({
   maxW = 'max-content',
   fit = 'cover',
   objectPosition = 'center',
+  pageType = 'login',
 }: {
   readonly dataId: string;
   readonly maxW?: string;
   readonly fit?: 'cover' | 'contain' | 'fill' | 'scale-down' | 'none';
   readonly objectPosition?: ('center' | 'top' | 'bottom' | 'left' | 'right') | ('center' | 'top' | 'bottom' | 'left' | 'right')[];
+  readonly pageType?: 'login' | 'logout';
 }) {
   const { organizationConfig } = useAppContext();
   const device = useDevice();
@@ -264,57 +283,142 @@ export function BackgroundImage({
     loadBackground();
   }, [organizationConfig?.bgImageUrl, organizationConfig?.bgImageTabletUrl, device]);
 
+  // Get background color from theme
+  const theme = organizationConfig?.theme as any;
+  const themeColors = theme?.colors || {};
+  const pageTheme = pageType === 'login' ? themeColors.loginPage : themeColors.logoutPage;
+  const backgroundColor = pageTheme?.background || '#E2E8F0'; // Fallback color
+
   // Get text overlay from organization config
-  // Priority: loginText > theme.loginPageTagline > direct loginPageTagline > default fallback
-  const tagline = organizationConfig?.loginText || 'Ensuring Quality, Empowering Care. Your Trusted Audit Companion.';
+  // For mobile: use loginTextMobile if available, otherwise fallback to loginText
+  // For desktop/tablet: use loginText
+  // Priority: loginTextMobile (mobile) / loginText (desktop) > theme.loginPageTagline > default fallback
+  const tagline = device === 'mobile' && organizationConfig?.loginTextMobile
+    ? organizationConfig.loginTextMobile
+    : organizationConfig?.loginText || 'Ensuring Quality, Empowering Care. Your Trusted Audit Companion.';
 
   // Show loading state (empty for now, could add spinner)
   if (isLoading) {
     return null;
   }
 
-  // Show text fallback if no background loaded
+  // Show text fallback if no background loaded (still show background color and white line)
   if (!backgroundSrc) {
     return (
-      <Flex
-        position="relative"
-        h="full"
-        w="full"
-        align="center"
-        justify="center"
-        bg="#E2E8F0"
-        data-id="background-image-text-fallback-wrapper"
-        zIndex={1}
-      >
-        <BrokenImageIcon data-id="003349" w="100px" h="100px" color="#CBD5E0" />
+      <Flex position="relative" h="full" w="full" data-id="background-image-text-fallback-wrapper" overflow="hidden">
+        {/* Base layer: Background color */}
+        <Box
+          data-id="003356"
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bg={backgroundColor}
+          zIndex={1} />
+        {/* Middle layer: White line image */}
+        <Image
+          data-id="003357"
+          alt=""
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          h="100%"
+          w="100%"
+          objectFit="cover"
+          src={layoutImage}
+          zIndex={2}
+          sx={{ mixBlendMode: 'multiply' }} />
+        {/* Fallback icon */}
+        <Flex
+          data-id="003358"
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          align="center"
+          justify="center"
+          zIndex={3}>
+          <BrokenImageIcon data-id="003349" w="100px" h="100px" color="#CBD5E0" />
+          </Flex>
       </Flex>
     );
   }
 
-  // Show the background image with text overlay
+  // Show the layered background: color -> white line image -> background image
   return (
     <Flex position="relative" h="100%" w="100%" data-id="002733" overflow="hidden">
-      <Image alt="" data-id={dataId} h="100%"  w="100%" objectFit={fit} src={backgroundSrc || undefined} objectPosition={objectPosition ?? 'center'} />
+      {/* Base layer: Background color */}
+      <Box
+        data-id="003359"
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        bg={backgroundColor}
+        zIndex={1} />
+      {/* Middle layer: White line image */}
+      {backgroundSrc && (
+        <Image
+          data-id="003360"
+          alt=""
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          h="100%"
+          w="100%"
+          objectFit="cover"
+          src={layoutImage}
+          zIndex={2}
+          sx={{ mixBlendMode: 'multiply' }} />
+      )}
+      {/* Top layer: Background image from database */}
+      <Image
+        alt=""
+        data-id={dataId}
+        position="absolute"
+        top={'auto'}
+        left={0}
+        right={0}
+        bottom={0}
+        h="auto"
+        maxH={device === 'desktop' ? '78vh' : '70vh'}
+        marginLeft='auto'
+        marginRight='auto'
+        w="auto"
+        objectFit='contain'
+        src={backgroundSrc || undefined}
+        objectPosition={objectPosition ?? 'center'}
+        zIndex={3}
+      />
+      {/* Text overlay */}
       <Flex
         data-id="003184"
         position="absolute"
         top={[10, -2, 0]}
         left={['50%', '60%', '50%']}
         transform="translateX(-50%)"
-        zIndex={2}
+        zIndex={4}
         px={8}
         pt={8}
-        textAlign={['center', 'left']}
+        textAlign={['center', 'left', 'left']}
         maxW="90%"
-        w="full">
+        w="full"
+        justify={['center', 'flex-start', 'flex-start']}>
         <Text
           data-id="003185"
           color="white"
-          fontSize={['24px', '22px', '40px']}
+          fontSize={['18px', '22px', '40px']}
           fontWeight="bold"
-          lineHeight="1.2">
-          {tagline}
-        </Text>
+          lineHeight="1.2"
+          textAlign={['center', 'left', 'left']}
+          dangerouslySetInnerHTML={{ __html: tagline?.replaceAll('<br>', '<br />') || '' }}
+        />
       </Flex>
     </Flex>
   );

@@ -39,6 +39,7 @@ const organizationSchema = new Schema<IOrganization, IOrganizationModel>({
   clientId: String,
   secret: String,
   loginText: String,
+  loginTextMobile: String,
   logoutText: String,
   metatags: {
     addedAt: Date,

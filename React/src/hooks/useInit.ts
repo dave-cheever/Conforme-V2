@@ -65,6 +65,7 @@ const ORGANIZATION = gql`
       }
       revokedPermissions
       loginText
+      loginTextMobile
       logoutText
     }
   }

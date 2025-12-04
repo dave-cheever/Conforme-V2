@@ -161,7 +161,7 @@ function Login() {
         position="relative"
       >
         <Box data-id="000223" h="100%" w="100%" position="relative" overflow="hidden">
-          <BackgroundImage data-id="002526" dataId="000224" fit="cover" objectPosition={["center", "center", "left"]} />
+          <BackgroundImage data-id="002526" dataId="000224" fit="cover" objectPosition={["center", "center", "left"]} pageType="login" />
         </Box>
       </Flex>
     </Flex>

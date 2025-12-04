@@ -197,7 +197,7 @@ describe('Logout Component', () => {
 
       expect(screen.getByText('Welcome back!')).toBeInTheDocument();
       expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
-      expect(screen.getByText('John')).toBeInTheDocument(); // Shows firstName, not displayName
+      expect(screen.getByText('John Doe')).toBeInTheDocument(); // Shows displayName
     });
 
     test('renders continue button', () => {

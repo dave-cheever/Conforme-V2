@@ -22,5 +22,6 @@ export interface IOrganization extends IBase {
   clientId: string; // Client ID of Azure App
   secret: string; // Secret of Azure App
   loginText?: string;
+  loginTextMobile?: string;
   logoutText?: string;
 }

@@ -12,5 +12,6 @@ export interface IOrganization extends IBase {
   modules: IModule[];
   revokedPermissions?: string[];
   loginText?: string;
+  loginTextMobile?: string;
   logoutText?: string;
 }

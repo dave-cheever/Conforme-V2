@@ -136,7 +136,7 @@ function Logout() {
                 </Text>
               </Flex>
               <Text color="logoutPage.organizationNameColor" data-id="000236" fontSize={["18px", "20px"]} fontWeight="600">
-                {user?.firstName || user?.displayName}
+                {user?.displayName}
               </Text>
             </Flex>
             <Flex align="center" data-id="000235" h="full" justify="center">
@@ -209,7 +209,7 @@ function Logout() {
         w={['full', 'full', '65%']}
       >
         <Box data-id="000242" h="100%" w="100%" position="relative" overflow="hidden">
-          <BackgroundImage data-id="002529" dataId="000243" fit="cover" objectPosition={["center", "center", "left"]} />
+          <BackgroundImage data-id="002529" dataId="000243" fit="cover" objectPosition={["center", "center", "left"]} pageType="logout" />
         </Box>
       </Flex>
     </Flex>
