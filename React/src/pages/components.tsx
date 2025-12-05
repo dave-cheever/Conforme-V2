@@ -5,6 +5,8 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 import NoRecordsFound from '../components/NoRecordsFound';
 import { actionPanelConfig, auditPanelConfig, incidentPanelConfig, trackerPanelConfig } from '../components/PanelView/configs';
 import PanelView from '../components/PanelView/PanelView';
+import SearchBarMessage from '../components/SearchBar/SearchBarMessage';
+import { EmptySearchIcon, NoResultsFoundIcon, SearchErrorIcon } from '../icons';
 import AvatarCell from '../components/Table/Cells/AvatarCell';
 import DateTimeCell from '../components/Table/Cells/DateTimeCell';
 import StatusCell from '../components/Table/Cells/StatusCell';
@@ -644,6 +646,68 @@ const componentSections: ComponentSection[] = [
           },
         },
         get component() { return <NoRecordsFound data-id="002488" {...this.props} />; },
+      },
+    ],
+  },
+  {
+    groupTitle: 'Search Bar Messages',
+    description:
+      'SearchBarMessage Component - A reusable message component displayed in the search bar for different search states. Features: Centrally aligned icons and text, consistent styling for headings and descriptions, support for empty search, no results found, and error states. Accepts an icon component, optional heading, and text as props.',
+    sections: [
+      {
+        title: 'Empty Search Message',
+        description: 'Displayed when no search text has been entered. Shows an empty search icon with a prompt to type a keyword.',
+        props: {
+          icon: 'EmptySearchIcon',
+          text: 'Type a keyword to search',
+        },
+        get component() {
+          return (
+            <SearchBarMessage
+              data-id="003280"
+              icon={EmptySearchIcon}
+              text="Type a keyword to search"
+            />
+          );
+        },
+      },
+      {
+        title: 'No Results Found Message',
+        description: 'Displayed when a search query returns no results. Shows a crossed-out search icon with a heading and suggestion text.',
+        props: {
+          icon: 'NoResultsFoundIcon',
+          heading: "We couldn't find a match",
+          text: 'Check spelling or try another term.',
+        },
+        get component() {
+          return (
+            <SearchBarMessage
+              data-id="003281"
+              icon={NoResultsFoundIcon}
+              heading="We couldn't find a match"
+              text="Check spelling or try another term."
+            />
+          );
+        },
+      },
+      {
+        title: 'Search Error Message',
+        description: 'Displayed when a search cannot be completed due to a network or API error. Shows an error search icon with a heading and instruction text.',
+        props: {
+          icon: 'SearchErrorIcon',
+          heading: 'Search could not be completed',
+          text: 'Please try again, or refresh the page',
+        },
+        get component() {
+          return (
+            <SearchBarMessage
+              data-id="003282"
+              icon={SearchErrorIcon}
+              heading="Search could not be completed"
+              text="Please try again, or refresh the page"
+            />
+          );
+        },
       },
     ],
   },

@@ -11,6 +11,7 @@ import NavigationTop from '../components/NavigationTop';
 import ShareModal from '../components/ShareModal';
 import AuditProvider, { useAuditContext } from '../contexts/AuditProvider';
 import ChatProvider, { useChatContext } from '../contexts/ChatProvider';
+import NavigationTopProvider from '../contexts/NavigationTopProvider';
 import ShareProvider from '../contexts/ShareProvider';
 import useDevice from '../hooks/useDevice';
 import { CrossIcon, MessageIcon } from '../icons';
@@ -30,18 +31,19 @@ function AuditLayout({ component: Component }: { component: any }) {
   }
 
   return (
-    <Flex data-id="000190" h="full" minH="100vh" maxH="100vh" w="full">
-      <AuditLeftNavigation data-id="000191" />
-      <AuditLeftNavigationTablet data-id="000192" />
-      <Flex
-        data-id="000193"
-        direction="column"
-        grow={1}
-        w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}
-        overflow="hidden"
-        h="100vh"
-      >
-        <NavigationTop data-id="000194" />
+    <NavigationTopProvider data-id="003376">
+      <Flex data-id="000190" h="full" minH="100vh" maxH="100vh" w="full">
+        <AuditLeftNavigation data-id="000191" />
+        <AuditLeftNavigationTablet data-id="000192" />
+        <Flex
+          data-id="000193"
+          direction="column"
+          grow={1}
+          w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}
+          overflow="hidden"
+          h="100vh"
+        >
+          <NavigationTop data-id="000194" />
         <Flex
           data-id="000195"
           flexDirection="column"
@@ -91,6 +93,7 @@ function AuditLayout({ component: Component }: { component: any }) {
         <AuditLeftNavigationMobile data-id="000206" />
       </Flex>
     </Flex>
+    </NavigationTopProvider>
   );
 }
 

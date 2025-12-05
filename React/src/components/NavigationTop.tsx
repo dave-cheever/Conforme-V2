@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { Box, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
@@ -28,6 +28,21 @@ function NavigationTop() {
   const { auditSearchItems, trackerSearchItems } = useConfig();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isSearchDrawerOpen, onOpen: onSearchDrawerOpen, onClose: onSearchDrawerClose } = useDisclosure();
+  const [drawerHeight, setDrawerHeight] = useState<string>('70vh');
+
+  // Lock drawer height when it opens to prevent iOS keyboard from affecting it
+  useEffect(() => {
+    if (isSearchDrawerOpen && device === 'mobile') {
+      // Calculate and lock the height based on viewport height when drawer opens
+      // This prevents iOS keyboard from affecting the drawer height
+      const viewportHeight = window.innerHeight;
+      const calculatedHeight = viewportHeight * 0.7; // 70vh
+      setDrawerHeight(`${calculatedHeight}px`);
+    } else if (!isSearchDrawerOpen) {
+      // Reset to vh when drawer closes
+      setDrawerHeight('70vh');
+    }
+  }, [isSearchDrawerOpen, device]);
 
   // Check if TopNavgation is rendered inside ResponseLayout
   const { response } = useResponseContext();
@@ -202,7 +217,15 @@ function NavigationTop() {
           onClose={onSearchDrawerClose}
           placement="bottom">
           <DrawerOverlay data-id="003192" />
-          <DrawerContent data-id="003193" borderTopRadius="14px" height="70vh">
+          <DrawerContent 
+            data-id="003193" 
+            borderTopRadius="14px" 
+            height={drawerHeight}
+            maxHeight={drawerHeight}
+            sx={{
+              height: `${drawerHeight} !important`,
+              maxHeight: `${drawerHeight} !important`,
+            }}>
             <DrawerHeader
               data-id="003194"
               display="flex"
@@ -255,6 +278,7 @@ function NavigationTop() {
                   searchResults={searchResults}
                   searchText={searchText}
                   searchLoading={searchLoading}
+                  searchError={false}
                   module={module}
                   auditSearchItems={auditSearchItems}
                   trackerSearchItems={trackerSearchItems}
@@ -273,11 +297,8 @@ function NavigationTop() {
 }
 
 function NavigationTopWithContext(props) {
-  return (
-    <NavigationTopProvider data-id="000472" {...props}>
-      <NavigationTop data-id="000473" />
-    </NavigationTopProvider>
-  );
+  // NavigationTopProvider is now at the layout level, so we don't need to wrap here
+  return <NavigationTop data-id="000473" {...props} />;
 }
 
 export default NavigationTopWithContext;

@@ -105,7 +105,7 @@ describe('MobileSearchResults', () => {
   });
 
   describe('Empty State', () => {
-    it('should display "No search results found" when searchText is present but no results', () => {
+    it('should display "We couldn\'t find a match" when searchText is present but no results', () => {
       renderWithProviders(
         <MobileSearchResults
           data-id="003239"
@@ -118,7 +118,8 @@ describe('MobileSearchResults', () => {
           onResultClick={mockOnResultClick} />
       );
 
-      expect(screen.getByText('No search results found')).toBeInTheDocument();
+      expect(screen.getByText("We couldn't find a match")).toBeInTheDocument();
+      expect(screen.getByText('Check spelling or try another term.')).toBeInTheDocument();
     });
 
     it('should return null when searchText is empty and no results', () => {
@@ -530,6 +531,110 @@ describe('MobileSearchResults', () => {
       expect(screen.getByText('Actions')).toBeInTheDocument();
       expect(screen.getByText('REF-001')).toBeInTheDocument();
       expect(screen.getByText('Action 1')).toBeInTheDocument();
+    });
+  });
+
+  describe('View More Results Navigation and Drawer Close', () => {
+    it('should navigate to correct page and close drawer when "View more results" is clicked', async () => {
+      const results: ISearchResult[] = [
+        {
+          _id: '1',
+          title: 'Result 1',
+          type: 'audits',
+          reference: 'REF-001',
+          scope: { type: 'audits', _id: 'audits' },
+        },
+        {
+          _id: '2',
+          title: 'Result 2',
+          type: 'audits',
+          reference: 'REF-002',
+          scope: { type: 'audits', _id: 'audits' },
+        },
+        {
+          _id: '3',
+          title: 'Result 3',
+          type: 'audits',
+          reference: 'REF-003',
+          scope: { type: 'audits', _id: 'audits' },
+        },
+      ];
+
+      renderWithProviders(
+        <MobileSearchResults
+          data-id="003253"
+          searchResults={results}
+          searchText="test"
+          searchLoading={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          onResultClick={mockOnResultClick} />
+      );
+
+      // Find "View more results" link
+      const viewMoreText = screen.getByText('View more results');
+      const viewMoreContainer = viewMoreText.closest('div[style*="cursor: pointer"]') || viewMoreText.parentElement;
+      
+      if (viewMoreContainer) {
+        fireEvent.click(viewMoreContainer);
+        
+        await waitFor(() => {
+          // Should navigate to /dashboard with search query
+          expect(mockNavigateTo).toHaveBeenCalledWith('/dashboard?search=test');
+          // Should close drawer by calling onResultClick
+          expect(mockOnResultClick).toHaveBeenCalled();
+        }, { timeout: 2000 });
+      }
+    });
+
+    it('should navigate to actions page when "View more results" is clicked for actions', async () => {
+      const results: ISearchResult[] = [
+        {
+          _id: '1',
+          title: 'Action 1',
+          type: 'actions',
+          scope: { type: 'actions', _id: 'actions' },
+        },
+        {
+          _id: '2',
+          title: 'Action 2',
+          type: 'actions',
+          scope: { type: 'actions', _id: 'actions' },
+        },
+        {
+          _id: '3',
+          title: 'Action 3',
+          type: 'actions',
+          scope: { type: 'actions', _id: 'actions' },
+        },
+      ];
+
+      renderWithProviders(
+        <MobileSearchResults
+          data-id="003254"
+          searchResults={results}
+          searchText="test"
+          searchLoading={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          onResultClick={mockOnResultClick} />
+      );
+
+      const viewMoreText = screen.getByText('View more results');
+      const viewMoreContainer = viewMoreText.closest('div[style*="cursor: pointer"]') || viewMoreText.parentElement;
+      
+      if (viewMoreContainer) {
+        fireEvent.click(viewMoreContainer);
+        
+        await waitFor(() => {
+          // Should navigate to /actions with search query
+          expect(mockNavigateTo).toHaveBeenCalledWith('/actions?search=test');
+          // Should close drawer
+          expect(mockOnResultClick).toHaveBeenCalled();
+        }, { timeout: 2000 });
+      }
     });
   });
 });

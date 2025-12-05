@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { Button, Divider, Flex, Text } from '@chakra-ui/react';
 import { capitalize } from 'lodash';
@@ -6,10 +7,11 @@ import { capitalize } from 'lodash';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import { useFiltersContext } from '../contexts/FiltersProvider';
+import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
 import useConfig from '../hooks/useConfig';
 import useDevice from '../hooks/useDevice';
 import useNavigate from '../hooks/useNavigate';
-import { AddIcon, ArrowRight } from '../icons';
+import { AddIcon, ArrowRight, ResetSearchIcon } from '../icons';
 import Can from './can';
 import FilterButton from './FilterButton';
 import isAuditPage from '../utils/isAuditPage';
@@ -22,6 +24,9 @@ interface IHeader {
 }
 
 function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
+  const { setSearchText } = useNavigationTopContext();
   const { usedFilters } = useFiltersContext();
   const { isPathActive, navigateTo } = useNavigate();
   const { setAdminModalState } = useAdminContext();
@@ -29,6 +34,15 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
   const { module } = useAppContext();
 
   const isAuditPageValue = isAuditPage(isPathActive);
+
+  const handleResetSearch = () => {
+    // Remove search parameter from URL
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.delete('search');
+    setSearchParams(newSearchParams, { replace: true });
+    // Clear search text from context
+    setSearchText('');
+  };
 
   function isPathAllowed() {
     const disallowedSuffixes = [
@@ -89,6 +103,39 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
         <Flex data-id="000277" display="flex" flexShrink={0} ml={[0, 0, '5']} pt={[1, 4, 4]}>
           {breadCrumbs.map(renderBreadcrumb)}
         </Flex>
+        {searchQuery && (
+          <Flex
+            data-id="003356"
+            ml={['0', '0', '5']}
+            pl={[0, 2]}
+            mt={'2'}
+            align="center"
+            gap={2}>
+            <Text data-id="003357" fontSize="16px" fontWeight="500" color="#4A5568">
+              Search results for "{searchQuery}"
+            </Text>
+
+            <Flex
+              data-id="003358"
+              align="center"
+              gap={1}
+              cursor="pointer"
+              onClick={handleResetSearch}
+              _hover={{ opacity: 0.8 }}>
+              <ResetSearchIcon data-id="003359" boxSize="18px" color="#0073E6" />
+              <Text
+                data-id="003360"
+                fontSize="16px"
+                fontWeight="500"
+                color="#0073E6"
+                cursor="pointer"
+                _hover={{ textDecoration: 'underline' }}>
+                Reset Search
+              </Text>
+            </Flex>
+          </Flex>
+        )}
+
         <Flex data-id="001518" direction={['column', 'column', 'row']} rowGap={['10px', '10px', '0']}>
           <Flex data-id="000278" justify="flex-end" mr="15px" w="full">
             {children}

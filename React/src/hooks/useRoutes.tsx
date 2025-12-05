@@ -35,6 +35,7 @@ import Login from '../pages/login';
 import Logout from '../pages/logout';
 import Mentions from '../pages/mentions';
 import PrivacyPolicy from '../pages/privacy-policy';
+import SearchResults from '../pages/search-results';
 import Terms from '../pages/terms';
 import TrackerItemAuditLog from '../pages/tracker-item/audit-log';
 import History from '../pages/tracker-item/history';
@@ -189,6 +190,13 @@ const protectedRoutes: Array<IRoute> = [
     key: 'action',
     exact: true,
     component: Actions,
+    layout: DefaultLayout,
+  },
+  {
+    path: '/search-results',
+    key: 'search-results',
+    exact: true,
+    component: SearchResults,
     layout: DefaultLayout,
   },
   {

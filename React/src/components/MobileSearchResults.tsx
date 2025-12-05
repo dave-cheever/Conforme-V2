@@ -3,15 +3,17 @@ import React, { useMemo } from 'react';
 import { Box, Divider, Flex, Stack, Text } from '@chakra-ui/react';
 
 import useNavigate from '../hooks/useNavigate';
-import { AuditSearchIcon, TrackerItemSearchIcon, ViewMoreIcon } from '../icons';
+import { AuditSearchIcon, EmptySearchIcon, NoResultsFoundIcon, SearchErrorIcon, TrackerItemSearchIcon, ViewMoreIcon } from '../icons';
 import { ISearchResult } from '../interfaces/ISearchResult';
 import Loader from './Loader';
+import SearchBarMessage from './SearchBar/SearchBarMessage';
 import StatusCell from './Table/Cells/StatusCell';
 
 interface MobileSearchResultsProps {
   searchResults: ISearchResult[];
   searchText: string;
   searchLoading: boolean;
+  searchError?: boolean;
   module: any;
   auditSearchItems: any[];
   trackerSearchItems: any[];
@@ -22,6 +24,7 @@ function MobileSearchResults({
   searchResults,
   searchText,
   searchLoading,
+  searchError = false,
   module,
   auditSearchItems,
   trackerSearchItems,
@@ -111,19 +114,31 @@ function MobileSearchResults({
     );
   }
 
+  // Show error message if there's a search error
+  if (searchError) {
+    return (
+      <SearchBarMessage
+        data-id="003361"
+        icon={SearchErrorIcon}
+        heading="Search could not be completed"
+        text="Please try again, or refresh the page" />
+    );
+  }
+
+  // Show empty search message when no search text is entered
+  if (!searchText?.trim()) {
+    return (<SearchBarMessage data-id="003362" icon={EmptySearchIcon} text="Type a keyword to search" />);
+  }
+
+  // Show no results found message when search text exists but no results
   if (searchResults.length === 0) {
-    if (searchText) {
-      return (
-        <Text
-          data-id="003170"
-          color="gray.500"
-          fontSize="14px"
-          py={4}
-          textAlign="center">No search results found
-                  </Text>
-      );
-    }
-    return null;
+    return (
+      <SearchBarMessage
+        data-id="003363"
+        icon={NoResultsFoundIcon}
+        heading="We couldn't find a match"
+        text="Check spelling or try another term." />
+    );
   }
 
   return (
@@ -139,7 +154,51 @@ function MobileSearchResults({
               </Text>
               <Divider data-id="003175" borderColor={'#CBD5E0'} flex={1} />
               {results.length >= 3 && (
-                <Flex data-id="003176" align="center" gap={2} cursor="pointer">
+                <Flex 
+                  data-id="003176" 
+                  align="center" 
+                  gap={2} 
+                  cursor="pointer"
+                  px={2}
+                  py={1}
+                  rounded="md"
+                  _hover={{
+                    bg: '#D6E6F5',
+                  }}
+                  transition="background-color 200ms"
+                  onClick={() => {
+                    // Determine the page URL based on category type
+                    let pageUrl = '';
+                    switch (module?.type) {
+                      case 'audits': {
+                        switch (scopeType) {
+                          case 'actions':
+                            pageUrl = '/actions';
+                            break;
+                          case 'answers':
+                            pageUrl = '/answers';
+                            break;
+                          default:
+                            pageUrl = '/dashboard'; // Audits page is shown on dashboard
+                        }
+                        break;
+                      }
+                      case 'tracker': {
+                        pageUrl = '/dashboard';
+                        break;
+                      }
+                    }
+                    
+                    if (pageUrl) {
+                      const params = new URLSearchParams();
+                      if (searchText) {
+                        params.set('search', searchText);
+                      }
+                      navigateTo(`${pageUrl}?${params.toString()}`);
+                      // Close the drawer
+                      onResultClick({} as ISearchResult);
+                    }
+                  }}>
                   <Text data-id="003177" fontSize="14px" fontWeight="500" color="#0073E6">
                     View more results
                   </Text>
@@ -152,12 +211,16 @@ function MobileSearchResults({
                 <Flex
                   data-id="003180"
                   key={result._id}
-                  _hover={{ cursor: 'pointer' }}
+                  _hover={{ 
+                    cursor: 'pointer',
+                    bg: '#D6E6F5',
+                  }}
                   align="center"
                   gap={2}
                   onClick={() => handleSearchResultClick(result)}
                   h={result.type === 'audits' ? '60px' : '42px'}
-                  rounded="md">
+                  rounded="md"
+                  transition="background-color 200ms">
                   <Flex data-id="003181" flexDir={'row'} align={'center'} gap={4}>
                     <Box
                       data-id="003182"

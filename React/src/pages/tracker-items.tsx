@@ -5,6 +5,7 @@ import { Divider, Flex } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize, uniqBy } from 'lodash';
 import pluralize from 'pluralize';
+import { useSearchParams } from 'react-router-dom';
 
 import ChangeViewButton from '../components/ChangeViewButton';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
@@ -25,6 +26,7 @@ import updateLocalStorageFilter from '../utils/filterStorage';
 import { removeEmptyArraysAndObjects } from '../utils/helpers';
 import FilterButton from '../components/FilterButton';
 import isAuditPage from '../utils/isAuditPage';
+import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
 
 const GET_RESPONSES_TOTALS = gql`
   query ResponsesTotals($responsesQuery: Any) {
@@ -94,8 +96,18 @@ const GET_RESPONSES = gql`
 `;
 
 function TrackerItems() {
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
+  const { setSearchText } = useNavigationTopContext();
   const { module, user } = useAppContext();
   const device = useDevice();
+
+  // Sync search query from URL to search bar context
+  useEffect(() => {
+    if (searchQuery) {
+      setSearchText(searchQuery);
+    }
+  }, [searchQuery, setSearchText]);
   const {
     filtersValues,
     appliedFilters,
@@ -112,6 +124,7 @@ function TrackerItems() {
   } = useFiltersContext();
 
   const [responses, setResponses] = useState<IResponse[]>([]);
+  const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
   const [parsedFilters, setParsedFilters] = useState<Record<string, any>>({});
   const [localStorageChecked, setLocalStorageChecked] = useState(false);
   const [hasStoredFilters, setHasStoredFilters] = useState(false);
@@ -358,6 +371,27 @@ function TrackerItems() {
     else setAssignedToMe(false);
   }, [filtersValues.usersIds, user?.userId]);
 
+  // Apply search filter when search query or responses change
+  useEffect(() => {
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const filtered = responses.filter((response) => {
+        // Search in tracker item name
+        if (response.trackerItem?.name?.toLowerCase().includes(query)) return true;
+        // Search in tracker item reference
+        if (response.trackerItem?.reference?.toLowerCase().includes(query)) return true;
+        // Search in business unit name
+        if (response.businessUnit?.name?.toLowerCase().includes(query)) return true;
+        // Search in responsible person display name
+        if (response.responsible?.displayName?.toLowerCase().includes(query)) return true;
+        return false;
+      });
+      setFilteredResponses(filtered);
+    } else {
+      setFilteredResponses(responses);
+    }
+  }, [searchQuery, responses]);
+
   // Helper function to render main content with loading state
   const renderMainContent = () => {
     if (loading) return <Loader center data-id="000197" />;
@@ -368,7 +402,7 @@ function TrackerItems() {
           data-id="000299"
           loading={loading}
           loadResponses={loadResponses}
-          responses={responses}
+          responses={filteredResponses}
           setSortOrder={setSortOrder}
           setSortType={setSortType}
           sortOrder={sortOrder}
@@ -396,7 +430,7 @@ function TrackerItems() {
           }}
           data-id="000207"
           dataSourceName="tracker items"
-          items={responses}
+          items={filteredResponses}
         />
       );
     }
@@ -419,7 +453,7 @@ function TrackerItems() {
         }}
         data-id="000207"
         dataSourceName="tracker items"
-        items={responses}
+          items={searchQuery ? filteredResponses : responses}
       />
     );
   };
@@ -459,7 +493,7 @@ function TrackerItems() {
           </Flex>
         </Flex>
       </Header>
-      <Flex data-id="000292" mb={['90px', 0, 0]} direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" pb={4} zIndex={1}>
+      <Flex data-id="000292" direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" zIndex={1}>
         {error ? (
           <NoRecordsFound
             data-id="000293"

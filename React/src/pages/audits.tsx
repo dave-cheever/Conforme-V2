@@ -2,6 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState, startTransition } fr
 import { flushSync } from 'react-dom';
 import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
+
+import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
 
 import { gql, useQuery } from '@apollo/client';
 import { Button, Divider, Flex, Modal, ModalOverlay, Text } from '@chakra-ui/react';
@@ -111,6 +114,9 @@ const GET_AUDITS = gql`
 
 function Audits() {
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
+  const { setSearchText } = useNavigationTopContext();
   const {
     filtersValues,
     appliedFilters,
@@ -134,6 +140,13 @@ function Audits() {
   const [filteredAudits, setFilteredAudits] = useState<IAudit[]>([]);
   const [filtersInitialized, setFiltersInitialized] = useState(false);
   const [assignedToMe, setAssignedToMe] = useState(false);
+
+  // Sync search query from URL to search bar context
+  useEffect(() => {
+    if (searchQuery) {
+      setSearchText(searchQuery);
+    }
+  }, [searchQuery, setSearchText]);
   const {
     sortOrder: sortOrderState,
     sortType: sortTypeState,
@@ -549,11 +562,37 @@ function Audits() {
   }, [appliedFilters, user?.userId, pageSize, sortTypeState, sortOrderState, refetch, allowedFilters]);
 
   useEffect(() => {
-    if (!error && data?.audits) {
-      setFilteredAudits(data.audits.audits ?? []);
-      setTotal(data.audits.total ?? 0);
+    if (data?.audits && !error) {
+      // Handle both array and object with audits property
+      const auditsArray = Array.isArray(data.audits) ? data.audits : (data.audits?.audits || []);
+      let audits = auditsArray;
+      
+      // Set total from data if available
+      if (!Array.isArray(data.audits) && data.audits?.total !== undefined) {
+        setTotal(data.audits.total);
+      } else {
+        setTotal(audits.length);
+      }
+      
+      // Apply search filter if search query exists
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        audits = audits.filter((audit) => {
+          // Search in reference
+          if (audit.reference?.toLowerCase().includes(query)) return true;
+          // Search in auditType name
+          if (audit.auditType?.name?.toLowerCase().includes(query)) return true;
+          // Search in business unit name
+          if (audit.businessUnit?.name?.toLowerCase().includes(query)) return true;
+          // Search in auditor display name
+          if (audit.auditor?.displayName?.toLowerCase().includes(query)) return true;
+          return false;
+        });
+      }
+      
+      setFilteredAudits(audits);
     }
-  }, [data, error]);
+  }, [data?.audits, searchQuery, error, setTotal]);
 
   // Refetch when pagination or sorting changes
   useEffect(() => {
@@ -771,6 +810,8 @@ function Audits() {
           </Flex>
         </Flex>
       </Header>
+
+
       <Flex data-id="000196" h="full" overflow="auto">
         {renderMainContent()}
       </Flex>

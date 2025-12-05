@@ -22,14 +22,16 @@ import { toastWarning } from '../bootstrap/config';
 import { useAppContext } from '../contexts/AppProvider';
 import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
 import useConfig from '../hooks/useConfig';
+import useDevice from '../hooks/useDevice';
 import useNavigate from '../hooks/useNavigate';
-import { AuditSearchIcon, ClockIcon, CrossIcon, MenuIcon, TrackerItemSearchIcon, ViewMoreIcon } from '../icons';
+import { AuditSearchIcon, ClockIcon, CrossIcon, EmptySearchIcon, MenuIcon, NoResultsFoundIcon, SearchErrorIcon, TrackerItemSearchIcon, ViewMoreIcon } from '../icons';
 import { IRecentSearch } from '../interfaces/IRecentSearch';
 import { IScope } from '../interfaces/IScope';
 import { ISearchCategory } from '../interfaces/ISearchCategory';
 import { ISearchResult } from '../interfaces/ISearchResult';
 import QuestionsCategoryIcon from './Icon';
 import Loader from './Loader';
+import SearchBarMessage from './SearchBar/SearchBarMessage';
 import StatusCell from './Table/Cells/StatusCell';
 
 const GET_QUESTIONS_CATEGORIES = gql`
@@ -108,6 +110,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
   const { module, user } = useAppContext();
   const { navigateTo } = useNavigate();
+  const device = useDevice();
   const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText, searchResults: contextSearchResults, setSearchResults: setContextSearchResults, searchLoading: contextSearchLoading, setSearchLoading: setContextSearchLoading } = useNavigationTopContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const toast = useToast();
@@ -155,13 +158,14 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   const getScopes = useCallback(() => {
     const scopes: IScope[] = [];
     // Always search all categories for the module
-    const searchCategoriesWithoutAll = searchCategories.filter(({ type }) => type !== 'all');
-    searchCategoriesWithoutAll.forEach(({ type, _id }) => scopes.push({ type, _id }));
+      const searchCategoriesWithoutAll = searchCategories.filter(({ type }) => type !== 'all');
+      searchCategoriesWithoutAll.forEach(({ type, _id }) => scopes.push({ type, _id }));
     return scopes;
   }, [searchCategories]);
 
   const [getSearchResults, { loading }] = useLazyQuery(GET_SEARCH_RESULTS, { fetchPolicy: 'network-only' });
   const [localSearchResults, setLocalSearchResults] = useState<ISearchResult[]>([]);
+  const [searchError, setSearchError] = useState<boolean>(false);
   const [recentSearches, setRecentSearches] = useState<IRecentSearch[]>([]);
   const [saveRecentSearch] = useMutation(SAVE_RECENT_SEARCH);
 
@@ -194,21 +198,24 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     async (searchTextValue: string) => {
       if (searchTextValue?.trim()) {
         try {
-          const results = await getSearchResults({
-            variables: {
-              searchQuery: {
+          setSearchError(false);
+        const results = await getSearchResults({
+          variables: {
+            searchQuery: {
                 searchText: searchTextValue,
-                moduleId: module?._id,
-                scopes: getScopes(),
-              },
+              moduleId: module?._id,
+              scopes: getScopes(),
             },
-          });
+          },
+        });
           setSearchResults(results.data?.search || []);
         } catch (error) {
           console.error('Search error:', error);
+          setSearchError(true);
           setSearchResults([]);
         }
       } else {
+        setSearchError(false);
         setSearchResults([]);
       }
     },
@@ -412,12 +419,17 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
       <Flex
         data-id="003216"
         key={result._id}
-        _hover={{ cursor: 'pointer' }}
+        _hover={{ 
+          cursor: 'pointer',
+          bg: '#D6E6F5',
+        }}
         align="center"
         gap={2}
+        pl={2}
         onClick={() => handleSearchResultClick(result)}
         h={result.type === 'audits' ? '60px' : '42px'}
-        rounded="md">
+        rounded="md"
+        transition="background-color 200ms">
         <Flex data-id="003217" flexDir={'row'} align={'center'} gap={4}>
           <Box
             data-id="003218"
@@ -507,49 +519,108 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
         </Flex>
       );
     }
-    if (searchResults.length > 0) {
+    
+    // Show error message if there's a search error
+    if (searchError) {
       return (
-        <>
-          {renderRecentSearches()}
-          <Stack data-id="003207" spacing={4}>
-            {Object.entries(groupedResults).map(([key, results]) => {
-              const [scopeType, scopeId] = key.split('-');
-              const categoryLabel = getCategoryLabel(scopeType, scopeId);
-              return (
-                <Box data-id="003208" key={key}>
-                  <Flex data-id="003209" flexDir={'row'} align={'center'} gap={'8px'} mb={1}>
-                    <Text data-id="003210" fontSize="14px" fontWeight="600" color={'#718096'}>
-                      {categoryLabel}
-                    </Text>
-                    <Divider data-id="003211" borderColor={'#CBD5E0'} flex={1} />
-                    {results.length >= 3 && (
-                      <Flex data-id="003212" align="center" gap={2} cursor="pointer">
-                        <Text data-id="003213" fontSize="14px" fontWeight="500" color="#0073E6">
-                          View more results
-                        </Text>
-                        <ViewMoreIcon data-id="003214" boxSize="9px" color="#0073E6" />
-                      </Flex>
-                    )}
-                  </Flex>
-                  <Stack data-id="003215" spacing={0}>
-                    {results.map((result) => renderSearchResultItem(result))}
-                  </Stack>
-                </Box>
-              );
-            })}
-          </Stack>
-        </>
+        <SearchBarMessage
+          data-id="003364"
+          icon={SearchErrorIcon}
+          heading="Search could not be completed"
+          text="Please try again, or refresh the page" />
       );
     }
+    
+    // Show empty search message when no search text is entered
+    if (!searchText?.trim()) {
+      return (<SearchBarMessage data-id="003365" icon={EmptySearchIcon} text="Type a keyword to search" />);
+    }
+    
+    // Show results if available
+    if (searchResults.length > 0) {
+      return (
+        <Stack data-id="003207" spacing={4}>
+          {Object.entries(groupedResults).map(([key, results]) => {
+            const [scopeType, scopeId] = key.split('-');
+            const categoryLabel = getCategoryLabel(scopeType, scopeId);
+            return (
+              <Box data-id="003208" key={key}>
+                <Flex data-id="003209" flexDir={'row'} align={'center'} gap={'8px'} mb={1}>
+                  <Text data-id="003210" fontSize="14px" fontWeight="600" color={'#718096'}>
+                    {categoryLabel}
+                  </Text>
+                  <Divider data-id="003211" borderColor={'#CBD5E0'} flex={1} />
+                  {results.length >= 3 && (
+                    <Flex 
+                      data-id="003212" 
+                      align="center" 
+                      gap={2} 
+                      cursor="pointer"
+                      px={2}
+                      py={1}
+                      rounded="md"
+                      _hover={{
+                        bg: '#D6E6F5',
+                      }}
+                      transition="background-color 200ms"
+                      onClick={() => {
+                        // Determine the page URL based on category type
+                        let pageUrl = '';
+                        switch (module?.type) {
+                          case 'audits': {
+                            switch (scopeType) {
+                              case 'actions':
+                                pageUrl = '/actions';
+                                break;
+                              case 'answers':
+                                pageUrl = '/answers';
+                                break;
+                              default:
+                                pageUrl = '/dashboard'; // Audits page is shown on dashboard
+                            }
+                            break;
+                          }
+                          case 'tracker': {
+                            pageUrl = '/dashboard';
+                            break;
+                          }
+                        }
+                        
+                        if (pageUrl) {
+                          const params = new URLSearchParams();
+                          if (searchText) {
+                            params.set('search', searchText);
+                          }
+                          navigateTo(`${pageUrl}?${params.toString()}`);
+                          setIsSearchBarOpen(false);
+                          // Don't clear searchText - keep it in the search bar
+                          setSearchResults([]);
+                        }
+                      }}>
+                      <Text data-id="003213" fontSize="14px" fontWeight="500" color="#0073E6">
+                        View more results
+                      </Text>
+                      <ViewMoreIcon data-id="003214" boxSize="9px" color="#0073E6" />
+                    </Flex>
+                  )}
+                </Flex>
+                <Stack data-id="003215" spacing={0}>
+                  {results.map((result) => renderSearchResultItem(result))}
+                </Stack>
+              </Box>
+            );
+          })}
+        </Stack>
+      );
+    }
+    
+    // Show no results found message when search text exists but no results
     return (
-      <Text
-        data-id="003227"
-        color="gray.500"
-        fontSize="14px"
-        py={4}
-        textAlign="center">
-        No search results found
-      </Text>
+      <SearchBarMessage
+        data-id="003366"
+        icon={NoResultsFoundIcon}
+        heading="We couldn't find a match"
+        text="Check spelling or try another term." />
     );
   };
 
@@ -581,31 +652,45 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
             stroke="brand.outerSpace" />
         </InputLeftElement>
         {!isInMobileDrawer && (
-          <InputRightElement
-            data-id="000363"
-            display={isSearchBarOpen ? 'block' : 'none'}
-            h="full">
-            <CrossIcon
-              _active={{}}
-              _hover={{
-                opacity: 0.5,
-                cursor: 'pointer',
-              }}
-              data-id="000364"
-              h="13.5px"
-              ml="15px"
-              mt="10px"
-              onClick={() => {
-                setIsSearchBarOpen(false);
-                setSearchText('');
-                setSearchResults([]);
-              }}
-              stroke="navigationTop.searchCrossIconStroke"
-              w="13.5px" />
-          </InputRightElement>
+        <InputRightElement
+          data-id="000363"
+          display={isSearchBarOpen ? 'block' : 'none'}
+          h="full">
+          <CrossIcon
+            _active={{}}
+            _hover={{
+              color: 'navigationTop.notificationIconHover',
+              opacity: 0.7,
+              cursor: 'pointer',
+            }}
+            data-id="000364"
+            h="13.5px"
+            ml="15px"
+            mt="10px"
+            onClick={() => {
+              // Navigate to the current module's main page without search query
+              let pageUrl = '';
+              switch (module?.type) {
+                case 'audits':
+                case 'tracker':
+                  pageUrl = '/dashboard'; // Audits page is shown on dashboard
+                  break;
+              }
+              
+              if (pageUrl) {
+                navigateTo(pageUrl);
+              }
+              
+              setIsSearchBarOpen(false);
+              setSearchText('');
+              setSearchResults([]);
+            }}
+            stroke="navigationTop.searchCrossIconStroke"
+            w="13.5px" />
+        </InputRightElement>
         )}
         <Input
-          _placeholder={{ color: '#A0AEC0' }}
+         _placeholder={{ color: '#A0AEC0' }}
           bg="navigationTop.inputBg"
           data-id="000365"
           fontSize="smm"
@@ -639,11 +724,17 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
             fontSize="smm"
             maxH="500px"
             overflowY="auto"
+            maxHeight={device === 'desktop' ? '500px' : '75vh'}
             p={'12px'}
             rounded="10px">
             <Box data-id="003204" w={'100%'}>
-              {!searchText && renderRecentSearches()}
-              {searchText && renderSearchContent()}
+              {searchText ? (
+                // When search text exists, show search content (results, loading, error, or no results message)
+                (renderSearchContent())
+              ) : (
+                // When no search text, show recent searches if available, otherwise show empty search message
+                (renderRecentSearches() || (!recentSearchesLoading && (<SearchBarMessage data-id="003415" icon={EmptySearchIcon} text="Type a keyword to search" />)))
+              )}
             </Box>
           </Flex>
         </Box>

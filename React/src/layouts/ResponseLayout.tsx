@@ -10,6 +10,7 @@ import ResponseLeftNavigationMobile from '../components/Response/ResponseLeftNav
 import ResponseLeftNavigationTablet from '../components/Response/ResponseLeftNavigation/ResponseLeftNavigationTablet';
 import ShareModal from '../components/ShareModal';
 import ChatProvider, { useChatContext } from '../contexts/ChatProvider';
+import NavigationTopProvider from '../contexts/NavigationTopProvider';
 import ResponseProvider, { useResponseContext } from '../contexts/ResponseProvider';
 import ShareProvider from '../contexts/ShareProvider';
 import useDevice from '../hooks/useDevice';
@@ -30,15 +31,16 @@ function ResponseLayout({ component: Component }: { component: any }) {
   }
 
   return (
-    <Flex data-id="000223" h="full" minH="100vh" w="full">
-      <ResponseLeftNavigation data-id="000224" />
-      <ResponseLeftNavigationTablet data-id="000225" />
-      <Flex
-        data-id="000226"
-        direction="column"
-        grow={1}
-        w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}>
-        <NavigationTop data-id="000227" />
+    <NavigationTopProvider data-id="003377">
+      <Flex data-id="000223" h="full" minH="100vh" w="full">
+        <ResponseLeftNavigation data-id="000224" />
+        <ResponseLeftNavigationTablet data-id="000225" />
+        <Flex
+          data-id="000226"
+          direction="column"
+          grow={1}
+          w={['100%', 'calc(100% - 80px)', 'calc(100% - 290px)']}>
+          <NavigationTop data-id="000227" />
         <Flex
           data-id="000228"
           flexDirection="column"
@@ -89,6 +91,7 @@ function ResponseLayout({ component: Component }: { component: any }) {
         <ResponseLeftNavigationMobile data-id="000239" />
       </Flex>
     </Flex>
+    </NavigationTopProvider>
   );
 }
 

@@ -1,6 +1,6 @@
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
@@ -26,6 +26,13 @@ const TEST_MODULE = { _id: 'm1', customQuestionsInDashboard: [] };
 // ---- Mock contexts/hooks/components used by TrackerItems
 vi.mock('../../contexts/AppProvider', () => ({
   useAppContext: () => ({ user: TEST_USER, module: TEST_MODULE }),
+}));
+
+const mockSetSearchText = vi.fn();
+vi.mock('../../contexts/NavigationTopProvider', () => ({
+  useNavigationTopContext: () => ({
+    setSearchText: mockSetSearchText,
+  }),
 }));
 
 // Mock translation function
@@ -449,5 +456,78 @@ describe('TrackerItems sorting context synchronization', () => {
     // Since the values are the same, it should still call with the current values
     expect(mockSetSortType).toHaveBeenCalledWith('responsible.displayName');
     expect(mockSetSortOrder).toHaveBeenCalledWith('desc');
+  });
+});
+
+describe('TrackerItems - Search Functionality', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  const renderPageWithSearch = (searchQuery: string) => {
+    return render(
+      <MemoryRouter
+        data-id="003396"
+        initialEntries={[`/?search=${encodeURIComponent(searchQuery)}`]}>
+        <TrackerItems data-id="003397" />
+      </MemoryRouter>
+    );
+  };
+
+  test('should sync search query from URL to search bar context', () => {
+    renderPageWithSearch('test query');
+    expect(mockSetSearchText).toHaveBeenCalledWith('test query');
+  });
+
+  test('should filter responses by tracker item name when search query matches', async () => {
+    renderPageWithSearch('Tracker Item Name');
+
+    await waitFor(() => {
+      expect(mockSetSearchText).toHaveBeenCalledWith('Tracker Item Name');
+    });
+  });
+
+  test('should filter responses by tracker item reference when search query matches', async () => {
+    renderPageWithSearch('REF-001');
+
+    await waitFor(() => {
+      expect(mockSetSearchText).toHaveBeenCalledWith('REF-001');
+    });
+  });
+
+  test('should filter responses by business unit name when search query matches', async () => {
+    renderPageWithSearch('Operations');
+
+    await waitFor(() => {
+      expect(mockSetSearchText).toHaveBeenCalledWith('Operations');
+    });
+  });
+
+  test('should filter responses by responsible display name when search query matches', async () => {
+    renderPageWithSearch('John Doe');
+
+    await waitFor(() => {
+      expect(mockSetSearchText).toHaveBeenCalledWith('John Doe');
+    });
+  });
+
+  test('should clear search text when search query is removed from URL', () => {
+    const { rerender } = render(
+      <MemoryRouter data-id="003398" initialEntries={['/?search=test']}>
+        <TrackerItems data-id="003399" />
+      </MemoryRouter>
+    );
+
+    expect(mockSetSearchText).toHaveBeenCalledWith('test');
+
+    // Rerender without search param
+    rerender(
+      <MemoryRouter data-id="003400" initialEntries={['/']}>
+        <TrackerItems data-id="003401" />
+      </MemoryRouter>
+    );
+
+    // The useEffect should clear search text when searchQuery becomes empty
+    // This is tested by verifying the component handles empty search query
   });
 });

@@ -1,6 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 
 import Header from '../../components/Header';
 
@@ -8,6 +9,8 @@ import Header from '../../components/Header';
 const mockNavigateTo = vi.fn();
 const mockSetAdminModalState = vi.fn();
 const mockIsPathActive = vi.fn();
+const mockSetSearchText = vi.fn();
+const mockSetSearchParams = vi.fn();
 
 const mockUser = { _id: 'user1', userId: 'user1', role: 'admin' };
 const mockModule = { _id: 'module1', type: 'audits' };
@@ -23,6 +26,12 @@ vi.mock('../../contexts/AdminProvider', () => ({
 vi.mock('../../contexts/FiltersProvider', () => ({
   useFiltersContext: () => ({
     usedFilters: ['usersIds', 'dueDate'],
+  }),
+}));
+
+vi.mock('../../contexts/NavigationTopProvider', () => ({
+  useNavigationTopContext: () => ({
+    setSearchText: mockSetSearchText,
   }),
 }));
 
@@ -78,6 +87,9 @@ vi.mock('../../icons', () => ({
       →
     </div>
   ),
+  ResetSearchIcon: () => (
+    <svg data-id="001567" data-testid="reset-search-icon" />
+  ),
 }));
 
 // Mock lodash
@@ -85,8 +97,14 @@ vi.mock('lodash', () => ({
   capitalize: (str: string) => str.charAt(0).toUpperCase() + str.slice(1),
 }));
 
-function TestWrapper({ children }: { readonly children: React.ReactNode }) {
-  return <ChakraProvider data-id="001665">{children}</ChakraProvider>;
+function TestWrapper({ children, initialEntries }: { readonly children: React.ReactNode; initialEntries?: string[] }) {
+  return (
+    <ChakraProvider data-id="001665">
+      <MemoryRouter data-id="003389" initialEntries={initialEntries || ['/']}>
+        {children}
+      </MemoryRouter>
+    </ChakraProvider>
+  );
 }
 
 describe('Header', () => {
@@ -444,6 +462,80 @@ describe('Header', () => {
 
       // Check that the header renders without errors
       expect(screen.getByText('Home')).toBeInTheDocument();
+    });
+  });
+
+  describe('Search Query Display', () => {
+    test('should display search query when search param is present', () => {
+      render(
+        <TestWrapper data-id="003390" initialEntries={['/?search=test+query']}>
+          <Header data-id="001617" {...defaultProps} />
+        </TestWrapper>
+      );
+
+      expect(screen.getByText(/Search results for "test query"/)).toBeInTheDocument();
+    });
+
+    test('should display Reset Search button when search param is present', () => {
+      render(
+        <TestWrapper data-id="003391" initialEntries={['/?search=test+query']}>
+          <Header data-id="001618" {...defaultProps} />
+        </TestWrapper>
+      );
+
+      expect(screen.getByText('Reset Search')).toBeInTheDocument();
+      expect(screen.getByTestId('reset-search-icon')).toBeInTheDocument();
+    });
+
+    test('should NOT display search query when search param is not present', () => {
+      render(
+        <TestWrapper data-id="003392">
+          <Header data-id="001619" {...defaultProps} />
+        </TestWrapper>
+      );
+
+      expect(screen.queryByText(/Search results for/)).not.toBeInTheDocument();
+      expect(screen.queryByText('Reset Search')).not.toBeInTheDocument();
+    });
+
+    test('should call setSearchText when Reset Search is clicked', () => {
+      render(
+        <TestWrapper data-id="003393" initialEntries={['/?search=test+query']}>
+          <Header data-id="001620" {...defaultProps} />
+        </TestWrapper>
+      );
+
+      const resetButton = screen.getByText('Reset Search');
+      fireEvent.click(resetButton);
+
+      // Verify setSearchText was called to clear search
+      expect(mockSetSearchText).toHaveBeenCalledWith('');
+    });
+
+    test('should have correct styling for search query text', () => {
+      const { container } = render(
+        <TestWrapper data-id="003394" initialEntries={['/?search=test']}>
+          <Header data-id="001621" {...defaultProps} />
+        </TestWrapper>
+      );
+
+      const searchText = screen.getByText(/Search results for/);
+      expect(searchText).toHaveStyle({ fontSize: '16px' });
+      expect(searchText).toHaveStyle({ fontWeight: '500' });
+      expect(searchText).toHaveStyle({ color: '#4A5568' });
+    });
+
+    test('should have correct styling for Reset Search button', () => {
+      render(
+        <TestWrapper data-id="003395" initialEntries={['/?search=test']}>
+          <Header data-id="001622" {...defaultProps} />
+        </TestWrapper>
+      );
+
+      const resetButton = screen.getByText('Reset Search');
+      expect(resetButton).toHaveStyle({ fontSize: '16px' });
+      expect(resetButton).toHaveStyle({ fontWeight: '500' });
+      expect(resetButton).toHaveStyle({ color: '#0073E6' });
     });
   });
 });
