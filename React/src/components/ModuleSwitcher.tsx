@@ -26,7 +26,7 @@ function getMultipleModulesDisplayContent(
 ): React.ReactNode {
   if (showFiltersPanel || (isTabletWidth && !enforceDesktop)) {
     return (
-      <Flex data-id="000430" pl={'18px'}>
+      <Flex data-id="000430" >
         <Icon as={Conforme} data-id="000431" h="30px" w="30px" />
       </Flex>
     );
@@ -156,7 +156,7 @@ function GlobalViewMenuItem({ isDashboardPath, isMobile, navigate }: { readonly 
           <Text
             data-id="000439"
             fontSize={isMobile ? '12px' : '14px'}
-            fontWeight="400" 
+            fontWeight="400"
             overflow="hidden"
             textOverflow="ellipsis"
             whiteSpace="nowrap">
@@ -204,7 +204,7 @@ function MultipleModulesMenuButtonContent({
   const shouldShowSeparator = shouldShowIcon && !isMobile;
 
   return (
-    <Flex align="flex-start" data-id="000424" gap="2" justify={isMobile ? 'flex-start' : 'space-between'} w="100%">
+    <Flex align="flex-start" data-id="000424" gap="10px" justify={isMobile ? 'flex-start' : 'space-between'} w="100%">
       {shouldShowIcon && (
         <Box alignItems="center" alignSelf="center" data-id="000425" display="flex">
           <Icon as={Conforme} data-id="000426" h="30px" w="30px" />
@@ -212,16 +212,13 @@ function MultipleModulesMenuButtonContent({
       )}
 
       {shouldShowSeparator && (
-        <Box alignSelf="center" bg="white" data-id="000427" h="28px" ml="3" mr="1" opacity="44%" w="1px" />
+        <Box alignSelf="center" bg="white" data-id="000427" h="28px" opacity="44%" w="1px" />
       )}
 
       <Flex
         align="center"
         data-id="000428"
         flex="1"
-        marginLeft={showFiltersPanel || (isTabletWidth && !enforceDesktop) ? '20' : '2'}
-        maxW={isMobile ? '120px' : '145px'}
-        minW={isMobile ? '50px' : '120px'}
       >
         <Text
           as="div"
@@ -289,8 +286,6 @@ function MultipleModulesMenu({
         bg={isMobile ? '#FFFFFF' : '#01173E'}
         data-id="000423"
         h="60px"
-        minW={isMobile ? '150px' : '200px'}
-        px="2"
         textAlign="left"
         variant="ghost"
         w="auto"
@@ -392,9 +387,7 @@ function SingleModuleDisplay({
         align="center"
         data-id="000444"
         flex="1"
-        marginLeft={showFiltersPanel || (isTabletWidth && !enforceDesktop) ? '20' : '2'}
-        maxW={isMobile ? '120px' : '145px'}
-        minW={isMobile ? '50px' : '120px'}
+        
       >
         <Text
           as="div"
@@ -458,7 +451,7 @@ function ModuleSwitcher({ enforceDesktop }: ModuleSwitcherProps) {
   const currentModule = module ?? null;
 
   return (
-    <Box data-id="000421" pl={2}>
+    <Box data-id="000421">
       {hasMultipleModules ? (
         <MultipleModulesMenu
           data-id="003343"
