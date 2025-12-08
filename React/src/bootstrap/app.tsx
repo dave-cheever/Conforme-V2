@@ -13,6 +13,7 @@ import useNavigate from '../hooks/useNavigate';
 import useRoutes from '../hooks/useRoutes';
 import './styles.css';
 import { runtimeEnv } from '../utils/runtime-env';
+import { isProtectedRoute } from './protectedRoutes';
 import getTheme from './theme';
 
 function App() {
@@ -30,35 +31,105 @@ function App() {
   const domainParts = clientDomain.split('.');
   const topLevelDomain = domainParts.length >= 2 ? domainParts.slice(-2).join('.') : clientDomain;
   document.cookie = `clientUrl=${clientUrl}; path=/; SameSite=None; Secure; Domain=.${topLevelDomain}`;
+  
+  // Helper function to check if user and module are ready
+  const isUserReady = (currentUser: typeof user, isLoadingUser: boolean, isLoadingSettings: boolean, currentModule: typeof module) => {
+    return !!(currentUser && !isLoadingUser && !isLoadingSettings && currentModule);
+  };
+  
+  // Helper function to calculate route states
+  const getRouteStates = (pathname: string, currentModule: typeof module) => {
+    return {
+      isFromLogin: pathname === '/login' || pathname.endsWith('/login'),
+      isOnLogout: pathname === '/logout' || pathname.endsWith('/logout'),
+      isOnModuleRoot: pathname === `/${currentModule?.path}` || pathname === '/',
+      isOnOverview: pathname === '/overview',
+    };
+  };
+  
+  // Helper function to check if on a valid protected route
+  const isOnValidProtectedRoute = (
+    pathname: string,
+    routeStates: ReturnType<typeof getRouteStates>,
+    currentModule: typeof module
+  ) => {
+    if (routeStates.isFromLogin || routeStates.isOnLogout || routeStates.isOnOverview || routeStates.isOnModuleRoot) {
+      return false;
+    }
+    if (pathname === '/') {
+      return false;
+    }
+    const pathSegments = pathname.split('/').filter(Boolean);
+    const hasAdditionalPathSegments = pathSegments.length > (currentModule?.path ? 1 : 0);
+    return isProtectedRoute(pathname) || hasAdditionalPathSegments;
+  };
+  
+  // Helper function to handle redirect to login scenario
+  const handleRedirectToLogin = (
+    isRedirecting: boolean,
+    routeStates: ReturnType<typeof getRouteStates>,
+    navigate: typeof navigateTo
+  ) => {
+    if (!isRedirecting) {
+      return false;
+    }
+    if (!routeStates.isFromLogin && !routeStates.isOnLogout) {
+      navigate('/login');
+    }
+    return true;
+  };
+  
+  // Helper function to handle redirect to overview
+  const handleRedirectToOverview = (
+    routeStates: ReturnType<typeof getRouteStates>,
+    currentUser: typeof user,
+    redirectFlag: React.MutableRefObject<boolean>,
+    navigate: typeof navigateTo
+  ) => {
+    if (routeStates.isOnLogout) {
+      return;
+    }
+    
+    // Reset the flag when on login page with a logged-in user
+    if (routeStates.isFromLogin && currentUser && redirectFlag.current) {
+      redirectFlag.current = false;
+    }
+    
+    const shouldRedirectFromLogin = routeStates.isFromLogin && !redirectFlag.current;
+    const shouldRedirectFromModuleRoot = routeStates.isOnModuleRoot && !redirectFlag.current && !routeStates.isOnOverview;
+    
+    if (shouldRedirectFromLogin || shouldRedirectFromModuleRoot) {
+      redirectFlag.current = true;
+      navigate('/overview');
+    }
+  };
  
   useEffect(() => {
-    const isFromLogin = location.pathname === '/login' || location.pathname.endsWith('/login');
-    const isOnLogout = location.pathname === '/logout' || location.pathname.endsWith('/logout');
-    const isOnModuleRoot = location.pathname === `/${module?.path}` || location.pathname === '/';
-    
-    // Check if we're in the process of redirecting to Microsoft login
-    // If so, don't redirect to overview - let the Microsoft redirect happen
+    // CRITICAL: Early return for admin routes - never redirect from admin pages
+    if (location.pathname.includes('/admin/')) {
+      return;
+    }
+
+    // Don't run redirect logic if user/module isn't loaded yet
+    if (!isUserReady(user, loadingUser, loadingSettings, module)) {
+      return;
+    }
+
+    const routeStates = getRouteStates(location.pathname, module);
     const isRedirectingToLogin = sessionStorage.getItem('isRedirectingToLogin') === 'true';
     
-    // If we're redirecting to login, prevent any navigation to protected routes
-    // This ensures users can't access the app until authentication is complete
-    if (isRedirectingToLogin) {
-      // If we're on a protected route (not login/logout), redirect to login
-      if (!isFromLogin && !isOnLogout) {
-        navigateTo('/login');
-      }
-      return; // Don't proceed with any other redirects
+    // Handle redirect to login scenario
+    if (handleRedirectToLogin(isRedirectingToLogin, routeStates, navigateTo)) {
+      return;
     }
     
-    // Redirect to overview only when coming from login page or landing on root after login
-    // But NOT if we're currently redirecting to Microsoft login
-    if (user && !loadingUser && !loadingSettings && module && !isOnLogout && !isRedirectingToLogin) {
-      if ((isFromLogin || isOnModuleRoot) && !hasRedirectedAfterLogin.current) {
-        // Only redirect if we haven't redirected yet (initial load after login)
-        hasRedirectedAfterLogin.current = true;
-        navigateTo('/overview');
-      }
+    // Never redirect if we're already on a valid route
+    if (isOnValidProtectedRoute(location.pathname, routeStates, module)) {
+      return;
     }
+    
+    // Handle redirect to overview
+    handleRedirectToOverview(routeStates, user, hasRedirectedAfterLogin, navigateTo);
     
     // Reset the flag when user logs out
     if (!user) {

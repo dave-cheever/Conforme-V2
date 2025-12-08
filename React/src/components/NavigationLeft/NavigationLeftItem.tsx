@@ -36,27 +36,34 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
     }
   }, [menuItem.subSections, isPathActive, menuOpen]);
 
+  // Helper function to determine if menu item is selected
+  // For items with subSections: selected if menu is open OR any subSection is active OR path matches
+  // For items without subSections: selected if path matches exactly
+  const isMenuItemSelected = () => {
+    if (menuItem.subSections && menuItem.subSections.length > 0) {
+      // Check if any subSection is active
+      const hasActiveSubSection = menuItem.subSections.some(subSection => 
+        isPathActive(subSection.url, { exact: true })
+      );
+      // Selected if: menu is open OR any subSection is active OR path matches
+      return menuOpen || hasActiveSubSection || isPathActive(url);
+    }
+    return isPathActive(url, { exact: true });
+  };
+
+  const isSelected = isMenuItemSelected();
+
   return (
     <>
       <Box
         _hover={{
           cursor: 'pointer',
-          bg: (() => {
-            const isSelected = menuItem.subSections
-              ? isPathActive(url)
-              : isPathActive(url, { exact: true });
-            return isSelected ? undefined : 'navigationLeftItem.hoverLabelBg';
-          })(),
+          bg: isSelected ? undefined : 'navigationLeftItem.hoverLabelBg',
         }}
         alignItems="center"
-        bg={(() => {
-          const isSelected = menuItem.subSections
-            ? isPathActive(url)
-            : isPathActive(url, { exact: true });
-          return isSelected 
-            ? 'navigationLeftItem.selectedMenuItemBg'
-            : 'navigationLeftItem.unselectedMenuItemBg';
-        })()}
+        bg={isSelected 
+          ? 'navigationLeftItem.selectedMenuItemBg'
+          : 'navigationLeftItem.unselectedMenuItemBg'}
         borderRadius={"6px"}
         data-id="000559"
         display="flex"
@@ -67,12 +74,7 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
         h="42px"
         mt="5px"
         sx={{
-          '&:hover': (() => {
-            const isSelected = menuItem.subSections
-              ? isPathActive(url)
-              : isPathActive(url, { exact: true });
-            return isSelected ? {} : { backgroundColor: 'navigationLeftItem.hoverLabelBg' };
-          })(),
+          '&:hover': isSelected ? {} : { backgroundColor: 'navigationLeftItem.hoverLabelBg' },
         }}
         onClick={() => {
           if (menuItem.subSections && menuItem.subSections.length > 0) {
@@ -115,15 +117,9 @@ function NavigationLeftItem({ menuItem }: { menuItem: IMenuItem }) {
           w="100%">
           <Box
             data-id="002745"
-            color={
-              menuItem.subSections
-                ? isPathActive(url)
-                  ? 'navigationLeftItem.selectedMenuItem'
-                  : 'navigationLeftItem.unselectedMenuItem'
-                : isPathActive(url, { exact: true })
-                  ? 'navigationLeftItem.selectedMenuItem'
-                  : 'navigationLeftItem.unselectedMenuItem'
-            }
+            color={isSelected
+              ? 'navigationLeftItem.selectedMenuItem'
+              : 'navigationLeftItem.unselectedMenuItem'}
             fontWeight="600"
             fontSize={'16px'}
             ml="8px">

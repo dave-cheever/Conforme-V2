@@ -3,8 +3,10 @@ import { useLocation } from 'react-router-dom';
 
 import { Box, Flex } from '@chakra-ui/react';
 
+import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
 import useResponseUtils from '../../hooks/useResponseUtils';
+import updateLocalStorageFilter from '../../utils/filterStorage';
 
 function NavigationLeftFilters({
   filter,
@@ -15,7 +17,8 @@ function NavigationLeftFilters({
   setFiltersOpen?: (value: boolean) => void;
 }) {
   const { pathname } = useLocation();
-  const { filtersValues, setFilters } = useFiltersContext();
+  const { user, module } = useAppContext();
+  const { filtersValues, applyFiltersImmediately } = useFiltersContext();
   const { responseStatuses } = useResponseUtils();
   const itemStatusFilterValue = useMemo(
     () => filtersValues.itemStatus?.value,
@@ -32,7 +35,12 @@ function NavigationLeftFilters({
     else if (!value.includes(name)) newValue = [...value, name];
     else newValue = value.filter((item) => item !== name);
 
-    setFilters({ itemStatus: newValue });
+    // Save to localStorage and apply filters immediately to trigger network call
+    if (user && module) {
+      updateLocalStorageFilter(module._id, 'itemStatus', 'Item Status', newValue, user.userId, applyFiltersImmediately);
+    } else {
+      applyFiltersImmediately({ itemStatus: newValue });
+    }
   };
 
   return (

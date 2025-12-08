@@ -141,11 +141,11 @@ function NavigationLeftItemTablet({
           maxH={`calc(100vh - ${menuItem.subSections.length * 40}px)`}
           ml="18rem"
           overflowY="auto"
-          pos="absolute"
+          pos="fixed"
           py="15px"
           ref={boxRef}
           rounded="10px"
-          top="0"
+          top="20%"
           w="235px"
           zIndex="11">
           {menuItem.subSections?.map((subSection) => (

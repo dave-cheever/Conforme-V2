@@ -214,6 +214,9 @@ function MultipleModulesMenuButtonContent({
         align="center"
         data-id="000428"
         flex="1"
+        marginLeft={showFiltersPanel || (isTabletWidth && !enforceDesktop) ? '57px' : '2'}
+        maxW={isMobile ? '120px' : '145px'}
+        minW={isMobile ? '50px' : '120px'}
       >
         <Text
           as="div"
@@ -416,7 +419,7 @@ function SingleModuleDisplay({
 function ModuleSwitcher({ enforceDesktop }: ModuleSwitcherProps) {
   const { organizationConfig, module, setModule } = useAppContext();
   const { showFiltersPanel } = useFiltersContext();
-  const [isTabletWidth] = useMediaQuery('(min-width: 768px) and (max-width: 1279px)', { ssr: false });
+  const [isTabletWidth] = useMediaQuery('(min-width: 768px) and (max-width: 1023px)', { ssr: false });
   const [isMobile] = useMediaQuery('(max-width: 768px)', { ssr: false });
   const navigate = useNavigate();
   const location = useLocation();
@@ -445,7 +448,7 @@ function ModuleSwitcher({ enforceDesktop }: ModuleSwitcherProps) {
   const currentModule = module ?? null;
 
   return (
-    <Box data-id="000421">
+    <Box data-id="000421" pl={0}>
       {hasMultipleModules ? (
         <MultipleModulesMenu
           data-id="003343"

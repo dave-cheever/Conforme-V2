@@ -87,8 +87,17 @@ const MobileView = ({
   icon: React.ComponentType;
   active: boolean;
 }) => {
-  const iconColor = active ? '#ffffff' : '#4A5568';
+  const [isTabletWidth] = useMediaQuery('(min-width: 768px) and (max-width: 1023px)', { ssr: false });
+
+  // Icon color is white when active or on tablet, otherwise gray
+  const iconColor = (() => {
+    if (active || isTabletWidth) {
+      return '#ffffff';
+    }
+    return '#4A5568';
+  })(); 
   const textColor = '#4A5568';
+  
   return (
     <Flex
       align="center"
@@ -131,18 +140,18 @@ const MobileView = ({
   );
 };
 
-function AuditLeftTabItem({ 
-  label, 
-  icon, 
+function AuditLeftTabItem({
+  label,
+  icon,
   url,
   enforceDesktop,
 }: AuditLeftTabItemProps) {
   const location = useLocation();
-  const { isPathActive, navigateTo } = useNavigate(); 
+  const { isPathActive, navigateTo } = useNavigate();
   const { id } = useParams();
-  const [isDesktop] = useMediaQuery('(min-width: 1280px)', { ssr: false });
+  const [isDesktop] = useMediaQuery('(min-width: 1024px)', { ssr: false });
   const active = useMemo(() => isPathActive(`/audits/${id}${url}`, { exact: true }), [id, url, isPathActive]);
-  
+
   const showDesktopView = shouldShowDesktopView(enforceDesktop, isDesktop);
   const { hoverBg, bg, hoverStyle } = getBackgroundColors(active);
 
@@ -156,7 +165,7 @@ function AuditLeftTabItem({
         cursor: 'pointer',
         bg: hoverBg,
       }}
-      bg={ showDesktopView ? bg : 'transparent'}
+      bg={showDesktopView ? bg : 'transparent'}
       borderRadius="6px"
       data-id="000203"
       display="flex"
@@ -174,8 +183,8 @@ function AuditLeftTabItem({
       flexDirection={showDesktopView ? 'row' : 'column'}
       gap={showDesktopView ? undefined : '6px'}
       h={['54px', enforceDesktop ? '56px' : '42px', '42px']}
-      w={['fit-content', enforceDesktop ? '100%' : '42px', '100%']}
-      maxW={['54px', enforceDesktop ? '100%' : '42px', '100%']}
+      w={['fit-content', '100%', '100%']}
+      maxW={['54px', enforceDesktop ? '100%' : 'initial', '100%']}
       justifyContent={['center', showDesktopView ? 'flex-start' : 'center', 'flex-start']}
       px={[0, showDesktopView ? '14px' : 0, '14px']}
       py={[0, showDesktopView ? '12px' : 0, '12px']}>

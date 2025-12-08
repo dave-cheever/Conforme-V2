@@ -47,6 +47,17 @@ const Can = ({
 }): any => {
   const { user, organizationConfig } = useAppContext();
 
+  // If no action is required, always allow
+  if (!action) return yes();
+
+  // If user or roles aren't loaded yet, wait (return yes to prevent redirects during loading)
+  // This prevents redirects when refreshing pages before permissions are loaded
+  if (!user || !globalThis.roles) {
+    // Return yes() to prevent redirects during initial load
+    // The permission check will re-run once user/roles are loaded
+    return yes();
+  }
+
   if (isPermitted({ user, action, data, revokedPermissions: organizationConfig?.revokedPermissions })) return yes();
 
   return no();

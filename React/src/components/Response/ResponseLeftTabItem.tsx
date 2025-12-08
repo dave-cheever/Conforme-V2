@@ -85,7 +85,16 @@ const MobileView = ({
   icon: React.ComponentType;
   active: boolean;
 }) => {
-  const iconColor = active ? '#ffffff' : '#4A5568';
+
+  const [isTabletWidth] = useMediaQuery('(min-width: 768px) and (max-width: 1023px)', { ssr: false });
+
+  // Icon color is white when active or on tablet, otherwise gray
+  const iconColor = (() => {
+    if (active || isTabletWidth) {
+      return '#ffffff';
+    }
+    return '#4A5568';
+  })();
   const textColor = '#4A5568';
   return (
     <Flex
@@ -138,7 +147,7 @@ function ResponseLeftTabItem({
   const location = useLocation();
   const { isPathActive, navigateTo } = useNavigate(); 
   const { id } = useParams();
-  const [isDesktop] = useMediaQuery('(min-width: 1280px)', { ssr: false });
+  const [isDesktop] = useMediaQuery('(min-width: 1024px)', { ssr: false });
   const active = useMemo(() => isPathActive(`/tracker-item/${id}${url}`, { exact: true }), [id, url, isPathActive]);
   
   const showDesktopView = shouldShowDesktopView(enforceDesktop, isDesktop);

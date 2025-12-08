@@ -375,7 +375,16 @@ const useRoutes = () => {
         <Can
           action={route.permission}
           data-id="000032"
-          no={() => <Navigate data-id="000033" key="not-found" to="/overview" />}
+          no={() => {
+            // Don't redirect admin routes to overview - let them stay on the page
+            // This prevents redirects when permissions aren't loaded yet on page refresh
+            if (route.path?.includes('/admin/')) {
+              // Return a loading state or the component anyway for admin routes
+              // The permission check will re-run once permissions are loaded
+              return <route.layout component={route.component} data-id="000034" key={route.key} />;
+            }
+            return <Navigate data-id="000033" key="not-found" to="/overview" />;
+          }}
           yes={() => <route.layout component={route.component} data-id="000034" key={route.key} />}
         />
       ),

@@ -15,7 +15,6 @@ import NavigationLeftItemTablet from './NavigationLeftItemTablet';
 import NavigationPoweredBy from './NavigationPoweredBy';
 
 function NavigationLeft() {
-  const [isTabletWidth] = useMediaQuery('(min-width: 748px) and (max-width: 1279px)');
   const { menuItems } = useConfigContext();
   const [subsectionOpen, setSubsectionOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -134,7 +133,7 @@ function NavigationLeft() {
         display={['none', 'block', 'block']}
         fontWeight="semibold"
         h="100vh"
-        w={isTabletWidth ? ['0px', '80px', '80px'] : ['0px', '80px', '280px']}>
+        w={['0px', '80px', '280px']}>
         <Box
           alignItems="center"
           cursor="pointer"
