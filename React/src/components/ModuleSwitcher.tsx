@@ -18,13 +18,12 @@ interface ModuleSwitcherProps {
 
 // Helper function to get display content for multiple modules menu
 function getMultipleModulesDisplayContent(
-  showFiltersPanel: boolean,
   isTabletWidth: boolean,
   enforceDesktop: boolean | undefined,
   isMobile: boolean,
   module: IModule | null,
 ): React.ReactNode {
-  if (showFiltersPanel || (isTabletWidth && !enforceDesktop)) {
+  if (isTabletWidth && !enforceDesktop) {
     return (
       <Flex data-id="000430" >
         <Icon as={Conforme} data-id="000431" h="30px" w="30px" />
@@ -188,19 +187,15 @@ function MultipleModulesMenuButtonContent({
   enforceDesktop,
   isMobile,
   module,
-  showIcon,
-  showSeparator,
 }: {
   readonly showFiltersPanel: boolean;
   readonly isTabletWidth: boolean;
   readonly enforceDesktop: boolean | undefined;
   readonly isMobile: boolean;
   readonly module: IModule | null;
-  readonly showIcon: boolean;
-  readonly showSeparator: boolean;
 }) {
-  const displayContent = getMultipleModulesDisplayContent(showFiltersPanel, isTabletWidth, enforceDesktop, isMobile, module);
-  const shouldShowIcon = (!isTabletWidth || enforceDesktop) && !showFiltersPanel;
+  const displayContent = getMultipleModulesDisplayContent(isTabletWidth, enforceDesktop, isMobile, module);
+  const shouldShowIcon = !isTabletWidth || enforceDesktop;
   const shouldShowSeparator = shouldShowIcon && !isMobile;
 
   return (
@@ -297,8 +292,7 @@ function MultipleModulesMenu({
           enforceDesktop={enforceDesktop}
           isMobile={isMobile}
           module={module}
-          showIcon={showIcon}
-          showSeparator={showSeparator} />
+        />
       </MenuButton>
       <MenuList data-id="000435" zIndex={100} p={2} borderRadius="12px" w="260px">
         <Box data-id="003071" py={2} mb={3}>
