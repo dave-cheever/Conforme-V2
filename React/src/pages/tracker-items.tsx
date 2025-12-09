@@ -124,7 +124,6 @@ function TrackerItems() {
   } = useFiltersContext();
 
   const [responses, setResponses] = useState<IResponse[]>([]);
-  const [filteredResponses, setFilteredResponses] = useState<IResponse[]>([]);
   const [parsedFilters, setParsedFilters] = useState<Record<string, any>>({});
   const [localStorageChecked, setLocalStorageChecked] = useState(false);
   const [hasStoredFilters, setHasStoredFilters] = useState(false);
@@ -321,7 +320,10 @@ function TrackerItems() {
     const cleanedFilters = removeEmptyArraysAndObjects(parsedFilters);
     const res = await getTrackerResponses({
       variables: {
-        responsesQuery: cleanedFilters,
+        responsesQuery: {
+          ...cleanedFilters,
+          ...(searchQuery ? { searchText: searchQuery } : {}),
+        },
         responsesPagination: {
           limit: 20,
           offset: page * 20 - 20,
@@ -345,7 +347,7 @@ function TrackerItems() {
     setResponses([]);
     // Reset infinite scroll state by reloading from page 1
     loadResponses(1);
-  }, [localStorageChecked, sortOrder, sortType, JSON.stringify(parsedFilters), hasStoredFilters]);
+  }, [localStorageChecked, sortOrder, sortType, JSON.stringify(parsedFilters), hasStoredFilters, searchQuery]);
 
   // Track totals for status badges
   useEffect(() => {
@@ -371,26 +373,6 @@ function TrackerItems() {
     else setAssignedToMe(false);
   }, [filtersValues.usersIds, user?.userId]);
 
-  // Apply search filter when search query or responses change
-  useEffect(() => {
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      const filtered = responses.filter((response) => {
-        // Search in tracker item name
-        if (response.trackerItem?.name?.toLowerCase().includes(query)) return true;
-        // Search in tracker item reference
-        if (response.trackerItem?.reference?.toLowerCase().includes(query)) return true;
-        // Search in business unit name
-        if (response.businessUnit?.name?.toLowerCase().includes(query)) return true;
-        // Search in responsible person display name
-        if (response.responsible?.displayName?.toLowerCase().includes(query)) return true;
-        return false;
-      });
-      setFilteredResponses(filtered);
-    } else {
-      setFilteredResponses(responses);
-    }
-  }, [searchQuery, responses]);
 
   // Helper function to render main content with loading state
   const renderMainContent = () => {
@@ -402,7 +384,7 @@ function TrackerItems() {
           data-id="000299"
           loading={loading}
           loadResponses={loadResponses}
-          responses={filteredResponses}
+          responses={responses}
           setSortOrder={setSortOrder}
           setSortType={setSortType}
           sortOrder={sortOrder}
@@ -430,7 +412,7 @@ function TrackerItems() {
           }}
           data-id="000207"
           dataSourceName="tracker items"
-          items={filteredResponses}
+          items={responses}
         />
       );
     }
@@ -453,7 +435,7 @@ function TrackerItems() {
         }}
         data-id="000207"
         dataSourceName="tracker items"
-          items={searchQuery ? filteredResponses : responses}
+        items={responses}
       />
     );
   };
