@@ -214,9 +214,6 @@ function MultipleModulesMenuButtonContent({
         align="center"
         data-id="000428"
         flex="1"
-        marginLeft={showFiltersPanel || (isTabletWidth && !enforceDesktop) ? '57px' : '2'}
-        maxW={isMobile ? '120px' : '145px'}
-        minW={isMobile ? '50px' : '120px'}
       >
         <Text
           as="div"
