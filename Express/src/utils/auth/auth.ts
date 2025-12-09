@@ -57,6 +57,7 @@ export const auth = betterAuth({
       clientId: process.env.AZURE_AD_CLIENT_ID as string,
       clientSecret: process.env.AZURE_AD_CLIENT_SECRET as string,
       tenantId: process.env.AZURE_AD_TENANT_ID as string,
+      prompt: "select_account", 
     },
   },
   plugins: [

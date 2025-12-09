@@ -258,6 +258,32 @@ export function BackgroundImage({
   const device = useDevice();
   const [backgroundSrc, setBackgroundSrc] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [zoomLevel, setZoomLevel] = useState(1);
+
+  // Detect browser zoom level (only for desktop/tablet, not mobile)
+  useEffect(() => {
+    if (device === 'mobile') {
+      setZoomLevel(1);
+      return;
+    }
+
+    const detectZoom = () => {
+      // When zoomed, the ratio of screen.width to window.innerWidth changes
+      const zoom = Math.round((globalThis.screen.width / globalThis.innerWidth) * 100) / 100;
+      // Clamp zoom to reasonable values (0.5 to 5)
+      const normalizedZoom = Math.max(0.5, Math.min(5, zoom));
+      setZoomLevel(normalizedZoom);
+    };
+
+    detectZoom();
+    globalThis.addEventListener('resize', detectZoom);
+    globalThis.addEventListener('orientationchange', detectZoom);
+
+    return () => {
+      globalThis.removeEventListener('resize', detectZoom);
+      globalThis.removeEventListener('orientationchange', detectZoom);
+    };
+  }, [device]);
 
   useEffect(() => {
     const loadBackground = async () => {
@@ -293,9 +319,68 @@ export function BackgroundImage({
   // For mobile: use loginTextMobile if available, otherwise fallback to loginText
   // For desktop/tablet: use loginText
   // Priority: loginTextMobile (mobile) / loginText (desktop) > theme.loginPageTagline > default fallback
-  const tagline = device === 'mobile' && organizationConfig?.loginTextMobile
-    ? organizationConfig.loginTextMobile
-    : organizationConfig?.loginText || 'Ensuring Quality, Empowering Care. Your Trusted Audit Companion.';
+  const getTagline = () => {
+    if (device === 'mobile' && organizationConfig?.loginTextMobile) {
+      return organizationConfig.loginTextMobile;
+    }
+    return organizationConfig?.loginText || 'Ensuring Quality, Empowering Care. Your Trusted Audit Companion.';
+  };
+  const tagline = getTagline();
+
+  // Helper functions to extract nested ternaries
+  const getImageMaxHeight = () => {
+    if (device === 'mobile') {
+      return '70vh';
+    }
+    if (zoomLevel >= 1.1) {
+      if (device === 'desktop') {
+        return '65vh';
+      }
+      return '60vh';
+    }
+    if (device === 'desktop') {
+      return '78vh';
+    }
+    return '70vh';
+  };
+
+  const getTextTop = () => {
+    if (device === 'mobile') return '80px';
+    if (device === 'tablet') return 3;
+    return 0;
+  };
+
+  const getTextLeft = () => {
+    if (device === 'mobile') return '50%';
+    if (device === 'tablet') return '60%';
+    return '50%';
+  };
+
+  const getTextAlign = () => {
+    if (device === 'mobile') return 'center';
+    return 'left';
+  };
+
+  const getTextMaxWidth = () => {
+    if (device === 'mobile') return '90%';
+    if (device === 'tablet') return '85%';
+    return '90%';
+  };
+
+  const getTextJustify = () => {
+    if (device === 'mobile') return 'center';
+    return 'flex-start';
+  };
+
+  const getTextFontSize = () => {
+    if (device === 'mobile') return '18px';
+    if (device === 'tablet') return '22px';
+    return '40px';
+  };
+
+  const getTextPaddingTop = () => {
+    return device === 'mobile' ? 0 : 8;
+  };
 
   // Show loading state (empty for now, could add spinner)
   if (isLoading) {
@@ -387,7 +472,7 @@ export function BackgroundImage({
         right={0}
         bottom={0}
         h="auto"
-        maxH={device === 'desktop' ? '78vh' : '70vh'}
+        maxH={getImageMaxHeight()}
         marginLeft='auto'
         marginRight='auto'
         w="auto"
@@ -396,27 +481,43 @@ export function BackgroundImage({
         objectPosition={objectPosition ?? 'center'}
         zIndex={3}
       />
+      {/* Separator line - only on mobile */}
+      {device === 'mobile' && (
+        <Box
+          data-id="003186"
+          position="absolute"
+          top="68px"
+          left="50%"
+          transform="translateX(-50%)"
+          zIndex={4}
+          w="40px"
+          h="1px"
+          bg="white"
+          mt="5px"
+          opacity={0.36}
+        />
+      )}
       {/* Text overlay */}
       <Flex
         data-id="003184"
         position="absolute"
-        top={[10, -2, 0]}
-        left={['50%', '60%', '50%']}
+        top={getTextTop()}
+        left={getTextLeft()}
         transform="translateX(-50%)"
         zIndex={4}
         px={8}
-        pt={8}
-        textAlign={['center', 'left', 'left']}
-        maxW="90%"
+        pt={getTextPaddingTop()}
+        textAlign={getTextAlign()}
+        maxW={getTextMaxWidth()}
         w="full"
-        justify={['center', 'flex-start', 'flex-start']}>
+        justify={getTextJustify()}>
         <Text
           data-id="003185"
           color="white"
-          fontSize={['18px', '22px', '40px']}
+          fontSize={getTextFontSize()}
           fontWeight="bold"
           lineHeight="1.2"
-          textAlign={['center', 'left', 'left']}
+          textAlign={getTextAlign()}
           dangerouslySetInnerHTML={{ __html: tagline?.replaceAll('<br>', '<br />') || '' }}
         />
       </Flex>
