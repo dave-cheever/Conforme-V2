@@ -350,3 +350,15 @@ export function removeEmptyArraysAndObjects(obj: any): any {
   }
   return obj;
 }
+
+export const isIOSDevice = () => {
+  const ua = navigator.userAgent;
+
+  // Normal iOS devices
+  if (/iPhone|iPad|iPod/i.test(ua)) return true;
+
+  // iPadOS (shows as "Mac") but has touch
+  if (/Mac/i.test(ua) && navigator.maxTouchPoints > 1) return true;
+
+  return false;
+};

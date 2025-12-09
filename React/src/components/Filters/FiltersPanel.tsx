@@ -9,6 +9,7 @@ import { CrossIcon, FilterWhite, ResetIcon } from '../../icons';
 import { isPermitted } from '../can';
 import FilterPreset from '../FilterPreset/FilterPreset';
 import FiltersPanelItem from './FiltersPanelItem';
+import { isIOSDevice } from '../../utils/helpers';
 
 function FiltersPanel() {
   const { user } = useAppContext();
@@ -27,10 +28,10 @@ function FiltersPanel() {
         target.closest('.chakra-modal') ||
         target.closest('[id^="chakra-modal"]') ||
         target.closest('[id*="modal"]');
-      
+
       const hasOpenModal = document.querySelector('[role="dialog"]:not([aria-hidden="true"])') ||
         document.querySelector('.chakra-modal:not([aria-hidden="true"])');
-      
+
       if (isModalElement || hasOpenModal) {
         return;
       }
@@ -38,7 +39,36 @@ function FiltersPanel() {
     },
   });
   useEffect(() => {
-    if (showFiltersPanel && device === 'mobile') document.body.style.overflow = 'hidden';
+    if (showFiltersPanel && device === 'mobile') {
+      // Store original overflow value
+      const originalOverflow = document.body.style.overflow;
+      const originalPosition = document.body.style.position;
+      const originalTop = document.body.style.top;
+      const originalWidth = document.body.style.width;
+
+      // Lock body to prevent iOS keyboard from shifting layout
+      document.body.style.overflow = 'hidden';
+
+      if (isIOSDevice()) {
+        const scrollY = window.scrollY;
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.width = '100%';
+      }
+
+      return () => {
+        // Restore original styles
+        document.body.style.overflow = originalOverflow || 'auto';
+        if (isIOSDevice()) {
+          const scrollY = document.body.style.top ? -Number.parseInt(document.body.style.top) : 0;
+          document.body.style.position = originalPosition || '';
+          document.body.style.top = originalTop || '';
+          document.body.style.width = originalWidth || '';
+          // Restore scroll position
+          window.scrollTo(0, scrollY);
+        }
+      };
+    }
 
     return () => {
       document.body.style.overflow = 'auto';

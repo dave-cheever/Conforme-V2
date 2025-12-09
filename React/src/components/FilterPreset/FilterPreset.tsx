@@ -460,6 +460,12 @@ function FilterPreset({ placement = 'top-start', 'data-id': dataId = 'filter-pre
             e.stopPropagation();
           }}
           p="0"
+          onTouchStart={(e) => {
+            e.stopPropagation();
+          }}
+          onTouchMove={(e) => {
+            e.stopPropagation();
+          }}
         >
           <VStack align="stretch" data-id="002312" spacing={0}>
             {/* Header */}
