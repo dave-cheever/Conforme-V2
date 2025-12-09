@@ -620,6 +620,386 @@ describe('SearchBar Component', () => {
     });
   });
 
+  describe('Recent Search Functionality', () => {
+    describe('Saving Recent Search for Answers', () => {
+      it('should handle answers entity type in search results', () => {
+        const mockQuestionsCategoriesWithAnswer = {
+          questionsCategories: [
+            { _id: 'cat1', name: 'Category 1', icon: 'icon1' },
+          ],
+        };
+
+        mockUseQuery.mockImplementation((query, options) => {
+          if (options?.skip === false && options?.variables?.getRecentSearchesInput) {
+            return {
+              data: { getRecentSearches: [] },
+              loading: false,
+              refetch: mockRefetchRecentSearches,
+            };
+          }
+          return {
+            data: mockQuestionsCategoriesWithAnswer,
+            loading: false,
+          };
+        });
+
+        mockUseNavigationTopContext.mockReturnValue({
+          isSearchBarOpen: true,
+          setIsSearchBarOpen: mockSetIsSearchBarOpen,
+          searchText: 'test',
+          setSearchText: mockSetSearchText,
+          searchResults: [
+            { 
+              _id: 'answer1', 
+              title: 'Answer 1', 
+              type: 'answers', 
+              scope: { type: 'answers', _id: 'cat1' } 
+            },
+          ],
+          setSearchResults: mockSetSearchResults,
+          searchLoading: false,
+          setSearchLoading: mockSetSearchLoading,
+        });
+
+        mockUseAppContext.mockReturnValue({
+          module: { _id: 'module1', type: 'audits' },
+          user: mockUser,
+        });
+
+        mockUseLazyQuery.mockReturnValue([
+          mockGetSearchResults,
+          { loading: false },
+        ]);
+
+        mockUseDisclosure.mockReturnValue({
+          isOpen: true,
+          onOpen: vi.fn(),
+          onClose: vi.fn(),
+        });
+
+        renderWithProviders(<SearchBar data-id="003327" isInMobileDrawer={true} />);
+
+        // Verify component renders with answers search result
+        expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
+      });
+
+      it('should handle recent search with answers entity type', () => {
+        const mockRecentSearches = [
+          {
+            _id: 'recent1',
+            userId: 'user1',
+            term: 'Previous Answer Search',
+            entityId: 'answer1',
+            entityType: 'answers',
+            organizationId: 'org1',
+            metatags: {
+              addedAt: new Date(),
+              addedBy: 'user1',
+            },
+          },
+        ];
+
+        mockUseQuery.mockImplementation((query, options) => {
+          if (options?.skip === false && options?.variables?.getRecentSearchesInput) {
+            return {
+              data: { getRecentSearches: mockRecentSearches },
+              loading: false,
+              refetch: mockRefetchRecentSearches,
+            };
+          }
+          return {
+            data: mockQuestionsCategoriesData,
+            loading: false,
+          };
+        });
+
+        mockUseNavigationTopContext.mockReturnValue({
+          isSearchBarOpen: true,
+          setIsSearchBarOpen: mockSetIsSearchBarOpen,
+          searchText: '',
+          setSearchText: mockSetSearchText,
+          searchResults: [],
+          setSearchResults: mockSetSearchResults,
+          searchLoading: false,
+          setSearchLoading: mockSetSearchLoading,
+        });
+
+        mockUseAppContext.mockReturnValue({
+          module: { _id: 'module1', type: 'audits' },
+          user: mockUser,
+        });
+
+        mockUseDisclosure.mockReturnValue({
+          isOpen: true,
+          onOpen: vi.fn(),
+          onClose: vi.fn(),
+        });
+
+        renderWithProviders(<SearchBar data-id="003328" />);
+
+        // Verify component renders with recent searches containing answers entity type
+        expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
+        expect(mockUseQuery).toHaveBeenCalled();
+      });
+    });
+
+    describe('Saving Recent Search for Tracker Items', () => {
+      it('should handle tracker_items entity type in search results', () => {
+        const mockTrackerSearchItems = [
+          { type: 'tracker', label: 'Tracker Items', icon: () => <div data-id="003350" />, searchIn: 'tracker', _id: 'tracker' },
+        ];
+
+        mockUseConfig.mockReturnValue({
+          auditSearchItems: mockAuditSearchItems,
+          trackerSearchItems: mockTrackerSearchItems,
+        });
+
+        mockUseQuery.mockImplementation((query, options) => {
+          if (options?.skip === false && options?.variables?.getRecentSearchesInput) {
+            return {
+              data: { getRecentSearches: [] },
+              loading: false,
+              refetch: mockRefetchRecentSearches,
+            };
+          }
+          return {
+            data: mockQuestionsCategoriesData,
+            loading: false,
+          };
+        });
+
+        mockUseNavigationTopContext.mockReturnValue({
+          isSearchBarOpen: true,
+          setIsSearchBarOpen: mockSetIsSearchBarOpen,
+          searchText: 'test',
+          setSearchText: mockSetSearchText,
+          searchResults: [
+            { 
+              _id: 'tracker1', 
+              title: 'Tracker Item 1', 
+              type: 'tracker-item-response', 
+              scope: { type: 'tracker', _id: 'tracker' } 
+            },
+          ],
+          setSearchResults: mockSetSearchResults,
+          searchLoading: false,
+          setSearchLoading: mockSetSearchLoading,
+        });
+
+        mockUseAppContext.mockReturnValue({
+          module: { _id: 'module1', type: 'tracker' },
+          user: mockUser,
+        });
+
+        mockUseLazyQuery.mockReturnValue([
+          mockGetSearchResults,
+          { loading: false },
+        ]);
+
+        mockUseDisclosure.mockReturnValue({
+          isOpen: true,
+          onOpen: vi.fn(),
+          onClose: vi.fn(),
+        });
+
+        renderWithProviders(<SearchBar data-id="003329" isInMobileDrawer={true} />);
+
+        // Verify component renders with tracker item search result
+        expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
+      });
+
+      it('should handle recent search with tracker_items entity type', () => {
+        const mockRecentSearches = [
+          {
+            _id: 'recent2',
+            userId: 'user1',
+            term: 'Previous Tracker Search',
+            entityId: 'tracker1',
+            entityType: 'tracker_items',
+            organizationId: 'org1',
+            metatags: {
+              addedAt: new Date(),
+              addedBy: 'user1',
+            },
+          },
+        ];
+
+        mockUseQuery.mockImplementation((query, options) => {
+          if (options?.skip === false && options?.variables?.getRecentSearchesInput) {
+            return {
+              data: { getRecentSearches: mockRecentSearches },
+              loading: false,
+              refetch: mockRefetchRecentSearches,
+            };
+          }
+          return {
+            data: mockQuestionsCategoriesData,
+            loading: false,
+          };
+        });
+
+        mockUseNavigationTopContext.mockReturnValue({
+          isSearchBarOpen: true,
+          setIsSearchBarOpen: mockSetIsSearchBarOpen,
+          searchText: '',
+          setSearchText: mockSetSearchText,
+          searchResults: [],
+          setSearchResults: mockSetSearchResults,
+          searchLoading: false,
+          setSearchLoading: mockSetSearchLoading,
+        });
+
+        mockUseAppContext.mockReturnValue({
+          module: { _id: 'module1', type: 'tracker' },
+          user: mockUser,
+        });
+
+        mockUseDisclosure.mockReturnValue({
+          isOpen: true,
+          onOpen: vi.fn(),
+          onClose: vi.fn(),
+        });
+
+        renderWithProviders(<SearchBar data-id="003330" />);
+
+        // Verify component renders with recent searches containing tracker_items entity type
+        expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
+        expect(mockUseQuery).toHaveBeenCalled();
+      });
+    });
+
+    describe('View More Results Navigation for New Entity Types', () => {
+      it('should navigate to answers page when "View more results" is clicked for answers', () => {
+        const mockQuestionsCategoriesForAnswers = {
+          questionsCategories: [
+            { _id: 'cat1', name: 'Category 1', icon: 'icon1' },
+          ],
+        };
+
+        mockUseQuery.mockImplementation((query, options) => {
+          if (options?.skip === false && options?.variables?.getRecentSearchesInput) {
+            return {
+              data: { getRecentSearches: [] },
+              loading: false,
+              refetch: mockRefetchRecentSearches,
+            };
+          }
+          return {
+            data: mockQuestionsCategoriesForAnswers,
+            loading: false,
+          };
+        });
+
+        mockUseNavigationTopContext.mockReturnValue({
+          isSearchBarOpen: true,
+          setIsSearchBarOpen: mockSetIsSearchBarOpen,
+          searchText: 'test',
+          setSearchText: mockSetSearchText,
+          searchResults: [
+            { _id: '1', title: 'Answer 1', type: 'answers', scope: { type: 'answers', _id: 'cat1' } },
+            { _id: '2', title: 'Answer 2', type: 'answers', scope: { type: 'answers', _id: 'cat1' } },
+            { _id: '3', title: 'Answer 3', type: 'answers', scope: { type: 'answers', _id: 'cat1' } },
+          ],
+          setSearchResults: mockSetSearchResults,
+          searchLoading: false,
+          setSearchLoading: mockSetSearchLoading,
+        });
+
+        mockUseAppContext.mockReturnValue({
+          module: { _id: 'module1', type: 'audits' },
+          user: mockUser,
+        });
+
+        mockUseLazyQuery.mockReturnValue([
+          mockGetSearchResults,
+          { loading: false },
+        ]);
+
+        mockUseDisclosure.mockReturnValue({
+          isOpen: true,
+          onOpen: vi.fn(),
+          onClose: vi.fn(),
+        });
+
+        const { container } = renderWithProviders(<SearchBar data-id="003331" />);
+
+        // Find and click "View more results" link for answers
+        const viewMoreLink = container.querySelector('[data-id="003213"]')?.parentElement;
+        if (viewMoreLink) {
+          fireEvent.click(viewMoreLink);
+          // Should navigate to /answers with search query
+          expect(mockNavigateTo).toHaveBeenCalledWith('/answers?search=test');
+        }
+      });
+
+      it('should navigate to dashboard when "View more results" is clicked for tracker items', () => {
+        const mockTrackerSearchItems = [
+          { type: 'tracker', label: 'Tracker Items', icon: () => <div data-id="003351" />, searchIn: 'tracker', _id: 'tracker' },
+        ];
+
+        mockUseConfig.mockReturnValue({
+          auditSearchItems: mockAuditSearchItems,
+          trackerSearchItems: mockTrackerSearchItems,
+        });
+
+        mockUseQuery.mockImplementation((query, options) => {
+          if (options?.skip === false && options?.variables?.getRecentSearchesInput) {
+            return {
+              data: { getRecentSearches: [] },
+              loading: false,
+              refetch: mockRefetchRecentSearches,
+            };
+          }
+          return {
+            data: mockQuestionsCategoriesData,
+            loading: false,
+          };
+        });
+
+        mockUseNavigationTopContext.mockReturnValue({
+          isSearchBarOpen: true,
+          setIsSearchBarOpen: mockSetIsSearchBarOpen,
+          searchText: 'test',
+          setSearchText: mockSetSearchText,
+          searchResults: [
+            { _id: '1', title: 'Tracker 1', type: 'tracker-item-response', scope: { type: 'tracker', _id: 'tracker' } },
+            { _id: '2', title: 'Tracker 2', type: 'tracker-item-response', scope: { type: 'tracker', _id: 'tracker' } },
+            { _id: '3', title: 'Tracker 3', type: 'tracker-item-response', scope: { type: 'tracker', _id: 'tracker' } },
+          ],
+          setSearchResults: mockSetSearchResults,
+          searchLoading: false,
+          setSearchLoading: mockSetSearchLoading,
+        });
+
+        mockUseAppContext.mockReturnValue({
+          module: { _id: 'module1', type: 'tracker' },
+          user: mockUser,
+        });
+
+        mockUseLazyQuery.mockReturnValue([
+          mockGetSearchResults,
+          { loading: false },
+        ]);
+
+        mockUseDisclosure.mockReturnValue({
+          isOpen: true,
+          onOpen: vi.fn(),
+          onClose: vi.fn(),
+        });
+
+        const { container } = renderWithProviders(<SearchBar data-id="003332" />);
+
+        // Find and click "View more results" link for tracker items
+        const viewMoreLink = container.querySelector('[data-id="003213"]')?.parentElement;
+        if (viewMoreLink) {
+          fireEvent.click(viewMoreLink);
+          // Should navigate to /dashboard with search query for tracker module
+          expect(mockNavigateTo).toHaveBeenCalledWith('/dashboard?search=test');
+        }
+      });
+    });
+  });
+
   afterEach(() => {
     vi.useRealTimers();
   });

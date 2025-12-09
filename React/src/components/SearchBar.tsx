@@ -264,16 +264,16 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   }, [searchResults]);
 
   // Map search result type to entity type
-  const mapSearchResultTypeToEntityType = (resultType: string): 'audits' | 'actions' | 'locations' | 'complaints' | null => {
+  const mapSearchResultTypeToEntityType = (resultType: string): 'audits' | 'actions' | 'answers' | 'tracker_items' | null => {
     switch (resultType) {
       case 'audits':
         return 'audits';
       case 'actions':
         return 'actions';
       case 'tracker-item-response':
-        return null;
+        return 'tracker_items';
       case 'answers':
-        return null;
+        return 'answers';
       default:
         return null;
     }
@@ -282,7 +282,6 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   const handleSearchResultClick = async (result: ISearchResult) => {
     const category = searchCategories.find((category) => category.type === result.scope.type && category._id == result.scope._id);
     if (!category) return;
-
     let url = '';
     switch (module?.type) {
       case 'audits': {
@@ -341,6 +340,12 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
         break;
       case 'actions':
         url = `actions?id=${recentSearch.entityId}`;
+        break;
+      case 'answers':
+        url = `answers?id=${recentSearch.entityId}`;
+        break;
+      case 'tracker_items':
+        url = `tracker-item/${recentSearch.entityId}`;
         break;
       default:
         break;
@@ -519,7 +524,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
         </Flex>
       );
     }
-    
+
     // Show error message if there's a search error
     if (searchError) {
       return (
@@ -530,12 +535,12 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
           text="Please try again, or refresh the page" />
       );
     }
-    
+
     // Show empty search message when no search text is entered
     if (!searchText?.trim()) {
       return (<SearchBarMessage data-id="003365" icon={EmptySearchIcon} text="Type a keyword to search" />);
     }
-    
+
     // Show results if available
     if (searchResults.length > 0) {
       return (
@@ -551,10 +556,10 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
                   </Text>
                   <Divider data-id="003211" borderColor={'#CBD5E0'} flex={1} />
                   {results.length >= 3 && (
-                    <Flex 
-                      data-id="003212" 
-                      align="center" 
-                      gap={2} 
+                    <Flex
+                      data-id="003212"
+                      align="center"
+                      gap={2}
                       cursor="pointer"
                       px={2}
                       py={1}
@@ -585,7 +590,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
                             break;
                           }
                         }
-                        
+
                         if (pageUrl) {
                           const params = new URLSearchParams();
                           if (searchText) {
@@ -613,7 +618,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
         </Stack>
       );
     }
-    
+
     // Show no results found message when search text exists but no results
     return (
       <SearchBarMessage
@@ -690,7 +695,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
         </InputRightElement>
         )}
         <Input
-         _placeholder={{ color: '#A0AEC0' }}
+          _placeholder={{ color: '#A0AEC0' }}
           bg="navigationTop.inputBg"
           data-id="000365"
           fontSize="smm"

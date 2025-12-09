@@ -4,7 +4,7 @@ export interface IRecentSearch extends IBase {
   userId: string;
   term: string;
   entityId: string;
-  entityType: 'locations' | 'audits' | 'actions' | 'complaints';
+  entityType: 'audits' | 'actions' | 'answers' | 'tracker_items';
   organizationId: string;
   metatags: {
     addedAt?: Date;

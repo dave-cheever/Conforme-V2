@@ -1,8 +1,8 @@
 export const EntityType = {
-  LOCATIONS: 'locations',
   AUDITS: 'audits',
   ACTIONS: 'actions',
-  COMPLAINTS: 'complaints',
+  ANSWERS: 'answers',
+  TRACKER_ITEMS: 'tracker_items',
 } as const;
 
 export type EntityTypeValue = typeof EntityType[keyof typeof EntityType];
