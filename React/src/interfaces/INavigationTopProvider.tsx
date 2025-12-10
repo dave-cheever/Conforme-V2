@@ -14,4 +14,7 @@ export interface INavigationTopContext {
 
   searchLoading: boolean;
   setSearchLoading: Dispatch<SetStateAction<boolean>>;
+
+  searchError: boolean;
+  setSearchError: Dispatch<SetStateAction<boolean>>;
 }

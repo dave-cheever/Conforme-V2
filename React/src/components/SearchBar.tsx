@@ -111,7 +111,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   const { module, user } = useAppContext();
   const { navigateTo } = useNavigate();
   const device = useDevice();
-  const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText, searchResults: contextSearchResults, setSearchResults: setContextSearchResults, searchLoading: contextSearchLoading, setSearchLoading: setContextSearchLoading } = useNavigationTopContext();
+  const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText, searchResults: contextSearchResults, setSearchResults: setContextSearchResults, searchLoading: contextSearchLoading, setSearchLoading: setContextSearchLoading, searchError: contextSearchError, setSearchError: setContextSearchError } = useNavigationTopContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const toast = useToast();
 
@@ -165,7 +165,8 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
 
   const [getSearchResults, { loading }] = useLazyQuery(GET_SEARCH_RESULTS, { fetchPolicy: 'network-only' });
   const [localSearchResults, setLocalSearchResults] = useState<ISearchResult[]>([]);
-  const [searchError, setSearchError] = useState<boolean>(false);
+  const [localSearchError, setLocalSearchError] = useState<boolean>(false);
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [recentSearches, setRecentSearches] = useState<IRecentSearch[]>([]);
   const [saveRecentSearch] = useMutation(SAVE_RECENT_SEARCH);
 
@@ -186,40 +187,60 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   const searchResults = isInMobileDrawer ? contextSearchResults : localSearchResults;
   const setSearchResults = isInMobileDrawer ? setContextSearchResults : setLocalSearchResults;
   const searchLoading = isInMobileDrawer ? contextSearchLoading : loading;
+  const searchError = isInMobileDrawer ? contextSearchError : localSearchError;
+  const setSearchError = isInMobileDrawer ? setContextSearchError : setLocalSearchError;
 
-  // Sync loading state to context when in mobile drawer
+  // Sync loading and error state to context when in mobile drawer
   useEffect(() => {
     if (isInMobileDrawer) {
       setContextSearchLoading(loading);
     }
   }, [loading, isInMobileDrawer, setContextSearchLoading]);
 
+  // Sync error state to context when in mobile drawer
+  useEffect(() => {
+    if (isInMobileDrawer) {
+      setContextSearchError(localSearchError);
+    }
+  }, [localSearchError, isInMobileDrawer, setContextSearchError]);
+
   const search = useCallback(
     async (searchTextValue: string) => {
       if (searchTextValue?.trim()) {
         try {
           setSearchError(false);
-        const results = await getSearchResults({
-          variables: {
-            searchQuery: {
+          const results = await getSearchResults({
+            variables: {
+              searchQuery: {
                 searchText: searchTextValue,
-              moduleId: module?._id,
-              scopes: getScopes(),
+                moduleId: module?._id,
+                scopes: getScopes(),
+              },
             },
-          },
-        });
-          setSearchResults(results.data?.search || []);
+          });
+          // Check for Apollo Client errors in the result
+          if (results.error) {
+            console.error('Search error:', results.error);
+            setSearchError(true);
+            setSearchResults([]);
+            setHasSearched(true);
+          } else {
+            setSearchResults(results.data?.search || []);
+            setHasSearched(true);
+          }
         } catch (error) {
           console.error('Search error:', error);
           setSearchError(true);
           setSearchResults([]);
+          setHasSearched(true);
         }
       } else {
         setSearchError(false);
         setSearchResults([]);
+        setHasSearched(false);
       }
     },
-    [getSearchResults, module?._id, getScopes],
+    [getSearchResults, module?._id, getScopes, setSearchError, setSearchResults],
   );
 
   // Debounce search with 500ms delay
@@ -233,9 +254,11 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   // Effect to trigger search when searchText changes
   useEffect(() => {
     if (searchText) {
+      setHasSearched(false); // Reset hasSearched when search text changes
       debouncedSearch(searchText);
     } else {
       setSearchResults([]);
+      setHasSearched(false);
       debouncedSearch.cancel();
     }
     return () => {
@@ -435,7 +458,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
         minH={result.type === 'audits' ? '60px' : '42px'}
         rounded="md"
         transition="background-color 200ms">
-        <Flex data-id="003217" flexDir={'row'} align={'center'} gap={4}>
+        <Flex data-id="003217" flexDir={'row'} align={'center'} gap={4} w="100%" minWidth={0}>
           <Box
             data-id="003218"
             h='28px'
@@ -444,24 +467,42 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
             bg='#EDF2F7'
             display="flex"
             alignItems="center"
-            justifyContent="center">
+            justifyContent="center"
+            flexShrink={0}>
             {renderSearchIcon(result.type)}
           </Box>
-          <Stack data-id="003221" spacing={0}>
-            <Flex data-id="003222" flexDir={'row'} align={'center'} gap={2}>
-              <Text data-id="003223" flex={1} fontSize="16px">
+          <Stack data-id="003221" spacing={0} flex={1} minWidth={0}>
+            <Flex data-id="003222" flexDir={'row'} align={'center'} gap={2} minWidth={0} overflow="hidden">
+              <Text 
+                data-id="003223" 
+                flex={1} 
+                fontSize="16px"
+                overflow="hidden"
+                textOverflow="ellipsis"
+                whiteSpace="nowrap"
+                minWidth={0}>
                 {highlightText(
                   result.type === 'audits' && result.reference ? result.reference : result.title,
                   searchText
                 )}
               </Text>
               {result.type === 'audits' && result.status && (
-                <StatusCell data-id="003224" status={result.status} size="sm" />
+                <Box data-id="003417" flexShrink={0}>
+                  <StatusCell data-id="003224" status={result.status} size="sm" />
+                </Box>
               )}
             </Flex>
-            <Flex data-id="003225" align="center" gap={2}>
+            <Flex data-id="003225" align="center" gap={2} minWidth={0} overflow="hidden">
               {result.type === 'audits' && result.auditTypeName && (
-                <Text data-id="003226" fontSize="16px" fontWeight="400" color="gray.700">
+                <Text 
+                  data-id="003226" 
+                  fontSize="16px" 
+                  fontWeight="400" 
+                  color="gray.700"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                  whiteSpace="nowrap"
+                  minWidth={0}>
                   {highlightText(result.auditTypeName, searchText)}
                 </Text>
               )}
@@ -506,7 +547,15 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
               py={2}
               rounded="md">
               <ClockIcon data-id="003346" boxSize="16px" color="#718096" />
-              <Text data-id="003347" fontSize="14px" color="#2D3748" flex={1}>
+              <Text 
+                data-id="003347" 
+                fontSize="14px" 
+                color="#2D3748" 
+                flex={1}
+                overflow="hidden"
+                textOverflow="ellipsis"
+                whiteSpace="nowrap"
+                minWidth={0}>
                 {recentSearch.term}
               </Text>
             </Flex>
@@ -517,7 +566,8 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   };
 
   const renderSearchContent = () => {
-    if (searchLoading) {
+    // Show loading if actively loading OR if we have search text but haven't searched yet (during debounce)
+    if (searchLoading || (searchText?.trim() && !hasSearched)) {
       return (
         <Flex data-id="003205" justify="center" p={4}>
           <Loader data-id="003206" />
@@ -620,13 +670,19 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     }
 
     // Show no results found message when search text exists but no results
-    return (
-      <SearchBarMessage
-        data-id="003366"
-        icon={NoResultsFoundIcon}
-        heading="We couldn't find a match"
-        text="Check spelling or try another term." />
-    );
+    // Only show this if we've actually completed a search (not during debounce or initial typing)
+    if (hasSearched) {
+      return (
+        <SearchBarMessage
+          data-id="003366"
+          icon={NoResultsFoundIcon}
+          heading="We couldn't find a match"
+          text="Check spelling or try another term." />
+      );
+    }
+    
+    // This should not be reached due to the loading check above, but included as fallback
+    return null;
   };
 
   return (

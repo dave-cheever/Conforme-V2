@@ -271,6 +271,8 @@ describe('NavigationTop - Mobile Drawer', () => {
         setSearchResults: mockSetSearchResults,
         searchLoading: false,
         setSearchLoading: mockSetSearchLoading,
+        searchError: false,
+        setSearchError: vi.fn(),
       });
 
       mockUseDisclosure.mockReturnValue({
@@ -341,6 +343,8 @@ describe('NavigationTop - Mobile Drawer', () => {
         setSearchResults: mockSetSearchResults,
         searchLoading: false,
         setSearchLoading: mockSetSearchLoading,
+        searchError: false,
+        setSearchError: vi.fn(),
       });
 
       mockUseDisclosure.mockReturnValue({
@@ -369,6 +373,8 @@ describe('NavigationTop - Mobile Drawer', () => {
         setSearchResults: mockSetSearchResults,
         searchLoading: false,
         setSearchLoading: mockSetSearchLoading,
+        searchError: false,
+        setSearchError: vi.fn(),
       });
 
       mockUseDisclosure.mockReturnValue({

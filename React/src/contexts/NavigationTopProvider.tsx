@@ -16,6 +16,7 @@ function NavigationTopProvider({ children }) {
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<ISearchResult[]>([]);
   const [searchLoading, setSearchLoading] = useState<boolean>(false);
+  const [searchError, setSearchError] = useState<boolean>(false);
 
   const value = useMemo(
     () => ({
@@ -27,9 +28,11 @@ function NavigationTopProvider({ children }) {
       setSearchResults,
       searchLoading,
       setSearchLoading,
+      searchError,
+      setSearchError,
     }),
     // eslint-disable-line react-hooks/exhaustive-deps
-    [isSearchBarOpen, searchText, searchResults, searchLoading],
+    [isSearchBarOpen, searchText, searchResults, searchLoading, searchError],
   );
 
   return <NavigationTopContext.Provider data-id="000012" value={value}>{children}</NavigationTopContext.Provider>;

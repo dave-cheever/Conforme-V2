@@ -637,5 +637,119 @@ describe('MobileSearchResults', () => {
       }
     });
   });
+
+  describe('Text Truncation', () => {
+    it('should apply ellipsis styles to long titles in search results', () => {
+      const longTitle = 'This is a very long title that should be truncated with ellipses when it exceeds the available width in the search results display';
+      const results: ISearchResult[] = [
+        {
+          _id: '1',
+          title: longTitle,
+          type: 'audits',
+          scope: { type: 'audits', _id: 'audits' },
+        },
+      ];
+
+      const { container } = renderWithProviders(
+        <MobileSearchResults
+          data-id="003255"
+          searchResults={results}
+          searchText="test"
+          searchLoading={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          onResultClick={mockOnResultClick} />
+      );
+
+      // Find the text element that should have truncation styles
+      const titleText = container.querySelector('[data-id="003187"]');
+      expect(titleText).toBeInTheDocument();
+
+      // Check that the text has truncation styles applied
+      const styles = window.getComputedStyle(titleText as Element);
+      expect(styles.overflow).toBe('hidden');
+      expect(styles.textOverflow).toBe('ellipsis');
+      expect(styles.whiteSpace).toBe('nowrap');
+    });
+
+    it('should apply ellipsis styles to audit type names', () => {
+      const longAuditTypeName = 'This is a very long audit type name that should be truncated';
+      const results: ISearchResult[] = [
+        {
+          _id: '1',
+          title: 'Audit Title',
+          type: 'audits',
+          auditTypeName: longAuditTypeName,
+          scope: { type: 'audits', _id: 'audits' },
+        },
+      ];
+
+      const { container } = renderWithProviders(
+        <MobileSearchResults
+          data-id="003256"
+          searchResults={results}
+          searchText="test"
+          searchLoading={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          onResultClick={mockOnResultClick} />
+      );
+
+      // Find the audit type name text element
+      const auditTypeText = container.querySelector('[data-id="003190"]');
+      expect(auditTypeText).toBeInTheDocument();
+
+      // Check that the text has truncation styles applied
+      const styles = window.getComputedStyle(auditTypeText as Element);
+      expect(styles.overflow).toBe('hidden');
+      expect(styles.textOverflow).toBe('ellipsis');
+      expect(styles.whiteSpace).toBe('nowrap');
+    });
+  });
+
+  describe('Error Handling', () => {
+    it('should show "Search could not be completed" message when searchError is true', () => {
+      renderWithProviders(
+        <MobileSearchResults
+          data-id="003257"
+          searchResults={[]}
+          searchText="test"
+          searchLoading={false}
+          searchError={true}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          onResultClick={mockOnResultClick} />
+      );
+
+      // Should show error message
+      expect(screen.getByText('Search could not be completed')).toBeInTheDocument();
+      expect(screen.getByText('Please try again, or refresh the page')).toBeInTheDocument();
+
+      // Should NOT show "We couldn't find a match" message
+      expect(screen.queryByText("We couldn't find a match")).not.toBeInTheDocument();
+    });
+
+    it('should show "We couldn\'t find a match" when searchError is false and no results', () => {
+      renderWithProviders(
+        <MobileSearchResults
+          data-id="003258"
+          searchResults={[]}
+          searchText="test"
+          searchLoading={false}
+          searchError={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          onResultClick={mockOnResultClick} />
+      );
+
+      // Should show "no results" message when there's no error
+      expect(screen.getByText("We couldn't find a match")).toBeInTheDocument();
+      expect(screen.queryByText('Search could not be completed')).not.toBeInTheDocument();
+    });
+  });
 });
 

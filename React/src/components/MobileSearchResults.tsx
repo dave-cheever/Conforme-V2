@@ -221,7 +221,7 @@ function MobileSearchResults({
                   h={result.type === 'audits' ? '60px' : '42px'}
                   rounded="md"
                   transition="background-color 200ms">
-                  <Flex data-id="003181" flexDir={'row'} align={'center'} gap={4}>
+                  <Flex data-id="003181" flexDir={'row'} align={'center'} gap={4} w="100%" minWidth={0}>
                     <Box
                       data-id="003182"
                       h='28px'
@@ -230,7 +230,8 @@ function MobileSearchResults({
                       bg='#EDF2F7'
                       display="flex"
                       alignItems="center"
-                      justifyContent="center">
+                      justifyContent="center"
+                      flexShrink={0}>
                       {(() => {
                         if (result.type === 'audits') {
                           return <AuditSearchIcon data-id="003183" boxSize="20px" color="#4A5568" />;
@@ -241,21 +242,38 @@ function MobileSearchResults({
                         return null;
                       })()}
                     </Box>
-                    <Stack data-id="003185" spacing={0}>
-                      <Flex data-id="003186" flexDir={'row'} align={'center'} gap={2}>
-                        <Text data-id="003187" flex={1} fontSize="16px">
+                    <Stack data-id="003185" spacing={0} flex={1} minWidth={0}>
+                      <Flex data-id="003186" flexDir={'row'} align={'center'} gap={2} minWidth={0} overflow="hidden">
+                        <Text 
+                          data-id="003187" 
+                          flex={1} 
+                          fontSize="16px"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          whiteSpace="nowrap"
+                          minWidth={0}>
                           {highlightText(
                             result.type === 'audits' && result.reference ? result.reference : result.title,
                             searchText
                           )}
                         </Text>
                         {result.type === 'audits' && result.status && (
-                          <StatusCell data-id="003188" status={result.status} size="sm" />
+                          <Box data-id="003416" flexShrink={0}>
+                            <StatusCell data-id="003188" status={result.status} size="sm" />
+                          </Box>
                         )}
                       </Flex>
-                      <Flex data-id="003189" align="center" gap={2}>
+                      <Flex data-id="003189" align="center" gap={2} minWidth={0} overflow="hidden">
                         {result.type === 'audits' && result.auditTypeName && (
-                          <Text data-id="003190" fontSize="16px" fontWeight="400" color="gray.700">
+                          <Text 
+                            data-id="003190" 
+                            fontSize="16px" 
+                            fontWeight="400" 
+                            color="gray.700"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                            whiteSpace="nowrap"
+                            minWidth={0}>
                             {highlightText(result.auditTypeName, searchText)}
                           </Text>
                         )}

@@ -24,7 +24,7 @@ function NavigationTop() {
   const { trackerAddItems, auditAddItems } = useConfig();
   const { isPathActive } = useNavigate();
   const { module } = useAppContext();
-  const { searchText, searchResults, searchLoading, setIsSearchBarOpen, setSearchText } = useNavigationTopContext();
+  const { searchText, searchResults, searchLoading, searchError, setIsSearchBarOpen, setSearchText } = useNavigationTopContext();
   const { auditSearchItems, trackerSearchItems } = useConfig();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isSearchDrawerOpen, onOpen: onSearchDrawerOpen, onClose: onSearchDrawerClose } = useDisclosure();
@@ -278,7 +278,7 @@ function NavigationTop() {
                   searchResults={searchResults}
                   searchText={searchText}
                   searchLoading={searchLoading}
-                  searchError={false}
+                  searchError={searchError}
                   module={module}
                   auditSearchItems={auditSearchItems}
                   trackerSearchItems={trackerSearchItems}
