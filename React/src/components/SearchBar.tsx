@@ -790,10 +790,11 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
             rounded="10px">
             <Box data-id="003204" w={'100%'}>
               {searchText ? (
-                // When search text exists, show search content (results, loading, error, or no results message)
-                (renderSearchContent())
+                <>
+                  {renderRecentSearches()}
+                  {renderSearchContent()}
+                </>
               ) : (
-                // When no search text, show recent searches if available, otherwise show empty search message
                 (renderRecentSearches() || (!recentSearchesLoading && (<SearchBarMessage data-id="003415" icon={EmptySearchIcon} text="Type a keyword to search" />)))
               )}
             </Box>
