@@ -432,7 +432,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
         gap={2}
         pl={2}
         onClick={() => handleSearchResultClick(result)}
-        h={result.type === 'audits' ? '60px' : '42px'}
+        minH={result.type === 'audits' ? '60px' : '42px'}
         rounded="md"
         transition="background-color 200ms">
         <Flex data-id="003217" flexDir={'row'} align={'center'} gap={4}>
