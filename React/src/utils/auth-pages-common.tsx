@@ -124,11 +124,11 @@ function LogoContainer({ isMobile, children }: { readonly isMobile: boolean; rea
     <Flex
       data-id="002725"
       position="absolute"
-      top={isMobile ? '16px' : '40px'}
+      top={isMobile ? '10px' : '40px'}
       left={isMobile ? '50%' : '20px'}
       transform={isMobile ? 'translateX(-50%)' : 'none'}
       zIndex={10}
-      h={isMobile ? '48px' : '50px'}
+      h={isMobile ? '38px' : '45px'}
       maxW={isMobile ? '180px' : '200px'}
       align="center"
       justify="center"
@@ -345,7 +345,7 @@ export function BackgroundImage({
   };
 
   const getTextTop = () => {
-    if (device === 'mobile') return '80px';
+    if (device === 'mobile') return '70px';
     if (device === 'tablet') return 3;
     return 0;
   };
@@ -484,9 +484,9 @@ export function BackgroundImage({
       {/* Separator line - only on mobile */}
       {device === 'mobile' && (
         <Box
-          data-id="003186"
+          data-id="013086"
           position="absolute"
-          top="68px"
+          top="58px"
           left="50%"
           transform="translateX(-50%)"
           zIndex={4}
@@ -505,7 +505,7 @@ export function BackgroundImage({
         left={getTextLeft()}
         transform="translateX(-50%)"
         zIndex={4}
-        px={8}
+        px={6}
         pt={getTextPaddingTop()}
         textAlign={getTextAlign()}
         maxW={getTextMaxWidth()}

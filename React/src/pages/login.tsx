@@ -118,7 +118,7 @@ function Login() {
               mb="18px"
               noOfLines={2}
               px="8"
-              textAlign="left"
+              textAlign={["center", "center", "left"]}
               textOverflow="ellipsis"
               w="full"
             >
