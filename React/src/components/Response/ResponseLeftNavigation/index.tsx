@@ -35,7 +35,7 @@ interface ResponseLeftNavigationProps {
 }
 
 function ResponseLeftNavigation({ enforceDesktop, setDrawerOpen }: ResponseLeftNavigationProps) {
-  const { navigateTo } = useNavigate();
+  const { navigateTo, navigate } = useNavigate();
 
   const { response } = useResponseContext();
   
@@ -126,7 +126,7 @@ function ResponseLeftNavigation({ enforceDesktop, setDrawerOpen }: ResponseLeftN
             mb="25px"
             mt="18px"
             gap="10px"
-            onClick={() => navigateTo('/dashboard')}
+            onClick={() => navigate(-1)}
             px="8px"
             py="6px"
             borderRadius="6px"

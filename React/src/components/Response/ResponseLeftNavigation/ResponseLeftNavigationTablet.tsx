@@ -13,7 +13,7 @@ import useDevice from '../../../hooks/useDevice';
 import NavigationPoweredBy from '../../NavigationLeft/NavigationPoweredBy';
 
 function ResponseLeftNavigationTablet() {
-  const { navigateTo } = useNavigate();
+  const { navigateTo, navigate } = useNavigate();
   const device = useDevice();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -123,7 +123,7 @@ function ResponseLeftNavigationTablet() {
                 mb="25px"
                 mt="18px"
                 gap="10px"
-                onClick={() => navigateTo('/dashboard')}
+                onClick={() => navigate(-1)}
                 px="8px"
                 py="6px"
                 borderRadius="6px"

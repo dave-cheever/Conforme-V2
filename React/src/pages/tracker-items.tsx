@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Divider, Flex } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize, uniqBy } from 'lodash';
@@ -95,6 +95,25 @@ const GET_RESPONSES = gql`
   }
 `;
 
+const SAVE_RECENT_SEARCH = gql`
+  mutation SaveRecentSearch($saveRecentSearchInput: SaveRecentSearchInput!) {
+    saveRecentSearch(saveRecentSearchInput: $saveRecentSearchInput) {
+      _id
+      userId
+      text
+      organizationId
+      metatags {
+        addedAt
+        addedBy
+        updatedAt
+        updatedBy
+        removedAt
+        removedBy
+      }
+    }
+  }
+`;
+
 function TrackerItems() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
@@ -128,6 +147,7 @@ function TrackerItems() {
   const [localStorageChecked, setLocalStorageChecked] = useState(false);
   const [hasStoredFilters, setHasStoredFilters] = useState(false);
   const [assignedToMe, setAssignedToMe] = useState(false);
+  const [saveRecentSearch] = useMutation(SAVE_RECENT_SEARCH);
 
   const handleAssignedToMeToggle = (isChecked: boolean) => {
     setAssignedToMe(isChecked);
@@ -374,6 +394,24 @@ function TrackerItems() {
   }, [filtersValues.usersIds, user?.userId]);
 
 
+  // Helper function to save recent search and navigate
+  const handleTrackerItemClick = useCallback((response: IResponse) => {
+    // Save to recent searches if there's a search query in the URL
+    if (searchQuery && user?.userId) {
+      saveRecentSearch({
+        variables: {
+          saveRecentSearchInput: {
+            userId: user.userId,
+            text: response.trackerItem?.name || '',
+          },
+        },
+      }).catch((error) => {
+        console.error('Failed to save recent search:', error);
+      });
+    }
+    navigateTo(`/tracker-item/${response._id}`);
+  }, [searchQuery, user, saveRecentSearch, navigateTo]);
+
   // Helper function to render main content with loading state
   const renderMainContent = () => {
     if (loading) return <Loader center data-id="000197" />;
@@ -384,6 +422,7 @@ function TrackerItems() {
           data-id="000299"
           loading={loading}
           loadResponses={loadResponses}
+          onItemClick={handleTrackerItemClick}
           responses={responses}
           setSortOrder={setSortOrder}
           setSortType={setSortType}
@@ -403,10 +442,10 @@ function TrackerItems() {
               ...trackerPanelConfig.actions,
               primary: {
                 ...trackerPanelConfig.actions.primary!,
-                onClick: (response: IResponse) => navigateTo(`/tracker-item/${response._id}`),
+                onClick: handleTrackerItemClick,
               },
               panelClick: {
-                onClick: (response: IResponse) => navigateTo(`/tracker-item/${response._id}`),
+                onClick: handleTrackerItemClick,
               },
             },
           }}
@@ -426,10 +465,10 @@ function TrackerItems() {
             ...trackerPanelConfig.actions,
             primary: {
               ...trackerPanelConfig.actions.primary!,
-              onClick: (response: IResponse) => navigateTo(`/tracker-item/${response._id}`),
+              onClick: handleTrackerItemClick,
             },
             panelClick: {
-              onClick: (response: IResponse) => navigateTo(`/tracker-item/${response._id}`),
+              onClick: handleTrackerItemClick,
             },
           },
         }}

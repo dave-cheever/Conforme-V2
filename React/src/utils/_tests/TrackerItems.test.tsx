@@ -88,6 +88,12 @@ vi.mock('@apollo/client', async () => {
       })),
       { loading: false },
     ],
+    useMutation: () => [
+      vi.fn(async () => ({
+        data: { saveRecentSearch: { _id: 'test-id' } },
+      })),
+      { loading: false, error: null },
+    ],
     gql: (x: any) => x,
   };
 });

@@ -6,11 +6,13 @@ import AuditLeftNavigationMobile from '../../components/Audit/AuditLeftNavigatio
 
 // Mock the useNavigate hook
 const mockNavigateTo = vi.fn();
+const mockNavigate = vi.fn();
 const mockIsPathActive = vi.fn();
 
 vi.mock('../../hooks/useNavigate', () => ({
   default: () => ({
     navigateTo: mockNavigateTo,
+    navigate: mockNavigate,
     isPathActive: mockIsPathActive,
   }),
 }));
@@ -136,7 +138,7 @@ describe('AuditLeftNavigationMobile', () => {
     const backButton = screen.getByText('Back').parentElement;
     fireEvent.click(backButton!);
 
-    expect(mockNavigateTo).toHaveBeenCalledWith('/dashboard');
+    expect(mockNavigate).toHaveBeenCalledWith(-1);
   });
 
   test('renders audit navigation tabs', () => {

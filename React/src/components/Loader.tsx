@@ -31,6 +31,7 @@ function Loader({
     <Flex
         align={center ? 'center' : 'flex-start'}
         data-id="000325"
+        data-testid="loader"
         h="full"
         justify="center"
         w="full"

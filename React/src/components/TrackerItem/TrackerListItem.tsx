@@ -7,9 +7,17 @@ import { ErrorCircleIcon, SuccessCircleIcon } from '../../icons';
 import { IResponse } from '../../interfaces/IResponse';
 import { runtimeEnv } from '../../utils/runtime-env';
 
-function TrackerListItem({ response, index }: { response: IResponse; index: number }) {
+function TrackerListItem({ response, index, onItemClick }: { response: IResponse; index: number; onItemClick?: (response: IResponse) => void }) {
   const { navigateTo } = useNavigate();
   const { isEvidenceUploaded } = useResponseUtils();
+
+  const handleClick = () => {
+    if (onItemClick) {
+      onItemClick(response);
+    } else {
+      navigateTo(`/tracker-item/${response._id}`);
+    }
+  };
 
   return (
     <Box
@@ -19,7 +27,7 @@ function TrackerListItem({ response, index }: { response: IResponse; index: numb
         borderBottomWidth="1px"
         cursor="pointer"
         data-id="000398"
-        onClick={() => navigateTo(`/tracker-item/${response._id}`)}
+        onClick={handleClick}
         px="10px"
         py={[1, 0]}
         w="full">

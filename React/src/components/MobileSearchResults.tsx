@@ -8,9 +8,9 @@ import useNavigate from '../hooks/useNavigate';
 import { AuditSearchIcon, ClockIcon, EmptySearchIcon, NoResultsFoundIcon, SearchErrorIcon, TrackerItemSearchIcon, ViewMoreIcon } from '../icons';
 import { IRecentSearch } from '../interfaces/IRecentSearch';
 import { ISearchResult } from '../interfaces/ISearchResult';
-import Loader from './Loader';
 import SearchBarMessage from './SearchBar/SearchBarMessage';
 import StatusCell from './Table/Cells/StatusCell';
+import Loader from './Loader';
 
 const SAVE_RECENT_SEARCH = gql`
   mutation SaveRecentSearch($saveRecentSearchInput: SaveRecentSearchInput!) {

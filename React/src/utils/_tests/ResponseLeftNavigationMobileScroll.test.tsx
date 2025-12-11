@@ -6,11 +6,13 @@ import ResponseLeftNavigationMobile from '../../components/Response/ResponseLeft
 
 // Mock the useNavigate hook
 const mockNavigateTo = vi.fn();
+const mockNavigate = vi.fn();
 const mockIsPathActive = vi.fn();
 
 vi.mock('../../hooks/useNavigate', () => ({
   default: () => ({
     navigateTo: mockNavigateTo,
+    navigate: mockNavigate,
     isPathActive: mockIsPathActive,
   }),
 }));

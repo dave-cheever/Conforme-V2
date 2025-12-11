@@ -21,6 +21,7 @@ function TrackerListItems({
   loadResponses,
   setSortOrder,
   setSortType,
+  onItemClick,
 }: {
   responses: IResponse[];
   loading: boolean;
@@ -30,6 +31,7 @@ function TrackerListItems({
   loadResponses: (page: number) => Promise<void>;
   setSortType: (key: string) => void;
   setSortOrder: (order: 'asc' | 'desc') => void;
+  onItemClick?: (response: IResponse) => void;
 }) {
   return (
     <Box bg="#ffffff" data-id="000441" h="full" overflow="none" p={[3, 6]} w="full">
@@ -136,7 +138,7 @@ function TrackerListItems({
             useWindow={false}
           >
             {responses?.map((response, index) => (
-              <TrackerListItem data-id="000455" index={index} key={response._id} response={response} />
+              <TrackerListItem data-id="000455" index={index} key={response._id} onItemClick={onItemClick} response={response} />
             ))}
             {loading && <Loader center data-id="000456" h="60px" key="infinite-loader" />}
           </InfiniteScrollComponent>

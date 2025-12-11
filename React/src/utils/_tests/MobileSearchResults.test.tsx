@@ -24,10 +24,7 @@ vi.mock('../../hooks/useNavigate', () => ({
   })),
 }));
 
-vi.mock('../../components/Loader', () => ({
-  __esModule: true,
-  default: () => <div data-id="003232" data-testid="loader">Loading...</div>,
-}));
+// Loader component was replaced with Skeleton components - no longer needed to mock
 
 const mockSaveRecentSearch = vi.fn().mockResolvedValue({
   data: {
@@ -158,8 +155,8 @@ describe('MobileSearchResults', () => {
   });
 
   describe('Loading State', () => {
-    it('should display loader when searchLoading is true', () => {
-      renderWithProviders(
+    it('should display skeleton loading when searchLoading is true', () => {
+      const { container } = renderWithProviders(
         <MobileSearchResults
           data-id="003238"
           searchResults={[]}
@@ -173,7 +170,10 @@ describe('MobileSearchResults', () => {
           onResultClick={mockOnResultClick} />
       );
 
-      expect(screen.getByTestId('loader')).toBeInTheDocument();
+      // Skeleton components are rendered instead of Loader
+      // Check for skeleton container data-id
+      const skeletonContainer = container.querySelector('[data-id="003168"]');
+      expect(skeletonContainer).toBeInTheDocument();
     });
 
     it('should display loader when recentSearchesLoading is true and hide search content', () => {

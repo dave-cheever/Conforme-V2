@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { Button, Flex, Grid, Modal, Text, Tooltip, useDisclosure } from '@chakra-ui/react';
 import { t } from 'i18next';
 import { capitalize, isEmpty } from 'lodash';
@@ -93,6 +93,25 @@ export const categoryIdsForPanel = (
 
   return [panels[selectedPanelIndex]._id];
 };
+
+const SAVE_RECENT_SEARCH = gql`
+  mutation SaveRecentSearch($saveRecentSearchInput: SaveRecentSearchInput!) {
+    saveRecentSearch(saveRecentSearchInput: $saveRecentSearchInput) {
+      _id
+      userId
+      text
+      organizationId
+      metatags {
+        addedAt
+        addedBy
+        updatedAt
+        updatedBy
+        removedAt
+        removedBy
+      }
+    }
+  }
+`;
 
 export const GET_ANSWERS = gql`
   query ($answerQuery: AnswerQuery) {
@@ -219,15 +238,31 @@ function Answers() {
   const device = useDevice();
   const { data, loading, error, refetch } = useQuery(GET_ANSWERS);
   const panels = useMemo(() => buildPanels(data?.auditTypes), [data?.auditTypes]);
+  const [saveRecentSearch] = useMutation(SAVE_RECENT_SEARCH);
 
   const [selectedPanel, setSelectedPanel] = useState(0);
   const [filteredAnswers, setFilteredAnswers] = useState<IAnswer[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<IAnswer>();
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
 
   const handleOpenModal = useCallback((answer: IAnswer) => {
+    // Save to recent searches if there's a search query in the URL
+    if (searchQuery && user?.userId) {
+      saveRecentSearch({
+        variables: {
+          saveRecentSearchInput: {
+            userId: user.userId,
+            text: answer.question?.question || '',
+          },
+        },
+      }).catch((error) => {
+        console.error('Failed to save recent search:', error);
+      });
+    }
     setSelectedAnswer(answer);
     setAdminModalState('edit');
-  }, [setSelectedAnswer, setAdminModalState]);
+  }, [setSelectedAnswer, setAdminModalState, searchQuery, user, saveRecentSearch]);
 
   const {
     sortedData: sortedAnswers,
@@ -471,9 +506,22 @@ function Answers() {
   }, [appliedFilters]);
 
   const handleViewModal = useCallback((answer: IAnswer) => {
+    // Save to recent searches if there's a search query in the URL
+    if (searchQuery && user?.userId) {
+      saveRecentSearch({
+        variables: {
+          saveRecentSearchInput: {
+            userId: user.userId,
+            text: answer.question?.question || '',
+          },
+        },
+      }).catch((error) => {
+        console.error('Failed to save recent search:', error);
+      });
+    }
     setSelectedAnswer(answer);
     setAdminModalState('view');
-  }, [setSelectedAnswer, setAdminModalState]);
+  }, [setSelectedAnswer, setAdminModalState, searchQuery, user, saveRecentSearch]);
 
   useEffect(() => {
     if (data && data?.answers && !error) {

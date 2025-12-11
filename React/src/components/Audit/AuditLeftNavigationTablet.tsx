@@ -14,7 +14,7 @@ import useDevice from '../../hooks/useDevice';
 
 function AuditLeftNavigationTablet() {
   const { auditNavigationTabs } = useConfig();
-  const { navigateTo } = useNavigate();
+  const { navigateTo, navigate } = useNavigate();
   const device = useDevice();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -123,7 +123,7 @@ function AuditLeftNavigationTablet() {
                 mb="25px"
                 mt="18px"
                 gap="10px"
-                onClick={() => navigateTo('/dashboard')}
+                onClick={() => navigate(-1)}
                 px="8px"
                 py="6px"
                 borderRadius="6px"

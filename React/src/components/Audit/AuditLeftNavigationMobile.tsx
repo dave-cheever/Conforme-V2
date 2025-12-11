@@ -26,7 +26,7 @@ function chainAnimationFrames(
 
 function AuditLeftNavigationMobile() {
   const { auditNavigationTabs } = useConfig();
-  const { navigateTo } = useNavigate();
+  const { navigateTo, navigate } = useNavigate();
   
   const hasManyIcons = auditNavigationTabs.length >= 4;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -143,7 +143,7 @@ function AuditLeftNavigationMobile() {
           fontSize="14px"
           h="100%"
           mr={4}
-          onClick={() => navigateTo('/dashboard')}>
+          onClick={() => navigate(-1)}>
           <Box
             alignItems="center"
             bg="#E2E8F0"

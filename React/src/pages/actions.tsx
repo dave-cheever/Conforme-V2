@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Box, Button, Flex, Grid, Modal, ModalContent, ModalOverlay, Text, useToast } from '@chakra-ui/react';
@@ -109,6 +109,25 @@ const DELETE_ACTION = gql`
   }
 `;
 
+const SAVE_RECENT_SEARCH = gql`
+  mutation SaveRecentSearch($saveRecentSearchInput: SaveRecentSearchInput!) {
+    saveRecentSearch(saveRecentSearchInput: $saveRecentSearchInput) {
+      _id
+      userId
+      text
+      organizationId
+      metatags {
+        addedAt
+        addedBy
+        updatedAt
+        updatedBy
+        removedAt
+        removedBy
+      }
+    }
+  }
+`;
+
 // Export functions for testing
 export const parseDueDateFilter = (val: any) => {
   if (!Array.isArray(val) || val.length === 0) return typeof val === 'string' ? val : null;
@@ -136,6 +155,8 @@ function Actions() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
   const [activeTab, setActiveTab] = useState<number>(0);
   const {
     filtersValues,
@@ -154,6 +175,7 @@ function Actions() {
   const { adminModalState, setAdminModalState } = useAdminContext();
   const toast = useToast();
   const [deleteAction] = useMutation(DELETE_ACTION);
+  const [saveRecentSearch] = useMutation(SAVE_RECENT_SEARCH);
   const closeModal = () => {
     // If id is in URL params, clean it
     if (queryParams.has('id')) {
@@ -193,9 +215,22 @@ function Actions() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleOpenModal = useCallback((action: IAction) => {
+    // Save to recent searches if there's a search query in the URL
+    if (searchQuery && user?.userId) {
+      saveRecentSearch({
+        variables: {
+          saveRecentSearchInput: {
+            userId: user.userId,
+            text: action.title || '',
+          },
+        },
+      }).catch((error) => {
+        console.error('Failed to save recent search:', error);
+      });
+    }
     setSelectedAction(action);
     setAdminModalState('view');
-  }, [setSelectedAction, setAdminModalState]);
+  }, [setSelectedAction, setAdminModalState, searchQuery, user, saveRecentSearch]);
 
   const handleDeleteAction = useCallback((action: IAction) => {
     setSelectedAction(action);

@@ -12,7 +12,13 @@ const getRecentSearches = async (_, { getRecentSearchesInput }, { authorize, org
 
     const allRecentSearches = await RecentSearches.customFindByUserId(userId, organization._id);
 
-    const sortedSearches = allRecentSearches
+    // Filter out records with null, undefined, or empty text values
+    // This prevents GraphQL errors since text is a non-nullable field
+    const validSearches = allRecentSearches.filter(
+      (search) => search && search.text && typeof search.text === 'string' && search.text.trim().length > 0
+    );
+
+    const sortedSearches = validSearches
       .sort((a, b) => {
         const dateA = a.metatags?.addedAt ? new Date(a.metatags.addedAt).getTime() : 0;
         const dateB = b.metatags?.addedAt ? new Date(b.metatags.addedAt).getTime() : 0;

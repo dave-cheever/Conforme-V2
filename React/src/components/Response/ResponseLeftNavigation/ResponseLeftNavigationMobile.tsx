@@ -26,7 +26,7 @@ function chainAnimationFrames(
 }
 
 function ResponseLeftNavigationMobile() {
-  const { navigateTo } = useNavigate();
+  const { navigateTo, navigate } = useNavigate();
 
   const { response } = useResponseContext();
 
@@ -139,7 +139,7 @@ function ResponseLeftNavigationMobile() {
           fontSize="14px"
           h="100%"
           mr={4}
-          onClick={() => navigateTo('/dashboard')}>
+          onClick={() => navigate(-1)}>
 
           <Box
             alignItems="center"

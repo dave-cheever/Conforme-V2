@@ -25,6 +25,11 @@ recentSearchSchema.statics.customFindByUserId = async function (
     userId,
     organizationId,
     'metatags.removedAt': { $eq: null },
+    $and: [
+      { text: { $ne: null } },
+      { text: { $exists: true } },
+      { text: { $ne: '' } },
+    ],
   })
     .lean();
 

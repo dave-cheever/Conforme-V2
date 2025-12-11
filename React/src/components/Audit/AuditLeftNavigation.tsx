@@ -15,7 +15,7 @@ interface AuditLeftNavigationProps {
 
 function AuditLeftNavigation({ enforceDesktop, setDrawerOpen }: AuditLeftNavigationProps) {
   const { auditNavigationTabs } = useConfig();
-  const { navigateTo } = useNavigate();
+  const { navigateTo, navigate } = useNavigate();
 
   return (
     <Flex
@@ -96,7 +96,7 @@ function AuditLeftNavigation({ enforceDesktop, setDrawerOpen }: AuditLeftNavigat
               gap="10px"
               py="6px"
               borderRadius="6px"
-              onClick={() => navigateTo('/dashboard')}>
+              onClick={() => navigate(-1)}>
               <Box
                 data-id="002738"
                 transition="all 0.2s ease-out"

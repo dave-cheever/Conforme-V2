@@ -18,6 +18,7 @@ vi.mock('../../hooks/useNavigate', () => ({
   __esModule: true,
   default: () => ({
     navigateTo: vi.fn(),
+    navigate: vi.fn(),
     isPathActive: (url: string, options?: { exact?: boolean }) => {
       if (options?.exact) {
         return url === '/audits';

@@ -6,7 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
 
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { Button, Divider, Flex, Modal, ModalOverlay, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { capitalize, isEmpty } from 'lodash';
@@ -112,6 +112,25 @@ const GET_AUDITS = gql`
   }
 `;
 
+const SAVE_RECENT_SEARCH = gql`
+  mutation SaveRecentSearch($saveRecentSearchInput: SaveRecentSearchInput!) {
+    saveRecentSearch(saveRecentSearchInput: $saveRecentSearchInput) {
+      _id
+      userId
+      text
+      organizationId
+      metatags {
+        addedAt
+        addedBy
+        updatedAt
+        updatedBy
+        removedAt
+        removedBy
+      }
+    }
+  }
+`;
+
 function Audits() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
@@ -138,8 +157,11 @@ function Audits() {
   const { audit, reset, trigger } = useAuditModalContext();
   const { currentPage, setCurrentPage, pageSize, setPageSize, total, setTotal } = usePagination();
   const [filteredAudits, setFilteredAudits] = useState<IAudit[]>([]);
+  const [allFilteredAudits, setAllFilteredAudits] = useState<IAudit[]>([]); // Store all filtered audits when searching
   const [filtersInitialized, setFiltersInitialized] = useState(false);
   const [assignedToMe, setAssignedToMe] = useState(false);
+  const [lastSearchQuery, setLastSearchQuery] = useState<string>(''); // Track last search query to detect changes
+  const [saveRecentSearch] = useMutation(SAVE_RECENT_SEARCH);
 
   // Sync search query from URL to search bar context
   useEffect(() => {
@@ -153,15 +175,49 @@ function Audits() {
     setSortType: setSortTypeOriginal,
     setSortOrder: setSortOrderOriginal,
   } = useSort([], 'auditor.displayName', 'asc');
+  // When searching, fetch a large number of audits to allow client-side filtering
+  // Otherwise use normal pagination
+  // IMPORTANT: When searching, always use limit: 10000, offset: 0 regardless of currentPage/pageSize
+  // This prevents the query from refetching with wrong pagination when user changes page/pageSize
+  // Use useMemo to stabilize variables when searching - prevents unnecessary refetches
+  // When searching, variables should NOT depend on pageSize or currentPage to prevent refetches
+  const queryVariables = useMemo(() => {
+    if (searchQuery) {
+      // When searching, always use these fixed values (don't depend on pageSize/currentPage)
+      return {
+        pagination: {
+          limit: 10000,
+          offset: 0,
+          sortBy: sortTypeState,
+          sortDirection: sortOrderState,
+        },
+      };
+    } else {
+      // When not searching, use normal pagination
+      return {
+        pagination: {
+          limit: pageSize,
+          offset: (currentPage - 1) * pageSize,
+          sortBy: sortTypeState,
+          sortDirection: sortOrderState,
+        },
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    searchQuery,
+    sortTypeState,
+    sortOrderState,
+    // Conditionally include pageSize and currentPage - only when NOT searching
+    // This prevents the query from refetching when pagination changes during search
+    ...(searchQuery ? [] : [pageSize, currentPage]),
+  ]);
+
   const { data, loading, error, refetch } = useQuery(GET_AUDITS, {
-    variables: {
-      pagination: {
-        limit: pageSize,
-        offset: (currentPage - 1) * pageSize,
-        sortBy: sortTypeState,
-        sortDirection: sortOrderState,
-      },
-    },
+    variables: queryVariables,
+    // When searching, always fetch fresh data to avoid stale cache issues
+    fetchPolicy: searchQuery ? 'network-only' : 'cache-first',
+    skip: false,
   });
 
   // Track sorting transition state
@@ -316,6 +372,27 @@ function Audits() {
     }
   }, []); // Empty deps array since we use ref
 
+  // Helper function to save recent search and navigate
+  const handleAuditClick = useCallback(
+    (audit: IAudit) => {
+      // Save to recent searches if there's a search query in the URL
+      if (searchQuery && user?.userId) {
+        saveRecentSearch({
+          variables: {
+            saveRecentSearchInput: {
+              userId: user.userId,
+              text: audit.reference || audit.auditType?.name || '',
+            },
+          },
+        }).catch((error) => {
+          console.error('Failed to save recent search:', error);
+        });
+      }
+      navigateTo(`/audits/${audit._id}`);
+    },
+    [navigateTo, searchQuery, user, saveRecentSearch],
+  );
+
   const columns: ColumnConfig[] = useMemo(
     () => [
       {
@@ -386,7 +463,7 @@ function Audits() {
             data-id="002091"
             onClick={(e) => {
               e.stopPropagation();
-              navigateTo(`/audits/${row._id}`);
+              handleAuditClick(row);
             }}
             size="sm"
             variant="outline"
@@ -396,7 +473,7 @@ function Audits() {
         ),
       },
     ],
-    [t, module?.featureFlags?.enableSafetyWalk, navigateTo],
+    [t, module?.featureFlags?.enableSafetyWalk, handleAuditClick],
   );
   const handleAssignedToMeToggle = (isChecked: boolean) => {
     setAssignedToMe(isChecked);
@@ -418,9 +495,9 @@ function Audits() {
 
   const handleRowClick = useCallback(
     (row: IAudit) => {
-      navigateTo(`/audits/${row._id}`);
+      handleAuditClick(row);
     },
-    [navigateTo],
+    [handleAuditClick],
   );
 
   useEffect(() => {
@@ -561,18 +638,48 @@ function Audits() {
     else setAssignedToMe(false);
   }, [appliedFilters, user?.userId, pageSize, sortTypeState, sortOrderState, refetch, allowedFilters]);
 
+  // Reset to page 1 when search query changes and refetch data
+  useEffect(() => {
+    if (searchQuery) {
+      if (currentPage !== 1) {
+        setCurrentPage(1);
+      }
+      // Refetch data when search query is present to ensure fresh results
+      // This handles the case when navigating back to the page with search query
+      // Always use limit: 10000, offset: 0 when searching
+      refetch({
+        pagination: {
+          limit: 10000,
+          offset: 0,
+          sortBy: sortTypeState,
+          sortDirection: sortOrderState,
+        },
+      });
+    } else {
+      // Clear allFilteredAudits when search query is removed
+      setAllFilteredAudits([]);
+      setLastSearchQuery('');
+    }
+  }, [searchQuery, refetch, sortTypeState, sortOrderState]);
+
+  // When searching, paginate filtered audits client-side when page or pageSize changes
+  useEffect(() => {
+    if (searchQuery && allFilteredAudits.length > 0) {
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      const paginatedAudits = allFilteredAudits.slice(startIndex, endIndex);
+      setFilteredAudits(paginatedAudits);
+      // CRITICAL: Always set total to the full filtered count, never the current page count
+      // This ensures pagination shows correct total even when pageSize changes
+      setTotal(allFilteredAudits.length);
+    }
+  }, [currentPage, pageSize, searchQuery, allFilteredAudits, setTotal]);
+
   useEffect(() => {
     if (data?.audits && !error) {
       // Handle both array and object with audits property
       const auditsArray = Array.isArray(data.audits) ? data.audits : (data.audits?.audits || []);
       let audits = auditsArray;
-      
-      // Set total from data if available
-      if (!Array.isArray(data.audits) && data.audits?.total !== undefined) {
-        setTotal(data.audits.total);
-      } else {
-        setTotal(audits.length);
-      }
       
       // Apply search filter if search query exists
       if (searchQuery) {
@@ -588,15 +695,46 @@ function Audits() {
           if (audit.auditor?.displayName?.toLowerCase().includes(query)) return true;
           return false;
         });
+        
+        // Store all filtered audits for client-side pagination
+        // CRITICAL: Prevent overwriting correct data with stale cached data
+        // When we already have filtered data and search query matches, preserve it
+        // Only update if:
+        // 1. No existing filtered data yet (initial load)
+        // 2. New search query (different search)
+        // 3. Large raw dataset (>= 100) suggests it's the full fetch, not stale paginated data
+        const hasExistingData = allFilteredAudits.length > 0;
+        const isSameSearch = searchQuery === lastSearchQuery;
+        const isNewSearch = lastSearchQuery === '';
+        const isLargeDataset = auditsArray.length >= 100;
+        
+        // Update only if we don't have existing data, OR it's a new search, OR we have a large dataset
+        // This prevents stale cached data from overwriting correct data when pageSize changes
+        if (!hasExistingData || isNewSearch || isLargeDataset) {
+          setAllFilteredAudits(audits);
+          // Set total to filtered count (client-side filtering)
+          setTotal(audits.length);
+          setLastSearchQuery(searchQuery);
+        }
+        // If we have existing data and it's the same search, preserve it - don't overwrite with stale data
+      } else {
+        // Set total from data if available (when not searching)
+        if (!Array.isArray(data.audits) && data.audits?.total !== undefined) {
+          setTotal(data.audits.total);
+        } else {
+          setTotal(audits.length);
+        }
+        // When not searching, use all audits (server-side pagination)
+        setAllFilteredAudits([]);
+        setFilteredAudits(audits);
+        setLastSearchQuery('');
       }
-      
-      setFilteredAudits(audits);
     }
-  }, [data?.audits, searchQuery, error, setTotal]);
+  }, [data?.audits, searchQuery, error, setTotal, lastSearchQuery]);
 
-  // Refetch when pagination or sorting changes
+  // Refetch when pagination or sorting changes (but not when searching - we paginate client-side)
   useEffect(() => {
-    if (filtersInitialized) {
+    if (filtersInitialized && !searchQuery) {
       const parsedFilters = Object.entries(appliedFilters || {}).reduce((acc, [key, value]) => {
         if (!value || !allowedFilters.includes(key)) return acc;
 
@@ -620,7 +758,7 @@ function Audits() {
         },
       });
     }
-  }, [currentPage, pageSize, sortTypeState, sortOrderState, filtersInitialized]);
+  }, [currentPage, pageSize, sortTypeState, sortOrderState, filtersInitialized, searchQuery, refetch, appliedFilters]);
 
   // Sync assignedToMe state with current filter state
   useEffect(() => {
@@ -667,14 +805,14 @@ function Audits() {
         ...auditPanelConfig.actions,
         primary: {
           ...auditPanelConfig.actions.primary!,
-          onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`),
+          onClick: handleAuditClick,
         },
         panelClick: {
-          onClick: (audit: IAudit) => navigateTo(`/audits/${audit._id}`),
+          onClick: handleAuditClick,
         },
       },
     }),
-    [navigateTo],
+    [handleAuditClick],
   );
 
   // Memoize panel view component
