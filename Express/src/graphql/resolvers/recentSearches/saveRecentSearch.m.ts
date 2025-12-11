@@ -2,19 +2,14 @@ import { RecentSearches, Users } from 'app-models';
 import { genMetatags } from 'app-utils';
 import { MAX_RECENT_SEARCHES } from 'src/constants';
 import { v4 as uuidv4 } from 'uuid';
-import { ENTITY_TYPES, isEntityType } from 'app-enums';
 
 const saveRecentSearch = async (_, { saveRecentSearchInput }, { authorize, organization }) => {
   try {
     const authUser = await authorize();
-    const { term, entityId, entityType, userId } = saveRecentSearchInput;
+    const { text, userId } = saveRecentSearchInput;
 
     if (authUser.userId !== userId) {
       throw new Error('User is not permitted');
-    }
-
-    if (!isEntityType(entityType)) {
-      throw new Error(`Invalid entityType. Must be one of: ${ENTITY_TYPES.join(', ')}`);
     }
 
     const user = await Users.customFindById(userId, organization._id);
@@ -35,7 +30,7 @@ const saveRecentSearch = async (_, { saveRecentSearchInput }, { authorize, organ
     });
 
     const duplicateSearch = allSearches.find(
-      (search) => search.term === term && search.entityId === entityId && search.entityType === entityType,
+      (search) => search.text === text,
     );
 
     const newMetatags = genMetatags('added', userId);
@@ -69,9 +64,7 @@ const saveRecentSearch = async (_, { saveRecentSearchInput }, { authorize, organ
       const newRecentSearch = {
         _id: uuidv4(),
         userId,
-        term,
-        entityId,
-        entityType,
+        text,
         organizationId: organization._id,
         metatags: {
           addedBy: newMetatags.addedBy as string,

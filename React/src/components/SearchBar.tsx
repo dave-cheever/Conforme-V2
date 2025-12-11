@@ -69,9 +69,7 @@ const GET_RECENT_SEARCHES = gql`
     getRecentSearches(getRecentSearchesInput: $getRecentSearchesInput) {
       _id
       userId
-      term
-      entityId
-      entityType
+      text
       organizationId
       metatags {
         addedAt
@@ -90,9 +88,7 @@ const SAVE_RECENT_SEARCH = gql`
     saveRecentSearch(saveRecentSearchInput: $saveRecentSearchInput) {
       _id
       userId
-      term
-      entityId
-      entityType
+      text
       organizationId
       metatags {
         addedAt
@@ -111,7 +107,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   const { module, user } = useAppContext();
   const { navigateTo } = useNavigate();
   const device = useDevice();
-  const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText, searchResults: contextSearchResults, setSearchResults: setContextSearchResults, searchLoading: contextSearchLoading, setSearchLoading: setContextSearchLoading, searchError: contextSearchError, setSearchError: setContextSearchError } = useNavigationTopContext();
+  const { isSearchBarOpen, setIsSearchBarOpen, searchText, setSearchText, searchResults: contextSearchResults, setSearchResults: setContextSearchResults, searchLoading: contextSearchLoading, setSearchLoading: setContextSearchLoading, searchError: contextSearchError, setSearchError: setContextSearchError, recentSearches: contextRecentSearches, setRecentSearches: setContextRecentSearches, setRecentSearchesLoading: setContextRecentSearchesLoading } = useNavigationTopContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const toast = useToast();
 
@@ -155,11 +151,11 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     },
   });
 
-  const getScopes = useCallback(() => {
+  const getScopes = useMemo(() => {
     const scopes: IScope[] = [];
     // Always search all categories for the module
-      const searchCategoriesWithoutAll = searchCategories.filter(({ type }) => type !== 'all');
-      searchCategoriesWithoutAll.forEach(({ type, _id }) => scopes.push({ type, _id }));
+    const searchCategoriesWithoutAll = searchCategories.filter(({ type }) => type !== 'all');
+    searchCategoriesWithoutAll.forEach(({ type, _id }) => scopes.push({ type, _id }));
     return scopes;
   }, [searchCategories]);
 
@@ -167,7 +163,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   const [localSearchResults, setLocalSearchResults] = useState<ISearchResult[]>([]);
   const [localSearchError, setLocalSearchError] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
-  const [recentSearches, setRecentSearches] = useState<IRecentSearch[]>([]);
+  const [localRecentSearches, setLocalRecentSearches] = useState<IRecentSearch[]>([]);
   const [saveRecentSearch] = useMutation(SAVE_RECENT_SEARCH);
 
   const { data: recentSearchesData, loading: recentSearchesLoading } = useQuery(
@@ -189,6 +185,9 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   const searchLoading = isInMobileDrawer ? contextSearchLoading : loading;
   const searchError = isInMobileDrawer ? contextSearchError : localSearchError;
   const setSearchError = isInMobileDrawer ? setContextSearchError : setLocalSearchError;
+  const recentSearches = isInMobileDrawer ? contextRecentSearches : localRecentSearches;
+  const setRecentSearches = isInMobileDrawer ? setContextRecentSearches : setLocalRecentSearches;
+
 
   // Sync loading and error state to context when in mobile drawer
   useEffect(() => {
@@ -204,6 +203,26 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     }
   }, [localSearchError, isInMobileDrawer, setContextSearchError]);
 
+  // Sync recent searches to context when in mobile drawer
+  useEffect(() => {
+    if (isInMobileDrawer && recentSearchesData?.getRecentSearches) {
+      setContextRecentSearches(recentSearchesData.getRecentSearches);
+    }
+  }, [recentSearchesData, isInMobileDrawer, setContextRecentSearches]);
+
+  // Sync recent searches loading state to context when in mobile drawer
+  useEffect(() => {
+    if (isInMobileDrawer) {
+      setContextRecentSearchesLoading(recentSearchesLoading);
+    }
+  }, [recentSearchesLoading, isInMobileDrawer, setContextRecentSearchesLoading]);
+
+  const handleSearchError = useCallback(() => {
+    setSearchError(true);
+    setSearchResults([]);
+    setHasSearched(true);
+  }, [setSearchError, setSearchResults]);
+
   const search = useCallback(
     async (searchTextValue: string) => {
       if (searchTextValue?.trim()) {
@@ -214,25 +233,21 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
               searchQuery: {
                 searchText: searchTextValue,
                 moduleId: module?._id,
-                scopes: getScopes(),
+                scopes: getScopes,
               },
             },
           });
           // Check for Apollo Client errors in the result
           if (results.error) {
             console.error('Search error:', results.error);
-            setSearchError(true);
-            setSearchResults([]);
-            setHasSearched(true);
+            handleSearchError();
           } else {
             setSearchResults(results.data?.search || []);
             setHasSearched(true);
           }
         } catch (error) {
           console.error('Search error:', error);
-          setSearchError(true);
-          setSearchResults([]);
-          setHasSearched(true);
+          handleSearchError();
         }
       } else {
         setSearchError(false);
@@ -240,7 +255,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
         setHasSearched(false);
       }
     },
-    [getSearchResults, module?._id, getScopes, setSearchError, setSearchResults],
+    [getSearchResults, module?._id, getScopes, setSearchError, setSearchResults, handleSearchError],
   );
 
   // Debounce search with 500ms delay
@@ -286,122 +301,85 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     return grouped;
   }, [searchResults]);
 
-  // Map search result type to entity type
-  const mapSearchResultTypeToEntityType = (resultType: string): 'audits' | 'actions' | 'answers' | 'tracker_items' | null => {
-    switch (resultType) {
-      case 'audits':
-        return 'audits';
-      case 'actions':
-        return 'actions';
-      case 'tracker-item-response':
-        return 'tracker_items';
-      case 'answers':
-        return 'answers';
-      default:
-        return null;
-    }
-  };
-
-  const handleSearchResultClick = async (result: ISearchResult) => {
-    const category = searchCategories.find((category) => category.type === result.scope.type && category._id == result.scope._id);
-    if (!category) return;
-    let url = '';
-    switch (module?.type) {
-      case 'audits': {
-        switch (category.type) {
-          case 'actions':
-            url = `actions?id=${result._id}`;
-            break;
-          case 'answers':
-            url = `answers?id=${result._id}`;
-            break;
-          default:
-            url = `audits/${result._id}`;
-        }
-        break;
-      }
-      case 'tracker': {
-        url = `tracker-item/${result._id}`;
-        break;
-      }
-      default:
-        toast({
-          ...toastWarning,
-          title: 'Search for this data type was not yet implemented',
-        });
-    }
-    if (url) {
-      const entityType = mapSearchResultTypeToEntityType(result.type);
-      if (entityType && user?.userId) {
-        saveRecentSearch({
+  const saveRecentSearchSafely = useCallback(async (text: string) => {
+    if (user?.userId && text?.trim()) {
+      try {
+        await saveRecentSearch({
           variables: {
             saveRecentSearchInput: {
               userId: user.userId,
-              term: result.title,
-              entityId: result._id,
-              entityType,
+              text: text.trim(),
             },
           },
-        })
-          .catch((error) => {
-            console.error('Failed to save recent search:', error);
-          });
+        });
+      } catch (error) {
+        console.error('Failed to save recent search:', error);
       }
-
-      navigateTo(`/${url}`);
-      setIsSearchBarOpen(false);
-      setSearchText('');
-      setSearchResults([]);
     }
-  };
+  }, [user?.userId, saveRecentSearch]);
 
-  const handleRecentSearchClick = async (recentSearch: IRecentSearch) => {
-    let url = '';
-    switch (recentSearch.entityType) {
-      case 'audits':
-        url = `audits/${recentSearch.entityId}`;
-        break;
-      case 'actions':
-        url = `actions?id=${recentSearch.entityId}`;
-        break;
-      case 'answers':
-        url = `answers?id=${recentSearch.entityId}`;
-        break;
-      case 'tracker_items':
-        url = `tracker-item/${recentSearch.entityId}`;
-        break;
+  const getResultUrl = useCallback((result: ISearchResult, categoryType: string): string => {
+    switch (module?.type) {
+      case 'audits': {
+        switch (categoryType) {
+          case 'actions':
+            return `actions?id=${result._id}`;
+          case 'answers':
+            return `answers?id=${result._id}`;
+          default:
+            return `audits/${result._id}`;
+        }
+      }
+      case 'tracker': {
+        return `tracker-item/${result._id}`;
+      }
       default:
-        break;
+        return '';
+    }
+  }, [module?.type]);
+
+  const handleSearchResultClick = useCallback((result: ISearchResult) => {
+    const category = searchCategories.find((cat) => cat.type === result.scope.type && cat._id == result.scope._id);
+    if (!category) return;
+
+    const url = getResultUrl(result, category.type);
+    if (!url) {
+      toast({
+        ...toastWarning,
+        title: 'Search for this data type was not yet implemented',
+      });
+      return;
     }
 
-    if (url) {
-        saveRecentSearch({
-          variables: {
-            saveRecentSearchInput: {
-              userId: user?.userId,
-              term: recentSearch.term,
-              entityId: recentSearch.entityId,
-              entityType: recentSearch.entityType,
-            },
-          },
-        })
-          .catch((error) => {
-            console.error('Failed to save recent search:', error);
-          });
+    // Navigate immediately for instant UI feedback
+    navigateTo(`/${url}`);
+    setIsSearchBarOpen(false);
+    setSearchText('');
+    setSearchResults([]);
 
-      navigateTo(`/${url}`);
-      setIsSearchBarOpen(false);
-      setSearchText('');
-      setSearchResults([]);
-    }
-  };
+    // Save the result title text to recent searches - fire and forget
+    saveRecentSearchSafely(result.title || '').catch(() => {
+      // Error already logged in saveRecentSearchSafely
+    });
+  }, [searchCategories, getResultUrl, saveRecentSearchSafely, navigateTo, setIsSearchBarOpen, setSearchText, setSearchResults, toast]);
 
-  const getCategoryLabel = (scopeType: string, scopeId?: string) => {
+  const handleRecentSearchClick = useCallback((recentSearch: IRecentSearch) => {
+    // Populate search input with the text immediately for instant UI feedback
+    setSearchText(recentSearch.text);
+    
+    // Move the clicked recent search to the top (update metadata) - fire and forget
+    saveRecentSearchSafely(recentSearch.text).catch(() => {
+      // Error already logged in saveRecentSearchSafely
+    });
+    // Fetch results automatically (will be triggered by the useEffect that watches searchText)
+  }, [saveRecentSearchSafely, setSearchText]);
+
+  const getCategoryLabel = useCallback((scopeType: string, scopeId?: string) => {
     if (scopeType === 'all') return 'All categories';
     const category = searchCategories.find((cat) => cat.type === scopeType && cat._id === scopeId);
     const label = category?.label || scopeType;
     return label.charAt(0).toUpperCase() + label.slice(1);
-  };
+  }, [searchCategories]);
 
   // Helper function to highlight matching text
   const highlightText = (text: string, query: string) => {
@@ -428,7 +406,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   };
 
   // Helper function to render search result icon
-  const renderSearchIcon = (resultType: string) => {
+  const renderSearchIcon = useCallback((resultType: string) => {
     if (resultType === 'audits') {
       return <AuditSearchIcon data-id="003219" boxSize="20px" color="#4A5568" />;
     }
@@ -436,10 +414,11 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
       return <TrackerItemSearchIcon data-id="003220" boxSize="20px" color="#4A5568" />;
     }
     return null;
-  };
+  }, []);
 
   // Helper function to render a single search result item
-  const renderSearchResultItem = (result: any) => {
+  const renderSearchResultItem = useCallback((result: ISearchResult) => {
+    const displayText = result.type === 'audits' && result.reference ? result.reference : result.title;
     return (
       <Flex
         data-id="003216"
@@ -478,10 +457,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
                 textOverflow="ellipsis"
                 whiteSpace="nowrap"
                 minWidth={0}>
-                {highlightText(
-                  result.type === 'audits' && result.reference ? result.reference : result.title,
-                  searchText
-                )}
+                {highlightText(displayText, searchText)}
               </Text>
               {result.type === 'audits' && result.status && (
                 <Box data-id="003417" flexShrink={0}>
@@ -508,9 +484,9 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
         </Flex>
       </Flex>
     );
-  };
+  }, [handleSearchResultClick, highlightText, searchText, renderSearchIcon]);
 
-  const renderRecentSearches = () => {
+  const renderRecentSearches = useCallback(() => {
     if (recentSearchesLoading) {
       return (
         <Flex data-id="003340" justify="center" p={4}>
@@ -553,134 +529,170 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
                 textOverflow="ellipsis"
                 whiteSpace="nowrap"
                 minWidth={0}>
-                {recentSearch.term}
+                {recentSearch.text}
               </Text>
             </Flex>
           ))}
         </Stack>
       </Box>
     );
-  };
+  }, [recentSearchesLoading, recentSearches, handleRecentSearchClick]);
 
-  const renderSearchContent = () => {
-    // Show loading if actively loading OR if we have search text but haven't searched yet (during debounce)
-    if (searchLoading || (searchText?.trim() && !hasSearched)) {
-      return (
-        <Flex data-id="003205" justify="center" p={4}>
-          <Loader data-id="003206" />
-        </Flex>
-      );
+  const getPageUrlForCategory = useCallback((scopeType: string): string => {
+    switch (module?.type) {
+      case 'audits': {
+        switch (scopeType) {
+          case 'actions':
+            return '/actions';
+          case 'answers':
+            return '/answers';
+          default:
+            return '/dashboard'; // Audits page is shown on dashboard
+        }
+      }
+      case 'tracker': {
+        return '/dashboard';
+      }
+      default:
+        return '';
     }
+  }, [module?.type]);
 
-    // Show error message if there's a search error
-    if (searchError) {
-      return (
+  const handleViewMoreResultsClick = useCallback(async (scopeType: string) => {
+    // Save the current search text to recent searches
+    await saveRecentSearchSafely(searchText || '');
+
+    const pageUrl = getPageUrlForCategory(scopeType);
+    if (pageUrl) {
+      const params = new URLSearchParams();
+      if (searchText) {
+        params.set('search', searchText);
+      }
+      navigateTo(`${pageUrl}?${params.toString()}`);
+      setIsSearchBarOpen(false);
+      // Don't clear searchText - keep it in the search bar
+      setSearchResults([]);
+    }
+  }, [searchText, saveRecentSearchSafely, getPageUrlForCategory, navigateTo, setIsSearchBarOpen, setSearchResults]);
+
+  const renderLoadingState = useCallback(() => {
+    return (
+      <Flex data-id="003205" justify="center" p={4}>
+        <Loader data-id="003206" />
+      </Flex>
+    );
+  }, []);
+
+  const renderDividerIfRecentSearches = useCallback((dataId: string) => {
+    if (recentSearches.length === 0) return null;
+    return <Divider data-id={dataId} borderColor={'#CBD5E0'} mb={4} />;
+  }, [recentSearches.length]);
+
+  const renderErrorState = useCallback(() => {
+    return (
+      <>
+        {renderDividerIfRecentSearches('003367')}
         <SearchBarMessage
           data-id="003364"
           icon={SearchErrorIcon}
           heading="Search could not be completed"
           text="Please try again, or refresh the page" />
-      );
-    }
+      </>
+    );
+  }, [renderDividerIfRecentSearches]);
 
-    // Show empty search message when no search text is entered
-    if (!searchText?.trim()) {
-      return (<SearchBarMessage data-id="003365" icon={EmptySearchIcon} text="Type a keyword to search" />);
-    }
-
-    // Show results if available
-    if (searchResults.length > 0) {
-      return (
-        <Stack data-id="003207" spacing={4}>
-          {Object.entries(groupedResults).map(([key, results]) => {
-            const [scopeType, scopeId] = key.split('-');
-            const categoryLabel = getCategoryLabel(scopeType, scopeId);
-            return (
-              <Box data-id="003208" key={key}>
-                <Flex data-id="003209" flexDir={'row'} align={'center'} gap={'8px'} mb={1}>
-                  <Text data-id="003210" fontSize="14px" fontWeight="600" color={'#718096'}>
-                    {categoryLabel}
-                  </Text>
-                  <Divider data-id="003211" borderColor={'#CBD5E0'} flex={1} />
-                  {results.length >= 3 && (
-                    <Flex
-                      data-id="003212"
-                      align="center"
-                      gap={2}
-                      cursor="pointer"
-                      px={2}
-                      py={1}
-                      rounded="md"
-                      _hover={{
-                        bg: '#D6E6F5',
-                      }}
-                      transition="background-color 200ms"
-                      onClick={() => {
-                        // Determine the page URL based on category type
-                        let pageUrl = '';
-                        switch (module?.type) {
-                          case 'audits': {
-                            switch (scopeType) {
-                              case 'actions':
-                                pageUrl = '/actions';
-                                break;
-                              case 'answers':
-                                pageUrl = '/answers';
-                                break;
-                              default:
-                                pageUrl = '/dashboard'; // Audits page is shown on dashboard
-                            }
-                            break;
-                          }
-                          case 'tracker': {
-                            pageUrl = '/dashboard';
-                            break;
-                          }
-                        }
-
-                        if (pageUrl) {
-                          const params = new URLSearchParams();
-                          if (searchText) {
-                            params.set('search', searchText);
-                          }
-                          navigateTo(`${pageUrl}?${params.toString()}`);
-                          setIsSearchBarOpen(false);
-                          // Don't clear searchText - keep it in the search bar
-                          setSearchResults([]);
-                        }
-                      }}>
-                      <Text data-id="003213" fontSize="14px" fontWeight="500" color="#0073E6">
-                        View more results
-                      </Text>
-                      <ViewMoreIcon data-id="003214" boxSize="9px" color="#0073E6" />
-                    </Flex>
-                  )}
-                </Flex>
-                <Stack data-id="003215" spacing={0}>
-                  {results.map((result) => renderSearchResultItem(result))}
-                </Stack>
-              </Box>
-            );
-          })}
-        </Stack>
-      );
-    }
-
-    // Show no results found message when search text exists but no results
-    // Only show this if we've actually completed a search (not during debounce or initial typing)
-    if (hasSearched) {
-      return (
+  const renderNoResultsState = useCallback(() => {
+    return (
+      <>
+        {renderDividerIfRecentSearches('003368')}
         <SearchBarMessage
           data-id="003366"
           icon={NoResultsFoundIcon}
           heading="We couldn't find a match"
           text="Check spelling or try another term." />
-      );
+      </>
+    );
+  }, [renderDividerIfRecentSearches]);
+
+  const renderGroupedResults = useCallback(() => {
+    return (
+      <Stack data-id="003207" spacing={4}>
+        {Object.entries(groupedResults).map(([key, results]) => {
+          const [scopeType, scopeId] = key.split('-');
+          const categoryLabel = getCategoryLabel(scopeType, scopeId);
+          return (
+            <Box data-id="003208" key={key}>
+              <Flex data-id="003209" flexDir={'row'} align={'center'} gap={'8px'} mb={1}>
+                <Text data-id="003210" fontSize="14px" fontWeight="600" color={'#718096'}>
+                  {categoryLabel}
+                </Text>
+                <Divider data-id="003211" borderColor={'#CBD5E0'} flex={1} />
+                {results.length >= 3 && (
+                  <Flex
+                    data-id="003212"
+                    align="center"
+                    gap={2}
+                    cursor="pointer"
+                    px={2}
+                    py={1}
+                    rounded="md"
+                    _hover={{
+                      bg: '#D6E6F5',
+                    }}
+                    transition="background-color 200ms"
+                    onClick={() => handleViewMoreResultsClick(scopeType)}>
+                    <Text data-id="003213" fontSize="14px" fontWeight="500" color="#0073E6">
+                      View more results
+                    </Text>
+                    <ViewMoreIcon data-id="003214" boxSize="9px" color="#0073E6" />
+                  </Flex>
+                )}
+              </Flex>
+              <Stack data-id="003215" spacing={0}>
+                {results.map((result) => renderSearchResultItem(result))}
+              </Stack>
+            </Box>
+          );
+        })}
+      </Stack>
+    );
+  }, [groupedResults, getCategoryLabel, handleViewMoreResultsClick, renderSearchResultItem]);
+
+  const shouldShowLoading = useCallback(() => {
+    return searchLoading || (searchText?.trim() && !hasSearched);
+  }, [searchLoading, searchText, hasSearched]);
+
+  const shouldShowResults = useCallback(() => {
+    return searchText?.trim() && searchResults.length > 0;
+  }, [searchText, searchResults.length]);
+
+  const shouldShowNoResults = useCallback(() => {
+    return searchText?.trim() && hasSearched && searchResults.length === 0;
+  }, [searchText, hasSearched, searchResults.length]);
+
+  const renderSearchContent = useCallback(() => {
+    if (shouldShowLoading()) {
+      return renderLoadingState();
+    }
+
+    if (searchError) {
+      return renderErrorState();
+    }
+
+    if (!searchText?.trim()) {
+      return null;
+    }
+
+    if (shouldShowResults()) {
+      return renderGroupedResults();
+    }
+
+    if (shouldShowNoResults()) {
+      return renderNoResultsState();
     }
     
-    // This should not be reached due to the loading check above, but included as fallback
     return null;
-  };
+  }, [shouldShowLoading, searchError, searchText, shouldShowResults, shouldShowNoResults, renderLoadingState, renderErrorState, renderGroupedResults, renderNoResultsState]);
 
   return (
     <Flex
@@ -727,13 +739,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
             mt="10px"
             onClick={() => {
               // Navigate to the current module's main page without search query
-              let pageUrl = '';
-              switch (module?.type) {
-                case 'audits':
-                case 'tracker':
-                  pageUrl = '/dashboard'; // Audits page is shown on dashboard
-                  break;
-              }
+              const pageUrl = (module?.type === 'audits' || module?.type === 'tracker') ? '/dashboard' : '';
               
               if (pageUrl) {
                 navigateTo(pageUrl);
@@ -792,7 +798,15 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
                   {renderSearchContent()}
                 </>
               ) : (
-                (renderRecentSearches() || (!recentSearchesLoading && (<SearchBarMessage data-id="003415" icon={EmptySearchIcon} text="Type a keyword to search" />)))
+                <>
+                  {renderRecentSearches()}
+                  {recentSearches.length > 0 && !recentSearchesLoading && (
+                    <Divider data-id="003369" borderColor={'#CBD5E0'} mb={4} />
+                  )}
+                  {!recentSearchesLoading && (
+                    <SearchBarMessage data-id="003415" icon={EmptySearchIcon} text="Type a keyword to search" />
+                  )}
+                </>
               )}
             </Box>
           </Flex>

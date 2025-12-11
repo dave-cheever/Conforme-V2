@@ -1,6 +1,5 @@
 import getRecentSearches from './getRecentSearches.q';
 import saveRecentSearch from './saveRecentSearch.m';
-import { GqlEntityTypeEnumDefs } from 'app-enums';
 
 const recentSearchesResolvers = {
   Query: {
@@ -12,16 +11,10 @@ const recentSearchesResolvers = {
 };
 
 export const recentSearchesTypeDefs = `
-  enum EntityType {
-    ${GqlEntityTypeEnumDefs}
-  }
-
   type RecentSearch {
     _id: ID!
     userId: String!
-    term: String!
-    entityId: ID!
-    entityType: EntityType!
+    text: String!
     organizationId: String!
     metatags: Metatags!
   }
@@ -32,9 +25,7 @@ export const recentSearchesTypeDefs = `
 
   input SaveRecentSearchInput {
     userId: String!
-    term: String!
-    entityId: ID!
-    entityType: EntityType!
+    text: String!
   }
 `;
 

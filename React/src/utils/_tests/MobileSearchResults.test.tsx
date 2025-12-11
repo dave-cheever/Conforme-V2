@@ -4,12 +4,17 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import theme from '../../bootstrap/theme';
+import { IRecentSearch } from '../../interfaces/IRecentSearch';
 import { ISearchResult } from '../../interfaces/ISearchResult';
 import MobileSearchResults from '../../components/MobileSearchResults';
 
 // Mock dependencies
+const mockUser = { _id: 'user1', userId: 'user1' };
+
 vi.mock('../../contexts/AppProvider', () => ({
-  useAppContext: vi.fn(),
+  useAppContext: () => ({
+    user: mockUser,
+  }),
 }));
 
 const mockNavigateTo = vi.fn();
@@ -24,10 +29,32 @@ vi.mock('../../components/Loader', () => ({
   default: () => <div data-id="003232" data-testid="loader">Loading...</div>,
 }));
 
+const mockSaveRecentSearch = vi.fn().mockResolvedValue({
+  data: {
+    saveRecentSearch: [],
+  },
+});
+
+vi.mock('@apollo/client', () => ({
+  useMutation: () => [mockSaveRecentSearch, { loading: false }],
+  gql: (strings: TemplateStringsArray) => strings.join(''),
+}));
+
 vi.mock('../../components/Table/Cells/StatusCell', () => ({
   __esModule: true,
   default: ({ status }: { status: string }) => (
     <span data-id="003233" data-testid="status-cell">{status}</span>
+  ),
+}));
+
+vi.mock('../../components/SearchBar/SearchBarMessage', () => ({
+  __esModule: true,
+  default: ({ icon: IconComponent, heading, text }: { icon: any; heading?: string; text: string }) => (
+    <div data-id="013087" data-testid="search-bar-message">
+      {IconComponent && <IconComponent data-id="013088" data-testid="message-icon" />}
+      {heading && <div data-id="013089" data-testid="message-heading">{heading}</div>}
+      <div data-id="013090" data-testid="message-text">{text}</div>
+    </div>
   ),
 }));
 
@@ -59,10 +86,35 @@ vi.mock('../../icons', async (importOriginal) => {
         height={boxSize}
         fill={color} />
     ),
+    ClockIcon: ({ boxSize, color }: { boxSize?: string; color?: string }) => (
+      <svg data-id="003346" data-testid="clock-icon" width={boxSize} color={color} />
+    ),
+    EmptySearchIcon: ({ boxSize, color }: { boxSize?: string; color?: string }) => (
+      <svg data-id="003362" data-testid="empty-search-icon" width={boxSize} color={color} />
+    ),
+    NoResultsFoundIcon: ({ boxSize, color }: { boxSize?: string; color?: string }) => (
+      <svg data-id="003363" data-testid="no-results-icon" width={boxSize} color={color} />
+    ),
+    SearchErrorIcon: ({ boxSize, color }: { boxSize?: string; color?: string }) => (
+      <svg data-id="003361" data-testid="search-error-icon" width={boxSize} color={color} />
+    ),
   };
 });
 
+vi.mock('../../components/SearchBar/SearchBarMessage', () => ({
+  __esModule: true,
+  default: ({ icon: Icon, heading, text }: { icon?: any; heading?: string; text?: string }) => (
+    <div data-id="003360" data-testid="search-bar-message">
+      {Icon && <Icon data-id="013091" data-testid="message-icon" />}
+      {/* Render text directly so screen.getByText can find it */}
+      {heading && <div data-id="013092">{heading}</div>}
+      {text && <div data-id="013093">{text}</div>}
+    </div>
+  ),
+}));
+
 const mockOnResultClick = vi.fn();
+const mockOnRecentSearchClick = vi.fn();
 
 const mockModule = { _id: 'module1', type: 'audits' };
 const mockAuditSearchItems = [
@@ -71,6 +123,19 @@ const mockAuditSearchItems = [
 ];
 const mockTrackerSearchItems = [
   { type: 'tracker-item-response', label: 'Tracker Items', _id: 'tracker-item-response' },
+];
+
+const mockRecentSearches: IRecentSearch[] = [
+  {
+    _id: 'recent1',
+    userId: 'user1',
+    text: 'Previous Search',
+    organizationId: 'org1',
+    metatags: {
+      addedAt: new Date(),
+      addedBy: 'user1',
+    },
+  },
 ];
 
 const renderWithProviders = (component: React.ReactElement) => {
@@ -84,6 +149,12 @@ const renderWithProviders = (component: React.ReactElement) => {
 describe('MobileSearchResults', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockSaveRecentSearch.mockClear();
+    mockSaveRecentSearch.mockResolvedValue({
+      data: {
+        saveRecentSearch: [],
+      },
+    });
   });
 
   describe('Loading State', () => {
@@ -97,10 +168,52 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
+    });
+
+    it('should display loader when recentSearchesLoading is true and hide search content', () => {
+      renderWithProviders(
+        <MobileSearchResults
+          data-id="003238"
+          searchResults={[]}
+          searchText=""
+          searchLoading={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={true}
+          onResultClick={mockOnResultClick} />
+      );
+
+      expect(screen.getByTestId('loader')).toBeInTheDocument();
+      // Should not show "Type a keyword to search" while recent searches are loading
+      expect(screen.queryByText('Type a keyword to search')).not.toBeInTheDocument();
+    });
+
+    it('should show only one loader when both recentSearchesLoading and searchLoading are true', () => {
+      renderWithProviders(
+        <MobileSearchResults
+          data-id="003238"
+          searchResults={[]}
+          searchText="test"
+          searchLoading={true}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={true}
+          onResultClick={mockOnResultClick} />
+      );
+
+      // Should only show one loader (recent searches loader takes priority)
+      const loaders = screen.getAllByTestId('loader');
+      expect(loaders.length).toBe(1);
     });
   });
 
@@ -115,6 +228,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -122,8 +237,8 @@ describe('MobileSearchResults', () => {
       expect(screen.getByText('Check spelling or try another term.')).toBeInTheDocument();
     });
 
-    it('should return null when searchText is empty and no results', () => {
-      const { container } = renderWithProviders(
+    it('should display "Type a keyword to search" when searchText is empty and recent searches are loaded', () => {
+      renderWithProviders(
         <MobileSearchResults
           data-id="003240"
           searchResults={[]}
@@ -132,12 +247,31 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
-      // Component returns null, so container should be empty or only have ChakraProvider wrapper
-      const mobileResults = container.querySelector('[data-testid="mobile-search-results"]');
-      expect(mobileResults).not.toBeInTheDocument();
+      expect(screen.getByText('Type a keyword to search')).toBeInTheDocument();
+    });
+
+    it('should NOT display "Type a keyword to search" when recentSearchesLoading is true', () => {
+      renderWithProviders(
+        <MobileSearchResults
+          data-id="003240"
+          searchResults={[]}
+          searchText=""
+          searchLoading={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={true}
+          onResultClick={mockOnResultClick} />
+      );
+
+      expect(screen.queryByText('Type a keyword to search')).not.toBeInTheDocument();
+      expect(screen.getByTestId('loader')).toBeInTheDocument();
     });
   });
 
@@ -173,6 +307,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -191,6 +327,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -209,6 +347,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -227,6 +367,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -253,6 +395,8 @@ describe('MobileSearchResults', () => {
           module={{ _id: 'module1', type: 'tracker' }}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -295,6 +439,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -328,6 +474,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -356,6 +504,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -392,6 +542,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -431,6 +583,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -463,6 +617,8 @@ describe('MobileSearchResults', () => {
           module={{ _id: 'module1', type: 'tracker' }}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -524,6 +680,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -569,6 +727,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -619,6 +779,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -659,6 +821,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -694,6 +858,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -721,6 +887,8 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
@@ -730,6 +898,29 @@ describe('MobileSearchResults', () => {
 
       // Should NOT show "We couldn't find a match" message
       expect(screen.queryByText("We couldn't find a match")).not.toBeInTheDocument();
+    });
+
+    it('should show error message with divider when recent searches exist', () => {
+      renderWithProviders(
+        <MobileSearchResults
+          data-id="003257"
+          searchResults={[]}
+          searchText="test"
+          searchLoading={false}
+          searchError={true}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={mockRecentSearches}
+          recentSearchesLoading={false}
+          onResultClick={mockOnResultClick} />
+      );
+
+      // Should show recent searches
+      expect(screen.getByText('Recent searches')).toBeInTheDocument();
+      expect(screen.getByText('Previous Search')).toBeInTheDocument();
+      // Should show error message
+      expect(screen.getByText('Search could not be completed')).toBeInTheDocument();
     });
 
     it('should show "We couldn\'t find a match" when searchError is false and no results', () => {
@@ -743,12 +934,156 @@ describe('MobileSearchResults', () => {
           module={mockModule}
           auditSearchItems={mockAuditSearchItems}
           trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={[]}
+          recentSearchesLoading={false}
           onResultClick={mockOnResultClick} />
       );
 
       // Should show "no results" message when there's no error
       expect(screen.getByText("We couldn't find a match")).toBeInTheDocument();
       expect(screen.queryByText('Search could not be completed')).not.toBeInTheDocument();
+    });
+
+    it('should show "We couldn\'t find a match" with divider when recent searches exist', () => {
+      renderWithProviders(
+        <MobileSearchResults
+          data-id="003258"
+          searchResults={[]}
+          searchText="test"
+          searchLoading={false}
+          searchError={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={mockRecentSearches}
+          recentSearchesLoading={false}
+          onResultClick={mockOnResultClick} />
+      );
+
+      // Should show recent searches
+      expect(screen.getByText('Recent searches')).toBeInTheDocument();
+      // Should show "no results" message
+      expect(screen.getByText("We couldn't find a match")).toBeInTheDocument();
+    });
+  });
+
+  describe('Recent Searches', () => {
+    it('should display recent searches when provided', () => {
+      renderWithProviders(
+        <MobileSearchResults
+          data-id="003259"
+          searchResults={[]}
+          searchText=""
+          searchLoading={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={mockRecentSearches}
+          recentSearchesLoading={false}
+          onResultClick={mockOnResultClick}
+          onRecentSearchClick={mockOnRecentSearchClick} />
+      );
+
+      expect(screen.getByText('Recent searches')).toBeInTheDocument();
+      expect(screen.getByText('Previous Search')).toBeInTheDocument();
+      expect(screen.getByTestId('clock-icon')).toBeInTheDocument();
+    });
+
+    it('should call onRecentSearchClick when recent search is clicked', () => {
+      renderWithProviders(
+        <MobileSearchResults
+          data-id="003260"
+          searchResults={[]}
+          searchText=""
+          searchLoading={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={mockRecentSearches}
+          recentSearchesLoading={false}
+          onResultClick={mockOnResultClick}
+          onRecentSearchClick={mockOnRecentSearchClick} />
+      );
+
+      const recentSearchText = screen.getByText('Previous Search');
+      const clickableParent = recentSearchText.closest('div[style*="cursor: pointer"]') || recentSearchText.parentElement;
+      
+      if (clickableParent) {
+        fireEvent.click(clickableParent);
+        expect(mockOnRecentSearchClick).toHaveBeenCalledWith(mockRecentSearches[0]);
+      }
+    });
+
+    it('should show divider between recent searches and search content when search text is empty', () => {
+      const { container } = renderWithProviders(
+        <MobileSearchResults
+          data-id="003261"
+          searchResults={[]}
+          searchText=""
+          searchLoading={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={mockRecentSearches}
+          recentSearchesLoading={false}
+          onResultClick={mockOnResultClick} />
+      );
+
+      expect(screen.getByText('Recent searches')).toBeInTheDocument();
+      expect(screen.getByText('Type a keyword to search')).toBeInTheDocument();
+      // Divider should be present (data-id="003369")
+      const divider = container.querySelector('[data-id="003369"]');
+      expect(divider).toBeInTheDocument();
+    });
+
+    it('should NOT show divider when typing (searchText is not empty)', () => {
+      const { container } = renderWithProviders(
+        <MobileSearchResults
+          data-id="003262"
+          searchResults={[]}
+          searchText="test"
+          searchLoading={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={mockRecentSearches}
+          recentSearchesLoading={false}
+          onResultClick={mockOnResultClick} />
+      );
+
+      // Divider should NOT be present when typing
+      const divider = container.querySelector('[data-id="003369"]');
+      expect(divider).not.toBeInTheDocument();
+    });
+
+    it('should display recent searches with search results', () => {
+      const results: ISearchResult[] = [
+        {
+          _id: '1',
+          title: 'Result 1',
+          type: 'audits',
+          reference: 'REF-001',
+          scope: { type: 'audits', _id: 'audits' },
+        },
+      ];
+
+      renderWithProviders(
+        <MobileSearchResults
+          data-id="003263"
+          searchResults={results}
+          searchText="test"
+          searchLoading={false}
+          module={mockModule}
+          auditSearchItems={mockAuditSearchItems}
+          trackerSearchItems={mockTrackerSearchItems}
+          recentSearches={mockRecentSearches}
+          recentSearchesLoading={false}
+          onResultClick={mockOnResultClick} />
+      );
+
+      expect(screen.getByText('Recent searches')).toBeInTheDocument();
+      expect(screen.getByText('Previous Search')).toBeInTheDocument();
+      expect(screen.getByText('REF-001')).toBeInTheDocument();
     });
   });
 });

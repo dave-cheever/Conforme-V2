@@ -1,18 +1,11 @@
 import { model, Schema } from 'mongoose';
 
 import { IRecentSearch, IRecentSearchModel } from 'app-interfaces';
-import { ENTITY_TYPES } from 'app-enums';
 
 const recentSearchSchema = new Schema<IRecentSearch, IRecentSearchModel>({
   _id: String,
   userId: { type: String, required: true },
-  term: { type: String, required: true },
-  entityId: { type: String, required: true },
-  entityType: {
-    type: String,
-    required: true,
-    enum: ENTITY_TYPES,
-  },
+  text: { type: String, required: true },
   organizationId: { type: String, required: true },
   metatags: {
     addedAt: Date,

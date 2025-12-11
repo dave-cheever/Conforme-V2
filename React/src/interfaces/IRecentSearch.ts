@@ -2,9 +2,7 @@ import { IBase } from './IBase';
 
 export interface IRecentSearch extends IBase {
   userId: string;
-  term: string;
-  entityId: string;
-  entityType: 'audits' | 'actions' | 'answers' | 'tracker_items';
+  text: string;
   organizationId: string;
   metatags: {
     addedAt?: Date;

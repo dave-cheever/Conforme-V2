@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
+import { IRecentSearch } from './IRecentSearch';
 import { ISearchResult } from './ISearchResult';
 
 export interface INavigationTopContext {
@@ -17,4 +18,9 @@ export interface INavigationTopContext {
 
   searchError: boolean;
   setSearchError: Dispatch<SetStateAction<boolean>>;
+
+  recentSearches: IRecentSearch[];
+  setRecentSearches: Dispatch<SetStateAction<IRecentSearch[]>>;
+  recentSearchesLoading: boolean;
+  setRecentSearchesLoading: Dispatch<SetStateAction<boolean>>;
 }

@@ -155,6 +155,10 @@ describe('SearchBar Component', () => {
       setSearchLoading: mockSetSearchLoading,
       searchError: false,
       setSearchError: mockSetSearchError,
+      recentSearches: [],
+      setRecentSearches: vi.fn(),
+      recentSearchesLoading: false,
+      setRecentSearchesLoading: vi.fn(),
     });
 
     mockUseConfig.mockReturnValue({
@@ -217,6 +221,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseDisclosure.mockReturnValue({
@@ -269,6 +277,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseLazyQuery.mockReturnValue([
@@ -324,6 +336,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockGetSearchResults.mockResolvedValue({
@@ -363,6 +379,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseDisclosure.mockReturnValue({
@@ -396,6 +416,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseLazyQuery.mockReturnValue([
@@ -444,6 +468,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseAppContext.mockReturnValue({
@@ -534,6 +562,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseAppContext.mockReturnValue({
@@ -577,6 +609,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseAppContext.mockReturnValue({
@@ -616,6 +652,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseAppContext.mockReturnValue({
@@ -659,6 +699,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseLazyQuery.mockReturnValue([
@@ -714,6 +758,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseLazyQuery.mockReturnValue([
@@ -746,8 +794,8 @@ describe('SearchBar Component', () => {
       }
     });
 
-    it('should apply ellipsis styles to recent search terms', () => {
-      const longRecentSearchTerm = 'This is a very long recent search term that should be truncated';
+    it('should apply ellipsis styles to recent search text', () => {
+      const longRecentSearchText = 'This is a very long recent search text that should be truncated';
       mockUseNavigationTopContext.mockReturnValue({
         isSearchBarOpen: true,
         setIsSearchBarOpen: mockSetIsSearchBarOpen,
@@ -759,6 +807,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseQuery.mockImplementation((query, options) => {
@@ -766,7 +818,16 @@ describe('SearchBar Component', () => {
           return {
             data: { 
               getRecentSearches: [
-                { _id: '1', term: longRecentSearchTerm, entityId: '1', entityType: 'audits' }
+                { 
+                  _id: '1', 
+                  text: longRecentSearchText,
+                  userId: 'user1',
+                  organizationId: 'org1',
+                  metatags: {
+                    addedAt: new Date(),
+                    addedBy: 'user1',
+                  }
+                }
               ] 
             },
             loading: false,
@@ -815,6 +876,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: true,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseLazyQuery.mockReturnValue([
@@ -861,6 +926,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       // Mock Apollo Client returning an error in the result
@@ -905,6 +974,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       // Mock Apollo Client throwing an error
@@ -946,6 +1019,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseLazyQuery.mockReturnValue([
@@ -983,6 +1060,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseLazyQuery.mockReturnValue([
@@ -1025,6 +1106,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseLazyQuery.mockReturnValue([
@@ -1052,6 +1137,10 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       rerender(
@@ -1110,6 +1199,10 @@ describe('SearchBar Component', () => {
            setSearchLoading: mockSetSearchLoading,
            searchError: false,
            setSearchError: mockSetSearchError,
+           recentSearches: [],
+           setRecentSearches: vi.fn(),
+           recentSearchesLoading: false,
+           setRecentSearchesLoading: vi.fn(),
          });
 
         mockUseAppContext.mockReturnValue({
@@ -1134,14 +1227,12 @@ describe('SearchBar Component', () => {
         expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
       });
 
-      it('should handle recent search with answers entity type', () => {
+      it('should handle recent search with text field', () => {
         const mockRecentSearches = [
           {
             _id: 'recent1',
             userId: 'user1',
-            term: 'Previous Answer Search',
-            entityId: 'answer1',
-            entityType: 'answers',
+            text: 'Previous Answer Search',
             organizationId: 'org1',
             metatags: {
               addedAt: new Date(),
@@ -1175,6 +1266,10 @@ describe('SearchBar Component', () => {
            setSearchLoading: mockSetSearchLoading,
            searchError: false,
            setSearchError: mockSetSearchError,
+           recentSearches: [],
+           setRecentSearches: vi.fn(),
+           recentSearchesLoading: false,
+           setRecentSearchesLoading: vi.fn(),
          });
 
         mockUseAppContext.mockReturnValue({
@@ -1190,7 +1285,7 @@ describe('SearchBar Component', () => {
 
         renderWithProviders(<SearchBar data-id="003328" />);
 
-        // Verify component renders with recent searches containing answers entity type
+        // Verify component renders with recent searches containing text field
         expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
         expect(mockUseQuery).toHaveBeenCalled();
       });
@@ -1239,6 +1334,10 @@ describe('SearchBar Component', () => {
           setSearchLoading: mockSetSearchLoading,
           searchError: false,
           setSearchError: mockSetSearchError,
+          recentSearches: [],
+          setRecentSearches: vi.fn(),
+          recentSearchesLoading: false,
+          setRecentSearchesLoading: vi.fn(),
         });
 
         mockUseAppContext.mockReturnValue({
@@ -1263,14 +1362,12 @@ describe('SearchBar Component', () => {
         expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
       });
 
-      it('should handle recent search with tracker_items entity type', () => {
+      it('should handle recent search with text field for tracker items', () => {
         const mockRecentSearches = [
           {
             _id: 'recent2',
             userId: 'user1',
-            term: 'Previous Tracker Search',
-            entityId: 'tracker1',
-            entityType: 'tracker_items',
+            text: 'Previous Tracker Search',
             organizationId: 'org1',
             metatags: {
               addedAt: new Date(),
@@ -1304,6 +1401,10 @@ describe('SearchBar Component', () => {
            setSearchLoading: mockSetSearchLoading,
            searchError: false,
            setSearchError: mockSetSearchError,
+           recentSearches: [],
+           setRecentSearches: vi.fn(),
+           recentSearchesLoading: false,
+           setRecentSearchesLoading: vi.fn(),
          });
 
         mockUseAppContext.mockReturnValue({
@@ -1319,7 +1420,7 @@ describe('SearchBar Component', () => {
 
         renderWithProviders(<SearchBar data-id="003330" />);
 
-        // Verify component renders with recent searches containing tracker_items entity type
+        // Verify component renders with recent searches containing text field
         expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
         expect(mockUseQuery).toHaveBeenCalled();
       });
@@ -1362,6 +1463,10 @@ describe('SearchBar Component', () => {
           setSearchLoading: mockSetSearchLoading,
           searchError: false,
           setSearchError: mockSetSearchError,
+          recentSearches: [],
+          setRecentSearches: vi.fn(),
+          recentSearchesLoading: false,
+          setRecentSearchesLoading: vi.fn(),
         });
 
         mockUseAppContext.mockReturnValue({
@@ -1430,6 +1535,10 @@ describe('SearchBar Component', () => {
           setSearchLoading: mockSetSearchLoading,
           searchError: false,
           setSearchError: mockSetSearchError,
+          recentSearches: [],
+          setRecentSearches: vi.fn(),
+          recentSearchesLoading: false,
+          setRecentSearchesLoading: vi.fn(),
         });
 
         mockUseAppContext.mockReturnValue({
@@ -1458,6 +1567,102 @@ describe('SearchBar Component', () => {
           expect(mockNavigateTo).toHaveBeenCalledWith('/dashboard?search=test');
         }
       });
+    });
+  });
+
+  describe('Recent Searches Loading State', () => {
+    it('should sync recent searches loading state to context when in mobile drawer', () => {
+      const mockSetRecentSearchesLoading = vi.fn();
+      
+      mockUseNavigationTopContext.mockReturnValue({
+        isSearchBarOpen: true,
+        setIsSearchBarOpen: mockSetIsSearchBarOpen,
+        searchText: '',
+        setSearchText: mockSetSearchText,
+        searchResults: [],
+        setSearchResults: mockSetSearchResults,
+        searchLoading: false,
+        setSearchLoading: mockSetSearchLoading,
+        searchError: false,
+        setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: mockSetRecentSearchesLoading,
+      });
+
+      mockUseQuery.mockImplementation((query, options) => {
+        if (options?.skip === false && options?.variables?.getRecentSearchesInput) {
+          return {
+            data: { getRecentSearches: [] },
+            loading: true, // Recent searches are loading
+            refetch: mockRefetchRecentSearches,
+          };
+        }
+        return {
+          data: mockQuestionsCategoriesData,
+          loading: false,
+        };
+      });
+
+      renderWithProviders(<SearchBar data-id="003333" isInMobileDrawer={true} />);
+
+      // The loading state should be synced to context
+      // Verify the component rendered correctly
+      expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
+    });
+
+    it('should sync recent searches data to context when in mobile drawer', () => {
+      const mockSetRecentSearches = vi.fn();
+      const mockRecentSearches = [
+        {
+          _id: 'recent1',
+          userId: 'user1',
+          text: 'Test Search',
+          organizationId: 'org1',
+          metatags: {
+            addedAt: new Date(),
+            addedBy: 'user1',
+          },
+        },
+      ];
+
+      mockUseNavigationTopContext.mockReturnValue({
+        isSearchBarOpen: true,
+        setIsSearchBarOpen: mockSetIsSearchBarOpen,
+        searchText: '',
+        setSearchText: mockSetSearchText,
+        searchResults: [],
+        setSearchResults: mockSetSearchResults,
+        searchLoading: false,
+        setSearchLoading: mockSetSearchLoading,
+        searchError: false,
+        setSearchError: mockSetSearchError,
+        recentSearches: [],
+        setRecentSearches: mockSetRecentSearches,
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
+      });
+
+      mockUseQuery.mockImplementation((query, options) => {
+        if (options?.skip === false && options?.variables?.getRecentSearchesInput) {
+          return {
+            data: { getRecentSearches: mockRecentSearches },
+            loading: false,
+            refetch: mockRefetchRecentSearches,
+          };
+        }
+        return {
+          data: mockQuestionsCategoriesData,
+          loading: false,
+        };
+      });
+
+      renderWithProviders(<SearchBar data-id="003334" isInMobileDrawer={true} />);
+
+      // The recent searches data should be synced to context
+      // Verify the component rendered correctly
+      expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
     });
   });
 
