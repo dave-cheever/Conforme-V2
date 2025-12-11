@@ -729,7 +729,6 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
           <CrossIcon
             _active={{}}
             _hover={{
-              color: 'navigationTop.notificationIconHover',
               opacity: 0.7,
               cursor: 'pointer',
             }}
