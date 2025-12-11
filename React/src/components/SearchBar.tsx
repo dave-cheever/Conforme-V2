@@ -375,22 +375,19 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     }
 
     if (url) {
-      const entityType = mapSearchResultTypeToEntityType(recentSearch.entityType);
-      if (entityType && user?.userId) {
         saveRecentSearch({
           variables: {
             saveRecentSearchInput: {
-              userId: user.userId,
+              userId: user?.userId,
               term: recentSearch.term,
               entityId: recentSearch.entityId,
-              entityType,
+              entityType: recentSearch.entityType,
             },
           },
         })
           .catch((error) => {
             console.error('Failed to save recent search:', error);
           });
-      }
 
       navigateTo(`/${url}`);
       setIsSearchBarOpen(false);
