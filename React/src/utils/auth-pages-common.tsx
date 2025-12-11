@@ -124,7 +124,7 @@ function LogoContainer({ isMobile, children }: { readonly isMobile: boolean; rea
     <Flex
       data-id="002725"
       position="absolute"
-      top={isMobile ? '10px' : '40px'}
+      top={isMobile ? '30px' : '40px'}
       left={isMobile ? '50%' : '20px'}
       transform={isMobile ? 'translateX(-50%)' : 'none'}
       zIndex={10}
@@ -144,7 +144,7 @@ function CompanyLogoTextFallback({ isMobile }: { readonly isMobile: boolean }) {
     <Flex
       data-id="002726"
       position="absolute"
-      top={isMobile ? '16px' : '40px'}
+      top={isMobile ? '30px' : '40px'}
       left={isMobile ? '50%' : '20px'}
       transform={isMobile ? 'translateX(-50%)' : 'none'}
       zIndex={10}
@@ -345,7 +345,7 @@ export function BackgroundImage({
   };
 
   const getTextTop = () => {
-    if (device === 'mobile') return '70px';
+    if (device === 'mobile') return '97px';
     if (device === 'tablet') return 3;
     return 0;
   };
@@ -486,7 +486,7 @@ export function BackgroundImage({
         <Box
           data-id="013086"
           position="absolute"
-          top="58px"
+          top="78px"
           left="50%"
           transform="translateX(-50%)"
           zIndex={4}

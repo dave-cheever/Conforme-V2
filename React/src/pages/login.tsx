@@ -45,7 +45,7 @@ function Login() {
           pb={[6, 6, 0]}
           px={[4, 4, 0]}
         >
-          <VStack align="center" data-id="000209" spacing={5} textAlign="center" w="full" maxW={['full', 'full', '400px']}>
+          <VStack align="center" data-id="000209"  px={[4, 4, 8]} spacing={5} textAlign="center" w="full" maxW={['full', 'full', '420px']}>
             <Flex
               color="loginPage.organizationNameColor"
               data-id="000210"
@@ -95,7 +95,7 @@ function Login() {
           h={['auto', 'auto', 'full']}
           justify={['center', 'center', 'center']}
           order={[2, 2, 1]}
-          w={['full', 'full', '35%']}
+          w={['full', 'full', '48%']}
           position={['absolute', 'absolute', 'relative']}
           bottom={[0, 0, 'auto']}
           left={0}
