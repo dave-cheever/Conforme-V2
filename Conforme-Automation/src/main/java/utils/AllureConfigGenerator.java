@@ -19,8 +19,8 @@ public class AllureConfigGenerator {
 
     private static void writeEnvironmentProperties(String resultsDir) {
         Properties props = new Properties();
-        props.setProperty("environment", System.getProperty("env", "SAT"));
-        props.setProperty("baseUrl", System.getProperty("baseUrl", "https://sat-redbook-client.azurewebsites.net/"));
+        props.setProperty("environment", System.getProperty("env", "SIT"));
+        props.setProperty("baseUrl", System.getProperty("baseUrl", "https://cielocosta.conforme-sit.app/"));
         props.setProperty("browser", System.getProperty("browser", "chrome"));
         props.setProperty("build", System.getProperty("build", "0.0.1"));
 

@@ -39,7 +39,7 @@ public class testListener extends extentManager implements ITestListener {
             // Capture Screenshot with Playwright
             String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
 //            String filePath = "./test-output/FailedTestsScreenshots/" + result.getName() + " - " + dateName + ".png";
-            String filePath = "C:\\Users\\Dave\\IdeaProjects\\Redbook-Automation\\test-output/FailedTestsScreenshots/" + result.getName() + " - " + dateName + ".png";
+            String filePath = "C:\\Users\\Dave\\Favorites\\Conforme V2\\Conforme-Automation\\test-output/FailedTestsScreenshots/" + result.getName() + " - " + dateName + ".png";
 
 
             page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(filePath)).setFullPage(true));
