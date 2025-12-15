@@ -7,9 +7,9 @@
   <test name="Conforme Test">
     <classes>
       <class name="unitTests.LoginTests" />
-<!--      <class name="unitTests.FilterTests" />-->
-<!--      <class name="unitTests.NavigationTests"/>-->
-<!--      <class name="unitTests.ModuleSwitcherTests"/>-->
+      <class name="unitTests.FilterTests" />
+      <class name="unitTests.NavigationTests"/>
+      <class name="unitTests.ModuleSwitcherTests"/>
     </classes>
   </test>
 </suite>
