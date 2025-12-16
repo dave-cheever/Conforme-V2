@@ -96,7 +96,7 @@ public class Login extends base.commonFunctions{
     Allure.step("Submitting login credentials");
     waitForVisibility(buttonNext, timeout, "Sign in button");
     //wait for 30 sec so that OTP will not generate too early
-    Thread.sleep(10000);
+    Thread.sleep(15000);
     click(buttonNext, "Sign in button");
   }
 
