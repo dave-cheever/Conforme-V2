@@ -1,11 +1,15 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="AllureSuite" parallel="false">
-    <listeners>
-        <listener class-name="reporting.AllureTestListener"/>
-    </listeners>
-    <test name="Conforme Test">
-        <classes>
-            <class name="unitTests.LoginTests" />
-        </classes>
-    </test>
+  <listeners>
+    <listener class-name="reporting.AllureTestListener"/>
+  </listeners>
+
+  <test name="Conforme Test">
+    <classes>
+      <class name="unitTests.LoginTests" />
+      <class name="unitTests.FilterTests" />
+      <class name="unitTests.NavigationTests"/>
+      <class name="unitTests.ModuleSwitcherTests"/>
+    </classes>
+  </test>
 </suite>
