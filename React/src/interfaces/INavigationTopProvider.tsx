@@ -19,6 +19,9 @@ export interface INavigationTopContext {
   searchError: boolean;
   setSearchError: Dispatch<SetStateAction<boolean>>;
 
+  hasSearched: boolean;
+  setHasSearched: Dispatch<SetStateAction<boolean>>;
+
   recentSearches: IRecentSearch[];
   setRecentSearches: Dispatch<SetStateAction<IRecentSearch[]>>;
   recentSearchesLoading: boolean;

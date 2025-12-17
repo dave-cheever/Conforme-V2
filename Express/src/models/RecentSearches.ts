@@ -36,7 +36,7 @@ recentSearchSchema.statics.customFindByUserId = async function (
   return recentSearches;
 };
 
-const recentSearchModel = model<IRecentSearch, IRecentSearchModel>('RecentSearch', recentSearchSchema, 'recentsearches');
+const recentSearchModel = model<IRecentSearch, IRecentSearchModel>('RecentSearch', recentSearchSchema, 'recentSearches');
 
 export default recentSearchModel;
 

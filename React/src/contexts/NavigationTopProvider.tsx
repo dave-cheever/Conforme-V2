@@ -18,6 +18,7 @@ function NavigationTopProvider({ children }) {
   const [searchResults, setSearchResults] = useState<ISearchResult[]>([]);
   const [searchLoading, setSearchLoading] = useState<boolean>(false);
   const [searchError, setSearchError] = useState<boolean>(false);
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [recentSearches, setRecentSearches] = useState<IRecentSearch[]>([]);
   const [recentSearchesLoading, setRecentSearchesLoading] = useState<boolean>(false);
 
@@ -33,13 +34,15 @@ function NavigationTopProvider({ children }) {
       setSearchLoading,
       searchError,
       setSearchError,
+      hasSearched,
+      setHasSearched,
       recentSearches,
       setRecentSearches,
       recentSearchesLoading,
       setRecentSearchesLoading,
     }),
     // eslint-disable-line react-hooks/exhaustive-deps
-    [isSearchBarOpen, searchText, searchResults, searchLoading, searchError, recentSearches, recentSearchesLoading],
+    [isSearchBarOpen, searchText, searchResults, searchLoading, searchError, hasSearched, recentSearches, recentSearchesLoading],
   );
 
   return <NavigationTopContext.Provider data-id="000012" value={value}>{children}</NavigationTopContext.Provider>;
