@@ -292,7 +292,7 @@ function NavigationTop() {
                     onSearchDrawerClose();
                   }}
                   onRecentSearchClick={(recentSearch) => {
-                    // Update search text to trigger search
+                    // Update search text immediately for instant UI feedback
                     setSearchText(recentSearch.text);
                   }} />
               </Box>

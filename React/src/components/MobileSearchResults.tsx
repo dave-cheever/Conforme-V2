@@ -237,10 +237,7 @@ function MobileSearchResults({
     await saveRecentSearchSafely(searchText);
   }, [searchText, saveRecentSearchSafely, getPageUrlForScopeType, navigateTo, onResultClick]);
 
-  const handleRecentSearchClick = async (recentSearch: IRecentSearch) => {
-    // Move the clicked recent search to the top (update metadata)
-    await saveRecentSearchSafely(recentSearch.text);
-    // Notify parent to update search text and trigger search
+  const handleRecentSearchClick = (recentSearch: IRecentSearch) => {
     if (onRecentSearchClick) {
       onRecentSearchClick(recentSearch);
     }
@@ -276,9 +273,7 @@ function MobileSearchResults({
       navigateTo(`/${url}`);
       onResultClick(result);
 
-      // Save the result title text to recent searches - fire and forget
-      const searchTextToSave = result.type === 'audits' && result.reference ? result.reference : result.title;
-      saveRecentSearchSafely(searchTextToSave);
+      saveRecentSearchSafely(searchText);
     }
   };
 

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { flushSync } from 'react-dom';
 
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { SearchIcon } from '@chakra-ui/icons';
@@ -30,6 +29,7 @@ import { IRecentSearch } from '../interfaces/IRecentSearch';
 import { IScope } from '../interfaces/IScope';
 import { ISearchCategory } from '../interfaces/ISearchCategory';
 import { ISearchResult } from '../interfaces/ISearchResult';
+import { clearSearchState, executeSearch, getPageUrlForCategory, getResultUrl, shouldFetchRecentSearches } from '../utils/searchBarUtils';
 import QuestionsCategoryIcon from './Icon';
 import SearchBarMessage from './SearchBar/SearchBarMessage';
 import StatusCell from './Table/Cells/StatusCell';
@@ -108,6 +108,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   const hasFetchedInMobileSessionRef = useRef(false);
   const prevIsSearchBarOpenRef = useRef(false);
   const currentAbortControllerRef = useRef<AbortController | null>(null);
+  const shouldBypassDebounceRef = useRef(false);
   const { module, user } = useAppContext();
   const { navigateTo } = useNavigate();
   const device = useDevice();
@@ -182,19 +183,13 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     }
   }, [isInMobileDrawer, isSearchBarOpen]);
 
-  // Determine if we should fetch recent searches
-  // Mobile: Only fetch once when drawer opens (when isSearchBarOpen is true and we haven't fetched)
-  // Desktop: Fetch when search bar opens (existing behavior)
-  const shouldFetchRecentSearches = useMemo(() => {
-    if (!user?.userId) return false;
-    
-    if (isInMobileDrawer) {
-      // Mobile: Fetch when drawer is open and we haven't fetched yet in this session
-      return isSearchBarOpen && !hasFetchedInMobileSessionRef.current;
-    }
-    
-    // Desktop: Fetch when search bar is open (existing behavior)
-    return isSearchBarOpen;
+  const shouldFetchRecentSearchesValue = useMemo(() => {
+    return shouldFetchRecentSearches(
+      user?.userId,
+      isInMobileDrawer,
+      isSearchBarOpen,
+      hasFetchedInMobileSessionRef.current
+    );
   }, [user?.userId, isInMobileDrawer, isSearchBarOpen]);
 
   const { data: recentSearchesData, loading: recentSearchesLoading, error: recentSearchesError } = useQuery(
@@ -205,18 +200,17 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
           userId: user?.userId || '',
         },
       },
-      skip: !shouldFetchRecentSearches,
+      skip: !shouldFetchRecentSearchesValue,
       fetchPolicy: 'network-only',
       errorPolicy: 'all', // Allow partial data even if some items have errors
     }
   );
 
-  // Mark as fetched when query starts (mobile only)
   useEffect(() => {
-    if (isInMobileDrawer && shouldFetchRecentSearches) {
+    if (isInMobileDrawer && shouldFetchRecentSearchesValue) {
       hasFetchedInMobileSessionRef.current = true;
     }
-  }, [isInMobileDrawer, shouldFetchRecentSearches]);
+  }, [isInMobileDrawer, shouldFetchRecentSearchesValue]);
 
   // Log errors for debugging (but don't block UI if we have partial data)
   useEffect(() => {
@@ -290,69 +284,38 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   const search = useCallback(
     async (searchTextValue: string) => {
       if (searchTextValue?.trim()) {
-        // Cancel previous search query if it exists
         if (currentAbortControllerRef.current) {
           currentAbortControllerRef.current.abort();
         }
 
-        // Create new AbortController for this search
         const abortController = new AbortController();
         currentAbortControllerRef.current = abortController;
 
-        try {
-          setSearchError(false);
-          // Don't clear searchResults here - keep previous results until new ones arrive
-          // This prevents showing "no results" during query cancellation
-          const results = await getSearchResults({
-            variables: {
-              searchQuery: {
-                searchText: searchTextValue,
-                moduleId: module?._id,
-                scopes: getScopes,
-              },
-            },
-            context: {
-              fetchOptions: {
-                signal: abortController.signal,
-              },
-            },
-          });
+        await executeSearch(
+          searchTextValue,
+          getSearchResults,
+          module?._id,
+          getScopes,
+          abortController,
+          {
+            setSearchError,
+            setSearchResults,
+            setHasSearched,
+            handleSearchError,
+          }
+        );
 
-          // Only update state if this query wasn't cancelled
-          if (!abortController.signal.aborted) {
-            if (results.error) {
-              console.error('Search error:', results.error);
-              handleSearchError();
-            } else {
-              setSearchResults(results.data?.search || []);
-              setHasSearched(true);
-            }
-          }
-        } catch (error: any) {
-          // Ignore abort errors (cancelled queries)
-          if (error.name === 'AbortError' || error.message?.includes('aborted') || error.name === 'CanceledError') {
-            return;
-          }
-          // Only handle error if this query wasn't cancelled
-          if (!abortController.signal.aborted) {
-            console.error('Search error:', error);
-            handleSearchError();
-          }
-        } finally {
-          // Clear the ref if this was the current query
-          if (currentAbortControllerRef.current === abortController) {
-            currentAbortControllerRef.current = null;
-          }
-        }
-      } else {
-        // Cancel any in-flight query when search text is cleared
-        if (currentAbortControllerRef.current) {
-          currentAbortControllerRef.current.abort();
+        if (currentAbortControllerRef.current === abortController) {
           currentAbortControllerRef.current = null;
         }
-        setSearchError(false);
-        setSearchResults([]);
-        setHasSearched(false);
+      } else {
+        clearSearchState(
+          currentAbortControllerRef.current,
+          (controller) => { currentAbortControllerRef.current = controller; },
+          setSearchError,
+          setSearchResults,
+          setHasSearched
+        );
       }
     },
     [getSearchResults, module?._id, getScopes, setSearchError, setSearchResults, setHasSearched, handleSearchError],
@@ -370,7 +333,19 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
   useEffect(() => {
     if (searchText) {
       setHasSearched(false); // Reset hasSearched when search text changes
-      debouncedSearch(searchText);
+      
+      // Check if searchText matches a recent search (indicates it came from recent search click)
+      const isFromRecentSearch = contextRecentSearches.some(
+        (recent) => recent.text.trim() === searchText.trim()
+      );
+      
+      if (isFromRecentSearch || shouldBypassDebounceRef.current) {
+        debouncedSearch.cancel();
+        search(searchText);
+        shouldBypassDebounceRef.current = false;
+      } else {
+        debouncedSearch(searchText);
+      }
     } else {
       // Cancel any in-flight query when search text is cleared
       if (currentAbortControllerRef.current) {
@@ -380,6 +355,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
       setSearchResults([]);
       setHasSearched(false);
       debouncedSearch.cancel();
+      shouldBypassDebounceRef.current = false; // Reset ref flag when clearing
     }
     return () => {
       // Cancel debounced search and any in-flight queries
@@ -389,24 +365,18 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
         currentAbortControllerRef.current = null;
       }
     };
-  }, [searchText, debouncedSearch]);
-
+  }, [searchText, debouncedSearch, search, setHasSearched, setSearchResults, contextRecentSearches]);
 
   // Effect to restore search text from localStorage on mount if context is empty
   // This ensures the search text persists when navigating to detail pages
   useEffect(() => {
     if (!searchText) {
-      try {
-        const storedSearchText = localStorage.getItem('lastSearchText');
-        if (storedSearchText) {
-          setSearchText(storedSearchText);
-        }
-      } catch (e) {
-        // Ignore localStorage errors
+      const storedSearchText = localStorage.getItem('lastSearchText');
+      if (storedSearchText) {
+        setSearchText(storedSearchText);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run once on mount
+  }, []);
 
   // Group search results by category
   const groupedResults = useMemo(() => {
@@ -438,31 +408,15 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     }
   }, [user?.userId, saveRecentSearch]);
 
-  const getResultUrl = useCallback((result: ISearchResult, categoryType: string): string => {
-    switch (module?.type) {
-      case 'audits': {
-        switch (categoryType) {
-          case 'actions':
-            return `actions?id=${result._id}`;
-          case 'answers':
-            return `answers?id=${result._id}`;
-          default:
-            return `audits/${result._id}`;
-        }
-      }
-      case 'tracker': {
-        return `tracker-item/${result._id}`;
-      }
-      default:
-        return '';
-    }
+  const getResultUrlForComponent = useCallback((result: ISearchResult, categoryType: string): string => {
+    return getResultUrl(result, categoryType, module?.type);
   }, [module?.type]);
 
   const handleSearchResultClick = useCallback((result: ISearchResult) => {
     const category = searchCategories.find((cat) => cat.type === result.scope.type && cat._id == result.scope._id);
     if (!category) return;
 
-    const url = getResultUrl(result, category.type);
+    const url = getResultUrlForComponent(result, category.type);
     if (!url) {
       toast({
         ...toastWarning,
@@ -476,10 +430,8 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     setSearchText('');
     setSearchResults([]);
 
-    // Save the result title text to recent searches - fire and forget
-    const searchTextToSave = result.type === 'audits' && result.reference ? result.reference : result.title;
-    saveRecentSearchSafely(searchTextToSave);
-  }, [searchCategories, getResultUrl, saveRecentSearchSafely, navigateTo, setIsSearchBarOpen, setSearchText, setSearchResults, toast]);
+    saveRecentSearchSafely(searchText);
+  }, [searchCategories, getResultUrlForComponent, saveRecentSearchSafely, navigateTo, setIsSearchBarOpen, setSearchText, setSearchResults, toast, searchText]);
 
   const handleRecentSearchClick = useCallback((recentSearch: IRecentSearch) => {
     setSearchText(recentSearch.text);
@@ -674,28 +626,12 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     );
   }, [recentSearchesLoading, recentSearches, handleRecentSearchClick, shouldShowUnifiedLoader, searchText]);
 
-  const getPageUrlForCategory = useCallback((scopeType: string): string => {
-    switch (module?.type) {
-      case 'audits': {
-        switch (scopeType) {
-          case 'actions':
-            return '/actions';
-          case 'answers':
-            return '/answers';
-          default:
-            return '/dashboard'; // Audits page is shown on dashboard
-        }
-      }
-      case 'tracker': {
-        return '/dashboard';
-      }
-      default:
-        return '';
-    }
+  const getPageUrlForCategoryInComponent = useCallback((scopeType: string): string => {
+    return getPageUrlForCategory(scopeType, module?.type);
   }, [module?.type]);
 
   const handleViewMoreResultsClick = useCallback(async (scopeType: string) => {
-    const pageUrl = getPageUrlForCategory(scopeType);
+    const pageUrl = getPageUrlForCategoryInComponent(scopeType);
     if (pageUrl) {
       const params = new URLSearchParams();
       if (searchText) {
@@ -703,12 +639,10 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
       }
       navigateTo(`${pageUrl}?${params.toString()}`);
       setIsSearchBarOpen(false);
-      // Don't clear searchText - keep it in the search bar
       setSearchResults([]);
     }
-    // Save the current search text to recent searches
     await saveRecentSearchSafely(searchText);
-  }, [searchText, saveRecentSearchSafely, getPageUrlForCategory, navigateTo, setIsSearchBarOpen, setSearchResults]);
+  }, [searchText, saveRecentSearchSafely, getPageUrlForCategoryInComponent, navigateTo, setIsSearchBarOpen, setSearchResults]);
 
   const renderLoadingState = useCallback(() => {
     return (
@@ -805,34 +739,84 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
     return searchText?.trim() && hasSearched && searchResults.length === 0;
   }, [searchText, hasSearched, searchResults.length]);
 
-  const renderSearchContent = useCallback(() => {
-    // If unified loader is showing, don't show individual loader here
+  const getSearchContentToRender = useCallback(() => {
     if (shouldShowUnifiedLoader()) {
       return null;
     }
-
     if (shouldShowLoading()) {
       return renderLoadingState();
     }
-
     if (searchError) {
       return renderErrorState();
     }
-
     if (!searchText?.trim()) {
       return null;
     }
-
     if (shouldShowResults()) {
       return renderGroupedResults();
     }
-
     if (shouldShowNoResults()) {
       return renderNoResultsState();
     }
-    
     return null;
-  }, [shouldShowLoading, searchError, searchText, shouldShowResults, shouldShowNoResults, renderLoadingState, renderErrorState, renderGroupedResults, renderNoResultsState, shouldShowUnifiedLoader]);
+  }, [shouldShowUnifiedLoader, shouldShowLoading, searchError, searchText, shouldShowResults, shouldShowNoResults, renderLoadingState, renderErrorState, renderGroupedResults, renderNoResultsState]);
+
+  const renderSearchContent = useCallback(() => {
+    return getSearchContentToRender();
+  }, [getSearchContentToRender]);
+
+  const handleClearSearchClick = useCallback(() => {
+    const pageUrl = (module?.type === 'audits' || module?.type === 'tracker') ? '/dashboard' : '';
+    if (pageUrl) {
+      navigateTo(pageUrl);
+    }
+    setIsSearchBarOpen(false);
+    setSearchText('');
+    setSearchResults([]);
+    localStorage.removeItem('lastSearchText');
+  }, [module?.type, navigateTo, setIsSearchBarOpen, setSearchText, setSearchResults]);
+
+  const handleInputFocus = useCallback(() => {
+    if (!isInMobileDrawer) {
+      setIsSearchBarOpen(true);
+    }
+    onOpen();
+    if (searchText?.trim() && searchResults.length === 0) {
+      setHasSearched(false);
+      debouncedSearch(searchText);
+    }
+  }, [isInMobileDrawer, setIsSearchBarOpen, onOpen, searchText, searchResults.length, setHasSearched, debouncedSearch]);
+
+  const renderMainContent = useCallback(() => {
+    if (shouldShowUnifiedLoader()) {
+      return (
+        <Flex data-id="003205" justify="center" p={4}>
+          <Loader data-id="003206" />
+        </Flex>
+      );
+    }
+
+    if (searchText) {
+      return (
+        <>
+          {renderRecentSearches()}
+          {renderSearchContent()}
+        </>
+      );
+    }
+
+    return (
+      <>
+        {renderRecentSearches()}
+        {recentSearches.length > 0 && !recentSearchesLoading && (
+          <Divider data-id="003369" borderColor={'#CBD5E0'} mb={4} />
+        )}
+        {!recentSearchesLoading && (
+          <SearchBarMessage data-id="003415" icon={EmptySearchIcon} text="Type a keyword to search" />
+        )}
+      </>
+    );
+  }, [shouldShowUnifiedLoader, searchText, renderRecentSearches, renderSearchContent, recentSearches.length, recentSearchesLoading]);
 
   return (
     <Flex
@@ -876,24 +860,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
             h="13.5px"
             ml="15px"
             mt="10px"
-            onClick={() => {
-              // Navigate to the current module's main page without search query
-              const pageUrl = (module?.type === 'audits' || module?.type === 'tracker') ? '/dashboard' : '';
-              
-              if (pageUrl) {
-                navigateTo(pageUrl);
-              }
-              
-              setIsSearchBarOpen(false);
-              setSearchText('');
-              setSearchResults([]);
-              // Clear localStorage when user manually clears search
-              try {
-                localStorage.removeItem('lastSearchText');
-              } catch (e) {
-                // Ignore localStorage errors
-              }
-            }}
+            onClick={handleClearSearchClick}
             stroke="navigationTop.searchCrossIconStroke"
             w="13.5px" />
         </InputRightElement>
@@ -907,20 +874,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
           onChange={(e) => {
             setSearchText(e.target.value);
           }}
-          onFocus={() => {
-            // Mobile: Don't set isSearchBarOpen on focus - it's already set when drawer opens
-            // This prevents triggering recent searches query on every focus
-            if (!isInMobileDrawer) {
-              setIsSearchBarOpen(true);
-            }
-            onOpen();
-            // If SearchBar opens with existing text but no results, trigger a search
-            // This handles the case when "View more results" was clicked and SearchBar was closed
-            if (searchText?.trim() && searchResults.length === 0) {
-              setHasSearched(false);
-              debouncedSearch(searchText);
-            }
-          }}
+          onFocus={handleInputFocus}
           placeholder="Search"
           rounded="10px"
           value={searchText}
@@ -948,31 +902,7 @@ function SearchBar({ isInMobileDrawer = false }: Readonly<{ isInMobileDrawer?: b
             p={'12px'}
             rounded="10px">
             <Box data-id="003204" w={'100%'}>
-              {/* Show unified loader if both are loading and no content available */}
-              {shouldShowUnifiedLoader() ? (
-                <Flex data-id="003205" justify="center" p={4}>
-                  <Loader data-id="003206" />
-                </Flex>
-              ) : (
-                <>
-                  {searchText ? (
-                    <>
-                      {renderRecentSearches()}
-                      {renderSearchContent()}
-                    </>
-                  ) : (
-                    <>
-                      {renderRecentSearches()}
-                      {recentSearches.length > 0 && !recentSearchesLoading && (
-                        <Divider data-id="003369" borderColor={'#CBD5E0'} mb={4} />
-                      )}
-                      {!recentSearchesLoading && (
-                        <SearchBarMessage data-id="003415" icon={EmptySearchIcon} text="Type a keyword to search" />
-                      )}
-                    </>
-                  )}
-                </>
-              )}
+              {renderMainContent()}
             </Box>
           </Flex>
         </Box>

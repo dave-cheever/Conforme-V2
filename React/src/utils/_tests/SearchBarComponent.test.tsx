@@ -549,6 +549,12 @@ describe('SearchBar Component', () => {
         setSearchLoading: mockSetSearchLoading,
         searchError: false,
         setSearchError: mockSetSearchError,
+        hasSearched: true,
+        setHasSearched: mockSetHasSearched,
+        recentSearches: [],
+        setRecentSearches: vi.fn(),
+        recentSearchesLoading: false,
+        setRecentSearchesLoading: vi.fn(),
       });
 
       mockUseAppContext.mockReturnValue({
