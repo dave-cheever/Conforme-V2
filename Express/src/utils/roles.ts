@@ -144,6 +144,9 @@ const roles = {
       'settings',
       'users',
       'auditComments.add',
+      'actionCategories.add',
+      'actionCategories.edit',
+      'actionCategories.delete',
     ],
     restricted: {
       'audits.changeAuditor': ({ audit }) => audit.status !== 'completed',

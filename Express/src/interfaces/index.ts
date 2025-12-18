@@ -44,6 +44,7 @@ export { ITrackerItemModel } from './ITrackerItemModel';
 export { ITrackerQuestion } from './ITrackerQuestion';
 export { IGraphUser, IUser } from './IUser';
 export { IUserModel } from './IUserModel';
+export { IPagination } from './IPagination';
 export { IRecentSearch } from './IRecentSearch';
 export { IRecentSearchModel } from './IRecentSearchModel';
 export { TActionStatus } from './TActionStatus';

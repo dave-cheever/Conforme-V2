@@ -136,63 +136,65 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
           </Flex>
         )}
 
-        <Flex data-id="001518" direction={['column', 'column', 'row']} rowGap={['10px', '10px', '0']}>
-          <Flex data-id="000278" justify="flex-end" mr="15px" w="full">
+        <Flex data-id="001518" direction={['column', 'column', 'row']} rowGap={['10px', '10px', '0']} align={['flex-end', 'flex-start', 'center']} justify={['flex-start', 'flex-start', 'space-between']}>
+          <Flex data-id="000278" justify="flex-end" mr={['0', '0', '15px']} w={['full', 'full', 'auto']}>
             {children}
           </Flex>
-          {device === 'desktop' && usedFilters && isAuditPageValue && usedFilters.length > 0 && <FilterButton data-id="000279" />}
+          <Flex data-id="013094" align="center" gap={0}>
+            {device === 'desktop' && usedFilters && isAuditPageValue && usedFilters.length > 0 && <FilterButton data-id="000279" />}
 
-          {isPathAllowed() && (
-            <Can
-              action="audits.add"
-              data-id="000280"
-              yes={() => (
-                <>
-                  {usedFilters && isAuditPageValue && usedFilters.length > 0 && (
-                    <Divider
-                      borderColor="gray.300"
-                      data-id="000281"
-                      display={['none', 'none', 'block']}
-                      height="30px"
-                      ml={0}
-                      mr={5}
-                      mt={1}
-                      orientation="vertical"
-                    />
-                  )}
+            {isPathAllowed() && (
+              <Can
+                action="audits.add"
+                data-id="000280"
+                yes={() => (
+                  <>
+                    {usedFilters && isAuditPageValue && usedFilters.length > 0 && (
+                      <Divider
+                        borderColor="gray.300"
+                        data-id="000281"
+                        display={['none', 'none', 'block']}
+                        height="30px"
+                        ml={0}
+                        mr={5}
+                        mt={1}
+                        orientation="vertical"
+                      />
+                    )}
 
-                  <Button
-                    _hover={{ opacity: 0.7 }}
-                    aria-label="Add"
-                    bg="navigationTop.addButton"
-                    bottom={['78px', '0']}
-                    boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
-                    color="white"
-                    data-id="000282"
-                    display={['none', 'flex']}
-                    flexShrink={0}
-                    fontSize={['12px', '14px']}
-                    fontWeight={'500'}
-                    h={['42px', '40px']}
-                    leftIcon={<AddIcon data-id="000283" h={['10px', '17px']} stroke="navigationTop.addIcon" w={['10px', '17px']} />}
-                    ml={['0', '0', '4']}
-                    onClick={() => {
-                      const targetUrl = item?.url === '/dashboards' ? '/admin/tracker-items' : item?.url;
-                      navigateTo(targetUrl || '');
-                      setAdminModalState('add');
-                    }}
-                    position={['fixed', 'relative']}
-                    right={['0', '0', usedFilters.length > 0 ? '15' : '25']}
-                    rounded={['10px', '8px']}
-                    w={['auto']}
-                    zIndex={5}
-                  >
-                    {`Add ${item?.label || ''}`}
-                  </Button>
-                </>
-              )}
-            />
-          )}
+                    <Button
+                      _hover={{ opacity: 0.7 }}
+                      aria-label="Add"
+                      bg="navigationTop.addButton"
+                      bottom={['78px', '0']}
+                      boxShadow={['0px 0px 80px rgba(49, 50, 51, 0.25)', 'none']}
+                      color="white"
+                      data-id="000282"
+                      display={['flex', 'flex']}
+                      flexShrink={0}
+                      fontSize={['12px', '14px']}
+                      fontWeight={'500'}
+                      h={['42px', '40px']}
+                      leftIcon={<AddIcon data-id="000283" h={['10px', '17px']} stroke="navigationTop.addIcon" w={['10px', '17px']} />}
+                      ml={['0', '0', '4']}
+                      onClick={() => {
+                        const targetUrl = item?.url === '/dashboards' ? '/admin/tracker-items' : item?.url;
+                        navigateTo(targetUrl || '');
+                        setAdminModalState('add');
+                      }}
+                      position={['static', 'relative']}
+                      right={['14px', '14px', usedFilters.length > 0 ? '15' : '25']}
+                      rounded={['10px', '8px']}
+                      w={['auto']}
+                      zIndex={5}
+                    >
+                      {`Add ${item?.label || ''}`}
+                    </Button>
+                  </>
+                )}
+              />
+            )}
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
