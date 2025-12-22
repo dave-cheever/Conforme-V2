@@ -94,25 +94,6 @@ export const categoryIdsForPanel = (
   return [panels[selectedPanelIndex]._id];
 };
 
-const SAVE_RECENT_SEARCH = gql`
-  mutation SaveRecentSearch($saveRecentSearchInput: SaveRecentSearchInput!) {
-    saveRecentSearch(saveRecentSearchInput: $saveRecentSearchInput) {
-      _id
-      userId
-      text
-      organizationId
-      metatags {
-        addedAt
-        addedBy
-        updatedAt
-        updatedBy
-        removedAt
-        removedBy
-      }
-    }
-  }
-`;
-
 export const GET_ANSWERS = gql`
   query ($answerQuery: AnswerQuery) {
     answers(answerQuery: $answerQuery) {
@@ -238,7 +219,6 @@ function Answers() {
   const device = useDevice();
   const { data, loading, error, refetch } = useQuery(GET_ANSWERS);
   const panels = useMemo(() => buildPanels(data?.auditTypes), [data?.auditTypes]);
-  const [saveRecentSearch] = useMutation(SAVE_RECENT_SEARCH);
 
   const [selectedPanel, setSelectedPanel] = useState(0);
   const [filteredAnswers, setFilteredAnswers] = useState<IAnswer[]>([]);
@@ -247,22 +227,9 @@ function Answers() {
   const searchQuery = searchParams.get('search') || '';
 
   const handleOpenModal = useCallback((answer: IAnswer) => {
-    // Save to recent searches if there's a search query in the URL
-    if (searchQuery && user?.userId) {
-      saveRecentSearch({
-        variables: {
-          saveRecentSearchInput: {
-            userId: user.userId,
-            text: answer.question?.question || '',
-          },
-        },
-      }).catch((error) => {
-        console.error('Failed to save recent search:', error);
-      });
-    }
     setSelectedAnswer(answer);
     setAdminModalState('edit');
-  }, [setSelectedAnswer, setAdminModalState, searchQuery, user, saveRecentSearch]);
+  }, [setSelectedAnswer, setAdminModalState, searchQuery, user]);
 
   const {
     sortedData: sortedAnswers,
@@ -506,22 +473,9 @@ function Answers() {
   }, [appliedFilters]);
 
   const handleViewModal = useCallback((answer: IAnswer) => {
-    // Save to recent searches if there's a search query in the URL
-    if (searchQuery && user?.userId) {
-      saveRecentSearch({
-        variables: {
-          saveRecentSearchInput: {
-            userId: user.userId,
-            text: answer.question?.question || '',
-          },
-        },
-      }).catch((error) => {
-        console.error('Failed to save recent search:', error);
-      });
-    }
     setSelectedAnswer(answer);
     setAdminModalState('view');
-  }, [setSelectedAnswer, setAdminModalState, searchQuery, user, saveRecentSearch]);
+  }, [setSelectedAnswer, setAdminModalState, searchQuery, user]);
 
   useEffect(() => {
     if (data && data?.answers && !error) {

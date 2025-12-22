@@ -112,25 +112,6 @@ const GET_AUDITS = gql`
   }
 `;
 
-const SAVE_RECENT_SEARCH = gql`
-  mutation SaveRecentSearch($saveRecentSearchInput: SaveRecentSearchInput!) {
-    saveRecentSearch(saveRecentSearchInput: $saveRecentSearchInput) {
-      _id
-      userId
-      text
-      organizationId
-      metatags {
-        addedAt
-        addedBy
-        updatedAt
-        updatedBy
-        removedAt
-        removedBy
-      }
-    }
-  }
-`;
-
 function Audits() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
@@ -161,7 +142,6 @@ function Audits() {
   const [filtersInitialized, setFiltersInitialized] = useState(false);
   const [assignedToMe, setAssignedToMe] = useState(false);
   const [lastSearchQuery, setLastSearchQuery] = useState<string>(''); // Track last search query to detect changes
-  const [saveRecentSearch] = useMutation(SAVE_RECENT_SEARCH);
 
   // Sync search query from URL to search bar context
   useEffect(() => {
@@ -375,22 +355,9 @@ function Audits() {
   // Helper function to save recent search and navigate
   const handleAuditClick = useCallback(
     (audit: IAudit) => {
-      // Save to recent searches if there's a search query in the URL
-      if (searchQuery && user?.userId) {
-        saveRecentSearch({
-          variables: {
-            saveRecentSearchInput: {
-              userId: user.userId,
-              text: audit.reference || audit.auditType?.name || '',
-            },
-          },
-        }).catch((error) => {
-          console.error('Failed to save recent search:', error);
-        });
-      }
       navigateTo(`/audits/${audit._id}`);
     },
-    [navigateTo, searchQuery, user, saveRecentSearch],
+    [navigateTo, searchQuery, user],
   );
 
   const columns: ColumnConfig[] = useMemo(

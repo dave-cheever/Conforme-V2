@@ -95,25 +95,6 @@ const GET_RESPONSES = gql`
   }
 `;
 
-const SAVE_RECENT_SEARCH = gql`
-  mutation SaveRecentSearch($saveRecentSearchInput: SaveRecentSearchInput!) {
-    saveRecentSearch(saveRecentSearchInput: $saveRecentSearchInput) {
-      _id
-      userId
-      text
-      organizationId
-      metatags {
-        addedAt
-        addedBy
-        updatedAt
-        updatedBy
-        removedAt
-        removedBy
-      }
-    }
-  }
-`;
-
 function TrackerItems() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
@@ -147,7 +128,6 @@ function TrackerItems() {
   const [localStorageChecked, setLocalStorageChecked] = useState(false);
   const [hasStoredFilters, setHasStoredFilters] = useState(false);
   const [assignedToMe, setAssignedToMe] = useState(false);
-  const [saveRecentSearch] = useMutation(SAVE_RECENT_SEARCH);
 
   const handleAssignedToMeToggle = (isChecked: boolean) => {
     setAssignedToMe(isChecked);
@@ -396,21 +376,8 @@ function TrackerItems() {
 
   // Helper function to save recent search and navigate
   const handleTrackerItemClick = useCallback((response: IResponse) => {
-    // Save to recent searches if there's a search query in the URL
-    if (searchQuery && user?.userId) {
-      saveRecentSearch({
-        variables: {
-          saveRecentSearchInput: {
-            userId: user.userId,
-            text: response.trackerItem?.name || '',
-          },
-        },
-      }).catch((error) => {
-        console.error('Failed to save recent search:', error);
-      });
-    }
     navigateTo(`/tracker-item/${response._id}`);
-  }, [searchQuery, user, saveRecentSearch, navigateTo]);
+  }, [searchQuery, user, navigateTo]);
 
   // Helper function to render main content with loading state
   const renderMainContent = () => {
