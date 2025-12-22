@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
+import actionCategoryPanelConfig from '../../components/PanelView/configs/actionCategoryPanelConfig';
 import actionPanelConfig from '../../components/PanelView/configs/actionPanelConfig';
 import auditPanelConfig from '../../components/PanelView/configs/auditPanelConfig';
 import incidentPanelConfig from '../../components/PanelView/configs/incidentPanelConfig';
@@ -244,8 +245,146 @@ describe('Panel Configurations', () => {
     });
   });
 
+  describe('actionCategoryPanelConfig', () => {
+    test('has correct structure and properties', () => {
+      expect(actionCategoryPanelConfig.title).toBeDefined();
+      expect(actionCategoryPanelConfig.title.primary).toBeDefined();
+      expect(actionCategoryPanelConfig.status).toBeDefined();
+      expect(actionCategoryPanelConfig.details).toBeDefined();
+      expect(actionCategoryPanelConfig.actions).toBeDefined();
+    });
+
+    test('has valid title configuration with custom render', () => {
+      expect(actionCategoryPanelConfig.title.primary.key).toBe('name');
+      expect(actionCategoryPanelConfig.title.primary.type).toBe('custom');
+      expect(actionCategoryPanelConfig.title.primary.fallback).toBe('No Name');
+      expect(typeof actionCategoryPanelConfig.title.primary.render).toBe('function');
+    });
+
+    test('title render function handles null and undefined values', () => {
+      const renderFunction = actionCategoryPanelConfig.title.primary.render;
+      const mockItem = {};
+      const resultWithNull = renderFunction?.(null as any, mockItem);
+      const resultWithUndefined = renderFunction?.(undefined as any, mockItem);
+      const resultWithEmpty = renderFunction?.('', mockItem);
+
+      expect(resultWithNull).toBeDefined();
+      expect(resultWithUndefined).toBeDefined();
+      expect(resultWithEmpty).toBeDefined();
+    });
+
+    test('title render function renders correctly with valid data', () => {
+      const renderFunction = actionCategoryPanelConfig.title.primary.render;
+      const mockItem = {};
+      const result = renderFunction?.('Test Category', mockItem);
+
+      expect(result).toBeDefined();
+      expect(typeof result).toBe('object');
+      if (result && typeof result === 'object' && 'props' in result) {
+        expect(result.props.color).toBe('#1A202C');
+        expect(result.props.fontSize).toBe('17px');
+        expect(result.props.fontWeight).toBe(600);
+        expect(result.props.lineHeight).toBe('100%');
+      }
+    });
+
+    test('has status configuration that renders null', () => {
+      expect(actionCategoryPanelConfig.status.key).toBe('_id');
+      expect(actionCategoryPanelConfig.status.type).toBe('text');
+      expect(typeof actionCategoryPanelConfig.status.render).toBe('function');
+      const mockItem = {};
+      expect(actionCategoryPanelConfig.status.render?.(null, mockItem)).toBe(null);
+    });
+
+    test('has valid details configuration', () => {
+      expect(Array.isArray(actionCategoryPanelConfig.details)).toBe(true);
+      expect(actionCategoryPanelConfig.details.length).toBe(2);
+
+      const detailKeys = actionCategoryPanelConfig.details.map((detail) => detail.key);
+      expect(detailKeys).toContain('used');
+      expect(detailKeys).toContain('metatags.updatedAt');
+    });
+
+    test('used detail render function handles different values', () => {
+      const usedField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'used');
+      const renderFunction = usedField?.render;
+      const mockItem = {};
+
+      expect(renderFunction).toBeDefined();
+      expect(typeof renderFunction).toBe('function');
+
+      // Test with 0
+      const resultZero = renderFunction?.(0, mockItem);
+      expect(resultZero).toBeDefined();
+
+      // Test with 1
+      const resultOne = renderFunction?.(1, mockItem);
+      expect(resultOne).toBeDefined();
+
+      // Test with multiple
+      const resultMultiple = renderFunction?.(5, mockItem);
+      expect(resultMultiple).toBeDefined();
+
+      // Test with null/undefined
+      const resultNull = renderFunction?.(null as any, mockItem);
+      expect(resultNull).toBeDefined();
+    });
+
+    test('used detail render function formats text correctly', () => {
+      const usedField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'used');
+      const renderFunction = usedField?.render;
+      const mockItem = {};
+
+      const resultOne = renderFunction?.(1, mockItem);
+      const resultMultiple = renderFunction?.(5, mockItem);
+
+      expect(resultOne).toBeDefined();
+      expect(resultMultiple).toBeDefined();
+
+      // Check that the result contains the correct structure
+      if (resultOne && typeof resultOne === 'object' && 'props' in resultOne) {
+        expect(Array.isArray(resultOne.props.children)).toBe(true);
+      }
+    });
+
+    test('last modified detail render function handles date formatting', () => {
+      const lastModifiedField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'metatags.updatedAt');
+      const renderFunction = lastModifiedField?.render;
+      const mockItem = {};
+
+      expect(renderFunction).toBeDefined();
+      expect(typeof renderFunction).toBe('function');
+
+      // Test with valid date
+      const validDate = '2025-01-15T10:30:00Z';
+      const resultValid = renderFunction?.(validDate, mockItem);
+      expect(resultValid).toBeDefined();
+
+      // Test with null
+      const resultNull = renderFunction?.(null, mockItem);
+      expect(resultNull).toBeDefined();
+
+      // Test with undefined
+      const resultUndefined = renderFunction?.(undefined, mockItem);
+      expect(resultUndefined).toBeDefined();
+
+      // Test with invalid date
+      const resultInvalid = renderFunction?.('invalid-date', mockItem);
+      expect(resultInvalid).toBeDefined();
+    });
+
+    test('has valid actions configuration', () => {
+      expect(actionCategoryPanelConfig.actions.primary).toBeDefined();
+      expect(actionCategoryPanelConfig.actions.primary?.label).toBe('Edit');
+      expect(typeof actionCategoryPanelConfig.actions.primary?.onClick).toBe('function');
+      expect(actionCategoryPanelConfig.actions.panelClick).toBeDefined();
+      expect(typeof actionCategoryPanelConfig.actions.panelClick?.onClick).toBe('function');
+    });
+  });
+
   describe('Configuration Consistency', () => {
     const configs = [
+      { name: 'actionCategoryPanelConfig', config: actionCategoryPanelConfig },
       { name: 'auditPanelConfig', config: auditPanelConfig },
       { name: 'actionPanelConfig', config: actionPanelConfig },
       { name: 'incidentPanelConfig', config: incidentPanelConfig },
@@ -306,7 +445,13 @@ describe('Panel Configurations', () => {
 
   describe('Type Safety', () => {
     test('all configs conform to PanelConfig interface', () => {
-      const configs: PanelConfig[] = [auditPanelConfig, actionPanelConfig, incidentPanelConfig, trackerPanelConfig];
+      const configs: PanelConfig[] = [
+        actionCategoryPanelConfig,
+        auditPanelConfig,
+        actionPanelConfig,
+        incidentPanelConfig,
+        trackerPanelConfig,
+      ];
 
       for (const config of configs) {
         // This test will fail at compile time if configs don't match the interface

@@ -9,6 +9,7 @@ import PureLayout from '../layouts/PureLayout';
 import ResponseLayout from '../layouts/ResponseLayout';
 import Accidents from '../pages/accidents';
 import Actions from '../pages/actions';
+import ActionCategories from '../pages/admin/action-categories';
 import AuditLog from '../pages/admin/audit-log';
 import AuditTypes from '../pages/admin/audit-types';
 import BusinessUnits from '../pages/admin/business-units';
@@ -287,6 +288,14 @@ const protectedRoutes: Array<IRoute> = [
     key: 'questions',
     exact: true,
     component: Questions,
+    layout: DefaultLayout,
+    permission: 'adminPanel',
+  },
+  {
+    path: '/admin/action-categories',
+    key: 'action-categories',
+    exact: true,
+    component: ActionCategories,
     layout: DefaultLayout,
     permission: 'adminPanel',
   },

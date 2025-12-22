@@ -1,4 +1,5 @@
 export { default as Actions } from './Actions';
+export { default as ActionCategories } from './ActionCategories';
 export { default as Answers } from './Answers';
 export { default as AuditLogs } from './AuditLogs';
 export { default as Audits } from './Audits';

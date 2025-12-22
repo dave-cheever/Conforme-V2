@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import PanelView from '../../components/PanelView/PanelView';
@@ -305,7 +305,7 @@ describe('PanelView Mobile Responsive', () => {
   });
 
   describe('Mobile Performance Considerations', () => {
-    test('renders efficiently on mobile with many items', () => {
+    test('renders efficiently on mobile with many items', async () => {
       mockUseDevice.mockReturnValue('mobile');
 
       const manyItems = Array.from({ length: 50 }, (_, i) => ({
@@ -318,14 +318,15 @@ describe('PanelView Mobile Responsive', () => {
 
       const startTime = performance.now();
       render(<PanelView config={mockConfig} data-id="001561" items={manyItems} />);
-      const endTime = performance.now();
+      const renderEndTime = performance.now();
 
       // Should render within reasonable time (less than 2000ms for 50 items)
-      expect(endTime - startTime).toBeLessThan(2000);
+      expect(renderEndTime - startTime).toBeLessThan(2000);
 
-      // Should render all items
-      expect(screen.getByText('Item 0')).toBeInTheDocument();
-      expect(screen.getByText('Item 49')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('Item 0')).toBeInTheDocument();
+        expect(screen.getByText('Item 49')).toBeInTheDocument();
+      }, { timeout: 3000 });
     });
   });
 });

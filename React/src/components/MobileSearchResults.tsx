@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import { gql, useMutation } from '@apollo/client';
 import { Box, Divider, Flex, Stack, Text } from '@chakra-ui/react';
@@ -36,6 +36,7 @@ interface MobileSearchResultsProps {
   searchText: string;
   searchLoading: boolean;
   searchError?: boolean;
+  hasSearched: boolean;
   module: any;
   auditSearchItems: any[];
   trackerSearchItems: any[];
@@ -50,6 +51,7 @@ function MobileSearchResults({
   searchText,
   searchLoading,
   searchError = false,
+  hasSearched,
   module,
   auditSearchItems,
   trackerSearchItems,
@@ -74,6 +76,23 @@ function MobileSearchResults({
     });
     return grouped;
   }, [searchResults]);
+
+  const saveRecentSearchSafely = useCallback(async (text: string) => {
+    if (user?.userId && text?.trim()) {
+      try {
+        await saveRecentSearch({
+          variables: {
+            saveRecentSearchInput: {
+              userId: user.userId,
+              text: text.trim(),
+            },
+          },
+        });
+      } catch (error) {
+        console.error('Failed to save recent search:', error);
+      }
+    }
+  }, [user?.userId, saveRecentSearch]);
 
   const getCategoryLabel = (scopeType: string, scopeId?: string) => {
     if (scopeType === 'all') return 'All categories';
@@ -183,7 +202,7 @@ function MobileSearchResults({
     );
   };
 
-  const getPageUrlForScopeType = (scopeType: string): string => {
+  const getPageUrlForScopeType = useCallback((scopeType: string): string => {
     switch (module?.type) {
       case 'audits': {
         switch (scopeType) {
@@ -201,27 +220,10 @@ function MobileSearchResults({
       default:
         return '';
     }
-  };
+  }, [module?.type]);
 
-  const handleViewMoreResultsClick = (scopeType: string) => {
-    // Save the current search text to recent searches
-    if (user?.userId && searchText?.trim()) {
-      saveRecentSearch({
-        variables: {
-          saveRecentSearchInput: {
-            userId: user.userId,
-            text: searchText.trim(),
-          },
-        },
-      })
-        .catch((error) => {
-          console.error('Failed to save recent search:', error);
-        });
-    }
-
-    // Determine the page URL based on category type
+  const handleViewMoreResultsClick = useCallback(async (scopeType: string) => {
     const pageUrl = getPageUrlForScopeType(scopeType);
-    
     if (pageUrl) {
       const params = new URLSearchParams();
       if (searchText) {
@@ -231,24 +233,11 @@ function MobileSearchResults({
       // Close the drawer
       onResultClick({} as ISearchResult);
     }
-  };
+    // Save the current search text to recent searches
+    await saveRecentSearchSafely(searchText);
+  }, [searchText, saveRecentSearchSafely, getPageUrlForScopeType, navigateTo, onResultClick]);
 
-  const handleRecentSearchClick = async (recentSearch: IRecentSearch) => {
-    // Move the clicked recent search to the top (update metadata)
-    if (user?.userId) {
-      saveRecentSearch({
-        variables: {
-          saveRecentSearchInput: {
-            userId: user.userId,
-            text: recentSearch.text,
-          },
-        },
-      })
-        .catch((error) => {
-          console.error('Failed to save recent search:', error);
-        });
-    }
-    // Notify parent to update search text and trigger search
+  const handleRecentSearchClick = (recentSearch: IRecentSearch) => {
     if (onRecentSearchClick) {
       onRecentSearchClick(recentSearch);
     }
@@ -284,25 +273,35 @@ function MobileSearchResults({
       navigateTo(`/${url}`);
       onResultClick(result);
 
-      // Save the result title text to recent searches - fire and forget
-      if (user?.userId && result.title?.trim()) {
-        saveRecentSearch({
-          variables: {
-            saveRecentSearchInput: {
-              userId: user.userId,
-              text: result.title.trim(),
-            },
-          },
-        })
-          .catch((error) => {
-            console.error('Failed to save recent search:', error);
-          });
-      }
+      saveRecentSearchSafely(searchText);
     }
   };
 
+  // Show loader on initial load (no search text) when recent searches are loading AND we have no content
+  const shouldShowUnifiedLoader = useCallback(() => {
+    // Only show unified loader on initial load (when there's no search text)
+    if (searchText?.trim()) {
+      return false;
+    }
+    
+    const hasRecentSearches = recentSearches && recentSearches.length > 0;
+    const hasSearchResults = searchResults && searchResults.length > 0;
+    const hasAnyContent = hasRecentSearches || hasSearchResults;
+    
+    // Show unified loader if recent searches are loading AND we have no content to display
+    // This covers the case when drawer opens and only recent searches are loading
+    return recentSearchesLoading && !hasAnyContent;
+  }, [recentSearchesLoading, recentSearches, searchResults, searchText]);
+
   const renderRecentSearches = () => {
-    if (recentSearchesLoading) {
+    // If unified loader is showing, don't show individual loader here
+    if (shouldShowUnifiedLoader()) {
+      return null;
+    }
+
+    // Show loader for recent searches only on initial load (when there's no search text)
+    // Once user starts typing, don't show recent searches loader - only show search results loader
+    if (recentSearchesLoading && !searchText?.trim()) {
       return (
         <Flex data-id="003340" justify="center" p={4}>
           <Loader data-id="003341" />
@@ -354,13 +353,13 @@ function MobileSearchResults({
   };
 
   const renderSearchContent = () => {
-    // Don't show search content loader if recent searches are still loading
-    // (only show one loader at a time)
-    if (recentSearchesLoading) {
+    // If unified loader is showing, don't show individual loader here
+    if (shouldShowUnifiedLoader()) {
       return null;
     }
 
     // Show loading if actively loading
+    // Don't hide this loader even if recent searches are loading - we want to show search loader when user types
     if (searchLoading) {
       return (
         <Flex data-id="003168" justify="center" p={4}>
@@ -385,7 +384,7 @@ function MobileSearchResults({
     }
 
     // Show empty search message when no search text is entered
-    // Only show if recent searches are not loading
+    // Only show if recent searches are not loading (to avoid showing message while loader is visible)
     if (!searchText?.trim()) {
       if (recentSearchesLoading) {
         return null; // Don't show "Type a keyword to search" while recent searches are loading
@@ -394,7 +393,8 @@ function MobileSearchResults({
     }
 
     // Show no results found message when search text exists but no results
-    if (searchResults.length === 0) {
+    // Only show if we've actually completed a search and we're not loading
+    if (searchResults.length === 0 && !searchLoading && hasSearched) {
       const hasRecentSearches = recentSearches.length > 0;
       return (
         <>
@@ -452,11 +452,23 @@ function MobileSearchResults({
     );
   };
 
+  // Show loader if recent searches are loading and no search text (simpler check)
+  const showRecentSearchesLoader = !searchText?.trim() && recentSearchesLoading && recentSearches.length === 0;
+
   return (
     <>
-      {renderRecentSearches()}
-      {!searchText?.trim() && recentSearches.length > 0 && !recentSearchesLoading && <Divider data-id="003369" borderColor={'#CBD5E0'} mb={4} />}
-      {renderSearchContent()}
+      {/* Show unified loader if recent searches are loading and no content available */}
+      {shouldShowUnifiedLoader() || showRecentSearchesLoader ? (
+        <Flex data-id="003205" justify="center" p={4}>
+          <Loader data-id="003206" />
+        </Flex>
+      ) : (
+        <>
+          {renderRecentSearches()}
+          {!searchText?.trim() && recentSearches.length > 0 && !recentSearchesLoading && <Divider data-id="003369" borderColor={'#CBD5E0'} mb={4} />}
+          {renderSearchContent()}
+        </>
+      )}
     </>
   );
 }

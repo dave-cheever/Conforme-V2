@@ -24,7 +24,7 @@ function NavigationTop() {
   const { trackerAddItems, auditAddItems } = useConfig();
   const { isPathActive } = useNavigate();
   const { module } = useAppContext();
-  const { searchText, searchResults, searchLoading, searchError, setIsSearchBarOpen, setSearchText, recentSearches, recentSearchesLoading } = useNavigationTopContext();
+  const { searchText, searchResults, searchLoading, searchError, hasSearched, setIsSearchBarOpen, setSearchText, recentSearches, recentSearchesLoading } = useNavigationTopContext();
   const { auditSearchItems, trackerSearchItems } = useConfig();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isSearchDrawerOpen, onOpen: onSearchDrawerOpen, onClose: onSearchDrawerClose } = useDisclosure();
@@ -190,6 +190,7 @@ function NavigationTop() {
           display={['block', 'none']}
           onClick={() => {
             if (device === 'mobile') {
+              setIsSearchBarOpen(true);
               onSearchDrawerOpen();
             } else {
               setIsSearchBarOpen(true);
@@ -279,6 +280,7 @@ function NavigationTop() {
                   searchText={searchText}
                   searchLoading={searchLoading}
                   searchError={searchError}
+                  hasSearched={hasSearched}
                   module={module}
                   auditSearchItems={auditSearchItems}
                   trackerSearchItems={trackerSearchItems}
@@ -290,7 +292,7 @@ function NavigationTop() {
                     onSearchDrawerClose();
                   }}
                   onRecentSearchClick={(recentSearch) => {
-                    // Update search text to trigger search
+                    // Update search text immediately for instant UI feedback
                     setSearchText(recentSearch.text);
                   }} />
               </Box>
