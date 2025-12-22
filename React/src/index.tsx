@@ -10,6 +10,11 @@ import loadWidget from './bootstrap/markerio';
 import reportWebVitals from './reportWebVitals';
 import { runtimeEnv } from './utils/runtime-env';
 
+// Polyfill for global (required by draft-js)
+if ((globalThis as any).global === undefined) {
+  (globalThis as any).global = globalThis;
+}
+
 axios.defaults.withCredentials = true;
 const client = new ApolloClient({
   uri: `${runtimeEnv.apiUrl()}/graphql`,

@@ -1,5 +1,6 @@
 export { default as PanelView } from './PanelView';
 export { default as actionCategoryPanelConfig } from './configs/actionCategoryPanelConfig';
+export { default as actionTemplatePanelConfig } from './configs/actionTemplatePanelConfig';
 export { default as actionPanelConfig } from './configs/actionPanelConfig';
 export { default as incidentPanelConfig } from './configs/incidentPanelConfig';
 export { default as auditPanelConfig } from './configs/auditPanelConfig';

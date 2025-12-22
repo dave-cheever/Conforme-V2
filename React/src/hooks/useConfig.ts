@@ -99,6 +99,7 @@ const useConfig = () => {
         { label: capitalize(pluralize(t('question'))), url: '/admin/questions', permission: 'adminPanel.questions' },
         { label: `${capitalize(t('question'))} sets`, url: '/admin/questions-categories', permission: 'adminPanel.questionsCategories' },
         { label: 'Action categories', url: '/admin/action-categories', permission: 'adminPanel.actionCategories'},
+        { label: 'Action templates', url: '/admin/action-templates', permission: 'adminPanel.actionTemplates'},
         { label: 'Audit types', url: '/admin/audit-types', permission: 'adminPanel.auditTypes' },
         { label: 'Categories', url: '/admin/categories', permission: 'adminPanel.categories' },
         { label: 'Users', url: '/admin/users' },
@@ -253,6 +254,7 @@ const useConfig = () => {
       icon: CategoryIcon,
     },
     { label: 'Action category', url: '/admin/action-categories', permission: 'adminPanel.actionCategories', icon: ListIcon },
+    { label: 'Action template', url: '/admin/action-templates', permission: 'adminPanel.actionTemplates', icon: ListIcon },
     { label: 'Audit type', url: '/admin/audit-types', permission: 'adminPanel.auditTypes', icon: ListIcon },
     { label: 'Category', url: '/admin/categories', permission: 'adminPanel.categories', icon: ListIcon },
   ];

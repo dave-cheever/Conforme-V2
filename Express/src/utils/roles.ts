@@ -147,6 +147,9 @@ const roles = {
       'actionCategories.add',
       'actionCategories.edit',
       'actionCategories.delete',
+      'actionTemplates.add',
+      'actionTemplates.edit',
+      'actionTemplates.delete',
     ],
     restricted: {
       'audits.changeAuditor': ({ audit }) => audit.status !== 'completed',
