@@ -129,6 +129,7 @@ const roles = {
       'audits.delete',
       'audits.viewAll',
       'audits.viewDeleted',
+      'audits.export',
       'auditTypes',
       'businessUnits',
       'categories',

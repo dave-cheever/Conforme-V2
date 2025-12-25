@@ -335,3 +335,5 @@ export const PAGINATION_PAGE_SIZE_OPTIONS = [10, 20, 50, 100] as const;
 export const MAX_PRESET_NAME_LENGTH = 50;
 export const PAGINATION_DEFAULT_PAGE_SIZE = 10;
 export const ACTION_CATEGORY_DEFAULT_USED_COUNT = 0;
+export const CSV_EXPORT_MAX_RECORDS = 10000;
+export const CSV_EXPORT_LOADING_TIMEOUT = 5000; // 5 seconds in milliseconds
