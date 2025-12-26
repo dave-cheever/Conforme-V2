@@ -10,6 +10,7 @@
       <class name="unitTests.FilterTests" />
       <class name="unitTests.NavigationTests"/>
       <class name="unitTests.ModuleSwitcherTests"/>
+      <class name="unitTests.HeaderProfileTests"/>
     </classes>
   </test>
 </suite>
