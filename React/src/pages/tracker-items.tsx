@@ -11,7 +11,6 @@ import ChangeViewButton from '../components/ChangeViewButton';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
-import NoRecordsFound from '../components/NoRecordsFound';
 import { PanelView, trackerPanelConfig } from '../components/PanelView';
 import SortButton from '../components/SortButton';
 import TrackerItemsList from '../components/TrackerItem/TrackerItemsList';
@@ -27,6 +26,7 @@ import { removeEmptyArraysAndObjects } from '../utils/helpers';
 import FilterButton from '../components/FilterButton';
 import isAuditPage from '../utils/isAuditPage';
 import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
+import { NoRecordsFoundMessage } from '../components/UI/NoRecordFoundMessage/NoRecordsFoundMessage';
 
 const GET_RESPONSES_TOTALS = gql`
   query ResponsesTotals($responsesQuery: Any) {
@@ -483,11 +483,7 @@ function TrackerItems() {
       </Header>
       <Flex data-id="000292" direction="column" h={['calc(100vh - 200px)', 'calc(100vh - 150px)']} overflow="auto" zIndex={1}>
         {error ? (
-          <NoRecordsFound
-            data-id="000293"
-            dataSourceName="tracker items"
-            height="100%"
-          />
+          <NoRecordsFoundMessage data-id="000293" dataSourceName="tracker items"/>
         ) : (
           renderMainContent()
         )}

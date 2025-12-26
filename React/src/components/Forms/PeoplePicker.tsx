@@ -185,8 +185,9 @@ function PeoplePicker({
                 <Box
                   color={error ? 'peoplePicker.labelFont.error' : 'peoplePicker.labelFont.normal'}
                   data-id="000285"
-                  fontSize={11}
-                  fontWeight="bold"
+                  fontSize="16px"
+                  fontWeight="500"
+                  lineHeight="100%"
                   left="none"
                   position="static"
                   zIndex={2}

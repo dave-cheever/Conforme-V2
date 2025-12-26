@@ -99,8 +99,9 @@ function TextInput({
                   <Box
                     color={error ? 'textInput.labelFont.error' : styles ? styles?.textInput?.font : 'textInput.labelFont.normal'}
                     data-id="000395"
-                    fontSize="11px"
-                    fontWeight="bold"
+                    fontSize="16px"
+                    fontWeight="500"
+                    lineHeight="100%"
                     left="none"
                     position="static">
                     {label}

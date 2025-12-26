@@ -29,6 +29,7 @@ import useSort from '../hooks/useSort';
 import { EditIcon, ExportIcon, Trashcan } from '../icons';
 import { IAnswer } from '../interfaces/IAnswer';
 import { TViewMode } from '../interfaces/TViewMode';
+import { NoRecordsFoundMessage } from '../components/UI';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -572,7 +573,9 @@ function Answers() {
           <Text data-id="000277">{error.message}</Text>
         ) : loading ? (
           <Loader data-id="000278" center={true} />
-        ) : (
+        ) : sortedAnswers.length === 0 ? (
+          <NoRecordsFoundMessage data-id="000280" dataSourceName="answers" />
+        ) :  (
           <>
             <FilterPills
               data-id="000279"
@@ -612,7 +615,6 @@ function Answers() {
                       data-id="000287"
                       data={sortedAnswers}
                       columns={columns}
-                      dataType="answers"
                       sortOrder={sortOrder}
                       sortType={sortType}
                       setSortOrder={setSortOrder}

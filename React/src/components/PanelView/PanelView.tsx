@@ -7,10 +7,9 @@ import { get } from 'lodash';
 import useDevice from '../../hooks/useDevice';
 import { EllipsisIcon } from '../../icons';
 import { PanelFieldConfig, PanelViewProps } from '../../interfaces/IPanelConfig';
-import NoRecordsFound from '../NoRecordsFound';
 import AvatarCell from '../Table/Cells/AvatarCell';
 import StatusCell from '../Table/Cells/StatusCell';
-import Pagination from '../UI/Pagination/Pagination';
+import { Pagination } from '../UI';
 
 // Utility function to get nested object values
 const getNestedValue = (obj: any, path: string): any => get(obj, path, null);
@@ -354,44 +353,6 @@ function PanelView({
       >
         <Text color="red.500" data-id="002524" fontSize="lg" fontWeight="medium" textAlign="center">
           {error}
-        </Text>
-      </Box>
-    );
-  }
-
-  // Handle empty state
-  if (!items || items.length === 0) {
-    if (dataSourceName) {
-      return (
-        <NoRecordsFound
-          containerProps={{
-            bg: containerProps.bg,
-            p: containerProps.p,
-          }}
-          data-id="panel-empty-state"
-          dataSourceName={dataSourceName}
-          height="100%"
-        />
-      );
-    }
-
-    return (
-      <Box
-        alignItems="center"
-        as="main"
-        bg={containerProps.bg}
-        data-id="1"
-        display="flex"
-        flexDirection="column"
-        h="200px"
-        justifyContent="center"
-        minW="100%"
-        p={containerProps.p}
-        pt={containerProps.pt}
-        w="100%"
-      >
-        <Text color="gray.500" data-id="002525" fontSize="lg" fontWeight="medium" textAlign="center">
-          {emptyStateMessage}
         </Text>
       </Box>
     );

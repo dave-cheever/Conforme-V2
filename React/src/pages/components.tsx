@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Flex, Text } from '@chakra-ui/react';
 
-import NoRecordsFound from '../components/NoRecordsFound';
+import { NoRecordsFoundMessage } from '../components/UI/NoRecordFoundMessage/NoRecordsFoundMessage';
 import { actionPanelConfig, auditPanelConfig, incidentPanelConfig, trackerPanelConfig } from '../components/PanelView/configs';
 import PanelView from '../components/PanelView/PanelView';
 import SearchBarMessage from '../components/SearchBar/SearchBarMessage';
@@ -604,7 +604,7 @@ const componentSections: ComponentSection[] = [
   },
   {
     groupTitle: 'No Records Found',
-    description: 'NoRecordsFound Component - A reusable component for displaying "No records found" messages with customizable data source names and full height containers. Features: Dynamic message generation based on data source name, customizable height and styling, consistent error messaging across the application, and support for custom messages when needed. Props: dataSourceName (string), message (optional custom message), height (defaults to "100%"), containerProps (optional styling overrides).',
+    description: 'NoRecordsFoundMessage Component - A reusable component for displaying "No records found" messages with customizable data source names and full height containers. Features: Dynamic message generation based on data source name, customizable height and styling, consistent error messaging across the application, and support for custom messages when needed. Props: dataSourceName (string), message (optional custom message), height (defaults to "100%"), containerProps (optional styling overrides).',
     sections: [
       {
         title: 'Default Audits Message',
@@ -613,7 +613,7 @@ const componentSections: ComponentSection[] = [
           dataSourceName: 'audits',
           height: '100%',
         },
-        get component() { return <NoRecordsFound data-id="002485" {...this.props} />; },
+        get component() { return <NoRecordsFoundMessage data-id="002485" {...this.props} />; },
       },
       {
         title: 'Tracker Items Message',
@@ -622,7 +622,7 @@ const componentSections: ComponentSection[] = [
           dataSourceName: 'tracker items',
           height: '100%',
         },
-        get component() { return <NoRecordsFound data-id="002486" {...this.props} />; },
+        get component() { return <NoRecordsFoundMessage data-id="002486" {...this.props} />; },
       },
       {
         title: 'Custom Message',
@@ -632,7 +632,7 @@ const componentSections: ComponentSection[] = [
           message: 'No action items available at this time.',
           height: '100%',
         },
-        get component() { return <NoRecordsFound data-id="002487" {...this.props} />; },
+        get component() { return <NoRecordsFoundMessage data-id="002487" {...this.props} />; },
       },
       {
         title: 'Full Height Container',
@@ -645,7 +645,7 @@ const componentSections: ComponentSection[] = [
             p: '40px',
           },
         },
-        get component() { return <NoRecordsFound data-id="002488" {...this.props} />; },
+        get component() { return <NoRecordsFoundMessage data-id="002488" {...this.props} />; },
       },
     ],
   },

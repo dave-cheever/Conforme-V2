@@ -22,9 +22,9 @@ import { AdminModalState } from '../../interfaces/IAdminContext';
 import TextInput from '../Forms/TextInput';
 import Dropdown from '../Forms/Dropdown';
 import PeoplePicker from '../Forms/PeoplePicker';
-import RichTextEditor from '../UI/RichTextEditor/RichTextEditor';
 import useDevice from '../../hooks/useDevice';
 import ActionTemplateDeleteConfirmModal from './ActionTemplateDeleteConfirmModal';
+import { RichTextEditor } from '../UI';
 
 const CREATE_ACTION_TEMPLATE = gql`
   mutation ($actionTemplate: ActionTemplateCreateInput!) {
@@ -216,7 +216,6 @@ const ActionTemplateFormModal = ({
         isOpen={isOpenModal}
         onClose={onClose}
         onEsc={handleDiscard}
-        onOverlayClick={handleDiscard}
         size={device === 'desktop' || device === 'tablet' || modalType === 'delete' ? 'lg' : 'full'}
         variant={modalType === 'delete' ? 'deleteModal' : 'adminModal'}
       >

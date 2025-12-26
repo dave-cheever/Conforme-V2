@@ -30,6 +30,7 @@ import useSort from '../hooks/useSort';
 import { EditIcon, ExportIcon, Trashcan } from '../icons';
 import { IAction } from '../interfaces/IAction';
 import { TViewMode } from '../interfaces/TViewMode';
+import { NoRecordsFoundMessage } from '../components/UI';
 
 const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
 
@@ -556,6 +557,8 @@ function Actions() {
 
           if (loading) return <Loader center data-id="000260" />;
 
+          if (sortedActions.length === 0) return <NoRecordsFoundMessage data-id="000260" dataSourceName="actions" />;
+
           return (
             <>
               {viewMode === 'list' && (
@@ -587,7 +590,6 @@ function Actions() {
                   columns={columns}
                   data={sortedActions}
                   data-id="000265"
-                  dataType="actions"
                   onRowClick={handleOpenModal}
                   setSortOrder={setSortOrder}
                   setSortType={setSortType}

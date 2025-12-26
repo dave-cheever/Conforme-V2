@@ -16,7 +16,6 @@ import ChangeViewButton from '../components/ChangeViewButton';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
-import NoRecordsFound from '../components/NoRecordsFound';
 import { auditPanelConfig, PanelView } from '../components/PanelView';
 import SortButton from '../components/SortButton';
 import AvatarCell from '../components/Table/Cells/AvatarCell';
@@ -42,6 +41,7 @@ import isAuditPage from '../utils/isAuditPage';
 import usePagination from '../hooks/usePagination';
 import useCSVExport from '../hooks/useCSVExport';
 import { CSV_EXPORT_MAX_RECORDS } from '../bootstrap/config';
+import { NoRecordsFoundMessage } from '../components/UI';
 
 // Helper functions for user ID normalization and filter checking
 function getMyIds(user?: { _id?: string; userId?: string }) {
@@ -644,7 +644,7 @@ function Audits() {
   useEffect(() => {
     if (data?.audits && !error) {
       // Handle both array and object with audits property
-      const auditsArray = Array.isArray(data.audits) ? data.audits : (data.audits?.audits || []);
+      const auditsArray = Array.isArray(data.audits) ? data.audits : data.audits?.audits || [];
       let audits = auditsArray;
 
       // Apply search filter if search query exists
@@ -746,14 +746,17 @@ function Audits() {
     if (!appliedFilters || Object.keys(appliedFilters).length === 0) {
       return {};
     }
-    return Object.entries(appliedFilters).reduce((acc, [key, filter]) => {
-      if (!filter || typeof filter !== 'object' || !('value' in filter)) return acc;
-      const value = filter.value;
-      if (value !== undefined && value !== null && !(Array.isArray(value) && value.length === 0)) {
-        acc[key] = value;
-      }
-      return acc;
-    }, {} as Record<string, any>);
+    return Object.entries(appliedFilters).reduce(
+      (acc, [key, filter]) => {
+        if (!filter || typeof filter !== 'object' || !('value' in filter)) return acc;
+        const value = filter.value;
+        if (value !== undefined && value !== null && !(Array.isArray(value) && value.length === 0)) {
+          acc[key] = value;
+        }
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
   }, [appliedFilters]);
 
   const fetchAllRecordsForExport = useCallback(async (): Promise<IAudit[]> => {
@@ -818,22 +821,19 @@ function Audits() {
 
   // Memoize panel view component
   const panelViewComponent = useMemo(
-    () =>
-      filteredAudits?.length > 0 ? (
-        <PanelView
-          config={panelConfig}
-          data-id="002176"
-          dataSourceName="audits"
-          items={filteredAudits}
-          currentPage={currentPage}
-          pageSize={pageSize}
-          total={total}
-          onPageChange={setCurrentPage}
-          onPageSizeChange={setPageSize}
-        />
-      ) : (
-        <NoRecordsFound data-id="000202" dataSourceName="audits" height="100%" />
-      ),
+    () => (
+      <PanelView
+        config={panelConfig}
+        data-id="002176"
+        dataSourceName="audits"
+        items={filteredAudits}
+        currentPage={currentPage}
+        pageSize={pageSize}
+        total={total}
+        onPageChange={setCurrentPage}
+        onPageSizeChange={setPageSize}
+      />
+    ),
     [filteredAudits, panelConfig],
   );
 
@@ -844,7 +844,6 @@ function Audits() {
         columns={columns}
         data={filteredAudits}
         data-id="000201"
-        dataType="audits"
         onRowClick={handleRowClick}
         setSortOrder={setSortOrder}
         setSortType={setSortType}
@@ -868,6 +867,8 @@ function Audits() {
   // Helper function to render main content
   const renderMainContent = () => {
     if (loading) return <Loader center data-id="000197" />;
+
+    if (filteredAudits.length === 0) return <NoRecordsFoundMessage dataSourceName="audits" data-id="000196" />;
 
     // Show loading during view transition or sorting
     if (isViewTransitioning || isSorting) {
@@ -902,11 +903,11 @@ function Audits() {
         <AuditModal data-id="000188" refetch={refetch} />
       </Modal>
       <Header breadcrumbs={[pluralize(t('audit'))]} data-id="000189" mobileBreadcrumbs={[pluralize(t('audit'))]}>
-        <Flex 
-          data-id="001519" 
-          direction={{ base: 'column', md: 'row' }} 
-          justifyContent={{ base: 'flex-start', md: 'space-between' }} 
-          pl={[0, 0, '6']} 
+        <Flex
+          data-id="001519"
+          direction={{ base: 'column', md: 'row' }}
+          justifyContent={{ base: 'flex-start', md: 'space-between' }}
+          pl={[0, 0, '6']}
           w="full"
           gap={{ base: 2, md: 0 }}
           align={{ base: 'flex-start', md: 'center' }}
@@ -916,26 +917,14 @@ function Audits() {
             <ChangeViewButton data-id="000190" setViewMode={setViewMode} viewMode={viewMode} views={['list', 'panel']} />
           </Flex>
 
-          <Flex 
-            data-id="001520" 
-            direction="row"
-            align="center"
-            justify={{ base: 'flex-start', md: 'flex-end' }}
-            wrap="wrap"
-            gap={2}
-          >
-            <CSVExportButton
-              data-id="013206"
-              listType="audits"
-              isLoading={isCSVLoading}
-              error={csvError}
-              onExportClick={handleCSVExport} />
-            <Divider 
-              borderColor="gray.300" 
-              data-id="000290" 
-              height="30px" 
-              mt={1} 
-              mx={4} 
+          <Flex data-id="001520" direction="row" align="center" justify={{ base: 'flex-start', md: 'flex-end' }} wrap="wrap" gap={2}>
+            <CSVExportButton data-id="013206" listType="audits" isLoading={isCSVLoading} error={csvError} onExportClick={handleCSVExport} />
+            <Divider
+              borderColor="gray.300"
+              data-id="000290"
+              height="30px"
+              mt={1}
+              mx={4}
               orientation="vertical"
               display={{ base: 'none', md: 'block' }}
             />

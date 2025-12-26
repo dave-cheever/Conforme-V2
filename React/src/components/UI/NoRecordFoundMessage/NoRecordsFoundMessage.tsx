@@ -2,14 +2,11 @@ import React from 'react';
 
 import { Flex, Text } from '@chakra-ui/react';
 
-interface NoRecordsFoundProps {
+interface INoRecordsFound {
   /** The name of the data source (e.g., "audits", "tracker items", "actions") */
   readonly dataSourceName: string;
-  /** Optional custom message to display instead of the default */
   readonly message?: string;
-  /** Height of the container - defaults to full height */
   readonly height?: string | string[];
-  /** Additional styling props */
   readonly containerProps?: {
     readonly alignItems?: string;
     readonly justifyContent?: string;
@@ -23,17 +20,13 @@ interface NoRecordsFoundProps {
   readonly 'data-id'?: string;
 }
 
-/**
- * A reusable component for displaying "No records found" messages
- * with customizable data source names and full height container
- */
-function NoRecordsFound({
+export const NoRecordsFoundMessage = ({
   dataSourceName,
   message,
   height = '100%',
   containerProps = {},
   'data-id': dataId = 'no-records-found',
-}: NoRecordsFoundProps) {
+}: INoRecordsFound) => {
   const defaultMessage = `No ${dataSourceName} found. Try adjusting the filters.`;
   const displayMessage = message || defaultMessage;
 
@@ -68,5 +61,3 @@ function NoRecordsFound({
     </Flex>
   );
 }
-
-export default NoRecordsFound;

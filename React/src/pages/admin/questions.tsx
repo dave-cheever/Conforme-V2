@@ -319,6 +319,29 @@ function Questions() {
     },
   ], []);
 
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Box bg="white" borderBottomRadius="10px" data-id="000499" h="full" w="full">
+          <Loader center data-id="001947" />
+        </Box>
+      );
+    }
+
+    return (
+      <ListView
+        columns={columns}
+        data={questions}
+        data-id="000444"
+        onRowClick={handleRowClick}
+        setSortOrder={setSortOrder}
+        setSortType={setSortType}
+        sortOrder={sortOrder}
+        sortType={sortType}
+      />
+    );
+  };
+
   return (
     <>
       <AdminModal
@@ -370,23 +393,7 @@ function Questions() {
       />
       <Box bg="auditsList.bg" data-id="000493" h="full" overflow="hidden">
         <Flex data-id="000494" h="full" px={['25px', 0]}>
-          {loading ? (
-            <Box bg="white" borderBottomRadius="10px" data-id="000499" h="full" w="full">
-              <Loader center data-id="001947" />
-            </Box>
-          ) : (
-            <ListView
-              columns={columns}
-              data={questions}
-              data-id="000444"
-              dataType="questions"
-              onRowClick={handleRowClick}
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortOrder={sortOrder}
-              sortType={sortType}
-            />
-          )}
+          {renderContent()}
         </Flex>
       </Box>
     </>

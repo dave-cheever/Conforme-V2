@@ -142,7 +142,6 @@ describe('ListView', () => {
         columns={mockColumns}
         data={mockData}
         data-id="002031"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -163,7 +162,6 @@ describe('ListView', () => {
         columns={mockColumns}
         data={mockData}
         data-id="002032"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -184,7 +182,6 @@ describe('ListView', () => {
         columns={mockColumns}
         data={mockData}
         data-id="002033"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -207,7 +204,6 @@ describe('ListView', () => {
         columns={mockColumns}
         data={mockData}
         data-id="002034"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -241,7 +237,6 @@ describe('ListView', () => {
         columns={columnsWithDisabled}
         data={mockData}
         data-id="002035"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -260,7 +255,6 @@ describe('ListView', () => {
         columns={mockColumns}
         data={[]}
         data-id="002036"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -270,7 +264,10 @@ describe('ListView', () => {
       { wrapper: createWrapper() },
     );
 
-    expect(screen.getByText('No audits found. Try adjusting the filters.')).toBeInTheDocument();
+    // ListView doesn't handle empty states - it just renders empty table with headers
+    expect(screen.queryByTestId('row-1')).not.toBeInTheDocument();
+    // Headers should still be present
+    expect(screen.getByText('Name')).toBeInTheDocument();
   });
 
   it('should display correct empty state message for different data types', () => {
@@ -279,7 +276,6 @@ describe('ListView', () => {
         columns={mockColumns}
         data={[]}
         data-id="002037"
-        dataType="users"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -289,7 +285,10 @@ describe('ListView', () => {
       { wrapper: createWrapper() },
     );
 
-    expect(screen.getByText('No users found. Try adjusting the filters.')).toBeInTheDocument();
+    // ListView doesn't handle empty states - it just renders empty table with headers
+    expect(screen.queryByTestId('row-1')).not.toBeInTheDocument();
+    // Headers should still be present
+    expect(screen.getByText('Name')).toBeInTheDocument();
   });
 
   it('should pass correct props to table headers', () => {
@@ -298,7 +297,6 @@ describe('ListView', () => {
         columns={mockColumns}
         data={mockData}
         data-id="002038"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -330,7 +328,6 @@ describe('ListView', () => {
         columns={columnsWithTooltip}
         data={mockData}
         data-id="002039"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -349,7 +346,6 @@ describe('ListView', () => {
         columns={mockColumns}
         data={mockData}
         data-id="002040"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -392,7 +388,6 @@ describe('ListView', () => {
         columns={columnsWithDisableSort}
         data={mockData}
         data-id="002044"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -421,7 +416,6 @@ describe('ListView', () => {
         columns={mockColumns}
         data={mockData}
         data-id="002041"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -445,7 +439,6 @@ describe('ListView', () => {
         columns={mockColumns}
         data={singleItem}
         data-id="002042"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -465,7 +458,6 @@ describe('ListView', () => {
         columns={mockColumns}
         data={mockData}
         data-id="002043"
-        dataType="audits"
         onRowClick={mockOnRowClick}
         setSortOrder={mockSetSortOrder}
         setSortType={mockSetSortType}
@@ -487,7 +479,6 @@ describe('ListView', () => {
           columns={mockColumns}
           data={mockData}
           data-id="002044"
-          dataType="audits"
           onRowClick={mockOnRowClick}
           setSortOrder={mockSetSortOrder}
           setSortType={mockSetSortType}
@@ -510,7 +501,6 @@ describe('ListView', () => {
           columns={mockColumns}
           data={mockData}
           data-id="002045"
-          dataType="audits"
           onRowClick={mockOnRowClick}
           setSortOrder={mockSetSortOrder}
           setSortType={mockSetSortType}
@@ -528,7 +518,6 @@ describe('ListView', () => {
           columns={mockColumns}
           data={mockData}
           data-id="002046"
-          dataType="audits"
           onRowClick={mockOnRowClick}
           setSortOrder={mockSetSortOrder}
           setSortType={mockSetSortType}
@@ -553,7 +542,6 @@ describe('ListView', () => {
           columns={mockColumns}
           data={mockData}
           data-id="002047"
-          dataType="audits"
           onRowClick={mockOnRowClick}
           setSortOrder={mockSetSortOrder}
           setSortType={mockSetSortType}
@@ -578,7 +566,6 @@ describe('ListView', () => {
           columns={mockColumns}
           data={mockData}
           data-id="002048"
-          dataType="audits"
           onRowClick={mockOnRowClick}
           setSortOrder={mockSetSortOrder}
           setSortType={mockSetSortType}
@@ -603,7 +590,6 @@ describe('ListView', () => {
           columns={mockColumns}
           data={mockData}
           data-id="002049"
-          dataType="audits"
           onRowClick={mockOnRowClick}
           setSortOrder={mockSetSortOrder}
           setSortType={mockSetSortType}

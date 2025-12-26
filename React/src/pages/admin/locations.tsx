@@ -294,6 +294,29 @@ function Locations() {
     },
   ], [t, device, module?.type, setResponseFiltersValue, setAuditFiltersValue, navigateTo]);
 
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Box bg="white" borderBottomRadius="10px" data-id="000442" h="full" w="full">
+          <Loader center data-id="000443" />
+        </Box>
+      );
+    }
+
+    return (
+      <ListView
+        columns={columns}
+        data={locations}
+        data-id="000444"
+        onRowClick={handleRowClick}
+        setSortOrder={setSortOrder}
+        setSortType={setSortType}
+        sortOrder={sortOrder}
+        sortType={sortType}
+      />
+    );
+  };
+
   return (
     <>
       <AdminModal
@@ -336,23 +359,7 @@ function Locations() {
       <Header breadcrumbs={['Admin', pluralize(capitalize(t('location')))]} data-id="000431" pageLabel={capitalize(t('location'))} />
       <Box bg="auditsList.bg" data-id="000432" h="full" overflow="hidden">
         <Flex data-id="000433" h="full" px={['25px', 0]}>
-          {loading ? (
-            <Box bg="white" borderBottomRadius="10px" data-id="000442" h="full" w="full">
-              <Loader center data-id="000443" />
-            </Box>
-          ) : (
-            <ListView
-              columns={columns}
-              data={locations}
-              data-id="000444"
-              dataType="locations"
-              onRowClick={handleRowClick}
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortOrder={sortOrder}
-              sortType={sortType}
-            />
-          )}
+          {renderContent()}
         </Flex>
       </Box>
     </>

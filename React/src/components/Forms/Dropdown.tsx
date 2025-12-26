@@ -67,8 +67,9 @@ function Dropdown({
                   <Box
                     color={error ? 'dropdown.labelFont.error' : 'dropdown.labelFont.normal'}
                     data-id="000248"
-                    fontSize={variant === 'secondaryVariant' ? '11px' : '14px'}
-                    fontWeight="bold"
+                    fontSize="16px"
+                    fontWeight="500"
+                    lineHeight="100%"
                     left="none"
                     position="static"
                     zIndex={1}>

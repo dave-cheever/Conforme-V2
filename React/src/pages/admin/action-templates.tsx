@@ -15,6 +15,7 @@ import { useAdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
 import usePagination from '../../hooks/usePagination';
 import { EditIcon } from '@chakra-ui/icons';
+import { NoRecordsFoundMessage } from '../../components/UI';
 
 const GET_ACTION_TEMPLATES = gql`
   query ($pagination: PaginationInput) {
@@ -250,6 +251,8 @@ function ActionTemplates() {
       );
     }
 
+    if (actionTemplates.length === 0) return <NoRecordsFoundMessage dataSourceName="action templates" data-id="000389" />;
+
     if (isMobile) {
       return (
         <PanelView
@@ -272,7 +275,6 @@ function ActionTemplates() {
         currentPage={currentPage}
         data={actionTemplates}
         data-id="000389"
-        dataType="action templates"
         onPageChange={setCurrentPage}
         onPageSizeChange={setPageSize}
         onRowClick={handleRowClick}

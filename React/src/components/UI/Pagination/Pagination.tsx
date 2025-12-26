@@ -4,7 +4,7 @@ import useDevice from '../../../hooks/useDevice';
 import { PAGINATION_PAGE_SIZE_OPTIONS } from '../../../bootstrap/config';
 import { IPagination } from '../../../interfaces/IPagination';
 
-function Pagination({ currentPage, pageSize, total, onPageChange, onPageSizeChange }: Readonly<IPagination>) {
+export const Pagination = ({ currentPage, pageSize, total, onPageChange, onPageSizeChange }: Readonly<IPagination>) => {
   if (currentPage === undefined || pageSize === undefined || total === undefined || onPageChange === undefined || onPageSizeChange === undefined) return null;
   
   const device = useDevice();

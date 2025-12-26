@@ -86,8 +86,9 @@ const RichTextEditorInner = ({
         <Box
           color={error ? 'textInput.labelFont.error' : 'textInput.labelFont.normal'}
           data-id={`rich-text-editor-label-${name}`}
-          fontSize="11px"
-          fontWeight="bold"
+          fontSize="16px"
+          fontWeight="500"
+          lineHeight="100%"
           mb={2}
         >
           {label}
@@ -157,7 +158,7 @@ const RichTextEditorInner = ({
   );
 }
 
-function RichTextEditor({
+export const RichTextEditor = ({
   control,
   name,
   label,
@@ -165,7 +166,7 @@ function RichTextEditor({
   required,
   disabled = false,
   tooltip = '',
-}: Readonly<IRichTextEditor>) {
+}: Readonly<IRichTextEditor>) => {
   return (
     <Controller
       data-id="013202"
@@ -189,6 +190,3 @@ function RichTextEditor({
       }} />
   );
 }
-
-export default RichTextEditor;
-

@@ -16,6 +16,7 @@ import useDevice from '../../hooks/useDevice';
 import usePagination from '../../hooks/usePagination';
 import { IBaseWithName } from '../../interfaces/IBaseWithName';
 import { EditIcon } from '@chakra-ui/icons';
+import { NoRecordsFoundMessage } from '../../components/UI';
 
 const GET_ACTION_CATEGORIES = gql`
   query ($pagination: PaginationInput) {
@@ -116,68 +117,66 @@ function ActionCategories() {
     [openActionCategoryModal],
   );
 
-  const columns: ColumnConfig[] = useMemo(() => [
-    {
-      label: 'Audit type',
-      sortKey: 'name',
-      width: '30%',
-      dataId: '000389',
-      render: (actionCategory: IActionCategory) => <TextOrNumberCell data-id="002091" text={actionCategory.name} />,
-    },
-    {
-      label: 'Used',
-      sortKey: 'used',
-      width: '20%',
-      dataId: '000390',
-      render: (actionCategory: IActionCategory) => (
-        <TextOrNumberCell data-id="002092" text={`${actionCategory.used || 0} ${actionCategory.used === 1 ? 'Action' : 'Actions'}`} />
-      ),
-    },
-    {
-      label: 'Last Modified',
-      sortKey: 'metatags.updatedAt',
-      width: '30%',
-      dataId: '000391',
-      render: (actionCategory: IActionCategory) => (
-        <DateTimeCell data-id="002093" date={actionCategory.metatags?.updatedAt} showTime={true} />
-      ),
-    },
-    {
-      label: '',
-      sortKey: '',
-      width: '7%',
-      dataId: '000393',
-      disableSort: true,
-      ml: 'auto',
-      render: (actionCategory: IActionCategory) => (
-        <Flex data-id="013102" justify="flex-end" w="full">
-          <Button
-            data-id="002091"
-            fontSize={['xs', 'sm', 'smm']}
-            h={['32px', '36px', 'auto']}
-            minW={['auto', 'auto', 'auto']}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleRowClick(actionCategory);
-            }}
-            p={['6px 8px', '7px 12px', '7px 12px']}
-            size={['sm', 'md', 'md']}
-            variant="outline"
-          >
-            <EditIcon data-id="013103" boxSize={['14px', '16px', '16px']} />
-            <Text
-              data-id="013104"
+  const columns: ColumnConfig[] = useMemo(
+    () => [
+      {
+        label: 'Audit type',
+        sortKey: 'name',
+        width: '30%',
+        dataId: '000389',
+        render: (actionCategory: IActionCategory) => <TextOrNumberCell data-id="002091" text={actionCategory.name} />,
+      },
+      {
+        label: 'Used',
+        sortKey: 'used',
+        width: '20%',
+        dataId: '000390',
+        render: (actionCategory: IActionCategory) => (
+          <TextOrNumberCell data-id="002092" text={`${actionCategory.used || 0} ${actionCategory.used === 1 ? 'Action' : 'Actions'}`} />
+        ),
+      },
+      {
+        label: 'Last Modified',
+        sortKey: 'metatags.updatedAt',
+        width: '30%',
+        dataId: '000391',
+        render: (actionCategory: IActionCategory) => (
+          <DateTimeCell data-id="002093" date={actionCategory.metatags?.updatedAt} showTime={true} />
+        ),
+      },
+      {
+        label: '',
+        sortKey: '',
+        width: '7%',
+        dataId: '000393',
+        disableSort: true,
+        ml: 'auto',
+        render: (actionCategory: IActionCategory) => (
+          <Flex data-id="013102" justify="flex-end" w="full">
+            <Button
+              data-id="002091"
               fontSize={['xs', 'sm', 'smm']}
-              fontWeight="500"
-              lineHeight="100%"
-              ml={[1, 2, 2]}>
-              Edit
-            </Text>
-          </Button>
-        </Flex>
-      ),
-    },
-  ], [handleRowClick]);
+              h={['32px', '36px', 'auto']}
+              minW={['auto', 'auto', 'auto']}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRowClick(actionCategory);
+              }}
+              p={['6px 8px', '7px 12px', '7px 12px']}
+              size={['sm', 'md', 'md']}
+              variant="outline"
+            >
+              <EditIcon data-id="013103" boxSize={['14px', '16px', '16px']} />
+              <Text data-id="013104" fontSize={['xs', 'sm', 'smm']} fontWeight="500" lineHeight="100%" ml={[1, 2, 2]}>
+                Edit
+              </Text>
+            </Button>
+          </Flex>
+        ),
+      },
+    ],
+    [handleRowClick],
+  );
 
   const panelConfig = useMemo(
     () => ({
@@ -205,6 +204,8 @@ function ActionCategories() {
       );
     }
 
+    if (actionCategories.length === 0) return <NoRecordsFoundMessage dataSourceName="action categories" data-id="000389" />;
+
     if (isMobile) {
       return (
         <PanelView
@@ -227,7 +228,6 @@ function ActionCategories() {
         currentPage={currentPage}
         data={actionCategories}
         data-id="000389"
-        dataType="action categories"
         onPageChange={setCurrentPage}
         onPageSizeChange={setPageSize}
         onRowClick={handleRowClick}
