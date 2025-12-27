@@ -2,6 +2,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import {
   Box,
   Button,
+  Divider,
   Flex,
   Modal,
   ModalBody,
@@ -17,7 +18,7 @@ import {
 import { Control } from 'react-hook-form';
 
 import { toastFailed, toastSuccess } from '../../bootstrap/config';
-import { AddIcon, Close } from '../../icons';
+import { AddIcon, Close, Trashcan } from '../../icons';
 import { AdminModalState } from '../../interfaces/IAdminContext';
 import TextInput from '../Forms/TextInput';
 import Dropdown from '../Forms/Dropdown';
@@ -50,7 +51,7 @@ const DELETE_ACTION_TEMPLATE = gql`
 
 const GET_ACTION_CATEGORIES = gql`
   query {
-    actionCategories(pagination: { limit: 1000, offset: 0 }) {
+    actionCategories {
       actionCategories {
         _id
         name
@@ -90,7 +91,9 @@ const ActionTemplateFormModal = ({
   const [updateActionTemplate, { loading: updateLoading }] = useMutation(UPDATE_ACTION_TEMPLATE);
   const [deleteActionTemplate, { loading: deleteLoading }] = useMutation(DELETE_ACTION_TEMPLATE);
 
-  const { data: categoriesData } = useQuery(GET_ACTION_CATEGORIES);
+  const { data: categoriesData } = useQuery(GET_ACTION_CATEGORIES, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   const categoryOptions = categoriesData?.actionCategories?.actionCategories
     ? categoriesData.actionCategories.actionCategories.map((cat: { _id: string; name: string }) => ({
@@ -105,13 +108,13 @@ const ActionTemplateFormModal = ({
     try {
       if (Object.keys(errors).length === 0) {
         const actionTemplate = getValues();
-        await createActionTemplate({ 
-          variables: { 
+        await createActionTemplate({
+          variables: {
             actionTemplate: {
               ...actionTemplate,
               suggestedOwnerId: actionTemplate.suggestedOwnerId || null,
-            }
-          } 
+            },
+          },
         });
         refetch();
         toast({ ...toastSuccess, description: 'Action template added' });
@@ -209,7 +212,8 @@ const ActionTemplateFormModal = ({
         actionTemplateName={getValues()?.title}
         isOpen={isConfirmDeleteOpen}
         onClose={onConfirmDeleteClose}
-        onConfirm={handleConfirmDelete} />
+        onConfirm={handleConfirmDelete}
+      />
       <Modal
         blockScrollOnMount={false}
         data-id="000301"
@@ -221,48 +225,78 @@ const ActionTemplateFormModal = ({
       >
         <ModalOverlay data-id="000302" />
         {(modalType === 'add' || modalType === 'edit') && (
-          <ModalContent
-            bg="white"
-            data-id="000303"
-            h="100%"
-            m="0"
-            overflow="hidden"
-            p={0}
-            rounded="0"
-          >
+          <ModalContent bg="actionTemplateFormModal.body.bg" data-id="000303" h="100%" m="0" overflow="hidden" p={0} rounded="0">
             <ModalHeader
-              borderBottom="1px solid"
-              borderColor="gray.200"
               data-id="000304"
-              pb={4}
+              borderBottom="1px solid"
+              borderColor="actionTemplateFormModal.modalHeader.borderColor"
+              bg="actionTemplateFormModal.modalHeader.bg"
+              padding="14px 18px"
               position="relative"
-              pt={6}
-              px={6}
             >
-              <Flex alignItems="center" justifyContent='space-between' data-id="000305" position="relative" w="full">
-                <Text data-id="000308" fontSize="20px" fontWeight="500" lineHeight='100%'>
+              <Flex alignItems="center" justifyContent="space-between" data-id="000305" position="relative" w="full">
+                <Text
+                  color="actionTemplateFormModal.modalHeader.titleColor"
+                  data-id="000308"
+                  fontSize="20px"
+                  fontWeight="500"
+                  lineHeight="100%"
+                >
                   {modalType === 'edit' ? 'Edit action template' : 'Add a new action template'}
                 </Text>
-                <Box
-                  _hover={{ opacity: 0.7 }}
-                  cursor="pointer"
-                  data-id="000309"
-                  lineHeight='100%'
-                >
-                  <Close
-                    data-id="013098"
-                    h="14px"
-                    onClick={handleDiscard}
-                    stroke="#2D3748"
-                    w="14px" />
+
+                <Box data-id="013209" as="span" display="flex" alignItems="center" gap="10px">
+                  {modalType === 'edit' && (
+                    <>
+                      <Button
+                        data-id="000314"
+                        _hover={{
+                          bg: 'actionTemplateFormModal.deleteButton.hover.bg',
+                          color: 'actionTemplateFormModal.deleteButton.hover.color',
+                          border: 'none',
+                        }}
+                        bg="actionTemplateFormModal.deleteButton.bg"
+                        color="actionTemplateFormModal.deleteButton.color"
+                        border="1px solid"
+                        borderColor="actionTemplateFormModal.deleteButton.border"
+                        borderRadius="6px"
+                        boxShadow="0px 1px 2px 0px #1A202C14"
+                        fontSize="12px"
+                        fontWeight="500"
+                        letterSpacing="0%"
+                        padding="6px 8px"
+                        isDisabled={isLoading}
+                        isLoading={deleteLoading}
+                        loadingText="Deleting..."
+                        onClick={onConfirmDeleteOpen}
+                        leftIcon={
+                          <Trashcan
+                            data-id="013100"
+                            _groupHover={{ color: 'actionTemplateFormModal.deleteButton.hover.iconColor' }}
+                            w="12px"
+                            h="12px"
+                            color="actionTemplateFormModal.deleteButton.iconColor"
+                          />
+                        }
+                        role="group"
+                      >
+                        Delete template
+                      </Button>
+
+                      <Divider data-id="013210" orientation="vertical" height="30px" />
+                    </>
+                  )}
+                  <Box data-id="000309" _hover={{ opacity: 0.7 }} cursor="pointer" lineHeight="100%">
+                    <Close data-id="013098" h="16px" onClick={handleDiscard} stroke="actionTemplateFormModal.closeIcon.color" w="16px" />
+                  </Box>
                 </Box>
               </Flex>
             </ModalHeader>
-            <ModalBody data-id="000310" p={6} overflowY="auto">
+            <ModalBody data-id="000310" bg="actionTemplateFormModal.modalBody.bg" p="18px" overflowY="auto">
               <Stack data-id="000359" spacing={4} w="full">
                 <TextInput
-                  control={control}
                   data-id="000360"
+                  control={control}
                   disabled={isLoading}
                   label="Title"
                   name="title"
@@ -273,8 +307,8 @@ const ActionTemplateFormModal = ({
                   }}
                 />
                 <Dropdown
-                  control={control}
                   data-id="000361"
+                  control={control}
                   disabled={isLoading}
                   label="Category"
                   name="actionCategoryId"
@@ -286,16 +320,16 @@ const ActionTemplateFormModal = ({
                   }}
                 />
                 <PeoplePicker
-                  control={control}
                   data-id="000363"
+                  control={control}
                   disabled={isLoading}
                   label="Suggested Owner"
                   name="suggestedOwnerId"
                   placeholder="Search for a user"
                 />
                 <RichTextEditor
-                  control={control}
                   data-id="000362"
+                  control={control}
                   disabled={isLoading}
                   label="Description"
                   name="description"
@@ -303,12 +337,19 @@ const ActionTemplateFormModal = ({
                 />
               </Stack>
             </ModalBody>
-            <Box data-id="000400" p={6} pt={4}>
+            <Box
+              data-id="000400"
+              bg="actionTemplateFormModal.modalFooter.bg"
+              borderTop="1px solid"
+              borderColor="actionTemplateFormModal.modalFooter.borderColor"
+              color="actionTemplateFormModal.modalFooter.color"
+              p="16px 20px"
+            >
               <Flex data-id="000313" gap={3} justify="space-between">
                 <Button
-                  _hover={{ bg: 'transparent' }}
-                  bg="transparent"
-                  color="#2D3748"
+                  _hover={{ bg: 'actionTemplateFormModal.discardButton.hover.bg' }}
+                  bg="actionTemplateFormModal.discardButton.bg"
+                  color="actionTemplateFormModal.discardButton.color"
                   data-id="000401"
                   fontSize="14px"
                   fontWeight="500"
@@ -318,37 +359,25 @@ const ActionTemplateFormModal = ({
                 >
                   Discard
                 </Button>
-                <Box data-id="013099" as='span'>
-                  {modalType === 'edit' && (
-                    <Button
-                      _hover={{ bg: 'adminModal.button.remove.bg' }}
-                      bg="adminModal.button.remove.bg"
-                      color="adminModal.button.remove.color"
-                      data-id="000314"
-                      fontSize="14px"
-                      fontWeight="500"
-                      isDisabled={isLoading}
-                      isLoading={deleteLoading}
-                      loadingText="Deleting..."
-                      onClick={onConfirmDeleteOpen}
-                    >
-                      Delete
-                    </Button>
-                  )}
+                <Box data-id="013099" as="span">
                   <Button
-                    _hover={{ bg: 'adminModal.button.hover' }}
-                    bg="adminModal.button.bg"
-                    color="adminModal.button.color"
+                    _hover={{ bg: 'actionTemplateFormModal.primaryButton.hover.bg' }}
+                    bg="actionTemplateFormModal.primaryButton.bg"
+                    color="actionTemplateFormModal.primaryButton.color"
                     data-id="000317"
                     fontSize="14px"
                     fontWeight="500"
                     isDisabled={isLoading}
                     isLoading={createLoading || updateLoading}
-                    leftIcon={!createLoading && !updateLoading ? <AddIcon data-id="013100" h="16px" stroke="white" w="16px" /> : undefined}
+                    leftIcon={
+                      !createLoading && !updateLoading ? (
+                        <AddIcon data-id="013100" h="16px" stroke="actionTemplateFormModal.primaryButton.iconColor" w="16px" />
+                      ) : undefined
+                    }
                     loadingText={modalType === 'edit' ? 'Updating...' : 'Adding...'}
                     onClick={() => handleAction(modalType)}
-                    marginLeft='10px'
-                    spinner={<Spinner data-id="013101" color="white" size="sm" />}
+                    marginLeft="10px"
+                    spinner={<Spinner data-id="013101" color="actionTemplateFormModal.primaryButton.spinnerColor" size="sm" />}
                   >
                     {modalType === 'edit' ? 'Update template' : 'Add template'}
                   </Button>
@@ -364,3 +393,51 @@ const ActionTemplateFormModal = ({
 
 export default ActionTemplateFormModal;
 
+export const actionTemplateFormModalStyles = {
+  actionTemplateFormModal: {
+    modalHeader: {
+      bg: '#FFFFFF',
+      borderColor: '#E2E8F0',
+      titleColor: '#2D3748',
+    },
+    modalBody: {
+      bg: '#FFFFFF',
+    },
+    modalFooter: {
+      bg: '#FFFFFF',
+      color: '#FFFFFF',
+      borderColor: '#CBD5E0',
+    },
+    deleteButton: {
+      bg: 'transparent',
+      color: '#2D3748',
+      border: '#CBD5E0',
+      iconColor: '#D0021B',
+      hover: {
+        bg: '#E93C44',
+        color: '#FFFFFF',
+        iconColor: '#FFFFFF',
+      },
+    },
+    primaryButton: {
+      bg: '#462AC4',
+      color: '#FFFFFF',
+      iconColor: '#FFFFFF',
+      spinnerColor: '#FFFFFF',
+      hover: {
+        bg: '#462AC4',
+      },
+    },
+    discardButton: {
+      bg: 'transparent',
+      color: '#2D3748',
+      hover: {
+        bg: 'transparent',
+      },
+    },
+    closeIcon: {
+      color: '#2D3748',
+      hoverOpacity: 0.7,
+    },
+  },
+};

@@ -129,7 +129,7 @@ function Dropdown({
                   onChange={onChange}
                   placeholder={placeholder}
                   top="5px"
-                  value={options.length === 1 ? options[0].value : value || ''}>
+                  value={value || ''}>
                   {options.map((option) => (
                     <option
                       data-id="000254"

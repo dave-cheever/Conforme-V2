@@ -251,7 +251,7 @@ function ActionTemplates() {
       );
     }
 
-    if (actionTemplates.length === 0) return <NoRecordsFoundMessage dataSourceName="action templates" data-id="000389" />;
+    if (actionTemplates.length === 0) return <NoRecordsFoundMessage dataSourceName="action templates" data-id="000389" message='No action templates found' />;
 
     if (isMobile) {
       return (

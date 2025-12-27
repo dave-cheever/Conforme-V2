@@ -107,6 +107,7 @@ import { trackerListItemsStyles } from '../components/TrackerItem/TrackerItemsLi
 import { userMenuStyles } from '../components/UserMenu';
 import { userSelectorStyles } from '../components/UsersSelector';
 import { responseLayoutStyles } from '../layouts/ResponseLayout';
+import { actionTemplateFormModalStyles } from '../components/ActionTemplate/ActionTemplateFormModal';
 import { actionsStyles } from '../pages/actions';
 import { auditTypesAdminStyles } from '../pages/admin/audit-types';
 import { businessUnitsStyles } from '../pages/admin/business-units';
@@ -177,6 +178,7 @@ const getTheme = (organizationTheme?: any) => {
         ...actionListElementStyles,
         ...actionModalStyles,
         ...actionSquareStyles,
+        ...actionTemplateFormModalStyles,
         ...actionsStyles,
         ...adminModalStyles,
         ...additionalDetailsStyles,
