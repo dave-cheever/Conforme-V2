@@ -25,7 +25,6 @@ const GET_ACTION_TEMPLATES = gql`
         title
         description
         actionCategoryId
-        suggestedOwnerId
         metatags {
           updatedAt
         }
@@ -52,13 +51,11 @@ const defaultValues: {
   title: string;
   description: string;
   actionCategoryId: string;
-  suggestedOwnerId: string;
 } = {
   _id: undefined,
   title: '',
   description: '',
   actionCategoryId: '',
-  suggestedOwnerId: '',
 };
 
 interface IActionTemplate {
@@ -66,7 +63,6 @@ interface IActionTemplate {
   title: string;
   description?: string;
   actionCategoryId: string;
-  suggestedOwnerId?: string;
   metatags?: {
     updatedAt?: Date;
   };
@@ -149,7 +145,6 @@ function ActionTemplates() {
         title: actionTemplate.title,
         description: actionTemplate.description || '',
         actionCategoryId: actionTemplate.actionCategoryId,
-        suggestedOwnerId: actionTemplate.suggestedOwnerId || '',
       });
     },
     [setAdminModalState, reset],

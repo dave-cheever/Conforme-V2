@@ -62,15 +62,6 @@ const getAuditRecordValues = async ({
         });
         break;
 
-      // If updated 'suggestedOwnerId' field, set user's ID as value and full name as label
-      case 'suggestedOwnerId':
-        value = await getAuditValueForUser({
-          oldValue,
-          newValue,
-          organization,
-        });
-        break;
-
       default:
         if (typeof oldValue === 'string' || typeof newValue === 'string') {
           value = getAuditValueForString(oldValue, newValue);
@@ -100,10 +91,6 @@ const actionTemplatesSchema = new Schema<IActionTemplate, IActionTemplateModel>(
   actionCategoryId: {
     type: String,
     required: true,
-  },
-  suggestedOwnerId: {
-    type: String,
-    required: false,
   },
   organizationId: String,
   metatags: {

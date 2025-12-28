@@ -28,7 +28,6 @@ const mockActionTemplates = [
     title: 'Safety Inspection Template',
     description: '<p>Template for safety inspections</p>',
     actionCategoryId: 'cat1',
-    suggestedOwnerId: 'user1',
     metatags: {
       updatedAt: '2025-01-15T10:30:00Z',
     },
@@ -39,7 +38,6 @@ const mockActionTemplates = [
     title: 'Quality Check Template',
     description: '<p>Template for quality checks</p>',
     actionCategoryId: 'cat2',
-    suggestedOwnerId: null,
     metatags: {
       updatedAt: '2025-01-20T14:45:00Z',
     },
@@ -50,7 +48,6 @@ const mockActionTemplates = [
     title: 'Compliance Review',
     description: '',
     actionCategoryId: 'cat1',
-    suggestedOwnerId: 'user2',
     metatags: {
       updatedAt: '2025-01-25T09:15:00Z',
     },
@@ -92,7 +89,6 @@ const GET_ACTION_TEMPLATES = gql`
         title
         description
         actionCategoryId
-        suggestedOwnerId
         metatags {
           updatedAt
         }
@@ -205,7 +201,6 @@ describe('Action Templates Page', () => {
       title: '',
       description: '',
       actionCategoryId: '',
-      suggestedOwnerId: '',
     });
   });
 
@@ -254,7 +249,6 @@ describe('Action Templates Page', () => {
           title: 'Test Template',
           description: '<p>Test description</p>',
           actionCategoryId: 'cat1',
-          suggestedOwnerId: 'user1',
           metatags: {
             updatedAt: '2025-01-15T10:30:00Z',
           },
@@ -295,7 +289,6 @@ describe('Action Templates Page', () => {
         title: 'Safety Inspection Template',
         description: '<p>Template description</p>',
         actionCategoryId: 'cat1',
-        suggestedOwnerId: 'user1',
         metatags: {
           updatedAt: '2025-01-15T10:30:00Z',
         },
@@ -327,7 +320,6 @@ describe('Action Templates Page', () => {
         title: 'Test Template',
         description: '<p>Description</p>',
         actionCategoryId: 'cat1',
-        suggestedOwnerId: 'user1',
         metatags: {
           updatedAt: '2025-01-15T10:30:00Z',
         },
@@ -354,7 +346,6 @@ describe('Action Templates Page', () => {
         title: 'Test Template',
         description: '<p>Description</p>',
         actionCategoryId: 'cat1',
-        suggestedOwnerId: 'user1',
         metatags: {
           updatedAt: '2025-01-15T10:30:00Z',
         },
@@ -429,7 +420,6 @@ describe('Action Templates Page', () => {
         title: '',
         description: '<p>Description</p>',
         actionCategoryId: 'cat1',
-        suggestedOwnerId: 'user1',
       };
 
       expect(invalidTemplate.title).toBe('');
@@ -440,7 +430,6 @@ describe('Action Templates Page', () => {
         title: 'Test Template',
         description: '<p>Description</p>',
         actionCategoryId: '',
-        suggestedOwnerId: 'user1',
       };
 
       expect(invalidTemplate.actionCategoryId).toBe('');
@@ -451,22 +440,9 @@ describe('Action Templates Page', () => {
         title: 'Test Template',
         description: '',
         actionCategoryId: 'cat1',
-        suggestedOwnerId: 'user1',
       };
 
       expect(validTemplate.description).toBe('');
-      expect(validTemplate.title).toBe('Test Template');
-    });
-
-    test('allows optional suggestedOwnerId field', () => {
-      const validTemplate = {
-        title: 'Test Template',
-        description: '<p>Description</p>',
-        actionCategoryId: 'cat1',
-        suggestedOwnerId: null,
-      };
-
-      expect(validTemplate.suggestedOwnerId).toBeNull();
       expect(validTemplate.title).toBe('Test Template');
     });
 
@@ -475,7 +451,6 @@ describe('Action Templates Page', () => {
         title: 'Test Template',
         description: '<p>Rich text <strong>description</strong></p>',
         actionCategoryId: 'cat1',
-        suggestedOwnerId: 'user1',
       };
 
       expect(templateWithHtml.description).toContain('<p>');
@@ -487,7 +462,6 @@ describe('Action Templates Page', () => {
         title: 'Test Template',
         description: 'Plain text description',
         actionCategoryId: 'cat1',
-        suggestedOwnerId: 'user1',
       };
 
       expect(templateWithPlainText.description).toBe('Plain text description');
@@ -501,7 +475,6 @@ describe('Action Templates Page', () => {
         title: 'Complete Template',
         description: '<p>Full description</p>',
         actionCategoryId: 'cat1',
-        suggestedOwnerId: 'user1',
         metatags: {
           updatedAt: '2025-01-15T10:30:00Z',
         },
@@ -512,7 +485,6 @@ describe('Action Templates Page', () => {
       expect(completeTemplate.title).toBeDefined();
       expect(completeTemplate.description).toBeDefined();
       expect(completeTemplate.actionCategoryId).toBeDefined();
-      expect(completeTemplate.suggestedOwnerId).toBeDefined();
       expect(completeTemplate.metatags).toBeDefined();
       expect(completeTemplate.actionCategoryName).toBeDefined();
     });
@@ -531,29 +503,12 @@ describe('Action Templates Page', () => {
       expect(minimalTemplate.actionCategoryId).toBeDefined();
     });
 
-    test('handles template with null suggestedOwnerId', () => {
-      const templateWithoutOwner = {
-        _id: 'template3',
-        title: 'Template Without Owner',
-        description: '<p>Description</p>',
-        actionCategoryId: 'cat1',
-        suggestedOwnerId: null,
-        metatags: {
-          updatedAt: '2025-01-15T10:30:00Z',
-        },
-      };
-
-      expect(templateWithoutOwner.suggestedOwnerId).toBeNull();
-      expect(templateWithoutOwner.title).toBeDefined();
-    });
-
     test('handles template with empty description', () => {
       const templateWithEmptyDescription = {
         _id: 'template4',
         title: 'Template With Empty Description',
         description: '',
         actionCategoryId: 'cat1',
-        suggestedOwnerId: 'user1',
         metatags: {
           updatedAt: '2025-01-15T10:30:00Z',
         },
@@ -570,7 +525,6 @@ describe('Action Templates Page', () => {
         title: longTitle,
         description: '<p>Description</p>',
         actionCategoryId: 'cat1',
-        suggestedOwnerId: 'user1',
         metatags: {
           updatedAt: '2025-01-15T10:30:00Z',
         },
@@ -587,7 +541,6 @@ describe('Action Templates Page', () => {
         title: 'Template',
         description: longDescription,
         actionCategoryId: 'cat1',
-        suggestedOwnerId: 'user1',
         metatags: {
           updatedAt: '2025-01-15T10:30:00Z',
         },
@@ -603,7 +556,6 @@ describe('Action Templates Page', () => {
         title: 'New Template',
         description: '<p>New description</p>',
         actionCategoryId: 'cat1',
-        suggestedOwnerId: 'user1',
       };
 
       expect(newTemplate.title).toBe('New Template');
@@ -616,7 +568,6 @@ describe('Action Templates Page', () => {
         title: 'Updated Template',
         description: '<p>Updated description</p>',
         actionCategoryId: 'cat2',
-        suggestedOwnerId: 'user2',
       };
 
       expect(updatedTemplate._id).toBe('template1');
@@ -654,16 +605,6 @@ describe('Action Templates Page', () => {
       expect(partialUpdate.actionCategoryId).toBe('cat2');
     });
 
-    test('update action template suggestedOwnerId only', () => {
-      const partialUpdate = {
-        _id: 'template1',
-        suggestedOwnerId: 'user3',
-      };
-
-      expect(partialUpdate._id).toBe('template1');
-      expect(partialUpdate.suggestedOwnerId).toBe('user3');
-    });
-
     test('delete action template', () => {
       const templateToDelete = {
         _id: 'template1',
@@ -681,7 +622,6 @@ describe('Action Templates Page', () => {
       expect(template).toHaveProperty('title');
       expect(template).toHaveProperty('description');
       expect(template).toHaveProperty('actionCategoryId');
-      expect(template).toHaveProperty('suggestedOwnerId');
       expect(template).toHaveProperty('metatags');
       expect(template).toHaveProperty('actionCategoryName');
     });
@@ -691,12 +631,6 @@ describe('Action Templates Page', () => {
 
       expect(template.metatags).toHaveProperty('updatedAt');
       expect(template.metatags.updatedAt).toBeDefined();
-    });
-
-    test('template can have null suggestedOwnerId', () => {
-      const template = mockActionTemplates[1];
-
-      expect(template.suggestedOwnerId).toBeNull();
     });
 
     test('template can have empty description', () => {

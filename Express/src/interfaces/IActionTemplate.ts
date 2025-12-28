@@ -5,7 +5,6 @@ export interface IActionTemplate extends IBase {
   title: string;
   description: string;
   actionCategoryId: string;
-  suggestedOwnerId?: string;
 
   // Additional fields - can be added in the API
   suggestedOwner?: IUser;

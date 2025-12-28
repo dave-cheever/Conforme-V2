@@ -20,7 +20,6 @@ export const actionTemplatesTypeDefs = `
     title: String!
     description: String
     actionCategoryId: ID!
-    suggestedOwnerId: ID
     metatags: Metatags
   }
 
@@ -33,7 +32,6 @@ export const actionTemplatesTypeDefs = `
     title: String!
     description: String
     actionCategoryId: ID!
-    suggestedOwnerId: ID
   }
   
   input ActionTemplateModifyInput {
@@ -41,7 +39,6 @@ export const actionTemplatesTypeDefs = `
     title: String!
     description: String
     actionCategoryId: ID!
-    suggestedOwnerId: ID
   }
 `;
 

@@ -110,10 +110,7 @@ const ActionTemplateFormModal = ({
         const actionTemplate = getValues();
         await createActionTemplate({
           variables: {
-            actionTemplate: {
-              ...actionTemplate,
-              suggestedOwnerId: actionTemplate.suggestedOwnerId || null,
-            },
+            actionTemplate: { ...actionTemplate },
           },
         });
         refetch();
@@ -141,7 +138,6 @@ const ActionTemplateFormModal = ({
               title: actionTemplate.title,
               description: actionTemplate.description || '',
               actionCategoryId: actionTemplate.actionCategoryId,
-              suggestedOwnerId: actionTemplate.suggestedOwnerId || null,
             },
           },
         });
@@ -318,14 +314,6 @@ const ActionTemplateFormModal = ({
                   validations={{
                     notEmpty: true,
                   }}
-                />
-                <PeoplePicker
-                  data-id="000363"
-                  control={control}
-                  disabled={isLoading}
-                  label="Suggested Owner"
-                  name="suggestedOwnerId"
-                  placeholder="Search for a user"
                 />
                 <RichTextEditor
                   data-id="000362"
