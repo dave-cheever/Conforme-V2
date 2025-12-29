@@ -59,6 +59,8 @@ public class commonFunctions {
         locator.click();
     }
 
+
+
     /** Enters text into the given locator */
     public void enterText(Locator locator, String text, String description) {
         Allure.step("Entering text into: " + description+" - Text: " + text);
@@ -66,6 +68,23 @@ public class commonFunctions {
         getPage().waitForLoadState(LoadState.LOAD);
         locator.fill(text);
     }
+
+  public static void setPlaywrightOffline(boolean offline) {
+    Allure.step("Setting Playwright offline: " + offline);
+    testReport.log(Status.INFO, "Setting Playwright offline: " + offline);
+    if (context == null) {
+      testReport.log(Status.FAIL, "BrowserContext is null - cannot change network state");
+      throw new IllegalStateException("BrowserContext is not initialized");
+    }
+    // Toggle offline on the Playwright BrowserContext
+    context.setOffline(offline);
+    // small pause to allow the browser context to apply the change
+    try {
+      Thread.sleep(500);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
+  }
 
     public void enterTextWithDelay(Locator locator, String text, int delayMs, String description) {
         Allure.step("Entering text with delay into: " + description+ " - Text: " + text);
@@ -232,6 +251,6 @@ public class commonFunctions {
     public void waitForPageLoad() {
         Allure.step("Waiting for page to load");
         getPage().waitForLoadState(LoadState.LOAD);
-        System.out.println("Page loaded successfully, now clicking on Admin Settings label.");
+        System.out.println("Page loaded successfully");
     }
 }

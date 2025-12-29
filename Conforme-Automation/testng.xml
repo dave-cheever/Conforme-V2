@@ -11,6 +11,7 @@
       <class name="unitTests.NavigationTests"/>
       <class name="unitTests.ModuleSwitcherTests"/>
       <class name="unitTests.HeaderProfileTests"/>
+      <class name="unitTests.SearchBarTests"/>
     </classes>
   </test>
 </suite>
