@@ -39,7 +39,7 @@ describe('SaveIcon', () => {
     );
 
     const svgElement = document.querySelector('svg');
-    expect(svgElement).toHaveAttribute('viewBox', '0 0 24 24');
+    expect(svgElement).toHaveAttribute('viewBox', '0 0 12 12');
   });
 
   test('renders with correct path elements', () => {
@@ -50,43 +50,17 @@ describe('SaveIcon', () => {
     );
 
     const pathElements = document.querySelectorAll('svg path');
-    expect(pathElements).toHaveLength(3);
+    expect(pathElements).toHaveLength(1);
 
-    // Check first path (document outline)
+    // Check path (save icon)
     expect(pathElements[0]).toHaveAttribute(
       'd',
-      'M21.5333 23H2.46667C2.07768 23 1.70463 22.8455 1.42958 22.5704C1.15452 22.2954 1 21.9223 1 21.5333V7.34871C1.00017 6.57081 1.30932 5.82482 1.85947 5.27484L5.27387 1.85947C5.54631 1.58695 5.86977 1.37077 6.22578 1.2233C6.58179 1.07583 6.96337 0.999954 7.34871 1H21.5333C21.9223 1 22.2954 1.15452 22.5704 1.42958C22.8455 1.70463 23 2.07768 23 2.46667V21.5333C23 21.9223 22.8455 22.2954 22.5704 22.5704C22.2954 22.8455 21.9223 23 21.5333 23Z',
+      'M1.33333 12H10.6667C11.0203 12 11.3594 11.8595 11.6095 11.6095C11.8595 11.3594 12 11.0203 12 10.6667V3.33334C12.0005 3.24561 11.9837 3.15863 11.9505 3.07741C11.9173 2.99618 11.8685 2.9223 11.8067 2.86001L9.14 0.193344C9.07771 0.131557 9.00383 0.0826734 8.92261 0.049497C8.84138 0.0163206 8.7544 -0.000496119 8.66667 1.11429e-05H1.33333C0.979711 1.11429e-05 0.640573 0.140487 0.390524 0.390535C0.140476 0.640584 0 0.979722 0 1.33334V10.6667C0 11.0203 0.140476 11.3594 0.390524 11.6095C0.640573 11.8595 0.979711 12 1.33333 12ZM8 10.6667H4V7.33334H8V10.6667ZM6.66667 2.66668H5.33333V1.33334H6.66667V2.66668ZM1.33333 1.33334H2.66667V4.00001H8V1.33334H8.39333L10.6667 3.60668V10.6667H9.33333V7.33334C9.33333 6.97972 9.19286 6.64058 8.94281 6.39054C8.69276 6.14049 8.35362 6.00001 8 6.00001H4C3.64638 6.00001 3.30724 6.14049 3.05719 6.39054C2.80714 6.64058 2.66667 6.97972 2.66667 7.33334V10.6667H1.33333V1.33334Z',
     );
-    expect(pathElements[0]).toHaveAttribute('fill', 'none');
-    expect(pathElements[0]).toHaveAttribute('stroke', 'currentColor');
-    expect(pathElements[0]).toHaveAttribute('stroke-linecap', 'round');
-    expect(pathElements[0]).toHaveAttribute('stroke-linejoin', 'round');
-    expect(pathElements[0]).toHaveAttribute('stroke-width', '1.5');
-
-    // Check second path (floppy disk center circle)
-    expect(pathElements[1]).toHaveAttribute(
-      'd',
-      'M9.79999 12.7333C9.79999 13.5113 10.109 14.2574 10.6591 14.8075C11.2092 15.3576 11.9554 15.6667 12.7333 15.6667C13.5113 15.6667 14.2574 15.3576 14.8075 14.8075C15.3576 14.2574 15.6667 13.5113 15.6667 12.7333C15.6667 11.9554 15.3576 11.2093 14.8075 10.6592C14.2574 10.109 13.5113 9.8 12.7333 9.8C11.9554 9.8 11.2092 10.109 10.6591 10.6592C10.109 11.2093 9.79999 11.9554 9.79999 12.7333Z',
-    );
-    expect(pathElements[1]).toHaveAttribute('fill', 'none');
-    expect(pathElements[1]).toHaveAttribute('stroke', 'currentColor');
-    expect(pathElements[1]).toHaveAttribute('stroke-linecap', 'round');
-    expect(pathElements[1]).toHaveAttribute('stroke-linejoin', 'round');
-    expect(pathElements[1]).toHaveAttribute('stroke-width', '1.5');
-
-    // Check third path (floppy disk tab)
-    expect(pathElements[2]).toHaveAttribute(
-      'd',
-      'M8.33334 1V3.93333C8.33334 4.32232 8.48787 4.69537 8.76292 4.97042C9.03797 5.24548 9.41103 5.4 9.80001 5.4H17.1333C17.5223 5.4 17.8954 5.24548 18.1704 4.97042C18.4455 4.69537 18.6 4.32232 18.6 3.93333V1',
-    );
-    expect(pathElements[2]).toHaveAttribute('fill', 'none');
-    expect(pathElements[2]).toHaveAttribute('stroke', 'currentColor');
-    expect(pathElements[2]).toHaveAttribute('stroke-linecap', 'round');
-    expect(pathElements[2]).toHaveAttribute('stroke-linejoin', 'round');
-    expect(pathElements[2]).toHaveAttribute('stroke-width', '1.5');
+    expect(pathElements[0]).toHaveAttribute('fill', 'currentColor');
   });
 
-  test('has correct data-id attributes on path elements', () => {
+  test('has correct path element', () => {
     render(
       <TestWrapper data-id="001258">
         <SaveIcon data-id="001259" />
@@ -94,9 +68,8 @@ describe('SaveIcon', () => {
     );
 
     const pathElements = document.querySelectorAll('svg path');
-    expect(pathElements[0]).toHaveAttribute('data-id', '001060');
-    expect(pathElements[1]).toHaveAttribute('data-id', '001061');
-    expect(pathElements[2]).toHaveAttribute('data-id', '001062');
+    expect(pathElements).toHaveLength(1);
+    expect(pathElements[0]).toBeInTheDocument();
   });
 
   test('accepts custom props', () => {
@@ -213,7 +186,7 @@ describe('SaveIcon', () => {
     );
 
     const svgElement = document.querySelector('svg');
-    expect(svgElement).toHaveAttribute('viewBox', '0 0 24 24');
+    expect(svgElement).toHaveAttribute('viewBox', '0 0 12 12');
   });
 
   test('handles multiple instances', () => {
@@ -231,7 +204,7 @@ describe('SaveIcon', () => {
     expect(svgElements).toHaveLength(3);
   });
 
-  test('has correct stroke properties for accessibility', () => {
+  test('has correct fill property', () => {
     render(
       <TestWrapper data-id="001287">
         <SaveIcon data-id="001288" />
@@ -240,13 +213,11 @@ describe('SaveIcon', () => {
 
     const pathElements = document.querySelectorAll('svg path');
     pathElements.forEach((path) => {
-      expect(path).toHaveAttribute('stroke-linecap', 'round');
-      expect(path).toHaveAttribute('stroke-linejoin', 'round');
-      expect(path).toHaveAttribute('stroke-width', '1.5');
+      expect(path).toHaveAttribute('fill', 'currentColor');
     });
   });
 
-  test('uses currentColor for stroke', () => {
+  test('uses currentColor for fill', () => {
     render(
       <TestWrapper data-id="001289">
         <SaveIcon data-id="001290" />
@@ -255,11 +226,11 @@ describe('SaveIcon', () => {
 
     const pathElements = document.querySelectorAll('svg path');
     pathElements.forEach((path) => {
-      expect(path).toHaveAttribute('stroke', 'currentColor');
+      expect(path).toHaveAttribute('fill', 'currentColor');
     });
   });
 
-  test('creates a proper floppy disk save icon shape', () => {
+  test('creates a proper save icon shape', () => {
     render(
       <TestWrapper data-id="001291">
         <SaveIcon data-id="001292" />
@@ -268,39 +239,39 @@ describe('SaveIcon', () => {
 
     const pathElements = document.querySelectorAll('svg path');
 
-    // Should have 3 path elements representing the floppy disk icon
-    expect(pathElements).toHaveLength(3);
+    // Should have 1 path element representing the save icon
+    expect(pathElements).toHaveLength(1);
 
-    // All paths should have no fill and use stroke
+    // Path should use currentColor for fill
     pathElements.forEach((path) => {
-      expect(path).toHaveAttribute('fill', 'none');
-      expect(path).toHaveAttribute('stroke', 'currentColor');
+      expect(path).toHaveAttribute('fill', 'currentColor');
     });
   });
 
-  test('accepts stroke prop for custom stroke color', () => {
+  test('renders path with correct attributes', () => {
     render(
       <TestWrapper data-id="001293">
-        <SaveIcon data-id="001294" stroke="white" />
+        <SaveIcon data-id="001294" />
       </TestWrapper>,
     );
 
     const pathElements = document.querySelectorAll('svg path');
+    expect(pathElements).toHaveLength(1);
     pathElements.forEach((path) => {
-      expect(path).toHaveAttribute('stroke', 'currentColor');
+      expect(path).toHaveAttribute('fill', 'currentColor');
     });
   });
 
-  test('accepts fill prop for custom fill color', () => {
+  test('uses currentColor for fill by default', () => {
     render(
       <TestWrapper data-id="001295">
-        <SaveIcon data-id="001296" fill="red" />
+        <SaveIcon data-id="001296" />
       </TestWrapper>,
     );
 
     const pathElements = document.querySelectorAll('svg path');
     pathElements.forEach((path) => {
-      expect(path).toHaveAttribute('fill', 'none');
+      expect(path).toHaveAttribute('fill', 'currentColor');
     });
   });
 });

@@ -65,137 +65,136 @@ function TextInput({
 }: Readonly<ITextInput>) {
   const enhancedValidations = maxLength
     ? {
-        ...validations,
-        maxLength,
-      }
+      ...validations,
+      maxLength,
+    }
     : validations;
   const validate = useValidate(label || name, enhancedValidations, definedValidations, initialValue);
   return (
     <Controller
-        control={control}
-        data-id="000391"
-        name={name}
-        render={({ field, fieldState }) => {
-          const { value } = field;
-          const { error } = fieldState;
+      control={control}
+      data-id="000391"
+      name={name}
+      render={({ field, fieldState }) => {
+        const { value } = field;
+        const { error } = fieldState;
 
-          function URLButton() {
-            return (
-              <Button
-                bg="textInput.openLinkButtonBg"
-                color="textInput.openLinkButtonColor"
-                data-id="000392"
-                disabled={!value || error !== undefined}
-                fontSize="smm"
-                h="1.75rem"
-                onClick={() => {
-                  if (!error) window.open(value.startsWith('http') ? value : `http://${value}`);
-                }}
-                w="80px">Open link
-                              </Button>
-            );
-          }
+        function URLButton() {
           return (
-            <Box data-id="000393" id={name} mt="none" w="full">
-              {label && (
+            <Button
+              bg="textInput.openLinkButtonBg"
+              color="textInput.openLinkButtonColor"
+              data-id="000392"
+              disabled={!value || error !== undefined}
+              fontSize="smm"
+              h="1.75rem"
+              onClick={() => {
+                if (!error) window.open(value.startsWith('http') ? value : `http://${value}`);
+              }}
+              w="80px">Open link
+            </Button>
+          );
+        }
+        return (
+          <Box data-id="000393" id={name} mt="none" w="full">
+            {label && (
+              <Flex
+                align="center"
+                data-id="000394"
+                justify="space-between"
+                mb="none"
+                pb="6px" >
+                <Box
+                  color={error ? 'textInput.labelFont.error' : styles ? styles?.textInput?.font : 'textInput.labelFont.normal'}
+                  data-id="000395"
+                  fontSize="16px"
+                  fontWeight="500"
+                  lineHeight="100%"
+                  left="none"
+                  position="static">
+                  {label}
+                  {required && !readMode && (
+                    <Asterisk
+                      data-id="000396"
+                      fill="questionListElement.iconAsterisk"
+                      h="9px"
+                      mb="8px"
+                      ml="5px"
+                      stroke="questionListElement.iconAsterisk"
+                      w="9px" />
+                  )}{' '}
+                  {tooltip && (
+                    <Tooltip data-id="000397" hasArrow label={tooltip} placement="top">
+                      <Icon data-id="000398" h="14px" mb={1} name="info" />
+                    </Tooltip>
+                  )}
+                </Box>
+              </Flex>
+            )}
+            {isUrl && placeholder && (
+              <Box data-id="000399" fontSize="ssm" mb={2}>
+                {placeholder}
+              </Box>
+            )}
+            {!readMode && (
+              <InputGroup data-id="000400">
+                <Input
+                  _active={{
+                    bg: disabled ? 'textInput.disabled.bg' : 'textInput.activeBg',
+                  }}
+                  _disabled={{
+                    bg: 'textInput.disabled.bg',
+                    color: 'textInput.disabled.font',
+                    borderColor: 'textInput.disabled.border',
+                    cursor: 'not-allowed',
+                  }}
+                  _focus={{
+                    borderColor: error ? 'textInput.border.focus.error' : 'textInput.border.focus.normal',
+                  }}
+                  _hover={{ cursor: 'auto' }}
+                  _placeholder={{ fontSize: 'smm', color: 'textInput.placeholder' }}
+                  autoComplete="off"
+                  bg="textInput.bg"
+                  borderColor={error ? 'textInput.border.error' : 'textInput.border.normal'}
+                  borderRadius="8px"
+                  borderWidth="1px"
+                  color="textInput.font"
+                  cursor="pointer"
+                  data-id="000401"
+                  fontSize="smm"
+                  h="40px"
+                  isDisabled={disabled}
+                  placeholder={!isUrl ? placeholder : ''}
+                  {...field} />
+                {isUrl && (
+                  <InputRightElement data-id="000402" width="5.6rem">
+                    <URLButton data-id="000403" />
+                  </InputRightElement>
+                )}
+              </InputGroup>
+            )}
+            {readMode && (
+              <Stack data-id="000404" spacing={2}>
                 <Flex
                   align="center"
-                  data-id="000394"
-                  justify="space-between"
-                  mb="none"
-                  pb={1}
-                  pt={2}>
-                  <Box
-                    color={error ? 'textInput.labelFont.error' : styles ? styles?.textInput?.font : 'textInput.labelFont.normal'}
-                    data-id="000395"
-                    fontSize="16px"
-                    fontWeight="500"
-                    lineHeight="100%"
-                    left="none"
-                    position="static">
-                    {label}
-                    {required && !readMode && (
-                      <Asterisk
-                        data-id="000396"
-                        fill="questionListElement.iconAsterisk"
-                        h="9px"
-                        mb="8px"
-                        ml="5px"
-                        stroke="questionListElement.iconAsterisk"
-                        w="9px" />
-                    )}{' '}
-                    {tooltip && (
-                      <Tooltip data-id="000397" hasArrow label={tooltip} placement="top">
-                        <Icon data-id="000398" h="14px" mb={1} name="info" />
-                      </Tooltip>
-                    )}
-                  </Box>
+                  data-id="000405"
+                  fontSize="smm"
+                  minH="40px"
+                  wordBreak="break-all">
+                  {value || (isUrl && 'No link provided')}
                 </Flex>
-              )}
-              {isUrl && placeholder && (
-                <Box data-id="000399" fontSize="ssm" mb={2}>
-                  {placeholder}
-                </Box>
-              )}
-              {!readMode && (
-                <InputGroup data-id="000400">
-                  <Input
-                    _active={{
-                      bg: disabled ? 'textInput.disabled.bg' : 'textInput.activeBg',
-                    }}
-                    _disabled={{
-                      bg: 'textInput.disabled.bg',
-                      color: 'textInput.disabled.font',
-                      borderColor: 'textInput.disabled.border',
-                      cursor: 'not-allowed',
-                    }}
-                    _focus={{
-                      borderColor: error ? 'textInput.border.focus.error' : 'textInput.border.focus.normal',
-                    }}
-                    _hover={{ cursor: 'auto' }}
-                    _placeholder={{ fontSize: 'smm', color: 'textInput.placeholder' }}
-                    autoComplete="off"
-                    bg="textInput.bg"
-                    borderColor={error ? 'textInput.border.error' : 'textInput.border.normal'}
-                    borderRadius="8px"
-                    borderWidth="1px"
-                    color="textInput.font"
-                    cursor="pointer"
-                    data-id="000401"
-                    fontSize="smm"
-                    h="40px"
-                    isDisabled={disabled}
-                    placeholder={!isUrl ? placeholder : ''}
-                    {...field} />
-                  {isUrl && (
-                    <InputRightElement data-id="000402" width="5.6rem">
-                      <URLButton data-id="000403" />
-                    </InputRightElement>
-                  )}
-                </InputGroup>
-              )}
-              {readMode && (
-                <Stack data-id="000404" spacing={2}>
-                  <Flex
-                    align="center"
-                    data-id="000405"
-                    fontSize="smm"
-                    minH="40px"
-                    wordBreak="break-all">
-                    {value || (isUrl && 'No link provided')}
-                  </Flex>
-                  {isUrl && <URLButton data-id="000406" />}
-                </Stack>
-              )}
-              {error && (
-                <Box color="textInput.error" data-id="000407" fontSize={14} ml={1}>
-                  {error.message}
-                </Box>
-              )}
-            </Box>
-          );
-        }}
-        rules={{ validate }} />
+                {isUrl && <URLButton data-id="000406" />}
+              </Stack>
+            )}
+            {error && (
+              <Box color="textInput.error" data-id="000407" fontSize={14} ml={1}>
+                {error.message}
+              </Box>
+            )}
+          </Box>
+        );
+      }}
+      rules={{ validate }} />
   );
 }
 

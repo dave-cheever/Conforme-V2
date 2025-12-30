@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import pluralize from 'pluralize';
 
-import { AddIcon, Close, Trashcan } from '../../icons';
+import { AddIcon, Close, SaveIcon, Trashcan } from '../../icons';
 import { AdminModalState } from '../../interfaces/IAdminContext';
 import useDevice from '../../hooks/useDevice';
 
@@ -67,10 +67,17 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
           <Box data-id="013213" as="span" color="#2D3748" fontWeight="bold" title={itemName}>
             {truncatedItemName}
           </Box>? This action cannot be undone.
-                  </>
+        </>
       );
     }
     return `Are you sure you want to delete this ${collectionName}? This action cannot be undone.`;
+  };
+
+  const getPrimaryButtonIcon = () => {
+    if (isLoading && !isDeleting) return undefined;
+    if (modalType === 'add') return <AddIcon data-id="013100" h="16px" w="16px" stroke="adminModal.primaryButton.iconColor" />;
+    if (modalType === 'edit') return <SaveIcon data-id="013100"  h="16px" w="16px" stroke="adminModal.primaryButton.iconColor" />;
+    return undefined;
   };
 
   return (
@@ -104,7 +111,7 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
                     fontWeight="500"
                     lineHeight="100%"
                   >
-                    {modalType === 'edit' ? `Edit ${pluralize(collection, 1)}` : `Add ${pluralize(collection, 1)}`}
+                    {modalType === 'edit' ? `Edit ${pluralize(collection, 1)}` : `Add a new ${pluralize(collection, 1)}`}
                   </Text>
                 </Flex>
 
@@ -207,11 +214,7 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
                       isDisabled={isLoading}
                       isLoading={isLoading && !isDeleting}
                       onClick={() => onAction(modalType)}
-                      leftIcon={
-                        !isLoading || isDeleting ? (
-                          <AddIcon data-id="013100" h="16px" stroke="adminModal.primaryButton.iconColor" w="16px" />
-                        ) : undefined
-                      }
+                      leftIcon={getPrimaryButtonIcon()}
                       loadingText={modalType === 'edit' ? 'Saving...' : 'Adding...'}
                       marginLeft="10px"
                       spinner={<Spinner data-id="013101" color="adminModal.primaryButton.spinnerColor" size="sm" />}
@@ -324,7 +327,7 @@ export const adminModalStyles = {
       },
     },
     primaryButton: {
-      bg: '#462AC4',
+      bg: '#0068A3',
       color: '#FFFFFF',
       iconColor: '#FFFFFF',
       spinnerColor: '#FFFFFF',
