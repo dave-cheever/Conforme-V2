@@ -10,13 +10,14 @@ import { TDefinedValidations } from '../../interfaces/TValidations';
 import { emailRegExp } from '../../utils/regular-expressions';
 
 interface ITextInput extends IField {
-  placeholder?: string;
-  variant?: string;
-  initialValue?: string;
-  isUrl?: boolean;
-  styles?: {
-    textInput?: {
-      font?: string;
+  readonly placeholder?: string;
+  readonly variant?: string;
+  readonly initialValue?: string;
+  readonly isUrl?: boolean;
+  readonly maxLength?: number;
+  readonly styles?: {
+    readonly textInput?: {
+      readonly font?: string;
     };
   };
 }
@@ -35,7 +36,8 @@ const definedValidations: TDefinedValidations = {
       return `${label} already taken`;
   },
   maxLength: (label, validationValue, value = '') => {
-    if (value.length < validationValue) return `${label} can be maximum ${validationValue} characters length`;
+    const stringValue = value || '';
+    if (stringValue.length > validationValue) return `${label} can be maximum ${validationValue} characters length (${stringValue.length}/${validationValue})`;
   },
   isEmail: (label, validationValue, value) => {
     if (!value.match(emailRegExp)) return 'Invalid Email';
@@ -59,8 +61,15 @@ function TextInput({
   styles,
   initialValue,
   isUrl,
-}: ITextInput) {
-  const validate = useValidate(label || name, validations, definedValidations, initialValue);
+  maxLength,
+}: Readonly<ITextInput>) {
+  const enhancedValidations = maxLength
+    ? {
+        ...validations,
+        maxLength,
+      }
+    : validations;
+  const validate = useValidate(label || name, enhancedValidations, definedValidations, initialValue);
   return (
     <Controller
         control={control}
@@ -156,7 +165,6 @@ function TextInput({
                     fontSize="smm"
                     h="40px"
                     isDisabled={disabled}
-                    maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
                     placeholder={!isUrl ? placeholder : ''}
                     {...field} />
                   {isUrl && (

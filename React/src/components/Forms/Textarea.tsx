@@ -12,6 +12,7 @@ interface ITextarea extends IField {
   readonly placeholder?: string;
   readonly variant?: string;
   readonly rows?: number;
+  readonly maxLength?: number;
 }
 
 const definedValidations: TDefinedValidations = {
@@ -19,7 +20,8 @@ const definedValidations: TDefinedValidations = {
     if (validationValue && !value) return `${label} cannot be empty`;
   },
   maxLength: (label, validationValue, value = '') => {
-    if (value.length < validationValue) return `${label} can be maximum ${validationValue} characters length`;
+    const stringValue = value || '';
+    if (stringValue.length > validationValue) return `${label} can be maximum ${validationValue} characters length`;
   },
 };
 
@@ -34,8 +36,16 @@ function Textarea({
   disabled = false,
   readMode = false,
   rows = 4,
+  maxLength,
 }: Readonly<ITextarea>) {
-  const validate = useValidate(label || name, validations, definedValidations);
+  // Automatically add maxLength validation if maxLength prop is provided
+  const enhancedValidations = maxLength
+    ? {
+        ...validations,
+        maxLength,
+      }
+    : validations;
+  const validate = useValidate(label || name, enhancedValidations, definedValidations);
   return (
     <Controller
         control={control}
@@ -110,7 +120,6 @@ function Textarea({
                     data-id="000430"
                     fontSize="smm"
                     isDisabled={disabled}
-                    maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
                     placeholder={placeholder}
                     pt="5px"
                     rows={rows}

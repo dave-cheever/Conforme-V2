@@ -30,9 +30,11 @@ interface IAdminModal {
   readonly isDeleting?: boolean;
   readonly onDeleteClick?: () => void;
   readonly itemName?: string;
+  readonly editButtonText?: string;
+  readonly addButtonText?: string;
 }
 
-function AdminModal({ isOpenModal, modalType, onAction, collection, children, onAddMore, deleteButtonText = 'Delete', isLoading = false, isDeleting = false, onDeleteClick, itemName }: Readonly<IAdminModal>) {
+function AdminModal({ isOpenModal, modalType, onAction, collection, children, onAddMore, deleteButtonText = 'Delete', isLoading = false, isDeleting = false, onDeleteClick, itemName, editButtonText, addButtonText }: Readonly<IAdminModal>) {
   const { onClose } = useDisclosure();
   const device = useDevice();
   const { isOpen: isConfirmDeleteOpen, onOpen: onConfirmDeleteOpen, onClose: onConfirmDeleteClose } = useDisclosure();
@@ -59,10 +61,11 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
   const getDeleteConfirmationMessage = () => {
     const collectionName = collection ? pluralize(collection, 1) : 'item';
     if (itemName) {
+      const truncatedItemName = itemName.length > 50 ? `${itemName.substring(0, 50)}...` : itemName;
       return (
         <>Are you sure you want to delete the {collectionName}{' '}
-          <Box data-id="013213" as="span" color="#2D3748" fontWeight="bold">
-            {itemName}
+          <Box data-id="013213" as="span" color="#2D3748" fontWeight="bold" title={itemName}>
+            {truncatedItemName}
           </Box>? This action cannot be undone.
                   </>
       );
@@ -209,11 +212,11 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
                           <AddIcon data-id="013100" h="16px" stroke="adminModal.primaryButton.iconColor" w="16px" />
                         ) : undefined
                       }
-                      loadingText={modalType === 'edit' ? 'Updating...' : 'Adding...'}
+                      loadingText={modalType === 'edit' ? 'Saving...' : 'Adding...'}
                       marginLeft="10px"
                       spinner={<Spinner data-id="013101" color="adminModal.primaryButton.spinnerColor" size="sm" />}
                     >
-                      {modalType === 'edit' ? 'Update' : 'Add'}
+                      {modalType === 'edit' ? (editButtonText || 'Save changes') : (addButtonText || 'Add')}
                     </Button>
                   </Box>
                 </Flex>

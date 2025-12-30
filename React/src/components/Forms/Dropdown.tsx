@@ -130,14 +130,21 @@ function Dropdown({
                   placeholder={placeholder}
                   top="5px"
                   value={value || ''}>
-                  {options.map((option) => (
-                    <option
-                      data-id="000254"
-                      key={`${name}-${option.value}`}
-                      value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
+                  {options.map((option) => {
+                    const maxLength = 55;
+                    const truncatedLabel = option.label && option.label.length > maxLength 
+                      ? `${option.label.substring(0, maxLength)}...` 
+                      : option.label;
+                    return (
+                      <option
+                        data-id="000254"
+                        key={`${name}-${option.value}`}
+                        value={option.value}
+                        title={option.label}>
+                        {truncatedLabel}
+                      </option>
+                    );
+                  })}
                 </Select>
                 {Icon && onAction && !value &&  <Icon
                   cursor="pointer"

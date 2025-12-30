@@ -2,7 +2,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { Stack, useToast } from '@chakra-ui/react';
 import { Control } from 'react-hook-form';
 
-import { toastFailed, toastSuccess } from '../../bootstrap/config';
+import { MAX_ACTION_TEMPLATES_NAME_LENGTH, toastFailed, toastSuccess } from '../../bootstrap/config';
 import { AdminModalState } from '../../interfaces/IAdminContext';
 import { Dropdown, TextInput, Textarea } from '../Forms';
 import AdminModal from '../Admin/AdminModal';
@@ -178,6 +178,7 @@ const ActionTemplateFormModal = ({
         onAction={handleAction}
         collection="action template"
         deleteButtonText="Delete template"
+        addButtonText="Add template"
         isLoading={isLoading}
         isDeleting={deleteLoading}
         itemName={getValues()?.title}>
@@ -186,9 +187,10 @@ const ActionTemplateFormModal = ({
             data-id="000360"
             control={control}
             disabled={isLoading}
-            label="Title"
+            label="Action title"
             name="title"
-            placeholder="Enter template title"
+            placeholder="Enter action title"
+            maxLength={MAX_ACTION_TEMPLATES_NAME_LENGTH}
             required
             validations={{
               notEmpty: true,
@@ -198,7 +200,7 @@ const ActionTemplateFormModal = ({
             data-id="000361"
             control={control}
             disabled={isLoading}
-            label="Category"
+            label="Action category"
             name="actionCategoryId"
             options={categoryOptions}
             placeholder="Select category"
