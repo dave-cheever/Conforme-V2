@@ -9,8 +9,9 @@ import { IField } from '../../interfaces/IField';
 import { TDefinedValidations } from '../../interfaces/TValidations';
 
 interface ITextarea extends IField {
-  placeholder?: string;
-  variant?: string;
+  readonly placeholder?: string;
+  readonly variant?: string;
+  readonly rows?: number;
 }
 
 const definedValidations: TDefinedValidations = {
@@ -32,7 +33,8 @@ function Textarea({
   validations = {},
   disabled = false,
   readMode = false,
-}: ITextarea) {
+  rows = 4,
+}: Readonly<ITextarea>) {
   const validate = useValidate(label || name, validations, definedValidations);
   return (
     <Controller
@@ -50,13 +52,13 @@ function Textarea({
                   data-id="000425"
                   justify="space-between"
                   mb="none"
-                  pb={1}
-                  pt={2}>
+                  pb="8px">
                   <Box
                     color={error ? 'textMultilineInput.labelFont.error' : 'textMultilineInput.labelFont.normal'}
                     data-id="000426"
-                    fontSize={11}
-                    fontWeight="bold"
+                    fontSize="16px"
+                    fontWeight="500"
+                    lineHeight="100%"
                     left="none"
                     position="static"
                     zIndex={2}>
@@ -111,7 +113,7 @@ function Textarea({
                     maxLength={validations && validations.forceMaxLength ? (validations.maxLength as number) : undefined}
                     placeholder={placeholder}
                     pt="5px"
-                    rows={4}
+                    rows={rows}
                     {...field} />
                   {error && (
                     <Box
