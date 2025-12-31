@@ -90,9 +90,18 @@ export const ConfirmDeleteModal = ({
             _hover={{
               bg: 'confirmDeleteModal.confirmButton.hover.bg',
               color: 'confirmDeleteModal.confirmButton.hover.color',
-              border: "1px solid #D0021B",
+              borderColor: '#D0021B',
             }}
-
+            _loading={{
+              bg: 'confirmDeleteModal.confirmButton.bg',
+              color: 'confirmDeleteModal.confirmButton.color',
+              borderColor: 'confirmDeleteModal.confirmButton.bg',
+              _hover: {
+                bg: 'confirmDeleteModal.confirmButton.bg',
+                color: 'confirmDeleteModal.confirmButton.color',
+                borderColor: 'confirmDeleteModal.confirmButton.bg',
+              },
+            }}
             bg="confirmDeleteModal.confirmButton.bg"
             borderColor="confirmDeleteModal.confirmButton.bg"
             borderWidth="1px"
@@ -109,11 +118,17 @@ export const ConfirmDeleteModal = ({
             height="34px"
             borderRadius="6px"
             transition="all 0.2s ease-in-out"
-            leftIcon={<Trashcan
-              data-id="013218"
-              w="16px"
-              h="16px"
-              stroke="confirmDeleteModal.confirmButton.iconColor" />}
+            loadingText='Deleting...'
+            leftIcon={
+              isLoading
+                ? undefined
+                : <Trashcan
+                  data-id="013218"
+                  w="16px"
+                  h="16px"
+                  stroke="confirmDeleteModal.confirmButton.iconColor"
+                />
+            }
           >
             {confirmButtonText}
           </Button>

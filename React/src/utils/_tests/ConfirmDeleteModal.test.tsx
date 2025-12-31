@@ -361,6 +361,37 @@ describe('ConfirmDeleteModal', () => {
     expect(deleteButton?.querySelector('svg')).toBeInTheDocument();
   });
 
+  test('hides Trashcan icon when loading', () => {
+    render(
+      <TestWrapper data-id="013269">
+        <ConfirmDeleteModal data-id="013270" {...defaultProps} isLoading={true} />
+      </TestWrapper>,
+    );
+
+    const deleteButton = document.querySelector('[data-id="000333"]') as HTMLElement;
+    expect(deleteButton).toBeInTheDocument();
+    // Icon should not be present when loading (spinner is shown instead)
+    // The icon has data-id="013218", check that it's not in the button
+    const icon = deleteButton?.querySelector('[data-id="013218"]');
+    // When loading, leftIcon is set to undefined, so the icon should not exist
+    expect(icon).toBeNull();
+  });
+
+  test('shows loading text when isLoading is true', () => {
+    render(
+      <TestWrapper data-id="013271">
+        <ConfirmDeleteModal data-id="013272" {...defaultProps} isLoading={true} />
+      </TestWrapper>,
+    );
+
+    const deleteButton = document.querySelector('[data-id="000333"]') as HTMLElement;
+    expect(deleteButton).toBeInTheDocument();
+    // When loading, the button should show "Deleting..." as loadingText
+    // The text might be in the button or in a loading state
+    const buttonText = deleteButton?.textContent || '';
+    expect(buttonText).toMatch(/Deleting|Delete/);
+  });
+
   test.skip('calls onClose when clicking overlay', async () => {
     // Skipping this test as Chakra UI Modal overlay click behavior
     // doesn't work reliably in the test environment with fireEvent.

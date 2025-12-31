@@ -1,136 +1,137 @@
 import { theme } from '@chakra-ui/react';
 import { merge } from 'lodash';
 
+import { actionCategoriesStyles } from '../pages/admin/action-categories';
 import { actionListElementStyles } from '../components/Actions/ActionListItem';
 import { actionModalStyles } from '../components/Actions/ActionModal';
 import { actionsListStyles } from '../components/Actions/ActionsList';
 import { actionSquareStyles } from '../components/Actions/ActionSquare';
-import { adminModalStyles } from '../components/Admin/AdminModal';
-import { confirmDeleteModalStyles } from '../components/ConfirmDeleteModal';
-import { additionalDetailsStyles } from '../components/AdminTrackerItemModal/AdditionalDetails';
+import { actionTemplatesStyles } from '../pages/admin/action-templates';
+import { actionsInsightsStyles } from '../pages/insights/actions';
+import { actionsStyles } from '../pages/actions';
 import { addTrackerItemAttributeStyles } from '../components/AdminTrackerItemModal/AddTrackerItemAttribute';
-import { businessUnitsModalStyles } from '../components/AdminTrackerItemModal/BusinessUnits';
-import { cloneTrackerItemModalStyles } from '../components/AdminTrackerItemModal/CloneTrackerItemModal';
-import { deleteTrackerItemModalStyles } from '../components/AdminTrackerItemModal/DeleteTrackerItemModal';
-import { locationsFormModalStyles } from '../components/AdminTrackerItemModal/Locations';
-import { navigationMobileModalStyles } from '../components/AdminTrackerItemModal/NavigationMobileModal';
-import { navigationModalStyles } from '../components/AdminTrackerItemModal/NavigationModal';
-import { questionsModalStyles } from '../components/AdminTrackerItemModal/Questions';
-import { summaryModalStyles } from '../components/AdminTrackerItemModal/Summary';
-import { summaryItemModalStyles } from '../components/AdminTrackerItemModal/SummaryItem';
-import { trackerItemModalStyles } from '../components/AdminTrackerItemModal/TrackerItemModal';
+import { additionalDetailsStyles } from '../components/AdminTrackerItemModal/AdditionalDetails';
+import { adminModalStyles } from '../components/Admin/AdminModal';
 import { alertDialogStyles } from '../components/AlertDialog';
 import { answerModalStyles } from '../components/Answers/AnswerModal';
 import { answerSquareStyles } from '../components/Answers/AnswerSquare';
+import { answersInsightsStyles } from '../pages/insights/answers';
+import { answersStyles } from '../pages/answers';
 import { auditActionFormStyles } from '../components/Audit/AuditActionForm';
 import { auditAnswerStyles } from '../components/Audit/AuditAnswer';
-import { auditHeaderStyles } from '../components/Audit/AuditHeader';
 import { auditHeaderMenuItemStyles } from '../components/Audit/AuditHeaderMenuItem';
+import { auditHeaderStyles } from '../components/Audit/AuditHeader';
+import { auditHistoryStyles } from '../pages/audit/history';
+import { auditItemStyles } from '../pages/audit';
 import { auditLeftNavigationStyles } from '../components/Audit/AuditLeftNavigation';
 import { auditLeftTabItemStyles } from '../components/Audit/AuditLeftTabItem';
-import { auditNewQuestionModalStyles } from '../components/Audit/AuditNewQuestionModal';
-import { auditsGroupStyles } from '../components/Audit/AuditsGroup';
-import { auditSquareStyles } from '../components/Audit/AuditSquare';
-import { auditLogStyles } from '../components/AuditLog/AuditLog';
 import { auditLogDayStyles } from '../components/AuditLog/AuditLogDay';
 import { auditLogRecordStyles } from '../components/AuditLog/AuditLogRecord';
+import { auditLogStyles } from '../components/AuditLog/AuditLog';
 import { auditModalStyles } from '../components/AuditModal/AuditModal';
+import { auditNewQuestionModalStyles } from '../components/Audit/AuditNewQuestionModal';
+import { auditParticipantsStyles } from '../pages/audit/participants';
+import { auditSquareStyles } from '../components/Audit/AuditSquare';
+import { auditTypesAdminStyles } from '../pages/admin/audit-types';
+import { auditsGroupStyles } from '../components/Audit/AuditsGroup';
+import { auditsInsightsStyles } from '../pages/insights/audits';
+import { auditsStyles } from '../pages/audits';
+import { auditsUsersInsightsStyles } from '../components/Insights/AuditsUsersInsights';
 import { barChartStyles } from '../components/BarChart';
+import { businessUnitsModalStyles } from '../components/AdminTrackerItemModal/BusinessUnits';
 import { businessUnitsSelectorStyles } from '../components/BusinessUnitsSelector';
-import { chatStyles } from '../components/Chat';
+import { businessUnitsStyles } from '../pages/admin/business-units';
+import { categoriesStyles } from '../pages/admin/categories';
 import { chatItemStyles } from '../components/ChatItem';
 import { chatMentionStyles } from '../components/ChatMention';
+import { chatStyles } from '../components/Chat';
+import { cloneTrackerItemModalStyles } from '../components/AdminTrackerItemModal/CloneTrackerItemModal';
+import { confirmDeleteModalStyles } from '../components/ConfirmDeleteModal';
 import { customRadioButtonStyles } from '../components/CustomRadioButton';
-import { documentUploadedStyles } from '../components/Documents/DocumentUploaded';
-import { filterPillsStyles } from '../components/FilterPills';
-import { filtersPanelStyles } from '../components/Filters/FiltersPanel';
-import { filtersPanelItemStyles } from '../components/Filters/FiltersPanelItem';
-import { quickFiltersItemStyles } from '../components/Filters/QuickFiltersItem';
-import { showArchivedFilterStyles } from '../components/Filters/ShowArchivedFilter';
 import { datepickerStyles } from '../components/Forms/Datepicker';
+import { deleteTrackerItemModalStyles } from '../components/AdminTrackerItemModal/DeleteTrackerItemModal';
+import { documentUploadedStyles } from '../components/Documents/DocumentUploaded';
 import { dropdownStyles } from '../components/Forms/Dropdown';
-import { multipleChoicesStyles } from '../components/Forms/MultipleChoices';
-import { numberInputStyles } from '../components/Forms/NumberInput';
-import { peoplePickerStyles } from '../components/Forms/PeoplePicker';
-import { switchStyles } from '../components/Forms/Switch';
-import { textMultilineInputStyles } from '../components/Forms/Textarea';
-import { textConfirmInputStyles } from '../components/Forms/TextConfirmInput';
-import { textInputStyles } from '../components/Forms/TextInput';
-import { textMultilineConfirmInputStyles } from '../components/Forms/TextMultilineConfirmInput';
-import { toggleStyles } from '../components/Forms/Toggle';
+import { emailTemplateStyles } from '../components/Settings/EmailTemplate';
+import { emailTemplatesStyles } from '../components/Settings/EmailTemplates';
+import { evidenceStyles } from '../components/Response/Evidence';
+import { filterPillsStyles } from '../components/FilterPills';
+import { filtersPanelItemStyles } from '../components/Filters/FiltersPanelItem';
+import { filtersPanelStyles } from '../components/Filters/FiltersPanel';
 import { headerStyles } from '../components/Header';
-import { auditsUsersInsightsStyles } from '../components/Insights/AuditsUsersInsights';
+import { historicalListItemStyles } from '../components/Response/HistoricalListItem';
+import { historyPageStyles } from '../pages/tracker-item/history';
 import { insightsCardStyles } from '../components/Insights/InsightsCard';
 import { insightsDetailedTableStyles } from '../components/Insights/InsightsDetailedTable';
+import { insightsStyles } from '../pages/insights';
+import { listViewStyles } from '../components/Table/ListView';
+import { locationsFormModalStyles } from '../components/AdminTrackerItemModal/Locations';
 import { locationsSelectorStyles } from '../components/LocationsSelector';
+import { locationsStyles } from '../pages/admin/locations';
+import { loginPageStyles } from '../pages/login';
+import { logoutPageStyles } from '../pages/logout';
+import { messageInputStyles } from '../components/Response/MessageInput';
 import { moduleSwitcherStyles } from '../components/ModuleSwitcher';
+import { multipleChoicesStyles } from '../components/Forms/MultipleChoices';
 import { navigationBottomMobileStyles } from '../components/NavigationBottomMobile';
-import { navigationLeftStyles } from '../components/NavigationLeft/NavigationLeft';
 import { navigationLeftFiltersStyles } from '../components/NavigationLeft/NavigationLeftFilters';
 import { navigationLeftItemStyles } from '../components/NavigationLeft/NavigationLeftItem';
 import { navigationLeftItemTabletStyles } from '../components/NavigationLeft/NavigationLeftItemTablet';
-import { subSectionStyles } from '../components/NavigationLeft/SubSection';
+import { navigationLeftStyles } from '../components/NavigationLeft/NavigationLeft';
+import { navigationMobileModalStyles } from '../components/AdminTrackerItemModal/NavigationMobileModal';
+import { navigationModalStyles } from '../components/AdminTrackerItemModal/NavigationModal';
 import { navigationTopStyles } from '../components/NavigationTop';
+import { numberInputStyles } from '../components/Forms/NumberInput';
 import { participantAvatarStyles } from '../components/Participants/ParticipantAvatar';
 import { participantListItemStyles } from '../components/Participants/ParticipantListItem';
 import { participantsAddButtonStyles } from '../components/Participants/ParticipantsAddButton';
 import { participantsDeleteModalStyles } from '../components/Participants/ParticipantsDeleteModal';
 import { participantsModalStyles } from '../components/Participants/ParticipantsModal';
+import { peoplePickerStyles } from '../components/Forms/PeoplePicker';
 import { questionEmailFormStyles } from '../components/Questions/QuestionEmailForm';
 import { questionFormStyles } from '../components/Questions/QuestionForm';
-import { questionListStyles } from '../components/Questions/QuestionList';
 import { questionListElementStyles } from '../components/Questions/QuestionListElement';
+import { questionListStyles } from '../components/Questions/QuestionList';
 import { questionMultiChoiceFormStyles } from '../components/Questions/QuestionMultiChoiceForm';
 import { questionSimpleFormStyles } from '../components/Questions/QuestionSimpleForm';
 import { questionSingleChoiceFormStyles } from '../components/Questions/QuestionSingleChoiceForm';
-import { responseRenewalDetailsStyles } from '../components/Response/Details';
-import { evidenceStyles } from '../components/Response/Evidence';
-import { historicalListItemStyles } from '../components/Response/HistoricalListItem';
-import { messageInputStyles } from '../components/Response/MessageInput';
-import { responseRenewalModalStyles } from '../components/Response/RenewalModal';
-import { responseHeaderStyles } from '../components/Response/ResponseHeader/ResponseHeader';
+import { questionsModalStyles } from '../components/AdminTrackerItemModal/Questions';
+import { quickFiltersItemStyles } from '../components/Filters/QuickFiltersItem';
+import { regulatoryBodiesStyles } from '../pages/admin/regulatory-bodies';
 import { responseHeaderMenuItemStyles } from '../components/Response/ResponseHeader/ResponseHeaderMenuItem';
 import { responseHeaderStatusStyles } from '../components/Response/ResponseHeader/ResponseHeaderStatus';
+import { responseHeaderStyles } from '../components/Response/ResponseHeader/ResponseHeader';
 import { responseLeftNavigationStyles } from '../components/Response/ResponseLeftNavigation';
 import { responseLeftTabItemStyles } from '../components/Response/ResponseLeftTabItem';
+import { responseLayoutStyles } from '../layouts/ResponseLayout';
 import { responseQuestionsStyles } from '../components/Response/ResponseQuestions';
+import { responseRenewalDetailsStyles } from '../components/Response/Details';
+import { responseRenewalModalStyles } from '../components/Response/RenewalModal';
 import { responseTabItemStyles } from '../components/Response/ResponseTabItem';
 import { searchBarStyles } from '../components/SearchBar';
-import { emailTemplateStyles } from '../components/Settings/EmailTemplate';
-import { emailTemplatesStyles } from '../components/Settings/EmailTemplates';
 import { settingsTabItemStyles } from '../components/Settings/TabItem';
 import { shareModalStyles } from '../components/ShareModal';
+import { showArchivedFilterStyles } from '../components/Filters/ShowArchivedFilter';
 import { sortButtonStyles } from '../components/SortButton';
 import { statusSelectorStyles } from '../components/StatusSelector';
-import { listViewStyles } from '../components/Table/ListView';
+import { subSectionStyles } from '../components/NavigationLeft/SubSection';
+import { summaryItemModalStyles } from '../components/AdminTrackerItemModal/SummaryItem';
+import { summaryModalStyles } from '../components/AdminTrackerItemModal/Summary';
+import { switchStyles } from '../components/Forms/Switch';
+import { teamPageStyles } from '../pages/tracker-item/team';
+import { textConfirmInputStyles } from '../components/Forms/TextConfirmInput';
+import { textInputStyles } from '../components/Forms/TextInput';
+import { textMultilineConfirmInputStyles } from '../components/Forms/TextMultilineConfirmInput';
+import { textMultilineInputStyles } from '../components/Forms/Textarea';
+import { toggleStyles } from '../components/Forms/Toggle';
+import { trackerItemModalStyles } from '../components/AdminTrackerItemModal/TrackerItemModal';
+import { trackerItemResponseStyles } from '../pages/tracker-item/index';
+import { trackerItemStyles } from '../pages/tracker-items';
+import { trackerItemsAdminWithContextStyles } from '../pages/admin/tracker-items';
 import { trackerListItemsStyles } from '../components/TrackerItem/TrackerItemsList';
+import { userItemStyles } from '../pages/admin/users';
 import { userMenuStyles } from '../components/UserMenu';
 import { userSelectorStyles } from '../components/UsersSelector';
-import { responseLayoutStyles } from '../layouts/ResponseLayout';
-import { actionsStyles } from '../pages/actions';
-import { actionTemplatesStyles } from '../pages/admin/action-templates';
-import { auditTypesAdminStyles } from '../pages/admin/audit-types';
-import { businessUnitsStyles } from '../pages/admin/business-units';
-import { categoriesStyles } from '../pages/admin/categories';
-import { locationsStyles } from '../pages/admin/locations';
-import { regulatoryBodiesStyles } from '../pages/admin/regulatory-bodies';
-import { trackerItemsAdminWithContextStyles } from '../pages/admin/tracker-items';
-import { userItemStyles } from '../pages/admin/users';
-import { answersStyles } from '../pages/answers';
-import { auditItemStyles } from '../pages/audit';
-import { auditHistoryStyles } from '../pages/audit/history';
-import { auditParticipantsStyles } from '../pages/audit/participants';
-import { auditsStyles } from '../pages/audits';
-import { insightsStyles } from '../pages/insights';
-import { actionsInsightsStyles } from '../pages/insights/actions';
-import { answersInsightsStyles } from '../pages/insights/answers';
-import { auditsInsightsStyles } from '../pages/insights/audits';
-import { loginPageStyles } from '../pages/login';
-import { logoutPageStyles } from '../pages/logout';
-import { historyPageStyles } from '../pages/tracker-item/history';
-import { trackerItemResponseStyles } from '../pages/tracker-item/index';
-import { teamPageStyles } from '../pages/tracker-item/team';
-import { trackerItemStyles } from '../pages/tracker-items';
 
 // http://chir.ag/projects/name-that-color - Get color names
 // https://smart-swatch.netlify.app/#462AC4 - Get color schemes
@@ -174,18 +175,22 @@ const getTheme = (organizationTheme?: any) => {
     colors: merge(
       {
         ...theme.colors,
-        ...actionsListStyles,
+        ...actionCategoriesStyles,
         ...actionListElementStyles,
         ...actionModalStyles,
+        ...actionsListStyles,
         ...actionSquareStyles,
-        ...actionsStyles,
         ...actionTemplatesStyles,
-        ...adminModalStyles,
-        ...additionalDetailsStyles,
+        ...actionsInsightsStyles,
+        ...actionsStyles,
         ...addTrackerItemAttributeStyles,
+        ...additionalDetailsStyles,
         ...adminModalStyles,
         ...alertDialogStyles,
-        ...confirmDeleteModalStyles,
+        ...answerModalStyles,
+        ...answerSquareStyles,
+        ...answersInsightsStyles,
+        ...answersStyles,
         ...auditActionFormStyles,
         ...auditAnswerStyles,
         ...auditHeaderMenuItemStyles,
@@ -203,21 +208,19 @@ const getTheme = (organizationTheme?: any) => {
         ...auditSquareStyles,
         ...auditTypesAdminStyles,
         ...auditsGroupStyles,
-        ...participantAvatarStyles,
+        ...auditsInsightsStyles,
+        ...auditsStyles,
+        ...auditsUsersInsightsStyles,
         ...barChartStyles,
         ...businessUnitsModalStyles,
         ...businessUnitsSelectorStyles,
         ...businessUnitsStyles,
         ...categoriesStyles,
         ...chatItemStyles,
-        ...chatStyles,
         ...chatMentionStyles,
+        ...chatStyles,
         ...cloneTrackerItemModalStyles,
-        ...trackerItemModalStyles,
-        ...trackerItemsAdminWithContextStyles,
-        ...trackerItemResponseStyles,
-        ...trackerItemStyles,
-        ...trackerListItemsStyles,
+        ...confirmDeleteModalStyles,
         ...customRadioButtonStyles,
         ...datepickerStyles,
         ...deleteTrackerItemModalStyles,
@@ -236,10 +239,10 @@ const getTheme = (organizationTheme?: any) => {
         ...insightsDetailedTableStyles,
         ...insightsStyles,
         ...listViewStyles,
-        ...loginPageStyles,
-        ...locationsStyles,
         ...locationsFormModalStyles,
         ...locationsSelectorStyles,
+        ...locationsStyles,
+        ...loginPageStyles,
         ...logoutPageStyles,
         ...messageInputStyles,
         ...moduleSwitcherStyles,
@@ -253,36 +256,36 @@ const getTheme = (organizationTheme?: any) => {
         ...navigationModalStyles,
         ...navigationTopStyles,
         ...numberInputStyles,
-        ...peoplePickerStyles,
+        ...participantAvatarStyles,
         ...participantListItemStyles,
         ...participantsAddButtonStyles,
         ...participantsDeleteModalStyles,
         ...participantsModalStyles,
+        ...peoplePickerStyles,
         ...questionEmailFormStyles,
         ...questionFormStyles,
         ...questionListElementStyles,
         ...questionListStyles,
-        ...questionsModalStyles,
         ...questionMultiChoiceFormStyles,
-        ...questionSingleChoiceFormStyles,
         ...questionSimpleFormStyles,
+        ...questionSingleChoiceFormStyles,
+        ...questionsModalStyles,
         ...quickFiltersItemStyles,
         ...regulatoryBodiesStyles,
-        ...responseLeftNavigationStyles,
         ...responseHeaderMenuItemStyles,
-        ...responseHeaderStyles,
         ...responseHeaderStatusStyles,
-        ...responseLayoutStyles,
+        ...responseHeaderStyles,
+        ...responseLeftNavigationStyles,
         ...responseLeftTabItemStyles,
+        ...responseLayoutStyles,
+        ...responseQuestionsStyles,
         ...responseRenewalDetailsStyles,
         ...responseRenewalModalStyles,
         ...responseTabItemStyles,
-        ...responseQuestionsStyles,
         ...searchBarStyles,
         ...settingsTabItemStyles,
         ...shareModalStyles,
         ...showArchivedFilterStyles,
-        ...shareModalStyles,
         ...sortButtonStyles,
         ...statusSelectorStyles,
         ...subSectionStyles,
@@ -295,17 +298,14 @@ const getTheme = (organizationTheme?: any) => {
         ...textMultilineConfirmInputStyles,
         ...textMultilineInputStyles,
         ...toggleStyles,
+        ...trackerItemModalStyles,
+        ...trackerItemResponseStyles,
+        ...trackerItemStyles,
+        ...trackerItemsAdminWithContextStyles,
+        ...trackerListItemsStyles,
         ...userItemStyles,
-        ...auditsStyles,
         ...userMenuStyles,
         ...userSelectorStyles,
-        ...answersStyles,
-        ...answerSquareStyles,
-        ...answerModalStyles,
-        ...actionsInsightsStyles,
-        ...answersInsightsStyles,
-        ...auditsInsightsStyles,
-        ...auditsUsersInsightsStyles,
 
         purpleHeart: {
           50: '#ede9ff',

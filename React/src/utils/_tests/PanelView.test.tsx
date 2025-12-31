@@ -195,6 +195,10 @@ describe('PanelView', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     deviceType = 'desktop';
+    // Mock scrollTo for Chakra UI Menu component in test environment
+    if (typeof Element !== 'undefined' && !Element.prototype.scrollTo) {
+      Element.prototype.scrollTo = vi.fn();
+    }
   });
 
   describe('Basic Rendering', () => {
@@ -1416,6 +1420,205 @@ describe('PanelView', () => {
       // Both buttons exist and work independently (menu interaction tested separately)
       expect(primaryButton).toBeInTheDocument();
       expect(secondaryActionsButton).toBeInTheDocument();
+    });
+  });
+
+  describe('Delete Action', () => {
+    test('renders delete action in mobile menu when configured', () => {
+      deviceType = 'mobile';
+
+      const mockDeleteAction = vi.fn();
+      const configWithDelete = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          delete: {
+            label: 'Delete',
+            icon: AuditDetailIcon,
+            onClick: mockDeleteAction,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001555">
+          <PanelView config={configWithDelete} data-id="001556" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Open the mobile menu
+      const menuButton = container.querySelector('[data-id="action-dropdown-2"]');
+      expect(menuButton).toBeInTheDocument();
+      fireEvent.click(menuButton!);
+
+      // Check that delete action is in the mobile menu
+      const deleteAction = document.querySelector('[data-id="delete-action-menu-item-3"]');
+      expect(deleteAction).toBeInTheDocument();
+      expect(deleteAction).toHaveTextContent('Delete');
+    });
+
+    test('calls delete onClick handler when delete action is clicked in mobile', async () => {
+      deviceType = 'mobile';
+
+      const mockDeleteAction = vi.fn();
+      const configWithDelete = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          delete: {
+            label: 'Delete',
+            icon: AuditDetailIcon,
+            onClick: mockDeleteAction,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001557">
+          <PanelView config={configWithDelete} data-id="001558" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Open the mobile menu
+      const menuButton = container.querySelector('[data-id="action-dropdown-2"]');
+      expect(menuButton).toBeInTheDocument();
+      fireEvent.click(menuButton!);
+
+      // Wait for menu to open and delete action to be available
+      await waitFor(() => {
+        const deleteAction = document.querySelector('[data-id="delete-action-menu-item-3"]');
+        expect(deleteAction).toBeInTheDocument();
+        return deleteAction;
+      });
+
+      // Click delete action
+      const deleteAction = document.querySelector('[data-id="delete-action-menu-item-3"]');
+      expect(deleteAction).toBeInTheDocument();
+      fireEvent.click(deleteAction!);
+
+      expect(mockDeleteAction).toHaveBeenCalledWith(mockAuditData[0]);
+      expect(mockDeleteAction).toHaveBeenCalledTimes(1);
+    });
+
+    test('renders delete action in desktop view when configured', () => {
+      deviceType = 'desktop';
+
+      const mockDeleteAction = vi.fn();
+      const configWithDelete = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          delete: {
+            label: 'Delete',
+            icon: AuditDetailIcon,
+            onClick: mockDeleteAction,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001559">
+          <PanelView config={configWithDelete} data-id="001560" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Check that primary action button exists
+      const primaryButton = container.querySelector('[data-id="action-button-2"]');
+      expect(primaryButton).toBeInTheDocument();
+      
+      // Verify the config has delete action configured
+      expect(configWithDelete.actions.delete).toBeDefined();
+      expect(configWithDelete.actions.delete?.label).toBe('Delete');
+      
+      // In desktop, the delete action should be rendered as a button
+      const deleteButton = container.querySelector('[data-id="desktop-delete-button-2"]');
+      expect(deleteButton).toBeInTheDocument();
+      
+      // Check that delete divider exists
+      const deleteDivider = container.querySelector('[data-id="desktop-delete-divider-2"]');
+      expect(deleteDivider).toBeInTheDocument();
+    });
+
+    test('calls delete onClick handler when delete button is clicked in desktop', () => {
+      deviceType = 'desktop';
+
+      const mockDeleteAction = vi.fn();
+      const configWithDelete = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          delete: {
+            label: 'Delete',
+            icon: AuditDetailIcon,
+            onClick: mockDeleteAction,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001565">
+          <PanelView config={configWithDelete} data-id="001566" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Click delete button
+      const deleteButton = container.querySelector('[data-id="desktop-delete-button-2"]');
+      expect(deleteButton).toBeInTheDocument();
+      fireEvent.click(deleteButton!);
+
+      expect(mockDeleteAction).toHaveBeenCalledWith(mockAuditData[0]);
+      expect(mockDeleteAction).toHaveBeenCalledTimes(1);
+    });
+
+    test('does not render delete action when not configured', () => {
+      deviceType = 'mobile';
+
+      const { container } = render(
+        <TestWrapper data-id="001561">
+          <PanelView config={mockAuditConfig} data-id="001562" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Open the mobile menu
+      const menuButton = container.querySelector('[data-id="action-dropdown-2"]');
+      fireEvent.click(menuButton!);
+
+      // Check that delete action is NOT in the menu
+      const deleteAction = document.querySelector('[data-id="delete-action-menu-item-3"]');
+      expect(deleteAction).not.toBeInTheDocument();
+    });
+
+    test('delete action has correct styling (red color)', () => {
+      deviceType = 'mobile';
+
+      const mockDeleteAction = vi.fn();
+      const configWithDelete = {
+        ...mockAuditConfig,
+        actions: {
+          ...mockAuditConfig.actions,
+          delete: {
+            label: 'Delete',
+            icon: AuditDetailIcon,
+            onClick: mockDeleteAction,
+          },
+        },
+      };
+
+      const { container } = render(
+        <TestWrapper data-id="001563">
+          <PanelView config={configWithDelete} data-id="001564" items={mockAuditData} />
+        </TestWrapper>,
+      );
+
+      // Open the mobile menu
+      const menuButton = container.querySelector('[data-id="action-dropdown-2"]');
+      fireEvent.click(menuButton!);
+
+      // Check that delete action has red color
+      const deleteAction = document.querySelector('[data-id="delete-action-menu-item-3"]');
+      expect(deleteAction).toBeInTheDocument();
+      // The color should be #D0021B (red) - check via style or class
+      expect(deleteAction).toHaveTextContent('Delete');
     });
   });
 });

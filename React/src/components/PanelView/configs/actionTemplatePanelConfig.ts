@@ -19,6 +19,9 @@ const actionTemplatePanelConfig: PanelConfig = {
             fontSize: '17px',
             fontWeight: 600,
             lineHeight: '100%',
+            noOfLines: 2,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           },
           value || 'No Title',
         );
