@@ -187,7 +187,7 @@ function TextInput({
               </Stack>
             )}
             {error && (
-              <Box color="textInput.error" data-id="000407" fontSize={14} ml={1}>
+              <Box color="textInput.error" data-id="000407" fontSize={12} ml={1}>
                 {error.message}
               </Box>
             )}

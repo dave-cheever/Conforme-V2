@@ -6,6 +6,7 @@ import { actionModalStyles } from '../components/Actions/ActionModal';
 import { actionsListStyles } from '../components/Actions/ActionsList';
 import { actionSquareStyles } from '../components/Actions/ActionSquare';
 import { adminModalStyles } from '../components/Admin/AdminModal';
+import { confirmDeleteModalStyles } from '../components/ConfirmDeleteModal';
 import { additionalDetailsStyles } from '../components/AdminTrackerItemModal/AdditionalDetails';
 import { addTrackerItemAttributeStyles } from '../components/AdminTrackerItemModal/AddTrackerItemAttribute';
 import { businessUnitsModalStyles } from '../components/AdminTrackerItemModal/BusinessUnits';
@@ -39,7 +40,6 @@ import { businessUnitsSelectorStyles } from '../components/BusinessUnitsSelector
 import { chatStyles } from '../components/Chat';
 import { chatItemStyles } from '../components/ChatItem';
 import { chatMentionStyles } from '../components/ChatMention';
-import { chatConfirmDeleteModalStyles } from '../components/ConfirmDeleteModal';
 import { customRadioButtonStyles } from '../components/CustomRadioButton';
 import { documentUploadedStyles } from '../components/Documents/DocumentUploaded';
 import { filterPillsStyles } from '../components/FilterPills';
@@ -108,6 +108,7 @@ import { userMenuStyles } from '../components/UserMenu';
 import { userSelectorStyles } from '../components/UsersSelector';
 import { responseLayoutStyles } from '../layouts/ResponseLayout';
 import { actionsStyles } from '../pages/actions';
+import { actionTemplatesStyles } from '../pages/admin/action-templates';
 import { auditTypesAdminStyles } from '../pages/admin/audit-types';
 import { businessUnitsStyles } from '../pages/admin/business-units';
 import { categoriesStyles } from '../pages/admin/categories';
@@ -178,11 +179,13 @@ const getTheme = (organizationTheme?: any) => {
         ...actionModalStyles,
         ...actionSquareStyles,
         ...actionsStyles,
+        ...actionTemplatesStyles,
         ...adminModalStyles,
         ...additionalDetailsStyles,
         ...addTrackerItemAttributeStyles,
         ...adminModalStyles,
         ...alertDialogStyles,
+        ...confirmDeleteModalStyles,
         ...auditActionFormStyles,
         ...auditAnswerStyles,
         ...auditHeaderMenuItemStyles,
@@ -206,7 +209,6 @@ const getTheme = (organizationTheme?: any) => {
         ...businessUnitsSelectorStyles,
         ...businessUnitsStyles,
         ...categoriesStyles,
-        ...chatConfirmDeleteModalStyles,
         ...chatItemStyles,
         ...chatStyles,
         ...chatMentionStyles,

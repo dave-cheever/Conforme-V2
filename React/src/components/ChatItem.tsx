@@ -8,7 +8,7 @@ import { useAppContext } from '../contexts/AppProvider';
 import { IComment } from '../interfaces/IComment';
 import Can from './can';
 import ChatMention from './ChatMention';
-import ChatConfirmDeleteModal from './ConfirmDeleteModal';
+import { ConfirmDeleteModal } from './ConfirmDeleteModal';
 
 interface IChatItem {
   comment: IComment;
@@ -48,7 +48,7 @@ function ChatItem({ onAction, comment }: IChatItem) {
 
   return (
     <>
-      <ChatConfirmDeleteModal data-id="000221" isOpen={isOpen} message={text} messageId={_id} onAction={onAction} onClose={onClose} />
+      <ConfirmDeleteModal data-id="000221" isOpen={isOpen} message={text} itemName={text} collectionName="comment" onClose={onClose} onConfirm={() => onAction(_id)} />
       <Flex align={isChatOwner ? 'flex-end' : 'flex-start'} data-id="000222" flexDirection="column" mb={3} w="full">
         <Flex alignItems="end" data-id="000223" flexDirection="row" justify={isChatOwner ? 'flex-end' : 'flex-start'} w="full">
           {!isChatOwner &&

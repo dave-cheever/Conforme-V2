@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { gql, useQuery } from '@apollo/client';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { Box, Button, Divider, Flex, Text, useDisclosure, useToast } from '@chakra-ui/react';
 
 import ActionTemplateFormModal from '../../components/ActionTemplate/ActionTemplateFormModal';
+import { ConfirmDeleteModal } from '../../components/ConfirmDeleteModal';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import { actionTemplatePanelConfig, PanelView } from '../../components/PanelView';
@@ -14,8 +15,9 @@ import ListView, { ColumnConfig } from '../../components/Table/ListView';
 import { useAdminContext } from '../../contexts/AdminProvider';
 import useDevice from '../../hooks/useDevice';
 import usePagination from '../../hooks/usePagination';
-import { EditIcon } from '@chakra-ui/icons';
 import { NoRecordsFoundMessage } from '../../components/UI';
+import { EditIcon, Trashcan } from '../../icons';
+import { toastFailed, toastSuccess } from '../../bootstrap/config';
 
 const GET_ACTION_TEMPLATES = gql`
   query ($pagination: PaginationInput) {
@@ -26,6 +28,7 @@ const GET_ACTION_TEMPLATES = gql`
         description
         actionCategoryId
         metatags {
+          addedAt
           updatedAt
         }
       }
@@ -43,6 +46,12 @@ const GET_ACTION_CATEGORIES = gql`
       }
       total
     }
+  }
+`;
+
+const DELETE_ACTION_TEMPLATE = gql`
+  mutation ($_id: String!) {
+    deleteActionTemplate(_id: $_id)
   }
 `;
 
@@ -64,18 +73,24 @@ interface IActionTemplate {
   description?: string;
   actionCategoryId: string;
   metatags?: {
+    addedAt?: Date;
     updatedAt?: Date;
   };
   actionCategoryName?: string;
 }
 
 function ActionTemplates() {
+  const toast = useToast();
   const { adminModalState, setAdminModalState } = useAdminContext();
   const { currentPage, setCurrentPage, pageSize, setPageSize, total, setTotal } = usePagination();
   const [sortType, setSortType] = useState('title');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const device = useDevice();
   const isMobile = device === 'mobile';
+  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
+  const [actionTemplateToDelete, setActionTemplateToDelete] = useState<IActionTemplate | null>(null);
+
+  const [deleteActionTemplate, { loading: isDeleting }] = useMutation(DELETE_ACTION_TEMPLATE);
 
   const queryVariables = useMemo(
     () => ({
@@ -157,68 +172,131 @@ function ActionTemplates() {
     [openActionTemplateModal],
   );
 
+  const handleDeleteClick = useCallback(
+    (e: React.MouseEvent, actionTemplate: IActionTemplate) => {
+      e.stopPropagation();
+      setActionTemplateToDelete(actionTemplate);
+      onDeleteModalOpen();
+    },
+    [onDeleteModalOpen],
+  );
+
+  const handleDeleteFromPanel = useCallback(
+    (actionTemplate: IActionTemplate) => {
+      setActionTemplateToDelete(actionTemplate);
+      onDeleteModalOpen();
+    },
+    [onDeleteModalOpen],
+  );
+
+  const handleConfirmDelete = useCallback(async () => {
+    if (!actionTemplateToDelete?._id) return;
+
+    try {
+      await deleteActionTemplate({
+        variables: {
+          _id: actionTemplateToDelete._id,
+        },
+      });
+      refetch();
+      toast({ ...toastSuccess, description: 'Action template deleted' });
+      onDeleteModalClose();
+      setActionTemplateToDelete(null);
+    } catch (e: any) {
+      toast({ ...toastFailed, description: e.message });
+    }
+  }, [actionTemplateToDelete, deleteActionTemplate, refetch, toast, onDeleteModalClose]);
+
   const columns: ColumnConfig[] = useMemo(() => [
     {
-      label: 'Title',
+      label: 'Action title',
       sortKey: 'title',
-      width: '30%',
+      width: '23%',
       dataId: '000389',
       render: (actionTemplate: IActionTemplate) => <TextOrNumberCell data-id="002091" text={actionTemplate.title} />,
     },
     {
-      label: 'Category',
+      label: 'Action category',
       sortKey: 'actionCategoryId',
-      width: '25%',
+      width: '20%',
       dataId: '000390',
       render: (actionTemplate: IActionTemplate) => (
-        <TextOrNumberCell data-id="002092" text={actionTemplate.actionCategoryName || 'Unknown'} />
+        <TextOrNumberCell data-id="002092" text={actionTemplate.actionCategoryName || '-'} />
+      ),
+    },
+    {
+      label: 'Description ',
+      sortKey: 'actionCategoryId',
+      width: '35%',
+      dataId: '000390',
+      render: (actionTemplate: IActionTemplate) => (
+        <TextOrNumberCell data-id="002092" text={actionTemplate.description || '-'} />
       ),
     },
     {
       label: 'Last Modified',
       sortKey: 'metatags.updatedAt',
-      width: '30%',
+      width: '10%',
       dataId: '000391',
       render: (actionTemplate: IActionTemplate) => (
-        <DateTimeCell data-id="002093" date={actionTemplate.metatags?.updatedAt} showTime={true} />
+        <DateTimeCell data-id="002093" date={actionTemplate.metatags?.updatedAt || actionTemplate.metatags?.addedAt} showTime={true} />
       ),
     },
     {
       label: '',
       sortKey: '',
-      width: '7%',
+      width: '12%',
       dataId: '000393',
       disableSort: true,
       ml: 'auto',
       render: (actionTemplate: IActionTemplate) => (
-        <Flex data-id="013102" justify="flex-end" w="full">
+        <Flex data-id="013102" justify="flex-end" w="full" gap="8px">
           <Button
             data-id="002091"
             fontSize={['xs', 'sm', 'smm']}
-            h={['32px', '36px', 'auto']}
-            minW={['auto', 'auto', 'auto']}
+            h='28px'
+            minW='auto'
+            boxShadow="0px 1px 2px 0px #1A202C14"
+            border="1px solid #CBD5E0"
+            borderRadius="6px"
             onClick={(e) => {
               e.stopPropagation();
               handleRowClick(actionTemplate);
             }}
-            p={['6px 8px', '7px 12px', '7px 12px']}
-            size={['sm', 'md', 'md']}
+            p='6px 8px'
+            size="md"
             variant="outline"
           >
-            <EditIcon data-id="013103" boxSize={['14px', '16px', '16px']} />
+            <EditIcon data-id="013103" color="#2D3748" h="14px" w="14px" />
             <Text
               data-id="013104"
-              fontSize={['xs', 'sm', 'smm']}
+              fontSize="12px"
               fontWeight="500"
               lineHeight="100%"
-              ml={[1, 2, 2]}>
+              color="#2D3748"
+              ml="4px"
+            >
               Edit template
             </Text>
+          </Button>
+          <Divider data-id="013216" orientation='vertical' height='26px' color="#E2E8F0" />
+          <Button
+            data-id="002091"
+            height="28px"
+            boxShadow="0px 1px 2px 0px #1A202C14"
+            border="1px solid #CBD5E0"
+            borderRadius="6px"
+            onClick={(e) => handleDeleteClick(e, actionTemplate)}
+            p="4px"
+            size="sm"
+            variant="outline"
+          >
+            <Trashcan data-id="013103" color="#D0021B" h="18px" w="18px" />
           </Button>
         </Flex>
       ),
     },
-  ], [handleRowClick]);
+  ], [handleRowClick, handleDeleteClick]);
 
   const panelConfig = useMemo(
     () => ({
@@ -232,9 +310,13 @@ function ActionTemplates() {
         panelClick: {
           onClick: handleRowClick,
         },
+        delete: {
+          ...actionTemplatePanelConfig.actions.delete!,
+          onClick: handleDeleteFromPanel,
+        },
       },
     }),
-    [handleRowClick],
+    [handleRowClick, handleDeleteFromPanel],
   );
 
   const renderContent = () => {
@@ -296,6 +378,18 @@ function ActionTemplates() {
         setAdminModalState={setAdminModalState}
         trigger={trigger}
       />
+      <ConfirmDeleteModal
+        collectionName="action template"
+        data-id="000326"
+        isOpen={isDeleteModalOpen}
+        isLoading={isDeleting}
+        itemName={actionTemplateToDelete?.title}
+        onClose={() => {
+          onDeleteModalClose();
+          setActionTemplateToDelete(null);
+        }}
+        onConfirm={handleConfirmDelete}
+      />
       <Header
         breadcrumbs={['Admin settings', 'Action templates']}
         data-id="000384"
@@ -312,4 +406,28 @@ function ActionTemplates() {
 }
 
 export default ActionTemplates;
+
+export const actionTemplatesStyles = {
+  actionTemplates: {
+    bg: '#FFFFFF',
+    deleteButton: {
+      bg: 'transparent',
+      border: '#CBD5E0',
+      color: '#D0021B',
+      hover: {
+        bg: '#FEE2E2',
+        border: '#D0021B',
+      },
+    },
+    editButton: {
+      bg: 'transparent',
+      border: '#CBD5E0',
+      color: '#2D3748',
+      hover: {
+        bg: '#F7FAFC',
+        border: '#CBD5E0',
+      },
+    },
+  },
+};
 

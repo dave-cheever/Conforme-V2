@@ -1,9 +1,9 @@
 import React from 'react';
 import { format } from 'date-fns';
 
-import { EditIcon } from '@chakra-ui/icons';
 import { Box, Text } from '@chakra-ui/react';
 import { PanelConfig } from '../../../interfaces/IPanelConfig';
+import { EditIcon, Trashcan } from '../../../icons';
 
 const actionTemplatePanelConfig: PanelConfig = {
   title: {
@@ -135,6 +135,13 @@ const actionTemplatePanelConfig: PanelConfig = {
       },
     },
     panelClick: {
+      onClick: () => {
+        // This will be set by the parent component
+      },
+    },
+    delete: {
+      label: 'Delete',
+      icon: Trashcan,
       onClick: () => {
         // This will be set by the parent component
       },

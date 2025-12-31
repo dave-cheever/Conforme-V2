@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, expect, test, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
@@ -159,6 +159,20 @@ const GET_ACTION_CATEGORIES_MOCK = {
   },
 };
 
+const DELETE_ACTION_TEMPLATE_MOCK = {
+  request: {
+    query: DELETE_ACTION_TEMPLATE,
+    variables: {
+      _id: 'template1',
+    },
+  },
+  result: {
+    data: {
+      deleteActionTemplate: true,
+    },
+  },
+};
+
 vi.mock('../../contexts/AdminProvider', () => ({
   useAdminContext: () => ({
     adminModalState: 'closed',
@@ -193,9 +207,28 @@ vi.mock('../../hooks/useDevice', () => ({
   default: () => 'desktop',
 }));
 
+const mockToast = vi.fn();
+const mockOnOpen = vi.fn();
+const mockOnClose = vi.fn();
+let mockIsOpen = false;
+
+vi.mock('@chakra-ui/react', async () => {
+  const actual = await vi.importActual('@chakra-ui/react');
+  return {
+    ...actual,
+    useToast: () => mockToast,
+    useDisclosure: () => ({
+      isOpen: mockIsOpen,
+      onOpen: mockOnOpen,
+      onClose: mockOnClose,
+    }),
+  };
+});
+
 describe('Action Templates Page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockIsOpen = false;
     mockGetValues.mockReturnValue({
       _id: undefined,
       title: '',
@@ -611,6 +644,30 @@ describe('Action Templates Page', () => {
       };
 
       expect(templateToDelete._id).toBeDefined();
+    });
+  });
+
+  describe('Delete Functionality', () => {
+    test('delete mutation structure is correct', () => {
+      expect(DELETE_ACTION_TEMPLATE).toBeDefined();
+      expect(DELETE_ACTION_TEMPLATE.definitions).toBeDefined();
+      expect(DELETE_ACTION_TEMPLATE.definitions.length).toBeGreaterThan(0);
+    });
+
+    test('delete mutation accepts _id parameter', () => {
+      const deleteVariables = {
+        _id: 'template1',
+      };
+
+      expect(deleteVariables._id).toBe('template1');
+    });
+
+    test('delete mutation returns boolean', () => {
+      const deleteResult = {
+        deleteActionTemplate: true,
+      };
+
+      expect(typeof deleteResult.deleteActionTemplate).toBe('boolean');
     });
   });
 

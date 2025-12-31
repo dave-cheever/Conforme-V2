@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { render, screen, waitFor } from '@testing-library/react';
+import { ChakraProvider } from '@chakra-ui/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import PanelView from '../../components/PanelView/PanelView';
@@ -20,6 +21,11 @@ vi.mock('@chakra-ui/react', async () => {
     useBreakpointValue: vi.fn(),
   };
 });
+
+// Test wrapper component
+function TestWrapper({ children }: { readonly children: React.ReactNode }) {
+  return <ChakraProvider data-id="001562">{children}</ChakraProvider>;
+}
 
 describe('PanelView Mobile Responsive', () => {
   const mockConfig: PanelConfig = {
@@ -87,7 +93,11 @@ describe('PanelView Mobile Responsive', () => {
     test('shows dropdown menu with ellipsis icon on mobile', () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView config={mockConfig} data-id="001544" items={mockItems} />);
+      render(
+        <TestWrapper data-id="013269">
+          <PanelView config={mockConfig} data-id="001544" items={mockItems} />
+        </TestWrapper>,
+      );
 
       // Should show ellipsis buttons (one for each item)
       const ellipsisButtons = screen.getAllByLabelText('Actions');
@@ -100,7 +110,11 @@ describe('PanelView Mobile Responsive', () => {
     test('hides regular action button on mobile', () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView config={mockConfig} data-id="001545" items={mockItems} />);
+      render(
+        <TestWrapper data-id="013270">
+          <PanelView config={mockConfig} data-id="001545" items={mockItems} />
+        </TestWrapper>,
+      );
 
       // Should not show the regular button
       expect(screen.queryByRole('button', { name: /View Details/ })).not.toBeInTheDocument();
@@ -109,7 +123,11 @@ describe('PanelView Mobile Responsive', () => {
     test('shows regular action button on desktop', () => {
       mockUseDevice.mockReturnValue('desktop');
 
-      render(<PanelView config={mockConfig} data-id="001546" items={mockItems} />);
+      render(
+        <TestWrapper data-id="013271">
+          <PanelView config={mockConfig} data-id="001546" items={mockItems} />
+        </TestWrapper>,
+      );
 
       // Should show regular action buttons (one for each item)
       const actionButtons = screen.getAllByRole('button', { name: /View Details/ });
@@ -122,7 +140,11 @@ describe('PanelView Mobile Responsive', () => {
     test('shows regular action button on tablet', () => {
       mockUseDevice.mockReturnValue('tablet');
 
-      render(<PanelView config={mockConfig} data-id="001547" items={mockItems} />);
+      render(
+        <TestWrapper data-id="013272">
+          <PanelView config={mockConfig} data-id="001547" items={mockItems} />
+        </TestWrapper>,
+      );
 
       // Should show regular action buttons (one for each item)
       const actionButtons = screen.getAllByRole('button', { name: /View Details/ });
@@ -137,7 +159,11 @@ describe('PanelView Mobile Responsive', () => {
     test('applies ellipsis styles to secondary title on mobile', () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView config={mockConfig} data-id="001548" items={mockItems} />);
+      render(
+        <TestWrapper data-id="013273">
+          <PanelView config={mockConfig} data-id="001548" items={mockItems} />
+        </TestWrapper>,
+      );
 
       // Find the secondary title field renderer
       const secondaryTitle = screen.getByText('This is a very long description that should be truncated on mobile devices when it overlaps with the status badge');
@@ -181,33 +207,61 @@ describe('PanelView Mobile Responsive', () => {
   });
 
   describe('Mobile Dropdown Menu Functionality', () => {
-    test('dropdown menu contains primary action on mobile', () => {
+    test('dropdown menu contains primary action on mobile', async () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView config={mockConfig} data-id="001552" items={mockItems} />);
+      render(
+        <TestWrapper data-id="013274">
+          <PanelView config={mockConfig} data-id="001552" items={mockItems} />
+        </TestWrapper>,
+      );
 
       // Should show ellipsis buttons (one for each item)
       const ellipsisButtons = screen.getAllByLabelText('Actions');
       expect(ellipsisButtons.length).toBe(2);
 
+      // Open the first menu
+      fireEvent.click(ellipsisButtons[0]);
+
+      // Wait for menu to open and verify primary action is in menu
+      await waitFor(() => {
+        const primaryAction = document.querySelector('[data-id="action-menu-item-2"]');
+        expect(primaryAction).toBeInTheDocument();
+        expect(primaryAction).toHaveTextContent('View Details');
+      }, { timeout: 2000 });
+
       // Should not show regular action buttons
       expect(screen.queryByRole('button', { name: /View Details/ })).not.toBeInTheDocument();
     });
 
-    test('dropdown menu contains secondary action on mobile when available', () => {
+    test('dropdown menu contains secondary action on mobile when available', async () => {
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView config={mockConfig} data-id="001553" items={mockItems} />);
+      render(
+        <TestWrapper data-id="013275">
+          <PanelView config={mockConfig} data-id="001553" items={mockItems} />
+        </TestWrapper>,
+      );
 
       // Should show ellipsis buttons
       const ellipsisButtons = screen.getAllByLabelText('Actions');
       expect(ellipsisButtons.length).toBe(2);
 
+      // Open the first menu
+      fireEvent.click(ellipsisButtons[0]);
+
+      // Wait for menu to open and verify secondary action is in menu
+      await waitFor(() => {
+        const secondaryAction = document.querySelector('[data-id="secondary-action-menu-item-2"]');
+        expect(secondaryAction).toBeInTheDocument();
+        expect(secondaryAction).toHaveTextContent('Edit');
+      }, { timeout: 2000 });
+
       // Should not show regular action buttons
       expect(screen.queryByRole('button', { name: /View Details/ })).not.toBeInTheDocument();
     });
 
-    test('dropdown menu only shows primary action when secondary is not available', () => {
+    test('dropdown menu only shows primary action when secondary is not available', async () => {
       const configWithoutSecondary = {
         ...mockConfig,
         actions: {
@@ -217,11 +271,29 @@ describe('PanelView Mobile Responsive', () => {
 
       mockUseDevice.mockReturnValue('mobile');
 
-      render(<PanelView config={configWithoutSecondary} data-id="001554" items={mockItems} />);
+      render(
+        <TestWrapper data-id="013276">
+          <PanelView config={configWithoutSecondary} data-id="001554" items={mockItems} />
+        </TestWrapper>,
+      );
 
       // Should show ellipsis buttons
       const ellipsisButtons = screen.getAllByLabelText('Actions');
       expect(ellipsisButtons.length).toBe(2);
+
+      // Open the first menu
+      fireEvent.click(ellipsisButtons[0]);
+
+      // Wait for menu to open and verify only primary action is in menu
+      await waitFor(() => {
+        const primaryAction = document.querySelector('[data-id="action-menu-item-2"]');
+        expect(primaryAction).toBeInTheDocument();
+        expect(primaryAction).toHaveTextContent('View Details');
+      }, { timeout: 2000 });
+
+      // Verify secondary action is NOT in menu
+      const secondaryAction = document.querySelector('[data-id="secondary-action-menu-item-2"]');
+      expect(secondaryAction).not.toBeInTheDocument();
 
       // Should not show regular action buttons
       expect(screen.queryByRole('button', { name: /View Details/ })).not.toBeInTheDocument();

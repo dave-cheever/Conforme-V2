@@ -68,7 +68,17 @@ export interface PanelConfig {
       readonly label: string;
       readonly icon?: React.ComponentType;
       readonly onClick: (item: any) => void;
+      readonly styles?: {
+        readonly color?: string;
+        readonly iconColor?: string;
+        readonly hoverBg?: string;
+      };
     }[];
+    readonly delete?: {
+      readonly label: string;
+      readonly icon?: React.ComponentType;
+      readonly onClick: (item: any) => void;
+    }
   };
 }
 

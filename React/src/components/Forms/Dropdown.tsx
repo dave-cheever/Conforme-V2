@@ -71,8 +71,7 @@ function Dropdown({
                   fontWeight="500"
                   lineHeight="100%"
                   left="none"
-                  position="static"
-                  zIndex={1}>
+                  position="static">
                   {label}
                   {required && (
                     <Asterisk
@@ -84,15 +83,15 @@ function Dropdown({
                       stroke="questionListElement.iconAsterisk"
                       w="9px" />
                   )}{' '}
-                  {help && (
-                    <Box data-id="000250" fontSize="11px" mt={3} opacity={0.5}>
-                      {help}
-                    </Box>
-                  )}
                 </Box>
               </Flex>
             )}
-            <Flex alignItems={Icon ? 'center' : ''} data-id="000251">
+            {help && (
+              <Box data-id="000250" fontSize="11px" mb="6px" opacity={0.6}>
+                {help}
+              </Box>
+            )}
+            <Flex alignItems={Icon ? 'center' : 'stretch'} data-id="000251" w="full">
               <Select
                 _active={{
                   bg: disabled ? 'dropdown.disabled.bg' : 'dropdown.activeBg',
@@ -106,17 +105,22 @@ function Dropdown({
                 _focus={{
                   borderColor: error ? 'dropdown.border.focus.error' : 'dropdown.border.focus.normal',
                 }}
-                _placeholder={{ color: 'dropdown.placeholder' }}
+                _hover={{
+                  borderColor: error ? 'dropdown.border.error' : 'dropdown.border.hover',
+                }}
+                _placeholder={{ 
+                  color: 'dropdown.placeholder',
+                  fontSize: 'smm',
+                }}
                 bg="dropdown.bg"
                 borderColor={error ? 'dropdown.border.error' : 'dropdown.border.normal'}
                 borderRadius="8px"
                 borderWidth="1px"
                 color="dropdown.font"
-                css={{ paddingTop: '0' }}
                 cursor="pointer"
                 data-id="000252"
                 fontSize="smm"
-                h="42px"
+                h="40px"
                 icon={<ChevronRight
                   data-id="000253"
                   stroke="dropdown.chevronDownIcon"
@@ -128,8 +132,22 @@ function Dropdown({
                 onBlur={onBlur}
                 onChange={onChange}
                 placeholder={placeholder}
-                top="5px"
-                value={value || ''}>
+                sx={{
+                  '& > option': {
+                    bg: 'dropdown.bg',
+                    color: 'dropdown.font',
+                    fontSize: '14px !important',
+                  },
+                  '& > option:hover': {
+                    bg: 'dropdown.optionHover',
+                  },
+                  '& > option:checked': {
+                    bg: 'dropdown.optionSelected',
+                    color: 'dropdown.font',
+                  },
+                }}
+                value={value || ''}
+                w="full">
                 {options.map((option) => {
                   const maxLength = 55;
                   const truncatedLabel = option.label && option.label.length > maxLength
@@ -140,25 +158,31 @@ function Dropdown({
                       data-id="000254"
                       key={`${name}-${option.value}`}
                       value={option.value}
-                      title={option.label}>
+                      title={option.label}
+                      >
                       {truncatedLabel}
                     </option>
                   );
                 })}
               </Select>
-              {Icon && onAction && !value && <Icon
-                cursor="pointer"
-                data-id="000255"
-                ml="20px"
-                mt="10px"
-                onClick={() => onAction(attributeType)}
-                stroke={stroke} />}
+              {Icon && onAction && !value && (
+                <Box
+                  alignSelf="center"
+                  data-id="000255"
+                  ml="12px">
+                  <Icon
+                    cursor="pointer"
+                    data-id="000255"
+                    onClick={() => onAction(attributeType)}
+                    stroke={stroke} />
+                </Box>
+              )}
             </Flex>
             {error && (
               <Box
                 color="dropdown.error"
                 data-id="000256"
-                fontSize="smm"
+                fontSize="12px"
                 ml={1}
                 mt={1}>
                 {error.message}
@@ -191,6 +215,7 @@ export const dropdownStyles = {
     border: {
       normal: '#CBCCCD',
       error: '#E53E3E',
+      hover: '#999999',
       focus: {
         normal: '#777777',
         error: '#E53E3E',
@@ -202,11 +227,13 @@ export const dropdownStyles = {
       border: '#EEEEEE',
       bg: '#f7f7f7',
     },
-    placeholder: '#282F36',
+    placeholder: '#CBCCCD',
     error: '#E53E3E',
     tooltip: '#9A9EA1',
     icon: '#818197',
     chevronDownIcon: '#282F36',
+    optionHover: '#F5F5F5',
+    optionSelected: '#E8F4F8',
   },
 };
 

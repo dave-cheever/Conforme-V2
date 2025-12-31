@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button, Divider, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Portal, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { get } from 'lodash';
 
@@ -165,7 +165,7 @@ function PanelHeader({ config, item, index }: { readonly config: any; readonly i
 // Sub-component for mobile action menu
 function MobileActionMenu({ config, item, index }: { readonly config: any; readonly item: any; readonly index: number }) {
   return (
-    <Menu data-id="001517">
+    <Menu data-id="001517" strategy="fixed">
       <MenuButton
         aria-label="Actions"
         as={IconButton}
@@ -178,29 +178,51 @@ function MobileActionMenu({ config, item, index }: { readonly config: any; reado
         onClick={(e) => e.stopPropagation()}
         variant="outline"
       />
-      <MenuList data-id="001519">
-        <MenuItem
-          data-id={`action-menu-item-${index + 2}`}
-          icon={config.actions.primary.icon ? <config.actions.primary.icon /> : undefined}
-          onClick={(e) => {
-            e.stopPropagation();
-            config.actions.primary?.onClick(item);
-          }}
-        >
-          {config.actions.primary.label}
-        </MenuItem>
-        {config.actions.secondary && (
+      <Portal data-id="013219">
+        <MenuList data-id="001519" zIndex={9999} padding="12px" borderColor="#C4D0DD">
           <MenuItem
-            data-id={`secondary-action-menu-item-${index + 2}`}
+            data-id={`action-menu-item-${index + 2}`}
+            icon={config.actions.primary.icon ? <config.actions.primary.icon color="#2D3748" h="16px" w="16px" /> : undefined}
+            color="#2D3748"
+            fontSize="16px"
+            fontWeight="500"
+            padding="10px"
             onClick={(e) => {
               e.stopPropagation();
-              config.actions.secondary?.onClick(item);
+              config.actions.primary?.onClick(item);
             }}
           >
-            {config.actions.secondary.label}
+            {config.actions.primary.label}
           </MenuItem>
-        )}
-      </MenuList>
+          {config.actions.secondary && (
+            <MenuItem
+              data-id={`secondary-action-menu-item-${index + 2}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                config.actions.secondary?.onClick(item);
+              }}
+            >
+              {config.actions.secondary.label}
+            </MenuItem>
+          )}
+          {config.actions.delete && (
+            <>
+              <Divider borderColor="#C4D0DD" data-id={`mobile-divider-${index + 2}`} my={1} />
+              <MenuItem
+                data-id={`delete-action-menu-item-${index + 3}`}
+                color="#D0021B"
+                icon={config.actions.delete.icon ? <config.actions.delete.icon color="#D0021B" h="16px" w="16px" /> : undefined}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  config.actions.delete?.onClick(item);
+                }}
+              >
+                {config.actions.delete.label}
+              </MenuItem>
+            </>
+          )}
+        </MenuList>
+      </Portal>
     </Menu>
   );
 }
@@ -214,7 +236,7 @@ function DesktopActionButton({ config, item, index }: { readonly config: any; re
       {/* Secondary actions dropdown */}
       {hasSecondaryActions && (
         <>
-          <Menu data-id="secondary-actions-menu">
+          <Menu data-id="secondary-actions-menu" strategy="fixed">
             <MenuButton
               aria-label="More actions"
               as={IconButton}
@@ -228,21 +250,34 @@ function DesktopActionButton({ config, item, index }: { readonly config: any; re
               onClick={(e) => e.stopPropagation()}
               variant="outline"
             />
-            <MenuList data-id="secondary-actions-menu-list">
-              {config.actions.secondaryActions.map((action: any, actionIndex: number) => (
-                <MenuItem
-                  data-id={`secondary-action-${index + 2}-${actionIndex}`}
-                  icon={action.icon ? <action.icon /> : undefined}
-                  key={action.label}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    action.onClick(item);
-                  }}
-                >
-                  {action.label}
-                </MenuItem>
-              ))}
-            </MenuList>
+            <Portal data-id="013220">
+              <MenuList data-id="secondary-actions-menu-list" zIndex={9999}>
+                {config.actions.secondaryActions.map((action: any, actionIndex: number) => {
+                  const actionStyles = action.styles || {};
+                  return (
+                    <MenuItem
+                      _hover={{
+                        bg: actionStyles.hoverBg,
+                      }}
+                      color={actionStyles.color}
+                      data-id={`secondary-action-${index + 2}-${actionIndex}`}
+                      icon={
+                        action.icon ? (
+                          <action.icon color={actionStyles.iconColor || actionStyles.color} />
+                        ) : undefined
+                      }
+                      key={action.label}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        action.onClick(item);
+                      }}
+                    >
+                      {action.label}
+                    </MenuItem>
+                  );
+                })}
+              </MenuList>
+            </Portal>
           </Menu>
 
           {/* Vertical divider */}

@@ -17,6 +17,7 @@ import pluralize from 'pluralize';
 import { AddIcon, Close, SaveIcon, Trashcan } from '../../icons';
 import { AdminModalState } from '../../interfaces/IAdminContext';
 import useDevice from '../../hooks/useDevice';
+import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
 
 interface IAdminModal {
   readonly isOpenModal: boolean;
@@ -56,21 +57,6 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
       return 'adminModal';
     }
     return 'conformeModal';
-  };
-
-  const getDeleteConfirmationMessage = () => {
-    const collectionName = collection ? pluralize(collection, 1) : 'item';
-    if (itemName) {
-      const truncatedItemName = itemName.length > 50 ? `${itemName.substring(0, 50)}...` : itemName;
-      return (
-        <>Are you sure you want to delete the {collectionName}{' '}
-          <Box data-id="013213" as="span" color="#2D3748" fontWeight="bold" title={itemName}>
-            {truncatedItemName}
-          </Box>? This action cannot be undone.
-        </>
-      );
-    }
-    return `Are you sure you want to delete this ${collectionName}? This action cannot be undone.`;
   };
 
   const getPrimaryButtonIcon = () => {
@@ -143,8 +129,8 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
                           <Trashcan
                             data-id="013100"
                             _groupHover={{ color: 'adminModal.deleteButton.hover.iconColor' }}
-                            w="12px"
-                            h="12px"
+                            w="14px"
+                            h="14px"
                             color="adminModal.deleteButton.iconColor"
                           />
                         }
@@ -265,35 +251,15 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
           </ModalContent>
         )}
       </Modal>
-      <Modal data-id="000326" isCentered isOpen={isConfirmDeleteOpen} onClose={onConfirmDeleteClose}>
-        <ModalOverlay data-id="000327" />
-        <ModalContent bg="white" borderRadius="12px" boxShadow="lg" data-id="000328" p={6} textAlign="center">
-          <Box color="#2D3748" data-id="000329" fontSize="20px" fontWeight="500" mb={4} lineHeight="100%">
-            Confirm Delete
-          </Box>
-          <Box color="#2D3748" data-id="000330" mb={6}>
-            {getDeleteConfirmationMessage()}
-          </Box>
-          <Flex data-id="000331" justify="center">
-            <Button
-              data-id="000332"
-              mr={3}
-              onClick={onConfirmDeleteClose}
-              variant="ghost"
-            >
-              Cancel
-            </Button>
-            <Button
-              colorScheme="red"
-              data-id="000333"
-              onClick={handleConfirmDelete}
-              spinner={<Spinner data-id="013096" color="white" size="sm" />}
-            >
-              Delete
-            </Button>
-          </Flex>
-        </ModalContent>
-      </Modal>
+      <ConfirmDeleteModal
+        collectionName={collection}
+        data-id="000326"
+        isOpen={isConfirmDeleteOpen}
+        isLoading={isDeleting}
+        itemName={itemName}
+        onClose={onConfirmDeleteClose}
+        onConfirm={handleConfirmDelete}
+      />
     </>
   );
 }
