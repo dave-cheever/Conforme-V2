@@ -293,7 +293,7 @@ export const adminModalStyles = {
       },
     },
     primaryButton: {
-      bg: '#0068A3',
+      bg: '#462AC4',
       color: '#FFFFFF',
       iconColor: '#FFFFFF',
       spinnerColor: '#FFFFFF',

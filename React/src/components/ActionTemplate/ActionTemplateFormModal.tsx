@@ -1,8 +1,9 @@
+import { useEffect, useRef } from 'react';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Stack, useToast } from '@chakra-ui/react';
 import { Control } from 'react-hook-form';
 
-import { MAX_ACTION_TEMPLATES_NAME_LENGTH, toastFailed, toastSuccess } from '../../bootstrap/config';
+import { TOAST_DURATION, toastFailed, toastSuccess } from '../../bootstrap/config';
 import { AdminModalState } from '../../interfaces/IAdminContext';
 import { Dropdown, TextInput, Textarea } from '../Forms';
 import AdminModal from '../Admin/AdminModal';
@@ -41,15 +42,17 @@ const GET_ACTION_CATEGORIES = gql`
   }
 `;
 
+export const MAX_ACTION_TEMPLATES_NAME_LENGTH = 60;
+
 interface IActionTemplateFormModal {
-  isOpenModal: boolean;
-  modalType: AdminModalState;
-  control: Control<any>;
-  getValues: () => any;
-  trigger: () => Promise<boolean>;
-  errors: any;
-  refetch: () => void;
-  setAdminModalState: (state: AdminModalState) => void;
+  readonly isOpenModal: boolean;
+  readonly modalType: AdminModalState;
+  readonly control: Control<any>;
+  readonly getValues: () => any;
+  readonly trigger: () => Promise<boolean>;
+  readonly errors: any;
+  readonly refetch: () => void;
+  readonly setAdminModalState: (state: AdminModalState) => void;
 }
 
 const ActionTemplateFormModal = ({
@@ -61,8 +64,10 @@ const ActionTemplateFormModal = ({
   errors,
   refetch,
   setAdminModalState,
-}: IActionTemplateFormModal) => {
+}: Readonly<IActionTemplateFormModal>) => {
   const toast = useToast();
+  const hasShownValidationErrorRef = useRef(false);
+  const errorTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [createActionTemplate, { loading: createLoading }] = useMutation(CREATE_ACTION_TEMPLATE);
   const [updateActionTemplate, { loading: updateLoading }] = useMutation(UPDATE_ACTION_TEMPLATE);
@@ -81,53 +86,59 @@ const ActionTemplateFormModal = ({
 
   const isLoading = createLoading || updateLoading || deleteLoading;
 
+  useEffect(() => {
+    if (!isOpenModal || Object.keys(errors).length === 0) {
+      hasShownValidationErrorRef.current = false;
+      if (errorTimeoutRef.current) {
+        clearTimeout(errorTimeoutRef.current);
+        errorTimeoutRef.current = null;
+      }
+    }
+  }, [isOpenModal, errors]);
+
+  useEffect(() => {
+    return () => {
+      if (errorTimeoutRef.current) {
+        clearTimeout(errorTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const handleAddActionTemplate = async () => {
     try {
-      if (Object.keys(errors).length === 0) {
-        const actionTemplate = getValues();
-        await createActionTemplate({
-          variables: {
-            actionTemplate: { ...actionTemplate },
-          },
-        });
-        refetch();
-        toast({ ...toastSuccess, description: 'Action template added' });
-        setAdminModalState('closed');
-      } else {
-        toast({
-          ...toastFailed,
-          description: 'Please complete all the required fields',
-        });
-      }
+      const actionTemplate = getValues();
+      await createActionTemplate({
+        variables: {
+          actionTemplate: { ...actionTemplate },
+        },
+      });
+      refetch();
+      toast({ ...toastSuccess, description: 'Action template added' });
+      setAdminModalState('closed');
     } catch (e: any) {
+      hasShownValidationErrorRef.current = false;
       toast({ ...toastFailed, description: e.message });
     }
   };
 
   const handleUpdateActionTemplate = async () => {
     try {
-      if (Object.keys(errors).length === 0) {
-        const actionTemplate = getValues();
-        await updateActionTemplate({
-          variables: {
-            actionTemplateInput: {
-              _id: actionTemplate?._id,
-              title: actionTemplate.title,
-              description: actionTemplate.description || '',
-              actionCategoryId: actionTemplate.actionCategoryId,
-            },
+      const actionTemplate = getValues();
+      await updateActionTemplate({
+        variables: {
+          actionTemplateInput: {
+            _id: actionTemplate?._id,
+            title: actionTemplate.title,
+            description: actionTemplate.description || '',
+            actionCategoryId: actionTemplate.actionCategoryId,
           },
-        });
-        refetch();
-        toast({ ...toastSuccess, description: 'Action template updated' });
-        setAdminModalState('closed');
-      } else {
-        toast({
-          ...toastFailed,
-          description: 'Please complete all the required fields',
-        });
-      }
+        },
+      });
+      refetch();
+      toast({ ...toastSuccess, description: 'Action template updated' });
+      setAdminModalState('closed');
     } catch (e: any) {
+      hasShownValidationErrorRef.current = false;
       toast({ ...toastFailed, description: e.message });
     }
   };
@@ -157,10 +168,27 @@ const ActionTemplateFormModal = ({
 
     const isFormValid = await trigger();
     if (!isFormValid) {
-      return toast({
-        ...toastFailed,
-        description: 'Please complete all the required fields',
-      });
+      if (!hasShownValidationErrorRef.current) {
+        hasShownValidationErrorRef.current = true;
+        toast({
+          ...toastFailed,
+          description: 'Please complete all the required fields',
+        });
+        if (errorTimeoutRef.current) {
+          clearTimeout(errorTimeoutRef.current);
+        }
+        errorTimeoutRef.current = setTimeout(() => {
+          hasShownValidationErrorRef.current = false;
+          errorTimeoutRef.current = null;
+        }, TOAST_DURATION);
+      }
+      return;
+    }
+
+    hasShownValidationErrorRef.current = false;
+    if (errorTimeoutRef.current) {
+      clearTimeout(errorTimeoutRef.current);
+      errorTimeoutRef.current = null;
     }
 
     if (action === 'add') {

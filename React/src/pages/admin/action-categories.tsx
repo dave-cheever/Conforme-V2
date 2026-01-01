@@ -347,6 +347,7 @@ function ActionCategories() {
         data-id="000384"
         mobileBreadcrumbs={['Action categories']}
         pageLabel="Action category"
+        addButtonText="Add a new category"
       />
       <Box bg="auditsList.bg" data-id="000385" h="full" overflow="hidden">
         <Flex data-id="000386" h="full">

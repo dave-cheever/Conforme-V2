@@ -17,13 +17,14 @@ import FilterButton from './FilterButton';
 import isAuditPage from '../utils/isAuditPage';
 
 interface IHeader {
-  breadcrumbs: string[];
-  mobileBreadcrumbs?: string[];
-  children?: React.ReactNode;
-  pageLabel?: string;
+  readonly breadcrumbs: string[];
+  readonly mobileBreadcrumbs?: string[];
+  readonly children?: React.ReactNode;
+  readonly pageLabel?: string;
+  readonly addButtonText?: string;
 }
 
-function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader) {
+function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel, addButtonText }: Readonly<IHeader>) {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
   const { setSearchText } = useNavigationTopContext();
@@ -188,7 +189,7 @@ function Header({ children, breadcrumbs, mobileBreadcrumbs, pageLabel }: IHeader
                       w={['auto']}
                       zIndex={5}
                     >
-                      {`Add ${item?.label || ''}`}
+                      {addButtonText || `Add a new ${item?.label || ''}`}
                     </Button>
                   </>
                 )}

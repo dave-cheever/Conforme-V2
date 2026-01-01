@@ -3,8 +3,9 @@ import { format } from 'date-fns';
 
 import { Box, Text } from '@chakra-ui/react';
 import { PanelConfig } from '../../../interfaces/IPanelConfig';
-import { ACTION_CATEGORY_DEFAULT_USED_COUNT } from '../../../bootstrap/config';
 import { EditIcon, Trashcan } from '../../../icons';
+
+const ACTION_CATEGORY_DEFAULT_USED_COUNT = 0;
 
 const actionCategoryPanelConfig: PanelConfig = {
   title: {

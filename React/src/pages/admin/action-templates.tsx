@@ -395,6 +395,7 @@ function ActionTemplates() {
         data-id="000384"
         mobileBreadcrumbs={['Action templates']}
         pageLabel="Action template"
+        addButtonText="Add a new template"
       />
       <Box bg="auditsList.bg" data-id="000385" h="full" overflow="hidden">
         <Flex data-id="000386" h="full">

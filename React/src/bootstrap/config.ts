@@ -3,10 +3,12 @@ import { RepeatClockIcon } from '@chakra-ui/icons';
 import { AuditIcon, ProgressIcon, TeamsIcon } from '../icons';
 import { IAuditOption } from '../interfaces/IAuditOption';
 
+export const TOAST_DURATION = 5000;
+
 export const toastSuccess: any = {
   title: 'Success',
   status: 'success',
-  duration: 5000,
+  duration: TOAST_DURATION,
   isClosable: true,
   position: 'top',
 };
@@ -14,7 +16,7 @@ export const toastSuccess: any = {
 export const toastWarning: any = {
   title: 'Warning',
   status: 'warning',
-  duration: 5000,
+  duration: TOAST_DURATION,
   isClosable: true,
   position: 'top',
 };
@@ -22,7 +24,7 @@ export const toastWarning: any = {
 export const toastFailed: any = {
   title: 'Failed',
   status: 'error',
-  duration: 5000,
+  duration: TOAST_DURATION,
   isClosable: true,
   position: 'top',
 };
@@ -334,7 +336,4 @@ export const availableOptions: (enableSafetyWalk: boolean) => IAuditOption[] = (
 export const PAGINATION_PAGE_SIZE_OPTIONS = [10, 20, 50, 100] as const;
 export const MAX_PRESET_NAME_LENGTH = 50;
 export const PAGINATION_DEFAULT_PAGE_SIZE = 10;
-export const ACTION_CATEGORY_DEFAULT_USED_COUNT = 0;
 export const CSV_EXPORT_MAX_RECORDS = 10000;
-export const MAX_ACTION_TEMPLATES_NAME_LENGTH = 60;
-export const MAX_ACTION_CATEGORIES_NAME_LENGTH = 60;
