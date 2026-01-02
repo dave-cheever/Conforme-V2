@@ -302,7 +302,7 @@ describe('Panel Configurations', () => {
 
       const detailKeys = actionCategoryPanelConfig.details.map((detail) => detail.key);
       expect(detailKeys).toContain('used');
-      expect(detailKeys).toContain('metatags.updatedAt');
+      expect(detailKeys).toContain('metatags');
     });
 
     test('used detail render function handles different values', () => {
@@ -348,17 +348,22 @@ describe('Panel Configurations', () => {
     });
 
     test('last modified detail render function handles date formatting', () => {
-      const lastModifiedField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'metatags.updatedAt');
+      const lastModifiedField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'metatags');
       const renderFunction = lastModifiedField?.render;
       const mockItem = {};
 
       expect(renderFunction).toBeDefined();
       expect(typeof renderFunction).toBe('function');
 
-      // Test with valid date
-      const validDate = '2025-01-15T10:30:00Z';
-      const resultValid = renderFunction?.(validDate, mockItem);
+      // Test with valid updatedAt date
+      const validMetatags = { updatedAt: '2025-01-15T10:30:00Z' };
+      const resultValid = renderFunction?.(validMetatags, mockItem);
       expect(resultValid).toBeDefined();
+
+      // Test with addedAt fallback
+      const addedAtMetatags = { addedAt: '2025-01-15T10:30:00Z' };
+      const resultAddedAt = renderFunction?.(addedAtMetatags, mockItem);
+      expect(resultAddedAt).toBeDefined();
 
       // Test with null
       const resultNull = renderFunction?.(null, mockItem);

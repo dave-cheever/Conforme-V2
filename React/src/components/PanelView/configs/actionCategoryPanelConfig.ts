@@ -82,14 +82,15 @@ const actionCategoryPanelConfig: PanelConfig = {
       },
     },
     {
-      key: 'metatags.updatedAt',
+      key: 'metatags',
       type: 'custom',
       fallback: 'No Date',
       render: (value: any) => {
         let formatted = 'No Date';
-        if (value) {
+        const dateToUse = value?.updatedAt || value?.addedAt;
+        if (dateToUse) {
           try {
-            formatted = format(new Date(value), 'd MMMM yyyy HH:mm');
+            formatted = format(new Date(dateToUse), 'd MMMM yyyy HH:mm');
           } catch {
             formatted = 'No Date';
           }

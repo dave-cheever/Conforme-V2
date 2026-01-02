@@ -28,6 +28,7 @@ const GET_ACTION_CATEGORIES = gql`
         name
         metatags {
           updatedAt
+          addedAt
         }
       }
       total
@@ -147,6 +148,7 @@ function ActionCategories() {
     [onDeleteModalOpen],
   );
 
+ 
   const handleConfirmDelete = useCallback(async () => {
     if (!actionCategoryToDelete?._id) return;
 
@@ -189,7 +191,7 @@ function ActionCategories() {
         width: '28%',
         dataId: '000391',
         render: (actionCategory: IActionCategory) => (
-          <DateTimeCell data-id="002093" date={actionCategory.metatags?.updatedAt} showTime={true} />
+          <DateTimeCell data-id="002093" date={actionCategory.metatags?.updatedAt || actionCategory.metatags?.addedAt} showTime={true} />
         ),
       },
       {

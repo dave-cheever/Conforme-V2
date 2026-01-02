@@ -212,11 +212,11 @@ describe('Action Category Panel Config Integration', () => {
       },
     };
 
-    const dateField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'metatags.updatedAt');
+    const dateField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'metatags');
     const renderFunction = dateField?.render;
 
     expect(renderFunction).toBeDefined();
-    const result = renderFunction?.(mockItem.metatags.updatedAt, mockItem);
+    const result = renderFunction?.(mockItem.metatags, mockItem);
 
     expect(result).toBeDefined();
     // Check that result contains formatted date
@@ -226,7 +226,7 @@ describe('Action Category Panel Config Integration', () => {
   });
 
   test('panel config handles missing date gracefully', () => {
-    const dateField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'metatags.updatedAt');
+    const dateField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'metatags');
     const renderFunction = dateField?.render;
 
     const resultNull = renderFunction?.(null, null);
