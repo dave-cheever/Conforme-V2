@@ -12,6 +12,7 @@ import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../../components/Table/ListView';
+import { NoRecordsFoundMessage } from '../../components/UI';
 import { AdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import useDevice from '../../hooks/useDevice';
@@ -254,6 +255,51 @@ function Categories() {
       : []),
   ], [module?.type]);
 
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Box bg="white" borderBottomRadius="10px" data-id="000349" h="full" w="full">
+          <Loader center data-id="000350" />
+        </Box>
+      );
+    }
+
+    if (categories.length === 0) {
+      return <NoRecordsFoundMessage dataSourceName="categories" data-id="000351" />;
+    }
+
+    return (
+      <>
+        <ListView
+          columns={columns}
+          data={categories}
+          data-id="000344"
+          onRowClick={handleRowClick}
+          setSortOrder={setSortOrder}
+          setSortType={setSortType}
+          sortOrder={sortOrder}
+          sortType={sortType}
+        />
+        {device === 'desktop' && module?.type === 'tracker' && (
+          <Flex alignItems="center" data-id="000352" flexDirection="column" w={['100%', '220px']}>
+            <Box data-id="000353" w="100%">
+              {categories && (
+                <BarChart
+                  data={categories.map(({ _id, trackerItemsResponsesCount }) => ({
+                    _id,
+                    count: trackerItemsResponsesCount,
+                  }))}
+                  data-id="000354"
+                  label="Categories"
+                />
+              )}
+            </Box>
+          </Flex>
+        )}
+      </>
+    );
+  };
+
   return (
     <>
       <AdminModal
@@ -283,39 +329,7 @@ function Categories() {
       <Header breadcrumbs={['Admin', 'Categories']} data-id="000341" mobileBreadcrumbs={['Categories']} pageLabel="Category" />
       <Box bg="auditsList.bg" data-id="000342" h="full" overflow="hidden">
         <Flex data-id="000343" h="full" px={['25px', 0]}>
-          {loading ? (
-            <Box bg="white" borderBottomRadius="10px" data-id="000349" h="full" w="full">
-              <Loader center data-id="000350" />
-            </Box>
-          ) : (
-            <ListView
-              columns={columns}
-              data={categories}
-              data-id="000344"
-              dataType="categories"
-              onRowClick={handleRowClick}
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortOrder={sortOrder}
-              sortType={sortType}
-            />
-          )}
-          {device === 'desktop' && module?.type === 'tracker' && (
-            <Flex alignItems="center" data-id="000352" flexDirection="column" w={['100%', '220px']}>
-              <Box data-id="000353" w="100%">
-                {categories && (
-                  <BarChart
-                    data={categories.map(({ _id, trackerItemsResponsesCount }) => ({
-                      _id,
-                      count: trackerItemsResponsesCount,
-                    }))}
-                    data-id="000354"
-                    label="Categories"
-                  />
-                )}
-              </Box>
-            </Flex>
-          )}
+          {renderContent()}
         </Flex>
       </Box>
     </>

@@ -129,6 +129,7 @@ const roles = {
       'audits.delete',
       'audits.viewAll',
       'audits.viewDeleted',
+      'audits.export',
       'auditTypes',
       'businessUnits',
       'categories',
@@ -147,6 +148,9 @@ const roles = {
       'actionCategories.add',
       'actionCategories.edit',
       'actionCategories.delete',
+      'actionTemplates.add',
+      'actionTemplates.edit',
+      'actionTemplates.delete',
     ],
     restricted: {
       'audits.changeAuditor': ({ audit }) => audit.status !== 'completed',

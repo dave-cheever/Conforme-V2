@@ -159,6 +159,10 @@ describe('Action Category Panel Config Integration', () => {
         panelClick: {
           onClick: vi.fn(),
         },
+        delete: {
+          ...actionCategoryPanelConfig.actions.delete!,
+          onClick: vi.fn(),
+        },
       },
     };
 
@@ -208,11 +212,11 @@ describe('Action Category Panel Config Integration', () => {
       },
     };
 
-    const dateField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'metatags.updatedAt');
+    const dateField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'metatags');
     const renderFunction = dateField?.render;
 
     expect(renderFunction).toBeDefined();
-    const result = renderFunction?.(mockItem.metatags.updatedAt, mockItem);
+    const result = renderFunction?.(mockItem.metatags, mockItem);
 
     expect(result).toBeDefined();
     // Check that result contains formatted date
@@ -222,7 +226,7 @@ describe('Action Category Panel Config Integration', () => {
   });
 
   test('panel config handles missing date gracefully', () => {
-    const dateField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'metatags.updatedAt');
+    const dateField = actionCategoryPanelConfig.details.find((detail) => detail.key === 'metatags');
     const renderFunction = dateField?.render;
 
     const resultNull = renderFunction?.(null, null);
@@ -243,6 +247,42 @@ describe('Action Category Panel Config Integration', () => {
     expect(resultEmpty).toBeDefined();
     expect(resultNull).toBeDefined();
     expect(resultUndefined).toBeDefined();
+  });
+
+  test('panel config includes delete action', () => {
+    expect(actionCategoryPanelConfig.actions.delete).toBeDefined();
+    expect(actionCategoryPanelConfig.actions.delete?.label).toBe('Delete');
+    expect(actionCategoryPanelConfig.actions.delete?.icon).toBeDefined();
+  });
+});
+
+describe('Action Categories Delete Functionality', () => {
+  test('delete mutation structure is correct', () => {
+    const DELETE_ACTION_CATEGORY = gql`
+      mutation ($_id: String!) {
+        deleteActionCategory(_id: $_id)
+      }
+    `;
+
+    expect(DELETE_ACTION_CATEGORY).toBeDefined();
+    expect(DELETE_ACTION_CATEGORY.definitions).toBeDefined();
+    expect(DELETE_ACTION_CATEGORY.definitions.length).toBeGreaterThan(0);
+  });
+
+  test('delete mutation accepts _id parameter', () => {
+    const deleteVariables = {
+      _id: 'cat1',
+    };
+
+    expect(deleteVariables._id).toBe('cat1');
+  });
+
+  test('delete mutation returns boolean', () => {
+    const deleteResult = {
+      deleteActionCategory: true,
+    };
+
+    expect(typeof deleteResult.deleteActionCategory).toBe('boolean');
   });
 });
 

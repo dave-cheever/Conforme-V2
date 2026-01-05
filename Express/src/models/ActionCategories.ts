@@ -3,6 +3,7 @@ import { model, models, Schema } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IBaseWithName, IBaseWithNameModel } from 'app-interfaces';
+import { ActionTemplates } from 'app-models';
 import { genMetatags } from 'app-utils';
 
 async function validateUniqueName(this: any, name: string) {
@@ -157,24 +158,22 @@ actionCategoriesSchema.statics.customDelete = async function (
   const actionCategory = await this.customFindOne(selector, organizationId);
   if (!actionCategory) throw new GraphQLError("Action category doesn't exist");
 
-  // Check if action category is in use
-  // TODO: Update this when actions are linked to categories via categoryId field
-  // For now, we skip the check since actions don't have categoryId yet
-  // When actions have categoryId field, uncomment and update the following:
-  /*
-  const { Actions } = await import('app-models');
-  const actionsUsingCategory = await Actions.countDocuments({
-    categoryId: actionCategory._id,
+  // Check if action category is in use by action templates
+  const actionTemplatesUsingCategory = await ActionTemplates.customFind(
+    {
+      actionCategoryId: actionCategory._id,
+    },
     organizationId,
-    'metatags.removedAt': { $eq: null },
-  });
+  );
 
-  if (actionsUsingCategory > 0) {
+  if (actionTemplatesUsingCategory.length > 0) {
+    const templateCount = actionTemplatesUsingCategory.length;
+    const templateText = templateCount === 1 ? 'action template' : 'action templates';
+    
     throw new GraphQLError(
-      `Cannot delete action category "${actionCategory.name}" because it is currently in use by ${actionsUsingCategory} action(s).`,
+      `Cannot delete action category "${actionCategory.name}" because it is currently in use by ${templateCount} ${templateText}.`,
     );
   }
-  */
 
   const updatedActionCategory = {
     ...actionCategory,

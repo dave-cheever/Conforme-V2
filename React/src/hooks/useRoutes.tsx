@@ -10,6 +10,7 @@ import ResponseLayout from '../layouts/ResponseLayout';
 import Accidents from '../pages/accidents';
 import Actions from '../pages/actions';
 import ActionCategories from '../pages/admin/action-categories';
+import ActionTemplates from '../pages/admin/action-templates';
 import AuditLog from '../pages/admin/audit-log';
 import AuditTypes from '../pages/admin/audit-types';
 import BusinessUnits from '../pages/admin/business-units';
@@ -296,6 +297,14 @@ const protectedRoutes: Array<IRoute> = [
     key: 'action-categories',
     exact: true,
     component: ActionCategories,
+    layout: DefaultLayout,
+    permission: 'adminPanel',
+  },
+  {
+    path: '/admin/action-templates',
+    key: 'action-templates',
+    exact: true,
+    component: ActionTemplates,
     layout: DefaultLayout,
     permission: 'adminPanel',
   },

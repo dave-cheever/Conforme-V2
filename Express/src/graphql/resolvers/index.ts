@@ -1,6 +1,7 @@
 import scalars from '../scalars';
 import actionsResolvers from './actions';
 import actionCategoriesResolvers from './actionCategories';
+import actionTemplatesResolvers from './actionTemplates';
 import answersResolvers from './answers';
 import auditLogsResolvers from './auditLogs';
 import auditsResolvers from './audits';
@@ -29,6 +30,7 @@ export default {
   Query: {
     ...actionsResolvers.Query,
     ...actionCategoriesResolvers.Query,
+    ...actionTemplatesResolvers.Query,
     ...answersResolvers.Query,
     ...auditLogsResolvers.Query,
     ...auditsResolvers.Query,
@@ -54,6 +56,7 @@ export default {
   Mutation: {
     ...actionsResolvers.Mutation,
     ...actionCategoriesResolvers.Mutation,
+    ...actionTemplatesResolvers.Mutation,
     ...answersResolvers.Mutation,
     ...auditsResolvers.Mutation,
     ...auditTypesResolvers.Mutation,

@@ -1,5 +1,7 @@
 export { IAction } from './IAction';
 export { IActionModel } from './IActionModel';
+export { IActionTemplate } from './IActionTemplate';
+export { IActionTemplateModel } from './IActionTemplateModel';
 export { IAnswer } from './IAnswer';
 export { IAnswerModel } from './IAnswerModel';
 export { IAudit } from './IAudit';

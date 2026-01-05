@@ -1,10 +1,11 @@
 import React from 'react';
 import { format } from 'date-fns';
 
-import { EditIcon } from '@chakra-ui/icons';
 import { Box, Text } from '@chakra-ui/react';
 import { PanelConfig } from '../../../interfaces/IPanelConfig';
-import { ACTION_CATEGORY_DEFAULT_USED_COUNT } from '../../../bootstrap/config';
+import { EditIcon, Trashcan } from '../../../icons';
+
+const ACTION_CATEGORY_DEFAULT_USED_COUNT = 0;
 
 const actionCategoryPanelConfig: PanelConfig = {
   title: {
@@ -20,6 +21,9 @@ const actionCategoryPanelConfig: PanelConfig = {
             fontSize: '17px',
             fontWeight: 600,
             lineHeight: '100%',
+            noOfLines: 2,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
           },
           value || 'No Name',
         );
@@ -78,14 +82,15 @@ const actionCategoryPanelConfig: PanelConfig = {
       },
     },
     {
-      key: 'metatags.updatedAt',
+      key: 'metatags',
       type: 'custom',
       fallback: 'No Date',
       render: (value: any) => {
         let formatted = 'No Date';
-        if (value) {
+        const dateToUse = value?.updatedAt || value?.addedAt;
+        if (dateToUse) {
           try {
-            formatted = format(new Date(value), 'd MMMM yyyy HH:mm');
+            formatted = format(new Date(dateToUse), 'd MMMM yyyy HH:mm');
           } catch {
             formatted = 'No Date';
           }
@@ -138,6 +143,13 @@ const actionCategoryPanelConfig: PanelConfig = {
       },
     },
     panelClick: {
+      onClick: () => {
+        // This will be set by the parent component
+      },
+    },
+    delete: {
+      label: 'Delete',
+      icon: Trashcan,
       onClick: () => {
         // This will be set by the parent component
       },

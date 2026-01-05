@@ -16,6 +16,7 @@ import Loader from '../../components/Loader';
 import AvatarCell from '../../components/Table/Cells/AvatarCell';
 import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../../components/Table/ListView';
+import { NoRecordsFoundMessage } from '../../components/UI';
 import { useAdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useFiltersContext } from '../../contexts/FiltersProvider';
@@ -348,6 +349,33 @@ function BusinessUnits() {
         ]),
   ], [t, device, module?.type, setResponseFiltersValue, setAnswerFiltersValue, setAuditFiltersValue, navigateTo]);
 
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Box bg="white" borderBottomRadius="10px" data-id="000423" h="full" w="full">
+          <Loader center data-id="000424" />
+        </Box>
+      );
+    }
+
+    if (businessUnits.length === 0) {
+      return <NoRecordsFoundMessage dataSourceName="business units" data-id="000425" />;
+    }
+
+    return (
+      <ListView
+        columns={columns}
+        data={businessUnits}
+        data-id="000444"
+        onRowClick={handleRowClick}
+        setSortOrder={setSortOrder}
+        setSortType={setSortType}
+        sortOrder={sortOrder}
+        sortType={sortType}
+      />
+    );
+  };
+
   return (
     <>
       <AdminModal
@@ -383,23 +411,7 @@ function BusinessUnits() {
       />
       <Box bg="auditsList.bg" data-id="000414" h="full" overflow="hidden">
         <Flex data-id="000415" h="full" px={['25px', 0]}>
-          {loading ? (
-            <Box bg="white" borderBottomRadius="10px" data-id="000423" h="full" w="full">
-              <Loader center data-id="000424" />
-            </Box>
-          ) : (
-            <ListView
-              columns={columns}
-              data={businessUnits}
-              data-id="000444"
-              dataType="business units"
-              onRowClick={handleRowClick}
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortOrder={sortOrder}
-              sortType={sortType}
-            />
-          )}
+          {renderContent()}
         </Flex>
       </Box>
     </>

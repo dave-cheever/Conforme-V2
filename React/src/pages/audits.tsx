@@ -1,14 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState, startTransition } from 'react';
 import { flushSync } from 'react-dom';
-import { CSVLink } from 'react-csv';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 
 import { useNavigationTopContext } from '../contexts/NavigationTopProvider';
 
-import { gql, useMutation, useQuery } from '@apollo/client';
-import { Button, Divider, Flex, Modal, ModalOverlay, Text } from '@chakra-ui/react';
-import { format } from 'date-fns';
+import { gql, useQuery } from '@apollo/client';
+import { Button, Divider, Flex, Modal, ModalOverlay } from '@chakra-ui/react';
 import { capitalize, isEmpty } from 'lodash';
 import pluralize from 'pluralize';
 import React from 'react';
@@ -18,7 +16,6 @@ import ChangeViewButton from '../components/ChangeViewButton';
 import AssignedToMeFilter from '../components/Filters/AssignedToMeFilter';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
-import NoRecordsFound from '../components/NoRecordsFound';
 import { auditPanelConfig, PanelView } from '../components/PanelView';
 import SortButton from '../components/SortButton';
 import AvatarCell from '../components/Table/Cells/AvatarCell';
@@ -26,6 +23,7 @@ import DateTimeCell from '../components/Table/Cells/DateTimeCell';
 import StatusCell from '../components/Table/Cells/StatusCell';
 import TextOrNumberCell from '../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../components/Table/ListView';
+import { CSVExportButton } from '../components/UI/CSVExportButton/CSVExportButton';
 import { useAdminContext } from '../contexts/AdminProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import AuditModalProvider, { useAuditModalContext } from '../contexts/AuditModalProvider';
@@ -34,15 +32,16 @@ import useDevice from '../hooks/useDevice';
 import { auditWalkTypes } from '../hooks/useFiltersUtils';
 import useNavigate from '../hooks/useNavigate';
 import useSort from '../hooks/useSort';
-import { ExportIcon, LocationIcon } from '../icons';
+import { LocationIcon } from '../icons';
 import { IAudit } from '../interfaces/IAudit';
 import { TViewMode } from '../interfaces/TViewMode';
 import updateLocalStorageFilter from '../utils/filterStorage';
 import FilterButton from '../components/FilterButton';
 import isAuditPage from '../utils/isAuditPage';
 import usePagination from '../hooks/usePagination';
-
-const CSVLinkComponent = CSVLink as unknown as React.FC<any>;
+import useCSVExport from '../hooks/useCSVExport';
+import { CSV_EXPORT_MAX_RECORDS } from '../bootstrap/config';
+import { NoRecordsFoundMessage } from '../components/UI';
 
 // Helper functions for user ID normalization and filter checking
 function getMyIds(user?: { _id?: string; userId?: string }) {
@@ -645,9 +644,9 @@ function Audits() {
   useEffect(() => {
     if (data?.audits && !error) {
       // Handle both array and object with audits property
-      const auditsArray = Array.isArray(data.audits) ? data.audits : (data.audits?.audits || []);
+      const auditsArray = Array.isArray(data.audits) ? data.audits : data.audits?.audits || [];
       let audits = auditsArray;
-      
+
       // Apply search filter if search query exists
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
@@ -662,7 +661,7 @@ function Audits() {
           if (audit.auditor?.displayName?.toLowerCase().includes(query)) return true;
           return false;
         });
-        
+
         // Store all filtered audits for client-side pagination
         // CRITICAL: Prevent overwriting correct data with stale cached data
         // When we already have filtered data and search query matches, preserve it
@@ -674,7 +673,7 @@ function Audits() {
         const isSameSearch = searchQuery === lastSearchQuery;
         const isNewSearch = lastSearchQuery === '';
         const isLargeDataset = auditsArray.length >= 100;
-        
+
         // Update only if we don't have existing data, OR it's a new search, OR we have a large dataset
         // This prevents stale cached data from overwriting correct data when pageSize changes
         if (!hasExistingData || isNewSearch || isLargeDataset) {
@@ -743,26 +742,64 @@ function Audits() {
     setAdminModalState('closed');
   };
 
-  const csvHeaders = [
-    { label: '_id', key: '_id' },
-    { label: 'Audit type', key: 'auditType.name' },
-    { label: 'Walk type', key: 'walkType' },
-    { label: 'Status', key: 'status' },
-    { label: capitalize(t('business unit')), key: 'businessUnit.name' },
-    { label: capitalize(t('location')), key: 'location.name' },
-    { label: 'Auditor', key: 'auditor.displayName' },
-    { label: 'Participants', key: 'participants' },
-  ];
+  const filtersForMetadata = useMemo(() => {
+    if (!appliedFilters || Object.keys(appliedFilters).length === 0) {
+      return {};
+    }
+    return Object.entries(appliedFilters).reduce(
+      (acc, [key, filter]) => {
+        if (!filter || typeof filter !== 'object' || !('value' in filter)) return acc;
+        const value = filter.value;
+        if (value !== undefined && value !== null && !(Array.isArray(value) && value.length === 0)) {
+          acc[key] = value;
+        }
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
+  }, [appliedFilters]);
 
-  const csvData = useMemo(
-    () =>
-      (filteredAudits ?? []).map(({ participantsIds, auditorId, reference, metatags, ...audit }) => ({
-        ...audit,
-        dueDate: audit?.dueDate ? format(new Date(audit?.dueDate), 'd MMM yyyy') : 'No due date',
-        participants: audit?.participants?.map((participant) => participant.displayName).join(', '),
-      })),
-    [JSON.stringify(filteredAudits)],
-  );
+  const fetchAllRecordsForExport = useCallback(async (): Promise<IAudit[]> => {
+    if (searchQuery && allFilteredAudits.length > 0) {
+      return allFilteredAudits;
+    }
+
+    const parsedFilters = Object.entries(appliedFilters || {}).reduce((acc, [key, value]) => {
+      if (!value || !allowedFilters.includes(key)) return acc;
+      let extractedValue = value?.value;
+      if (key === 'dueDate') extractedValue = parseDueDateFilter(extractedValue);
+      else if (key === 'usersIds') extractedValue = parseUsersIdsFilter(extractedValue);
+      if (!isValidFilterValue(extractedValue)) return acc;
+      return { ...acc, [key]: extractedValue };
+    }, {});
+
+    const { data: exportQueryData } = await refetch({
+      auditQueryInput: Object.keys(parsedFilters).length > 0 ? parsedFilters : undefined,
+      pagination: {
+        limit: CSV_EXPORT_MAX_RECORDS,
+        offset: 0,
+        sortBy: sortTypeState,
+        sortDirection: sortOrderState,
+      },
+    });
+
+    return exportQueryData?.audits?.audits || [];
+  }, [searchQuery, allFilteredAudits, appliedFilters, allowedFilters, refetch, sortTypeState, sortOrderState]);
+
+  const {
+    isLoading: isCSVLoading,
+    error: csvError,
+    handleExport: handleCSVExport,
+  } = useCSVExport<IAudit>({
+    config: {
+      listType: 'audits' as const,
+      columns,
+      appliedFilters: filtersForMetadata,
+      user,
+      permissionAction: 'audits.export',
+    },
+    fetchData: fetchAllRecordsForExport,
+  });
 
   // Memoize panel config to prevent unnecessary re-renders
   const panelConfig = useMemo(
@@ -784,22 +821,19 @@ function Audits() {
 
   // Memoize panel view component
   const panelViewComponent = useMemo(
-    () =>
-      filteredAudits?.length > 0 ? (
-        <PanelView
-          config={panelConfig}
-          data-id="002176"
-          dataSourceName="audits"
-          items={filteredAudits}
-          currentPage={currentPage}
-          pageSize={pageSize}
-          total={total}
-          onPageChange={setCurrentPage}
-          onPageSizeChange={setPageSize}
-        />
-      ) : (
-        <NoRecordsFound data-id="000202" dataSourceName="audits" height="100%" />
-      ),
+    () => (
+      <PanelView
+        config={panelConfig}
+        data-id="002176"
+        dataSourceName="audits"
+        items={filteredAudits}
+        currentPage={currentPage}
+        pageSize={pageSize}
+        total={total}
+        onPageChange={setCurrentPage}
+        onPageSizeChange={setPageSize}
+      />
+    ),
     [filteredAudits, panelConfig],
   );
 
@@ -810,7 +844,6 @@ function Audits() {
         columns={columns}
         data={filteredAudits}
         data-id="000201"
-        dataType="audits"
         onRowClick={handleRowClick}
         setSortOrder={setSortOrder}
         setSortType={setSortType}
@@ -834,6 +867,8 @@ function Audits() {
   // Helper function to render main content
   const renderMainContent = () => {
     if (loading) return <Loader center data-id="000197" />;
+
+    if (filteredAudits.length === 0) return <NoRecordsFoundMessage dataSourceName="audits" data-id="000196" />;
 
     // Show loading during view transition or sorting
     if (isViewTransitioning || isSorting) {
@@ -868,40 +903,33 @@ function Audits() {
         <AuditModal data-id="000188" refetch={refetch} />
       </Modal>
       <Header breadcrumbs={[pluralize(t('audit'))]} data-id="000189" mobileBreadcrumbs={[pluralize(t('audit'))]}>
-        <Flex data-id="001519" direction="row" justifyContent="space-between" pl={[0, 0, '6']} w="full">
-          <AssignedToMeFilter data-id="001204" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
-
-          <Flex data-id="001520" direction="row">
+        <Flex
+          data-id="001519"
+          direction={{ base: 'column', md: 'row' }}
+          justifyContent={{ base: 'flex-start', md: 'space-between' }}
+          pl={[0, 0, '6']}
+          w="full"
+          gap={{ base: 2, md: 0 }}
+          align={{ base: 'flex-start', md: 'center' }}
+        >
+          <Flex data-id="013205" direction="row" align="center" gap={2} wrap="wrap">
+            <AssignedToMeFilter data-id="001204" isChecked={assignedToMe} onToggle={handleAssignedToMeToggle} />
             <ChangeViewButton data-id="000190" setViewMode={setViewMode} viewMode={viewMode} views={['list', 'panel']} />
+          </Flex>
 
-            {device !== 'mobile' && (
-              <>
-                <CSVLinkComponent data={csvData} data-id="000191" filename="audits.csv" headers={csvHeaders} target="_blank">
-                  <Button
-                    _hover={{
-                      bg: 'reasponseHeader.buttonLightBgHover',
-                      color: 'reasponseHeader.buttonLightColorHover',
-                      cursor: 'pointer',
-                      '&:hover svg path': { stroke: 'white' },
-                    }}
-                    bg="white"
-                    borderRadius="10px"
-                    data-id="000192"
-                    display="none"
-                    ml="15px"
-                    rightIcon={<ExportIcon data-id="000193" height="15px" width="15px" />}
-                  >
-                    <Text data-id="000194" fontSize="smm" fontWeight="bold">
-                      Export
-                    </Text>
-                  </Button>
-                </CSVLinkComponent>
+          <Flex data-id="001520" direction="row" align="center" justify={{ base: 'flex-start', md: 'flex-end' }} wrap="wrap" gap={2}>
+            <CSVExportButton data-id="013206" listType="audits" isLoading={isCSVLoading} error={csvError} onExportClick={handleCSVExport} />
+            <Divider
+              borderColor="gray.300"
+              data-id="000290"
+              height="30px"
+              mt={1}
+              mx={4}
+              orientation="vertical"
+              display={{ base: 'none', md: 'block' }}
+            />
 
-                <Divider borderColor="gray.300" data-id="000290" height="30px" mt={1} mx={4} orientation="vertical" />
-              </>
-            )}
-
-            <Flex gap={2} data-id="001523" direction="row">
+            <Flex gap={2} data-id="001523" direction="row" align="center" wrap="wrap">
               <SortButton
                 data-id="000195"
                 setSortOrder={setSortOrder}
@@ -915,8 +943,6 @@ function Audits() {
           </Flex>
         </Flex>
       </Header>
-
-
       <Flex data-id="000196" h="full" overflow="auto">
         {renderMainContent()}
       </Flex>

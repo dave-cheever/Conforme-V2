@@ -25,28 +25,26 @@ function ListView({
   data,
   sortOrder,
   sortType,
-  setSortType,
-  setSortOrder,
   columns,
-  dataType,
-  onRowClick,
   currentPage,
   pageSize,
   total,
+  onRowClick,
+  setSortType,
+  setSortOrder,
   onPageChange,
   onPageSizeChange,
 }: {
   readonly data: Array<any>;
   readonly sortOrder: 'asc' | 'desc';
   readonly sortType: string;
-  readonly setSortType: (key: string) => void;
-  readonly setSortOrder: (order: 'asc' | 'desc') => void;
   readonly columns: ColumnConfig[];
-  readonly dataType: string;
-  readonly onRowClick: (row: any) => void;
   readonly currentPage?: number;
   readonly pageSize?: (typeof PAGINATION_PAGE_SIZE_OPTIONS)[number];
   readonly total?: number;
+  readonly onRowClick: (row: any) => void;
+  readonly setSortType: (key: string) => void;
+  readonly setSortOrder: (order: 'asc' | 'desc') => void;
   readonly onPageChange?: (page: number) => void;
   readonly onPageSizeChange?: (pageSize: (typeof PAGINATION_PAGE_SIZE_OPTIONS)[number]) => void;
 }) {
@@ -57,15 +55,6 @@ function ListView({
     },
     [setSortType, setSortOrder, sortOrder, sortType],
   );
-
-  // Helper function to render empty state
-  if (data?.length === 0) {
-    return (
-      <Flex alignItems="center" data-id={'empty-list-view'} fontSize="18px" fontStyle="italic" h="200px" justifyContent="center" w="full">
-        No {dataType} found. Try adjusting the filters.
-      </Flex>
-    );
-  }
 
   return (
     <Box bg="container.bg" data-id="000306" display="flex" flexDir="column" h="full" position="relative" w="full">

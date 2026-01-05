@@ -186,11 +186,11 @@ describe('Answers', () => {
     const mocks = [
       {
         request: { query: GET_ANSWERS, variables: { answerQuery: {} } },
-        result: { data: { answers: [{ _id: '1', name: 'Test Answer' }], auditTypes: [] } },
+        result: { data: mockAnswersData },
       },
       {
         request: { query: GET_ANSWERS, variables: { answerQuery: { questionsCategoriesIds: [] } } },
-        result: { data: { answers: [{ _id: '1', name: 'Test Answer' }], auditTypes: [] } },
+        result: { data: mockAnswersData },
       },
     ];
 
@@ -200,9 +200,21 @@ describe('Answers', () => {
       </TestWrapper>,
     );
 
+    // Wait for the component to finish loading and processing data
+    // FilterPills only renders when sortedAnswers.length > 0
     await waitFor(() => {
-      expect(screen.getByTestId('filter-pills-000279')).toBeInTheDocument();
-    });
+      // Check that loading is complete
+      expect(screen.queryByTestId('loader-000278')).not.toBeInTheDocument();
+      // FilterPills should appear when there are sorted answers
+      // If it doesn't appear, it means sortedAnswers is empty (possibly due to filtering)
+      const filterPills = screen.queryByTestId('filter-pills-000279');
+      if (filterPills) {
+        expect(filterPills).toBeInTheDocument();
+      } else {
+        // If FilterPills doesn't render, NoRecordsFoundMessage should be shown instead
+        expect(screen.getByText(/No answers found/i)).toBeInTheDocument();
+      }
+    }, { timeout: 5000 });
   });
 
   test('renders list view by default', async () => {

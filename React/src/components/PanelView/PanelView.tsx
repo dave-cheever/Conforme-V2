@@ -1,16 +1,15 @@
 import React from 'react';
 
-import { Box, Button, Divider, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Portal, Text } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { get } from 'lodash';
 
 import useDevice from '../../hooks/useDevice';
 import { EllipsisIcon } from '../../icons';
 import { PanelFieldConfig, PanelViewProps } from '../../interfaces/IPanelConfig';
-import NoRecordsFound from '../NoRecordsFound';
 import AvatarCell from '../Table/Cells/AvatarCell';
 import StatusCell from '../Table/Cells/StatusCell';
-import Pagination from '../UI/Pagination/Pagination';
+import { Pagination } from '../UI';
 
 // Utility function to get nested object values
 const getNestedValue = (obj: any, path: string): any => get(obj, path, null);
@@ -166,7 +165,7 @@ function PanelHeader({ config, item, index }: { readonly config: any; readonly i
 // Sub-component for mobile action menu
 function MobileActionMenu({ config, item, index }: { readonly config: any; readonly item: any; readonly index: number }) {
   return (
-    <Menu data-id="001517">
+    <Menu data-id="001517" strategy="fixed">
       <MenuButton
         aria-label="Actions"
         as={IconButton}
@@ -179,29 +178,57 @@ function MobileActionMenu({ config, item, index }: { readonly config: any; reado
         onClick={(e) => e.stopPropagation()}
         variant="outline"
       />
-      <MenuList data-id="001519">
-        <MenuItem
-          data-id={`action-menu-item-${index + 2}`}
-          icon={config.actions.primary.icon ? <config.actions.primary.icon /> : undefined}
-          onClick={(e) => {
-            e.stopPropagation();
-            config.actions.primary?.onClick(item);
-          }}
-        >
-          {config.actions.primary.label}
-        </MenuItem>
-        {config.actions.secondary && (
+      <Portal data-id="013219">
+        <MenuList data-id="001519" padding="12px" borderColor="#E2E8F0" boxShadow="0px 5px 15px 0px #1A202C26 !important">
           <MenuItem
-            data-id={`secondary-action-menu-item-${index + 2}`}
+            data-id={`action-menu-item-${index + 2}`}
+            icon={config.actions.primary.icon ? <config.actions.primary.icon color="#2D3748" h="16px" w="16px" /> : undefined}
+            color="#2D3748"
+            fontSize="16px"
+            fontWeight="500"
+            padding="4px 12px 4px 10px"
             onClick={(e) => {
               e.stopPropagation();
-              config.actions.secondary?.onClick(item);
+              config.actions.primary?.onClick(item);
             }}
           >
-            {config.actions.secondary.label}
+            {config.actions.primary.label}
           </MenuItem>
-        )}
-      </MenuList>
+          {config.actions.secondary && (
+            <MenuItem
+              data-id={`secondary-action-menu-item-${index + 2}`}
+              padding="4px 12px 4px 10px"
+              fontSize="16px"
+              fontWeight="500"
+              onClick={(e) => {
+                e.stopPropagation();
+                config.actions.secondary?.onClick(item);
+              }}
+            >
+              {config.actions.secondary.label}
+            </MenuItem>
+          )}
+          {config.actions.delete && (
+            <>
+              <Divider borderColor="#C4D0DD" data-id={`mobile-divider-${index + 2}`} my={1} />
+              <MenuItem
+                data-id={`delete-action-menu-item-${index + 3}`}
+                color="#D0021B"
+                padding="4px 12px 4px 10px"
+                fontSize="16px"
+                fontWeight="500"
+                icon={config.actions.delete.icon ? <config.actions.delete.icon color="#D0021B" h="16px" w="16px" /> : undefined}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  config.actions.delete?.onClick(item);
+                }}
+              >
+                {config.actions.delete.label}
+              </MenuItem>
+            </>
+          )}
+        </MenuList>
+      </Portal>
     </Menu>
   );
 }
@@ -212,10 +239,30 @@ function DesktopActionButton({ config, item, index }: { readonly config: any; re
 
   return (
     <Flex align="center" data-id="002369" gap="10px">
+      {/* Primary action button */}
+      <Button
+        background="white"
+        borderColor="#CBD5E0"
+        borderRadius="6px"
+        borderWidth="1px"
+        data-id={`action-button-${index + 2}`}
+        height="28px"
+        padding="4px 12px 4px 10px"
+        fontSize="16px"
+        fontWeight="500"
+        leftIcon={config.actions.primary.icon ? <config.actions.primary.icon /> : undefined}
+        onClick={(e) => {
+          e.stopPropagation();
+          config.actions.primary?.onClick(item);
+        }}
+      >
+        {config.actions.primary.label}
+      </Button>
       {/* Secondary actions dropdown */}
       {hasSecondaryActions && (
         <>
-          <Menu data-id="secondary-actions-menu">
+          <Divider borderColor="#C4D0DD" data-id={`desktop-divider-${index + 2}`} my={1} />
+          <Menu data-id="secondary-actions-menu" strategy="fixed">
             <MenuButton
               aria-label="More actions"
               as={IconButton}
@@ -229,46 +276,69 @@ function DesktopActionButton({ config, item, index }: { readonly config: any; re
               onClick={(e) => e.stopPropagation()}
               variant="outline"
             />
-            <MenuList data-id="secondary-actions-menu-list">
-              {config.actions.secondaryActions.map((action: any, actionIndex: number) => (
-                <MenuItem
-                  data-id={`secondary-action-${index + 2}-${actionIndex}`}
-                  icon={action.icon ? <action.icon /> : undefined}
-                  key={action.label}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    action.onClick(item);
-                  }}
-                >
-                  {action.label}
-                </MenuItem>
-              ))}
-            </MenuList>
+            <Portal data-id="013220">
+              <MenuList data-id="secondary-actions-menu-list" borderColor="#E2E8F0" box-shadow="0px 5px 15px 0px #1A202C26">
+                {config.actions.secondaryActions.map((action: any, actionIndex: number) => {
+                  const actionStyles = action.styles || {};
+                  return (
+                    <MenuItem
+                      _hover={{
+                        bg: actionStyles.hoverBg,
+                      }}
+                      color={actionStyles.color}
+                      data-id={`secondary-action-${index + 2}-${actionIndex}`}
+                      icon={
+                        action.icon ? (
+                          <action.icon color={actionStyles.iconColor || actionStyles.color} />
+                        ) : undefined
+                      }
+                      padding="4px 12px 4px 10px"
+                      fontSize="16px"
+                      fontWeight="500"
+                      key={action.label}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        action.onClick(item);
+                      }}
+                    >
+                      {action.label}
+                    </MenuItem>
+                  );
+                })}
+              </MenuList>
+            </Portal>
           </Menu>
 
-          {/* Vertical divider */}
-          <Box borderLeft="1px solid #E2E8F0" data-id={`divider-${index + 2}`} height="28px" width="1px" />
         </>
       )}
-      {/* Primary action button */}
-      <Button
-        background="white"
-        borderColor="#CBD5E0"
-        borderRadius="6px"
-        borderWidth="1px"
-        data-id={`action-button-${index + 2}`}
-        fontSize="12px"
-        fontWeight="normal"
-        height="28px"
-        leftIcon={config.actions.primary.icon ? <config.actions.primary.icon /> : undefined}
-        onClick={(e) => {
-          e.stopPropagation();
-          config.actions.primary?.onClick(item);
-        }}
-        padding="0px 8px"
-      >
-        {config.actions.primary.label}
-      </Button>
+      {config.actions.delete && (
+        <>
+          <Divider borderColor="#C4D0DD" data-id={`desktop-delete-divider-${index + 2}`} orientation="vertical" height="28px" />
+          <Button
+            background="white"
+            borderColor="#CBD5E0"
+            borderRadius="6px"
+            borderWidth="1px"
+            color="#D0021B"
+            data-id={`desktop-delete-button-${index + 2}`}
+            height="28px"
+            leftIcon={config.actions.delete.icon ? <config.actions.delete.icon color="#D0021B" h="16px" w="16px" /> : undefined}
+            onClick={(e) => {
+              e.stopPropagation();
+              config.actions.delete?.onClick(item);
+            }}
+            padding="4px"
+            size="sm"
+            variant="outline"
+            _hover={{
+              bg: '#FEE2E2',
+              borderColor: '#D0021B',
+            }}
+          >
+            {config.actions.delete.label}
+          </Button>
+        </>
+      )}
     </Flex>
   );
 }
@@ -359,44 +429,6 @@ function PanelView({
     );
   }
 
-  // Handle empty state
-  if (!items || items.length === 0) {
-    if (dataSourceName) {
-      return (
-        <NoRecordsFound
-          containerProps={{
-            bg: containerProps.bg,
-            p: containerProps.p,
-          }}
-          data-id="panel-empty-state"
-          dataSourceName={dataSourceName}
-          height="100%"
-        />
-      );
-    }
-
-    return (
-      <Box
-        alignItems="center"
-        as="main"
-        bg={containerProps.bg}
-        data-id="1"
-        display="flex"
-        flexDirection="column"
-        h="200px"
-        justifyContent="center"
-        minW="100%"
-        p={containerProps.p}
-        pt={containerProps.pt}
-        w="100%"
-      >
-        <Text color="gray.500" data-id="002525" fontSize="lg" fontWeight="medium" textAlign="center">
-          {emptyStateMessage}
-        </Text>
-      </Box>
-    );
-  }
-
   return (
     <Flex bg={containerProps.bg} as="main" data-id="1" flexDirection="column" h="full" minW="100%" position="relative" w="100%">
       <Box data-id="panel-view-content" flex="1" overflowY="auto" p={containerProps.p} pt={containerProps.pt}>
@@ -429,7 +461,7 @@ function PanelView({
                 {/* Header with title and primary action */}
                 <Box borderTopLeftRadius={'12px'} borderTopRightRadius={'12px'} data-id={`panel-header-${index + 2}`} pt={4} px={4}>
                   <Flex data-id="001408" justify="space-between" pb={2} w="full">
-                    <Box data-id="001409">
+                    <Box data-id="001409" maxW={'calc(100% - 50px)'} minW="0" overflow="hidden">
                       <FieldRenderer
                         config={config.title.primary}
                         data-id="001410"
@@ -437,7 +469,10 @@ function PanelView({
                         fontSize={['14px', '16px']}
                         fontWeight={500}
                         item={item}
+                        noOfLines={2}
+                        overflow="hidden"
                         textColor="#4A5568"
+                        textOverflow="ellipsis"
                       />
                     </Box>
                     <ActionRenderer config={config} data-id="002179" index={index} isMobile={isMobile} item={item} />

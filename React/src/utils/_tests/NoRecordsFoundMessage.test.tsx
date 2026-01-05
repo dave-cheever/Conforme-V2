@@ -2,32 +2,32 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import { NoRecordsFoundMessage } from '../../components/UI';
 
-import NoRecordsFound from '../../components/NoRecordsFound';
 
-describe('NoRecordsFound Component', () => {
+describe('NoRecordsFoundMessage Component', () => {
   describe('Basic Rendering', () => {
     it('renders with default message for audits', () => {
-      render(<NoRecordsFound data-id="002705" dataSourceName="audits" />);
+      render(<NoRecordsFoundMessage data-id="002705" dataSourceName="audits" />);
       
       expect(screen.getByText('No audits found. Try adjusting the filters.')).toBeInTheDocument();
     });
 
     it('renders with default message for tracker items', () => {
-      render(<NoRecordsFound data-id="002706" dataSourceName="tracker items" />);
+      render(<NoRecordsFoundMessage data-id="002706" dataSourceName="tracker items" />);
       
       expect(screen.getByText('No tracker items found. Try adjusting the filters.')).toBeInTheDocument();
     });
 
     it('renders with default message for actions', () => {
-      render(<NoRecordsFound data-id="002707" dataSourceName="actions" />);
+      render(<NoRecordsFoundMessage data-id="002707" dataSourceName="actions" />);
       
       expect(screen.getByText('No actions found. Try adjusting the filters.')).toBeInTheDocument();
     });
 
     it('renders with custom message when provided', () => {
       const customMessage = 'No data available at this time.';
-      render(<NoRecordsFound data-id="002708" dataSourceName="audits" message={customMessage} />);
+      render(<NoRecordsFoundMessage data-id="002708" dataSourceName="audits" message={customMessage} />);
       
       expect(screen.getByText(customMessage)).toBeInTheDocument();
       expect(screen.queryByText('No audits found. Try adjusting the filters.')).not.toBeInTheDocument();
@@ -36,21 +36,21 @@ describe('NoRecordsFound Component', () => {
 
   describe('Styling and Layout', () => {
     it('applies default height of 100%', () => {
-      const { container } = render(<NoRecordsFound data-id="002709" dataSourceName="audits" />);
+      const { container } = render(<NoRecordsFoundMessage data-id="002709" dataSourceName="audits" />);
       const flexContainer = container.firstChild as HTMLElement;
       
       expect(flexContainer).toHaveStyle({ height: '100%' });
     });
 
     it('applies custom height when provided', () => {
-      const { container } = render(<NoRecordsFound data-id="002710" dataSourceName="audits" height="200px" />);
+      const { container } = render(<NoRecordsFoundMessage data-id="002710" dataSourceName="audits" height="200px" />);
       const flexContainer = container.firstChild as HTMLElement;
       
       expect(flexContainer).toHaveStyle({ height: '200px' });
     });
 
     it('applies responsive height when provided as array', () => {
-      const { container } = render(<NoRecordsFound
+      const { container } = render(<NoRecordsFoundMessage
         data-id="002711"
         dataSourceName="audits"
         height={['100px', '200px', '300px']} />);
@@ -61,7 +61,7 @@ describe('NoRecordsFound Component', () => {
     });
 
     it('applies default container styles', () => {
-      const { container } = render(<NoRecordsFound data-id="002712" dataSourceName="audits" />);
+      const { container } = render(<NoRecordsFoundMessage data-id="002712" dataSourceName="audits" />);
       const flexContainer = container.firstChild as HTMLElement;
       
       // Check that the container has the expected structure and attributes
@@ -79,7 +79,7 @@ describe('NoRecordsFound Component', () => {
       };
       
       const { container } = render(
-        <NoRecordsFound containerProps={customProps} data-id="002713" dataSourceName="audits" />,
+        <NoRecordsFoundMessage containerProps={customProps} data-id="002713" dataSourceName="audits" />,
       );
       const flexContainer = container.firstChild as HTMLElement;
       
@@ -94,7 +94,7 @@ describe('NoRecordsFound Component', () => {
 
   describe('Text Styling', () => {
     it('applies default text styles', () => {
-      render(<NoRecordsFound data-id="002714" dataSourceName="audits" />);
+      render(<NoRecordsFoundMessage data-id="002714" dataSourceName="audits" />);
       const textElement = screen.getByText('No audits found. Try adjusting the filters.');
       
       // Check that the text element exists and has the expected data-id
@@ -110,7 +110,7 @@ describe('NoRecordsFound Component', () => {
       };
       
       render(
-        <NoRecordsFound containerProps={customProps} data-id="002715" dataSourceName="audits" />,
+        <NoRecordsFoundMessage containerProps={customProps} data-id="002715" dataSourceName="audits" />,
       );
       const textElement = screen.getByText('No audits found. Try adjusting the filters.');
       
@@ -123,7 +123,7 @@ describe('NoRecordsFound Component', () => {
 
   describe('Data ID Attributes', () => {
     it('applies default data-id when not provided', () => {
-      const { container } = render(<NoRecordsFound data-id="002716" dataSourceName="audits" />);
+      const { container } = render(<NoRecordsFoundMessage data-id="002716" dataSourceName="audits" />);
       const flexContainer = container.firstChild as HTMLElement;
       
       // Check that the element has a data-id attribute (regardless of the specific value)
@@ -132,14 +132,14 @@ describe('NoRecordsFound Component', () => {
     });
 
     it('applies custom data-id when provided', () => {
-      const { container } = render(<NoRecordsFound data-id="custom-id" dataSourceName="audits" />);
+      const { container } = render(<NoRecordsFoundMessage data-id="custom-id" dataSourceName="audits" />);
       const flexContainer = container.firstChild as HTMLElement;
       
       expect(flexContainer).toHaveAttribute('data-id', 'custom-id');
     });
 
     it('applies data-id to text element', () => {
-      render(<NoRecordsFound data-id="custom-id" dataSourceName="audits" />);
+      render(<NoRecordsFoundMessage data-id="custom-id" dataSourceName="audits" />);
       const textElement = screen.getByText('No audits found. Try adjusting the filters.');
       
       expect(textElement).toHaveAttribute('data-id', 'custom-id-text');
@@ -148,33 +148,33 @@ describe('NoRecordsFound Component', () => {
 
   describe('Edge Cases', () => {
     it('handles empty dataSourceName gracefully', () => {
-      render(<NoRecordsFound data-id="002717" dataSourceName="" />);
+      render(<NoRecordsFoundMessage data-id="002717" dataSourceName="" />);
       
       // The text will have double spaces, so we need to match the actual rendered text
       expect(screen.getByText(/No.*found\. Try adjusting the filters\./)).toBeInTheDocument();
     });
 
     it('handles special characters in dataSourceName', () => {
-      render(<NoRecordsFound data-id="002718" dataSourceName="items & reports" />);
+      render(<NoRecordsFoundMessage data-id="002718" dataSourceName="items & reports" />);
       
       expect(screen.getByText('No items & reports found. Try adjusting the filters.')).toBeInTheDocument();
     });
 
     it('handles very long dataSourceName', () => {
       const longName = 'very long data source name that might cause layout issues';
-      render(<NoRecordsFound data-id="002719" dataSourceName={longName} />);
+      render(<NoRecordsFoundMessage data-id="002719" dataSourceName={longName} />);
       
       expect(screen.getByText(`No ${longName} found. Try adjusting the filters.`)).toBeInTheDocument();
     });
 
     it('handles null message gracefully', () => {
-      render(<NoRecordsFound data-id="002720" dataSourceName="audits" message={null as any} />);
+      render(<NoRecordsFoundMessage data-id="002720" dataSourceName="audits" message={null as any} />);
       
       expect(screen.getByText('No audits found. Try adjusting the filters.')).toBeInTheDocument();
     });
 
     it('handles undefined message gracefully', () => {
-      render(<NoRecordsFound data-id="002721" dataSourceName="audits" message={undefined} />);
+      render(<NoRecordsFoundMessage data-id="002721" dataSourceName="audits" message={undefined} />);
       
       expect(screen.getByText('No audits found. Try adjusting the filters.')).toBeInTheDocument();
     });
@@ -182,7 +182,7 @@ describe('NoRecordsFound Component', () => {
 
   describe('Accessibility', () => {
     it('has proper semantic structure', () => {
-      const { container } = render(<NoRecordsFound data-id="002722" dataSourceName="audits" />);
+      const { container } = render(<NoRecordsFoundMessage data-id="002722" dataSourceName="audits" />);
       const flexContainer = container.firstChild as HTMLElement;
       
       expect(flexContainer.tagName).toBe('DIV');
@@ -192,7 +192,7 @@ describe('NoRecordsFound Component', () => {
     });
 
     it('text is readable and has proper contrast', () => {
-      render(<NoRecordsFound data-id="002723" dataSourceName="audits" />);
+      render(<NoRecordsFoundMessage data-id="002723" dataSourceName="audits" />);
       const textElement = screen.getByText('No audits found. Try adjusting the filters.');
       
       expect(textElement).toBeVisible();
@@ -212,7 +212,7 @@ describe('NoRecordsFound Component', () => {
 
     testCases.forEach(({ source, expected }) => {
       it(`generates correct message for "${source}"`, () => {
-        render(<NoRecordsFound data-id="002724" dataSourceName={source} />);
+        render(<NoRecordsFoundMessage data-id="002724" dataSourceName={source} />);
         expect(screen.getByText(expected)).toBeInTheDocument();
       });
     });

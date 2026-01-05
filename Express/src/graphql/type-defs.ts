@@ -11,6 +11,11 @@ import {
   actionCategoriesTypeDefs,
 } from './resolvers/actionCategories';
 import {
+  actionTemplatesMutationDefs,
+  actionTemplatesQueryDefs,
+  actionTemplatesTypeDefs,
+} from './resolvers/actionTemplates';
+import {
   answersMutationDefs,
   answersQueryDefs,
   answersTypeDefs,
@@ -158,6 +163,7 @@ const typeDefs = gql`
 
   ${actionsTypeDefs}
   ${actionCategoriesTypeDefs}
+  ${actionTemplatesTypeDefs}
   ${answersTypeDefs}
   ${auditLogsTypeDefs}
   ${auditsTypeDefs}
@@ -181,6 +187,7 @@ const typeDefs = gql`
   type Query {
     ${actionsQueryDefs}
     ${actionCategoriesQueryDefs}
+    ${actionTemplatesQueryDefs}
     ${answersQueryDefs}
     ${auditLogsQueryDefs}
     ${auditsQueryDefs}
@@ -206,6 +213,7 @@ const typeDefs = gql`
   type Mutation {
     ${actionsMutationDefs}
     ${actionCategoriesMutationDefs}
+    ${actionTemplatesMutationDefs}
     ${answersMutationDefs}
     ${auditsMutationDefs}
     ${auditTypesMutationDefs}

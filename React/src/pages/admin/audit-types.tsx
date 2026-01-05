@@ -14,6 +14,7 @@ import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import TextOrNumberCell from '../../components/Table/Cells/TextOrNumberCell';
 import ListView, { ColumnConfig } from '../../components/Table/ListView';
+import { NoRecordsFoundMessage } from '../../components/UI';
 import { useAdminContext } from '../../contexts/AdminProvider';
 import { useAppContext } from '../../contexts/AppProvider';
 import { auditFrequencies } from '../../hooks/useAuditUtils';
@@ -329,6 +330,33 @@ function AuditTypes() {
     setValue('sections', updatedSections);
   };
 
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Box bg="white" borderBottomRadius="10px" data-id="000387" h="full" w="full">
+          <Loader center data-id="000388" />
+        </Box>
+      );
+    }
+
+    if (auditTypes.length === 0) {
+      return <NoRecordsFoundMessage dataSourceName="audit types" data-id="000390" />;
+    }
+
+    return (
+      <ListView
+        columns={columns}
+        data={auditTypes}
+        data-id="000389"
+        onRowClick={handleRowClick}
+        setSortOrder={setSortOrder}
+        setSortType={setSortType}
+        sortOrder={sortOrder}
+        sortType={sortType}
+      />
+    );
+  };
+
   return (
     <>
       <AdminModal
@@ -554,23 +582,7 @@ function AuditTypes() {
       <Header breadcrumbs={['Admin', 'Audit types']} data-id="000384" mobileBreadcrumbs={['Audit types']} pageLabel="Audit type" />
       <Box bg="auditsList.bg" data-id="000385" h="full" overflow="hidden">
         <Flex data-id="000386" h="full" px={['25px', 0]}>
-          {loading ? (
-            <Box bg="white" borderBottomRadius="10px" data-id="000387" h="full" w="full">
-              <Loader center data-id="000388" />
-            </Box>
-          ) : (
-            <ListView
-              columns={columns}
-              data={auditTypes}
-              data-id="000389"
-              dataType="audit types"
-              onRowClick={handleRowClick}
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortOrder={sortOrder}
-              sortType={sortType}
-            />
-          )}
+          {renderContent()}
         </Flex>
       </Box>
     </>

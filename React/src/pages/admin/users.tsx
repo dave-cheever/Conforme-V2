@@ -338,28 +338,35 @@ function Users() {
     },
   ], [t, pluralize, device, module?.type, module?.name, users, onHomePageChange, getDefaultPages, loadingUsers, navigateTo]);
 
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Box bg="white" borderBottomRadius="10px" data-id="users-loader-box" h="full" w="full">
+          <Loader center data-id="users-loader" />
+        </Box>
+      );
+    }
+
+    return (
+      <ListView
+        columns={columns}
+        data={users}
+        data-id="users-listview"
+        onRowClick={() => {}}
+        setSortOrder={setSortOrder}
+        setSortType={setSortType}
+        sortOrder={sortOrder}
+        sortType={sortType}
+      />
+    );
+  };
+
   return (
     <>
       <Header breadcrumbs={['Admin', 'Users']} data-id="000650" mobileBreadcrumbs={['Users']} />
       <Box bg="auditsList.bg" data-id="users-container" h="full" overflow="hidden">
         <Flex data-id="users-inner" h="full" px={['25px', 0]}>
-          {loading ? (
-            <Box bg="white" borderBottomRadius="10px" data-id="users-loader-box" h="full" w="full">
-              <Loader center data-id="users-loader" />
-            </Box>
-          ) : (
-            <ListView
-              columns={columns}
-              data={users}
-              data-id="users-listview"
-              dataType="users"
-              onRowClick={() => {}}
-              setSortOrder={setSortOrder}
-              setSortType={setSortType}
-              sortOrder={sortOrder}
-              sortType={sortType}
-            />
-          )}
+          {renderContent()}
         </Flex>
       </Box>
     </>

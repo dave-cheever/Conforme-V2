@@ -1,41 +1,69 @@
-import { useState } from 'react';
-
 import {
-  Avatar,
   Box,
   Button,
+  Divider,
   Flex,
   Modal,
   ModalBody,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Spacer,
+  Spinner,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import pluralize from 'pluralize';
 
-import { useAppContext } from '../../contexts/AppProvider';
-import { ChevronRight, Close } from '../../icons';
+import { AddIcon, Close, SaveIcon, Trashcan } from '../../icons';
 import { AdminModalState } from '../../interfaces/IAdminContext';
+import useDevice from '../../hooks/useDevice';
+import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
 
 interface IAdminModal {
-  isOpenModal: boolean;
-  modalType: AdminModalState;
-  onAction: (modalType?: any) => void;
-  collection: string;
-  children: JSX.Element | JSX.Element[];
-  onAddMore?: () => void;
+  readonly isOpenModal: boolean;
+  readonly modalType: AdminModalState;
+  readonly onAction: (modalType?: any) => void;
+  readonly collection: string;
+  readonly children: JSX.Element | JSX.Element[];
+  readonly onAddMore?: () => void;
+  readonly deleteButtonText?: string;
+  readonly isLoading?: boolean;
+  readonly isDeleting?: boolean;
+  readonly onDeleteClick?: () => void;
+  readonly itemName?: string;
+  readonly editButtonText?: string;
+  readonly addButtonText?: string;
 }
 
-function AdminModal({ isOpenModal, modalType, onAction, collection, children, onAddMore }: IAdminModal) {
-  const { user } = useAppContext();
+function AdminModal({ isOpenModal, modalType, onAction, collection, children, onAddMore, deleteButtonText = 'Delete', isLoading = false, isDeleting = false, onDeleteClick, itemName, editButtonText, addButtonText }: Readonly<IAdminModal>) {
   const { onClose } = useDisclosure();
-  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const device = useDevice();
+  const { isOpen: isConfirmDeleteOpen, onOpen: onConfirmDeleteOpen, onClose: onConfirmDeleteClose } = useDisclosure();
 
-  const confirmDelete = () => {
-    setIsConfirmDeleteOpen(false);
+  const handleConfirmDelete = () => {
+    onConfirmDeleteClose();
     onAction('delete');
+  };
+
+  const handleDiscard = () => {
+    onAction();
+  };
+
+  const getModalVariant = (): string => {
+    if (modalType === 'delete') {
+      return 'deleteModal';
+    }
+    if (collection) {
+      return 'adminModal';
+    }
+    return 'conformeModal';
+  };
+
+  const getPrimaryButtonIcon = () => {
+    if (isLoading && !isDeleting) return undefined;
+    if (modalType === 'add') return <AddIcon data-id="013100" h="16px" w="16px" stroke="adminModal.primaryButton.iconColor" />;
+    if (modalType === 'edit') return <SaveIcon data-id="013100"  h="16px" w="16px" stroke="adminModal.primaryButton.iconColor" />;
+    return undefined;
   };
 
   return (
@@ -45,74 +73,144 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
         data-id="000301"
         isOpen={isOpenModal}
         onClose={onClose}
-        onEsc={onAction}
-        onOverlayClick={onAction}
-        variant={collection ? 'adminModal' : 'conformeModal'}
+        onEsc={handleDiscard}
+        size={device === 'desktop' || device === 'tablet' || modalType === 'delete' ? 'lg' : 'full'}
+        variant={getModalVariant()}
       >
         <ModalOverlay data-id="000302" />
-        {modalType !== 'delete' && (
-          <ModalContent bg="adminModal.content.bg" data-id="000303" h="full" my="0" position="absolute" rounded="0">
-            <ModalHeader data-id="000304" pl="18px">
-              <Flex alignItems="center" data-id="000305" justifyContent="space-between" pt="10px">
-                <Flex data-id="000306">
-                  <Avatar
-                    data-id="000307"
-                    mx={3}
-                    name={user?.displayName?.replace(/\s*\(.*?\)\s*/g, '')}
-                    rounded="full"
-                    size="sm"
-                    src={user?.imgUrl}
-                  />
-                  <Box data-id="000308" fontSize="xxl" fontWeight="bold">
-                    {modalType === 'edit' ? `Edit ${pluralize(collection, 1)}` : `Add ${pluralize(collection, 1)}`}
-                  </Box>
+        {(modalType === 'add' || modalType === 'edit') && (
+          <ModalContent bg="adminModal.body.bg" data-id="000303" h="100%" m="0" overflow="hidden" p={0} rounded="0">
+            <ModalHeader
+              data-id="000304"
+              borderBottom="1px solid"
+              borderColor="adminModal.modalHeader.borderColor"
+              bg="adminModal.modalHeader.bg"
+              padding="14px 18px"
+              position="relative"
+            >
+              <Flex alignItems="center" justifyContent="space-between" data-id="000305" position="relative" w="full">
+                <Flex data-id="000306" alignItems="center" gap={3}>
+                  <Text
+                    color="adminModal.modalHeader.titleColor"
+                    data-id="000308"
+                    fontSize="20px"
+                    fontWeight="500"
+                    lineHeight="100%"
+                  >
+                    {modalType === 'edit' ? `Edit ${pluralize(collection, 1)}` : `Add a new ${pluralize(collection, 1)}`}
+                  </Text>
                 </Flex>
-                <Close cursor="pointer" data-id="000309" h="15px" onClick={onAction} stroke="adminModal.closeIcon" w="15px" />
+
+                <Box data-id="013209" as="span" display="flex" alignItems="center" gap="10px">
+                  {modalType === 'edit' && (
+                    <>
+                      <Button
+                        data-id="000314"
+                        _hover={{
+                          bg: 'adminModal.deleteButton.hover.bg',
+                          color: 'adminModal.deleteButton.hover.color',
+                          border: 'none',
+                        }}
+                        bg="adminModal.deleteButton.bg"
+                        color="adminModal.deleteButton.color"
+                        border="1px solid"
+                        borderColor="adminModal.deleteButton.border"
+                        borderRadius="6px"
+                        boxShadow="0px 1px 2px 0px #1A202C14"
+                        fontSize="12px"
+                        fontWeight="500"
+                        letterSpacing="0%"
+                        padding="6px 8px"
+                        isDisabled={isLoading}
+                        isLoading={isDeleting}
+                        loadingText="Deleting..."
+                        onClick={onDeleteClick || onConfirmDeleteOpen}
+                        leftIcon={
+                          <Trashcan
+                            data-id="013100"
+                            _groupHover={{ color: 'adminModal.deleteButton.hover.iconColor' }}
+                            w="14px"
+                            h="14px"
+                            color="adminModal.deleteButton.iconColor"
+                          />
+                        }
+                        role="group"
+                      >
+                        {deleteButtonText}
+                      </Button>
+
+                      <Divider data-id="013210" orientation="vertical" height="30px" />
+                    </>
+                  )}
+                  <Box data-id="000309" _hover={{ opacity: 0.7 }} cursor="pointer" lineHeight="100%">
+                    <Close data-id="013098" h="16px" onClick={handleDiscard} stroke="adminModal.closeIcon.color" w="16px" />
+                  </Box>
+                </Box>
               </Flex>
             </ModalHeader>
-            <ModalBody bg="adminModal.body.bg" data-id="000310" overflowY="auto">
-              <Flex bgColor="#F0F2F5" borderRadius={['0', '20px']} data-id="000311" direction="column" minH="98%" p={25}>
-                {children}
-                <Spacer data-id="000312" />
-                <Flex data-id="000313" flexWrap="wrap" gap={3} justify="space-between" mt={5}>
-                  {modalType === 'edit' && (
+            <ModalBody bg="adminModal.body.bg" data-id="000310" p="18px" overflowY="auto">
+              {children}
+            </ModalBody>
+            <Box
+              data-id="000400"
+              bg="adminModal.modalFooter.bg"
+              borderTop="1px solid"
+              borderColor="adminModal.modalFooter.borderColor"
+              color="adminModal.modalFooter.color"
+              p="16px 20px"
+            >
+              <Flex data-id="000313" gap={3} justify="space-between">
+                <Button
+                  _hover={{ bg: 'adminModal.discardButton.hover.bg' }}
+                  bg="adminModal.discardButton.bg"
+                  color="adminModal.discardButton.color"
+                  data-id="000401"
+                  fontSize="14px"
+                  fontWeight="500"
+                  isDisabled={isLoading}
+                  onClick={handleDiscard}
+                  variant="ghost"
+                >
+                  Discard
+                </Button>
+                <Flex data-id="000315" gap={3}>
+                  {/* Add More Button — only in add mode and if onAddMore exists */}
+                  {modalType === 'add' && onAddMore && (
                     <Button
-                      _hover={{ bg: 'adminModal.button.remove.bg' }}
-                      bg="adminModal.button.remove.bg"
-                      color="adminModal.button.remove.color"
-                      data-id="000314"
-                      fontSize="smm"
-                      fontWeight="bold"
-                      onClick={() => setIsConfirmDeleteOpen(true)}
+                      _hover={{ bg: 'adminModal.addMoreButton.hover.bg' }}
+                      bg="adminModal.addMoreButton.bg"
+                      color="adminModal.addMoreButton.color"
+                      data-id="000316"
+                      fontSize="14px"
+                      fontWeight="500"
+                      isDisabled={isLoading}
+                      onClick={onAddMore}
                     >
-                      Delete
+                      Add More
                     </Button>
                   )}
-
-                  <Flex data-id="000315" gap={3}>
-                    {/* Add More Button — only in add mode and if onAddMore exists */}
-                    {modalType === 'add' && onAddMore && (
-                      <Button bg="gray.300" color="black" data-id="000316" fontSize="smm" fontWeight="bold" onClick={onAddMore}>
-                        Add More
-                      </Button>
-                    )}
-
+                  <Box data-id="013099" as="span">
                     <Button
-                      _hover={{ bg: 'adminModal.button.hover' }}
-                      bg="adminModal.button.bg"
-                      color="adminModal.button.color"
+                      _hover={{ bg: 'adminModal.primaryButton.hover.bg' }}
+                      bg="adminModal.primaryButton.bg"
+                      color="adminModal.primaryButton.color"
                       data-id="000317"
-                      fontSize="smm"
-                      fontWeight="bold"
+                      fontSize="14px"
+                      fontWeight="500"
+                      isDisabled={isLoading}
+                      isLoading={isLoading && !isDeleting}
                       onClick={() => onAction(modalType)}
+                      leftIcon={getPrimaryButtonIcon()}
+                      loadingText={modalType === 'edit' ? 'Saving...' : 'Adding...'}
+                      marginLeft="10px"
+                      spinner={<Spinner data-id="013101" color="adminModal.primaryButton.spinnerColor" size="sm" />}
                     >
-                      {modalType === 'edit' ? 'Update' : 'Add'}
-                      <ChevronRight data-id="000318" ml="5px" />
+                      {modalType === 'edit' ? (editButtonText || 'Save changes') : (addButtonText || 'Add')}
                     </Button>
-                  </Flex>
+                  </Box>
                 </Flex>
               </Flex>
-            </ModalBody>
+            </Box>
           </ModalContent>
         )}
         {modalType === 'delete' && (
@@ -153,25 +251,15 @@ function AdminModal({ isOpenModal, modalType, onAction, collection, children, on
           </ModalContent>
         )}
       </Modal>
-      <Modal data-id="000326" isCentered isOpen={isConfirmDeleteOpen} onClose={() => setIsConfirmDeleteOpen(false)}>
-        <ModalOverlay data-id="000327" />
-        <ModalContent bg="white" borderRadius="12px" boxShadow="lg" data-id="000328" p={6} textAlign="center">
-          <Box color="gray.800" data-id="000329" fontSize="xl" fontWeight="bold" mb={4}>
-            Confirm Delete
-          </Box>
-          <Box color="gray.600" data-id="000330" mb={6}>
-            Are you sure you want to delete this item? This action cannot be undone.
-          </Box>
-          <Flex data-id="000331" justify="center">
-            <Button colorScheme="gray" data-id="000332" mr={3} onClick={() => setIsConfirmDeleteOpen(false)} variant="outline">
-              Cancel
-            </Button>
-            <Button colorScheme="red" data-id="000333" onClick={confirmDelete}>
-              Delete
-            </Button>
-          </Flex>
-        </ModalContent>
-      </Modal>
+      <ConfirmDeleteModal
+        collectionName={collection}
+        data-id="000326"
+        isOpen={isConfirmDeleteOpen}
+        isLoading={isDeleting}
+        itemName={itemName}
+        onClose={onConfirmDeleteClose}
+        onConfirm={handleConfirmDelete}
+      />
     </>
   );
 }
@@ -180,13 +268,57 @@ export default AdminModal;
 
 export const adminModalStyles = {
   adminModal: {
-    content: {
+    modalHeader: {
       bg: '#FFFFFF',
+      borderColor: '#E2E8F0',
+      titleColor: '#2D3748',
     },
     body: {
       bg: '#FFFFFF',
     },
-    closeIcon: '#282F36',
+    modalFooter: {
+      bg: '#FFFFFF',
+      color: '#FFFFFF',
+      borderColor: '#CBD5E0',
+    },
+    deleteButton: {
+      bg: 'transparent',
+      color: '#2D3748',
+      border: '#CBD5E0',
+      iconColor: '#D0021B',
+      hover: {
+        bg: '#E93C44',
+        color: '#FFFFFF',
+        iconColor: '#FFFFFF',
+      },
+    },
+    primaryButton: {
+      bg: '#462AC4',
+      color: '#FFFFFF',
+      iconColor: '#FFFFFF',
+      spinnerColor: '#FFFFFF',
+      hover: {
+        bg: '#462AC4',
+      },
+    },
+    discardButton: {
+      bg: 'transparent',
+      color: '#2D3748',
+      hover: {
+        bg: 'transparent',
+      },
+    },
+    addMoreButton: {
+      bg: '#E2E8F0',
+      color: '#2D3748',
+      hover: {
+        bg: '#CBD5E0',
+      },
+    },
+    closeIcon: {
+      color: '#2D3748',
+      hoverOpacity: 0.7,
+    },
     button: {
       bg: '#462AC4',
       hover: '#462AC4',
