@@ -15,9 +15,24 @@ public class Navigation extends base.commonFunctions {
   private final Locator trackerItemsButton = getPage().locator("//div[text()='Tracker items']/ancestor::div[2]");
   private final Locator adminButton = getPage().locator("//div[text()='Admin']/ancestor::div[2]");
   private final Locator helpSupportButton = getPage().locator("//div[text()='Help & support']/ancestor::div[2]");
-  private final Locator trackerItemsHeaderText = getPage().locator("//div[@data-id=\"000272\"]/p[text()='Tracker items']");
+  private final Locator trackerItemsHeaderText = getPage().locator("//div[@data-id='000272']/p[text()='Tracker items']");
   private final Locator spinner = getPage().locator("//div[@class='chakra-spinner css-1cse1gr']");
   private final Locator adminButtonTextSelected = getPage().locator("xpath=//div[@class='css-5wa6mo']/div[2]/div[text()='Admin']");
+
+  private final Locator auditModuleAdminButton = getPage().locator("//div[@data-id='002745' and text()='Admin']");
+  private final Locator auditModuleAdminLocationsButton = getPage().locator("//p[@data-id='000589' and text()='Locations']");
+  private final Locator auditModuleAdminBusinessUnitsButton = getPage().locator("//p[@data-id='000589' and text()='Business units']");
+  private final Locator auditModuleAdminQuestionsButton = getPage().locator("//p[@data-id='000589' and text()='Questions']");
+  private final Locator auditModuleAdminQuestionSetsButton = getPage().locator("//p[@data-id='000589' and text()='Question sets']");
+  private final Locator auditModuleAdminActionCategoriesButton = getPage().locator("//p[@data-id='000589' and text()='Action categories']");
+  private final Locator auditModuleAdminActionTemplatesButton = getPage().locator("//p[@data-id='000589' and text()='Action templates']");
+  private final Locator auditModuleAdminAuditTypesButton = getPage().locator("//p[@data-id='000589' and text()='Audit types']");
+  private final Locator auditModuleAdminCategoriesButton = getPage().locator("//p[@data-id='000589' and text()='Categories']");
+  private final Locator auditModuleAdminUsersButton = getPage().locator("//p[@data-id='000589' and text()='Users']");
+  private final Locator auditModuleAdminAuditLogButton = getPage().locator("//p[@data-id='000589' and text()='Audit log']");
+
+
+
 
   public enum AdminSection {
     TRACKER_ITEMS("Tracker items", "000274"),
